@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.github.windsekirun.bindadapters.observable.ObservableString;
 import com.github.windsekirun.daggerautoinject.InjectViewModel;
+
 import org.openklas.MainApplication;
 import org.openklas.repository.MainRepository;
 
@@ -24,23 +25,23 @@ import javax.inject.Inject;
  */
 @InjectViewModel
 public class LoginViewModel extends BaseViewModel {
-    @Inject
-    MainRepository mMainRepository;
+	@Inject
+	MainRepository mMainRepository;
 
-    public ObservableString mId = new ObservableString();
-    public ObservableString mPw = new ObservableString();
+	public ObservableString mId = new ObservableString();
+	public ObservableString mPw = new ObservableString();
 
-    @Inject
-    public LoginViewModel(MainApplication application) {
-        super(application);
-    }
+	@Inject
+	public LoginViewModel(MainApplication application) {
+		super(application);
+	}
 
-    @Override
-    public void onCreate(@NonNull LifecycleOwner owner) {
+	@Override
+	public void onCreate(@NonNull LifecycleOwner owner) {
 
-    }
+	}
 
-    public void clickLogin(View view){
+	public void clickLogin(View view) {
 
-    }
+	}
 }

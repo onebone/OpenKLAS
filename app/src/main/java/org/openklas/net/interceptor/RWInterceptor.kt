@@ -16,34 +16,34 @@ import java.nio.charset.Charset
  * Description:
  */
 class RWInterceptor : Interceptor {
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response? {
-        val original = chain.request()
-        val originalHttpUrl = original.url()
-        val originalMethod = original.method()
+	@Throws(IOException::class)
+	override fun intercept(chain: Interceptor.Chain): Response? {
+		val original = chain.request()
+		val originalHttpUrl = original.url()
+		val originalMethod = original.method()
 
-        val cmd = originalHttpUrl.queryParameter("cmd")
-        val param = "&cmd=$cmd"
+		val cmd = originalHttpUrl.queryParameter("cmd")
+		val param = "&cmd=$cmd"
 
-        val requestBuilder = original.newBuilder()
-            .url(originalHttpUrl.newBuilder().build())
+		val requestBuilder = original.newBuilder()
+			.url(originalHttpUrl.newBuilder().build())
 
-        if (original.body() != null) {
-            val requestBody = original.body()!!
+		if (original.body() != null) {
+			val requestBody = original.body()!!
 
-            val newRequestBody = object : RequestBody() {
-                override fun contentLength(): Long = requestBody.contentLength() + param.length
-                override fun contentType(): MediaType? = requestBody.contentType()
+			val newRequestBody = object : RequestBody() {
+				override fun contentLength(): Long = requestBody.contentLength() + param.length
+				override fun contentType(): MediaType? = requestBody.contentType()
 
-                @Throws(IOException::class)
-                override fun writeTo(sink: BufferedSink) {
-                    requestBody.writeTo(sink)
-                    sink.writeString(param, Charset.forName("UTF-8"))
-                }
-            }
-            requestBuilder.method(originalMethod, newRequestBody)
-        }
+				@Throws(IOException::class)
+				override fun writeTo(sink: BufferedSink) {
+					requestBody.writeTo(sink)
+					sink.writeString(param, Charset.forName("UTF-8"))
+				}
+			}
+			requestBuilder.method(originalMethod, newRequestBody)
+		}
 
-        return chain.proceed(requestBuilder.build())
-    }
+		return chain.proceed(requestBuilder.build())
+	}
 }

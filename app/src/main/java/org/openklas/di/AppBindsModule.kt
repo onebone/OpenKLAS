@@ -20,13 +20,13 @@ import javax.inject.Named
  */
 @Module
 abstract class AppBindsModule {
-    @Binds
-    abstract fun bindApplication(application: MainApplication?): Application?
+	@Binds
+	abstract fun bindApplication(application: MainApplication?): Application?
 
-    @Binds
-    abstract fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
+	@Binds
+	abstract fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
 
-    @Binds
-    @Named("loginterceptor")
-    abstract fun bindLogInterceptor(interceptor: LogInterceptor): Interceptor
+	@Binds
+	@Named("loginterceptor")
+	abstract fun bindLogInterceptor(interceptor: LogInterceptor): Interceptor
 }

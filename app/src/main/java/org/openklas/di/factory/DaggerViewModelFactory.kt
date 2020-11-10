@@ -1,4 +1,4 @@
-package org.openklas.di.factory;
+package org.openklas.di.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,18 +7,20 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
-class DaggerViewModelFactory @Inject constructor(private val creators: Map<Class<*>,
-        @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory {
+class DaggerViewModelFactory @Inject constructor(
+	private val creators: Map<Class<*>,
+			@JvmSuppressWildcards Provider<ViewModel>>
+) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val creator = creators[modelClass]
-                ?: creators.asIterable().firstOrNull { modelClass.isAssignableFrom(it.key) }?.value
-                ?: throw IllegalArgumentException("unknown model class $modelClass")
+	override fun <T : ViewModel> create(modelClass: Class<T>): T {
+		val creator = creators[modelClass]
+			?: creators.asIterable().firstOrNull { modelClass.isAssignableFrom(it.key) }?.value
+			?: throw IllegalArgumentException("unknown model class $modelClass")
 
-        return try {
-            creator.get() as T
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-    }
+		return try {
+			creator.get() as T
+		} catch (e: Exception) {
+			throw RuntimeException(e)
+		}
+	}
 }

@@ -8,10 +8,10 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MainRepository {
-    private JSONService mService;
+	private final JSONService mService;
 
-    @Inject
-    public MainRepository(JSONService service) {
-        mService = service;
-    }
+	@Inject
+	public MainRepository(JSONService service) {
+		mService = service;
+	}
 }

@@ -1,4 +1,4 @@
-package com.github.windsekirun.baseapp.module.argsinjector
+package org.openklas.di.argsinjector
 
 /**
  * PyxInjector

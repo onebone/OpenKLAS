@@ -21,104 +21,105 @@ import org.openklas.utils.setupEditContentScrollable
 import org.openklas.utils.weak
 import javax.inject.Inject
 
-abstract class BaseActivity<V : ViewDataBinding> :AppCompatActivity(), BaseInterface{
-    @Inject
-    lateinit var viewModelProvideFactory: ViewModelProvider.Factory
+abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInterface {
+	@Inject
+	lateinit var viewModelProvideFactory: ViewModelProvider.Factory
 
-    protected lateinit var mBinding: V
-    protected open val requireLandscape: Boolean
-        get() = false
-    protected open val requireScreenOn: Boolean
-        get() = false
-    protected open val hideKeyboardOnTouch: Boolean
-        get() = false
-    protected val compositeDisposable = CompositeDisposable()
+	protected lateinit var mBinding: V
+	protected open val requireLandscape: Boolean
+		get() = false
+	protected open val requireScreenOn: Boolean
+		get() = false
+	protected open val hideKeyboardOnTouch: Boolean
+		get() = false
+	protected val compositeDisposable = CompositeDisposable()
 
-    private var viewModel: BaseViewModel? by weak(null)
+	private var viewModel: BaseViewModel? by weak(null)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-        catchAll {
-            if (requireLandscape) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            } else if (Config.config.requirePortrait) {
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            }
-        }
+		catchAll {
+			if (requireLandscape) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+			} else if (Config.config.requirePortrait) {
+				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+			}
+		}
 
-        if (requireScreenOn) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
+		if (requireScreenOn) {
+			window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+		} else {
+			window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+		}
 
-        if (Config.config.registerBusOnCreate) registerEventBus()
-    }
+		if (Config.config.registerBusOnCreate) registerEventBus()
+	}
 
-    override fun setContentView(layoutResID: Int) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(this), layoutResID, null, false)
-        super.setContentView(mBinding.root)
-    }
-    override fun onContentChanged() {
-        super.onContentChanged()
-        ArgsParser.inject(this)
-        if (hideKeyboardOnTouch) setupEditContentScrollable(mBinding.root, this)
-    }
+	override fun setContentView(layoutResID: Int) {
+		mBinding = DataBindingUtil.inflate(LayoutInflater.from(this), layoutResID, null, false)
+		super.setContentView(mBinding.root)
+	}
 
-    override fun onStart() {
-        super.onStart()
-        registerEventBus()
-    }
+	override fun onContentChanged() {
+		super.onContentChanged()
+		ArgsParser.inject(this)
+		if (hideKeyboardOnTouch) setupEditContentScrollable(mBinding.root, this)
+	}
 
-    override fun onStop() {
-        super.onStop()
-        unregisterEventBus()
-    }
+	override fun onStart() {
+		super.onStart()
+		registerEventBus()
+	}
 
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
-        viewModel?.let { lifecycle.removeObserver(it) }
-        unregisterEventBus()
-    }
+	override fun onStop() {
+		super.onStop()
+		unregisterEventBus()
+	}
 
-    fun <T : BaseViewModel> getViewModel(viewModelClass: Class<T>): T {
-        val viewModel = getViewModel(this, viewModelProvideFactory, viewModelClass)
-        setViewModelObject(viewModel)
-        return viewModel
-    }
+	override fun onDestroy() {
+		super.onDestroy()
+		compositeDisposable.clear()
+		viewModel?.let { lifecycle.removeObserver(it) }
+		unregisterEventBus()
+	}
 
-    protected fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
-    }
+	fun <T : BaseViewModel> getViewModel(viewModelClass: Class<T>): T {
+		val viewModel = getViewModel(this, viewModelProvideFactory, viewModelClass)
+		setViewModelObject(viewModel)
+		return viewModel
+	}
+
+	protected fun addDisposable(disposable: Disposable) {
+		compositeDisposable.add(disposable)
+	}
 
 
-    @Deprecated("Don't need to call manually")
-    protected fun setViewModelReference(viewModel: BaseViewModel) {
-        setViewModelObject(viewModel)
-    }
+	@Deprecated("Don't need to call manually")
+	protected fun setViewModelReference(viewModel: BaseViewModel) {
+		setViewModelObject(viewModel)
+	}
 
-    private fun setViewModelObject(viewModel: BaseViewModel) {
-        lifecycle.addObserver(viewModel)
-        viewModel.lifecycle = lifecycle
-        this.viewModel = viewModel
-    }
+	private fun setViewModelObject(viewModel: BaseViewModel) {
+		lifecycle.addObserver(viewModel)
+		viewModel.lifecycle = lifecycle
+		this.viewModel = viewModel
+	}
 
-    private fun registerEventBus() {
-        try {
-            EventBus.getDefault().register(this)
-        } catch (t: Throwable) {
-            Log.e("exception","$t:" + t.message)
-        }
-    }
+	private fun registerEventBus() {
+		try {
+			EventBus.getDefault().register(this)
+		} catch (t: Throwable) {
+			Log.e("exception", "$t:" + t.message)
+		}
+	}
 
-    private fun unregisterEventBus() {
-        try {
-            EventBus.getDefault().unregister(this)
-        } catch (t: Throwable) {
-            Log.e("exception","$t:" + t.message)
-        }
+	private fun unregisterEventBus() {
+		try {
+			EventBus.getDefault().unregister(this)
+		} catch (t: Throwable) {
+			Log.e("exception", "$t:" + t.message)
+		}
 
-    }
+	}
 }

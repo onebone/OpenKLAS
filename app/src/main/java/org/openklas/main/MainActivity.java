@@ -3,6 +3,7 @@ package org.openklas.main;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+
 import com.github.windsekirun.daggerautoinject.InjectActivity;
 
 
@@ -20,13 +21,13 @@ import org.openklas.databinding.MainActivityBinding;
 
 @InjectActivity
 public class MainActivity extends BaseActivity<MainActivityBinding> {
-    private MainViewModel mViewModel;
+	private MainViewModel mViewModel;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-        mViewModel = getViewModel(MainViewModel.class);
-        mBinding.setViewModel(mViewModel);
-    }
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main_activity);
+		mViewModel = getViewModel(MainViewModel.class);
+		mBinding.setViewModel(mViewModel);
+	}
 }

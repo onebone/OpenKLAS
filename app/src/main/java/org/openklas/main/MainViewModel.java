@@ -2,6 +2,7 @@ package org.openklas.main;
 
 
 import com.github.windsekirun.daggerautoinject.InjectViewModel;
+
 import org.openklas.MainApplication;
 
 import org.openklas.base.BaseViewModel;
@@ -18,11 +19,11 @@ import javax.inject.Inject;
  */
 @InjectViewModel
 public class MainViewModel extends BaseViewModel {
-    @Inject
-    MainRepository mMainRepository;
+	@Inject
+	MainRepository mMainRepository;
 
-    @Inject
-    public MainViewModel(MainApplication application) {
-        super(application);
-    }
+	@Inject
+	public MainViewModel(MainApplication application) {
+		super(application);
+	}
 }

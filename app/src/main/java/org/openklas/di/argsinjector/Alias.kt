@@ -1,3 +1,3 @@
-package com.github.windsekirun.baseapp.module.argsinjector
+package org.openklas.di.argsinjector
 
 typealias SupportFragment = androidx.fragment.app.Fragment

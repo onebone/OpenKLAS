@@ -18,24 +18,24 @@ import pyxis.uzuki.live.nyancat.config.TriggerTiming
  */
 @AttributeParser("org.openklas.base")
 abstract class BaseApplication : Application() {
-    abstract val configFilePath: String
+	abstract val configFilePath: String
 
-    override fun onCreate() {
-        super.onCreate()
-        Config.loadConfig(this, configFilePath)
+	override fun onCreate() {
+		super.onCreate()
+		Config.loadConfig(this, configFilePath)
 
-        val config = LoggerConfig(
-            packageName, BuildConfig.DEBUG,
-            if (Config.config.printLogRelease) TriggerTiming.ALL else TriggerTiming.ONLY_DEBUG
-        )
-        NyanCatGlobal.breed(config)
+		val config = LoggerConfig(
+			packageName, BuildConfig.DEBUG,
+			if (Config.config.printLogRelease) TriggerTiming.ALL else TriggerTiming.ONLY_DEBUG
+		)
+		NyanCatGlobal.breed(config)
 
-        ActivityReference.initialize(this)
-        pyxis.uzuki.live.richutilskt.module.reference.ActivityReference.initialize(this)
-    }
+		ActivityReference.initialize(this)
+		pyxis.uzuki.live.richutilskt.module.reference.ActivityReference.initialize(this)
+	}
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
+	override fun attachBaseContext(base: Context) {
+		super.attachBaseContext(base)
+		MultiDex.install(this)
+	}
 }

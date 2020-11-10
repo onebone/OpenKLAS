@@ -16,67 +16,67 @@ import org.openklas.utils.weak
 
 
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application),
-    BaseInterface,
-        DefaultLifecycleObserver, Observable, NonActivityInterface {
-    private var mCallbacks: PropertyChangeRegistry? = null
-    protected val compositeDisposable = CompositeDisposable()
+	BaseInterface,
+	DefaultLifecycleObserver, Observable, NonActivityInterface {
+	private var mCallbacks: PropertyChangeRegistry? = null
+	protected val compositeDisposable = CompositeDisposable()
 
-    var lifecycle: Lifecycle? by weak(null)
+	var lifecycle: Lifecycle? by weak(null)
 
-    override fun onDestroy(owner: LifecycleOwner) {
-        super.onDestroy(owner)
-        compositeDisposable.clear()
-    }
+	override fun onDestroy(owner: LifecycleOwner) {
+		super.onDestroy(owner)
+		compositeDisposable.clear()
+	}
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
-    }
+	override fun onCleared() {
+		super.onCleared()
+		compositeDisposable.clear()
+	}
 
-    protected fun postEvent(event: Any) {
-        EventBus.getDefault().post(event)
-    }
+	protected fun postEvent(event: Any) {
+		EventBus.getDefault().post(event)
+	}
 
-    protected fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
-    }
+	protected fun addDisposable(disposable: Disposable) {
+		compositeDisposable.add(disposable)
+	}
 
-    protected fun removeDisposable(disposable: Disposable){
-        compositeDisposable.delete(disposable)
-    }
+	protected fun removeDisposable(disposable: Disposable) {
+		compositeDisposable.delete(disposable)
+	}
 
 
-    override fun addOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
-        if (mCallbacks == null) {
-            mCallbacks = PropertyChangeRegistry()
-        }
+	override fun addOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
+		if (mCallbacks == null) {
+			mCallbacks = PropertyChangeRegistry()
+		}
 
-        mCallbacks?.add(onPropertyChangedCallback)
-    }
+		mCallbacks?.add(onPropertyChangedCallback)
+	}
 
-    override fun removeOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
-        if (mCallbacks == null) {
-            mCallbacks = PropertyChangeRegistry()
-        }
+	override fun removeOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
+		if (mCallbacks == null) {
+			mCallbacks = PropertyChangeRegistry()
+		}
 
-        mCallbacks?.remove(onPropertyChangedCallback)
-    }
+		mCallbacks?.remove(onPropertyChangedCallback)
+	}
 
-    fun notifyChange() {
-        synchronized(this) {
-            if (mCallbacks == null) {
-                return
-            }
-        }
-        mCallbacks?.notifyCallbacks(this, 0, null)
-    }
+	fun notifyChange() {
+		synchronized(this) {
+			if (mCallbacks == null) {
+				return
+			}
+		}
+		mCallbacks?.notifyCallbacks(this, 0, null)
+	}
 
-    fun notifyPropertyChanged(fieldId: Int) {
-        synchronized(this) {
-            if (mCallbacks == null) {
-                return
-            }
-        }
-        mCallbacks?.notifyCallbacks(this, fieldId, null)
-    }
+	fun notifyPropertyChanged(fieldId: Int) {
+		synchronized(this) {
+			if (mCallbacks == null) {
+				return
+			}
+		}
+		mCallbacks?.notifyCallbacks(this, fieldId, null)
+	}
 }

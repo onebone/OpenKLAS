@@ -13,31 +13,31 @@ import javax.inject.Singleton
 @Singleton
 class LogInterceptor @Inject constructor() : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        if (Config.config.provideDetailsLog) {
-            val interceptor = LoggingInterceptor.Builder()
-                    .loggable(true)
-                    .setLevel(Level.BASIC)
-                    .log(Platform.INFO)
-                    .request("Request")
-                    .response("Response")
-                    .build()
+	override fun intercept(chain: Interceptor.Chain): Response {
+		if (Config.config.provideDetailsLog) {
+			val interceptor = LoggingInterceptor.Builder()
+				.loggable(true)
+				.setLevel(Level.BASIC)
+				.log(Platform.INFO)
+				.request("Request")
+				.response("Response")
+				.build()
 
-            return interceptor.intercept(chain)
-        } else {
-            val interceptor =
-                CustomLoggingInterceptor(
-                    HttpLoggingInterceptor.Logger.DEFAULT,
-                    Config.config.binaryThreshold
-                )
+			return interceptor.intercept(chain)
+		} else {
+			val interceptor =
+				CustomLoggingInterceptor(
+					HttpLoggingInterceptor.Logger.DEFAULT,
+					Config.config.binaryThreshold
+				)
 
-            if (Config.config.printLogRelease) {
-                interceptor.level = HttpLoggingInterceptor.Level.BODY
-            } else {
-                interceptor.level = HttpLoggingInterceptor.Level.NONE
-            }
+			if (Config.config.printLogRelease) {
+				interceptor.level = HttpLoggingInterceptor.Level.BODY
+			} else {
+				interceptor.level = HttpLoggingInterceptor.Level.NONE
+			}
 
-            return interceptor.intercept(chain)
-        }
-    }
+			return interceptor.intercept(chain)
+		}
+	}
 }

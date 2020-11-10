@@ -1,8 +1,7 @@
 package org.openklas.repository
 
 
-
 interface PreferenceRepository {
 
-    var userID : String
+	var userID: String
 }

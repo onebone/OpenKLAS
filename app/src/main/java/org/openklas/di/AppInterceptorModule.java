@@ -13,15 +13,15 @@ import okhttp3.Interceptor;
 @Module
 public class AppInterceptorModule {
 
-    @Provides
-    @IntoSet
-    public Interceptor provideRWProvider() {
-        return new RWInterceptor();
-    }
+	@Provides
+	@IntoSet
+	public Interceptor provideRWProvider() {
+		return new RWInterceptor();
+	}
 
-    @Provides
-    @IntoSet
-    public RWJacksonConfig provideRWConfig() {
-        return new RWJacksonConfig();
-    }
+	@Provides
+	@IntoSet
+	public RWJacksonConfig provideRWConfig() {
+		return new RWJacksonConfig();
+	}
 }

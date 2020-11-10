@@ -21,13 +21,13 @@ import org.openklas.databinding.LoginActivityBinding;
 
 @InjectActivity
 public class LoginActivity extends BaseActivity<LoginActivityBinding> {
-    private LoginViewModel mViewModel;
+	private LoginViewModel mViewModel;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
-        mViewModel = getViewModel(LoginViewModel.class);
-        mBinding.setViewModel(mViewModel);
-    }
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.login_activity);
+		mViewModel = getViewModel(LoginViewModel.class);
+		mBinding.setViewModel(mViewModel);
+	}
 }

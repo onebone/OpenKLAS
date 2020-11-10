@@ -7,6 +7,7 @@ import com.github.windsekirun.daggerautoinject.ServiceModule;
 import com.github.windsekirun.daggerautoinject.ViewModelModule;
 
 import org.openklas.MainApplication;
+import org.openklas.klas.KlasClient;
 
 import javax.inject.Singleton;
 
@@ -35,6 +36,8 @@ public interface AppComponent {
 
 		AppComponent build();
 	}
+
+	KlasClient klasClient();
 
 	void inject(MainApplication mainApp);
 }

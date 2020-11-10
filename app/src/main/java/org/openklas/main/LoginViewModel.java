@@ -10,11 +10,15 @@ import com.github.windsekirun.bindadapters.observable.ObservableString;
 import com.github.windsekirun.daggerautoinject.InjectViewModel;
 
 import org.openklas.MainApplication;
+import org.openklas.klas.KlasClient;
 import org.openklas.repository.MainRepository;
 
 import org.openklas.base.BaseViewModel;
 
 import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * OpenKlas
@@ -27,9 +31,13 @@ import javax.inject.Inject;
 public class LoginViewModel extends BaseViewModel {
 	@Inject
 	MainRepository mMainRepository;
+	@Inject
+	KlasClient klas;
 
 	public ObservableString mId = new ObservableString();
 	public ObservableString mPw = new ObservableString();
+
+	public ObservableString mResult = new ObservableString();
 
 	@Inject
 	public LoginViewModel(MainApplication application) {
@@ -42,6 +50,12 @@ public class LoginViewModel extends BaseViewModel {
 	}
 
 	public void clickLogin(View view) {
-
+		addDisposable(klas.login(mId.get(), mPw.get())
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(
+						v -> mResult.set("Success"),
+						e -> mResult.set("Failure: " + e.getMessage())
+				));
 	}
 }

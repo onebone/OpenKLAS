@@ -50,7 +50,7 @@ class CustomLoggingInterceptor(
 						ignoreCase = true
 					)
 				) {
-					logger.log("$name : ${headers.value(i)}")
+					logger.log("$name: ${headers.value(i)}")
 				}
 			}
 

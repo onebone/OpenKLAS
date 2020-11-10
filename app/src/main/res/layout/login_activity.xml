@@ -28,7 +28,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={viewModel.mPw}"
+                android:inputType="textPassword"
                 android:hint="password"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.mResult}"
+                android:textColor="@android:color/holo_red_light" />
         </LinearLayout>
 
         <Button

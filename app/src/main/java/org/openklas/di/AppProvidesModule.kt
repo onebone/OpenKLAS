@@ -1,14 +1,19 @@
 package org.openklas.di
 
+import android.app.Application
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.openklas.MainApplication
@@ -30,7 +35,7 @@ import javax.inject.Singleton
 class AppProvidesModule {
 	@Singleton
 	@Provides
-	fun provideJSONService(retrofit: Retrofit): org.openklas.net.JSONService {
+	fun provideJSONService(retrofit: Retrofit): JSONService {
 		return retrofit.create(org.openklas.net.JSONService::class.java)
 	}
 
@@ -112,12 +117,15 @@ class AppProvidesModule {
 	@Provides
 	fun provideClient(
 		interceptors: Set<@JvmSuppressWildcards Interceptor>,
-		@Named("loginterceptor") logsInterceptor: Interceptor
+		@Named("loginterceptor") logsInterceptor: Interceptor,
+		cookieJar: CookieJar
 	): OkHttpClient {
 		val builder = OkHttpClient().newBuilder()
 		builder.readTimeout(Config.config.timeout.toLong(), TimeUnit.MILLISECONDS)
 		builder.connectTimeout(Config.config.connectTimeout.toLong(), TimeUnit.MILLISECONDS)
 		builder.retryOnConnectionFailure(Config.config.retryOnConnectionFailure)
+		builder.cookieJar(cookieJar)
+
 		if (interceptors.isNotEmpty()) {
 			interceptors.forEach {
 				builder.addInterceptor(it)
@@ -129,5 +137,10 @@ class AppProvidesModule {
 		}
 
 		return builder.build()
+	}
+
+	@Provides
+	fun provideCookieJar(app: Application): CookieJar {
+		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(app))
 	}
 }

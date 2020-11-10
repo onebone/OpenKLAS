@@ -1,6 +1,8 @@
 package org.openklas.main;
 
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -26,6 +28,7 @@ public class LoginViewModel extends BaseViewModel {
     MainRepository mMainRepository;
 
     public ObservableString mId = new ObservableString();
+    public ObservableString mPw = new ObservableString();
 
     @Inject
     public LoginViewModel(MainApplication application) {
@@ -34,6 +37,10 @@ public class LoginViewModel extends BaseViewModel {
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
+
+    }
+
+    public void clickLogin(View view){
 
     }
 }

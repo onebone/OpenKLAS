@@ -3,7 +3,7 @@ package org.openklas.base.impl.port
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import org.openklas.base.ActivityReference
+import pyxis.uzuki.live.richutilskt.module.reference.ActivityReference
 
 
 internal object ActivityInterfacePort {

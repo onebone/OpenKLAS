@@ -53,7 +53,6 @@ public class MainApplication extends BaseApplication implements HasActivityInjec
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public static MainApplication getApplication(Context context) {
 		if (context instanceof BaseApplication) {
 			return (MainApplication) context;

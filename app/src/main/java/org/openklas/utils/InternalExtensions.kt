@@ -1,8 +1,8 @@
 package org.openklas.utils
 
 import android.content.Context
-import org.openklas.base.ActivityReference
 import pyxis.uzuki.live.nyancat.NyanCat
+import pyxis.uzuki.live.richutilskt.module.reference.ActivityReference
 
 inline fun catchAll(action: () -> Unit) {
 	try {

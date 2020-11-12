@@ -18,6 +18,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.openklas.MainApplication
 import org.openklas.base.Config
+import org.openklas.klas.service.KlasService
 import org.openklas.net.JSONService
 import org.openklas.net.RWJacksonConfig
 import org.openklas.repository.MainRepository
@@ -140,6 +141,13 @@ class AppProvidesModule {
 	}
 
 	@Provides
+	@Singleton
+	fun provideKlasService(retrofit: Retrofit): KlasService {
+		return retrofit.create(KlasService::class.java)
+	}
+
+	@Provides
+	@Singleton
 	fun provideCookieJar(app: Application): CookieJar {
 		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(app))
 	}

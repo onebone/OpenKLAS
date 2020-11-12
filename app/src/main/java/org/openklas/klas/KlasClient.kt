@@ -4,20 +4,19 @@ import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Observable
 import org.openklas.klas.error.KlasSigninFailError
-import org.openklas.klas.service.LoginService
-import retrofit2.Retrofit
+import org.openklas.klas.model.Home
+import org.openklas.klas.request.RequestHome
+import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.inject.Inject
 
 class KlasClient @Inject constructor(
-	private val retrofit: Retrofit,
+	private val service: KlasService,
 	private val gson: Gson
 ) {
 	fun login(username: String, password: String): Observable<String> {
-		val service = retrofit.create(LoginService::class.java)
-
 		val securityResponse = service.loginSecurity()
 		return securityResponse.toObservable()
 			.flatMap { security ->
@@ -49,5 +48,9 @@ class KlasClient @Inject constructor(
 						Observable.just(confirm.response.userId)
 					}
 			}
+	}
+
+	fun getHome(semester: String): Observable<Home> {
+		return service.home(RequestHome(semester)).toObservable()
 	}
 }

@@ -10,12 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.github.windsekirun.baseapp.module.argsinjector.ArgsParser
 import dagger.android.DispatchingAndroidInjector
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.openklas.base.impl.BaseInterface
+import org.openklas.di.argsinjector.ArgsParser
 import org.openklas.utils.catchAll
 import org.openklas.utils.setupEditContentScrollable
 import org.openklas.utils.weak

@@ -3,6 +3,7 @@ package org.openklas.klas.service
 import io.reactivex.Single
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
@@ -18,4 +19,7 @@ interface KlasService {
 
 	@POST(KlasUri.STD_HOME)
 	fun home(@Body payload: RequestHome): Single<Home>
+
+	@POST(KlasUri.STD_SEMESTERS)
+	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Array<Semester>>
 }

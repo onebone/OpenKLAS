@@ -3,8 +3,10 @@ package org.openklas.klas
 import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
@@ -16,6 +18,8 @@ class KlasClient @Inject constructor(
 	private val service: KlasService,
 	private val gson: Gson
 ) {
+	private var semesters: Array<Semester>? = null
+
 	fun login(username: String, password: String): Observable<String> {
 		val securityResponse = service.loginSecurity()
 		return securityResponse.toObservable()
@@ -52,5 +56,17 @@ class KlasClient @Inject constructor(
 
 	fun getHome(semester: String): Observable<Home> {
 		return service.home(RequestHome(semester)).toObservable()
+	}
+
+	fun getSemesters(): Single<Array<Semester>> {
+		synchronized(this) {
+			if (semesters != null) return Single.just(semesters)
+		}
+
+		return service.semesters().doOnSuccess {
+			synchronized(this) {
+				semesters = it
+			}
+		}
 	}
 }

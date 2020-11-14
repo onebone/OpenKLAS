@@ -24,6 +24,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 				AppInterceptorModule.class,
 				ActivityModule.class,
 				FragmentModule.class,
+				GsonDeserializerModule.class,
 				ViewModelModule.class,
 				ServiceModule.class
 		}

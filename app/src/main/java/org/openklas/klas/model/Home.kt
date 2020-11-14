@@ -11,5 +11,7 @@ data class Home (
 	@SerializedName("subjNotiList")
 	val notices: Array<BriefNotice>,
 	@SerializedName("yearhakgi")
-	val semesterLabel: String
+	val semesterLabel: String,
+	@SerializedName("timeTableList")
+	val timetable: Timetable
 )

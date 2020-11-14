@@ -18,6 +18,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.openklas.MainApplication
 import org.openklas.base.Config
+import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
 import org.openklas.net.JSONService
 import org.openklas.net.RWJacksonConfig
@@ -65,10 +66,17 @@ class AppProvidesModule {
 	}
 
 	@Provides
-	fun provideGson(): Gson {
-		return GsonBuilder().serializeSpecialFloatingPointValues()
+	fun provideGson(
+		deserializers: Set<@JvmSuppressWildcards TypeResolvableJsonDeserializer<*>>
+	): Gson {
+		val builder = GsonBuilder().serializeSpecialFloatingPointValues()
 			.serializeNulls()
-			.create()
+
+		deserializers.forEach {
+			builder.registerTypeAdapter(it.getType(), it)
+		}
+
+		return builder.create()
 	}
 
 	@Provides

@@ -41,14 +41,13 @@ class KlasClient @Inject constructor(
 				"redirectTabUrl" to ""
 			))
 
-			confirmResponse
-				.flatMap<String> innerFlatMap@{ confirm ->
-					if(confirm.errorCount > 0) {
-						return@innerFlatMap Single.error(KlasSigninFailError("failed login attempt"))
-					}
-
+			confirmResponse.flatMap<String> { confirm ->
+				if(confirm.errorCount > 0) {
+					Single.error(KlasSigninFailError("failed login attempt"))
+				}else{
 					Single.just(confirm.response.userId)
 				}
+			}
 		}
 	}
 

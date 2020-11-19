@@ -20,9 +20,7 @@ import org.openklas.MainApplication
 import org.openklas.base.Config
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
-import org.openklas.net.JSONService
 import org.openklas.net.RWJacksonConfig
-import org.openklas.repository.MainRepository
 import org.openklas.repository.PreferenceRepository
 import pyxis.uzuki.live.richutilskt.utils.RPreference
 import retrofit2.Retrofit
@@ -35,12 +33,6 @@ import javax.inject.Singleton
 
 @Module
 class AppProvidesModule {
-	@Singleton
-	@Provides
-	fun provideJSONService(retrofit: Retrofit): JSONService {
-		return retrofit.create(org.openklas.net.JSONService::class.java)
-	}
-
 	@Provides
 	@Singleton
 	fun provideRPerference(application: MainApplication?): RPreference {
@@ -57,12 +49,6 @@ class AppProvidesModule {
 	@Singleton
 	fun providePreferenceRepositoryImpl(application: MainApplication?): org.openklas.repository.PreferenceRepositoryImpl {
 		return org.openklas.repository.PreferenceRepositoryImpl(application)
-	}
-
-	@Provides
-	@Singleton
-	fun provideMainRepository(service: JSONService?): MainRepository {
-		return MainRepository(service)
 	}
 
 	@Provides

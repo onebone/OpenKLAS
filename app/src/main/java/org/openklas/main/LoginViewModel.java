@@ -11,7 +11,7 @@ import com.github.windsekirun.daggerautoinject.InjectViewModel;
 
 import org.openklas.MainApplication;
 import org.openklas.klas.KlasClient;
-import org.openklas.repository.MainRepository;
+import org.openklas.repository.KlasRepository;
 
 import org.openklas.base.BaseViewModel;
 
@@ -30,9 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewModel
 public class LoginViewModel extends BaseViewModel {
 	@Inject
-	MainRepository mMainRepository;
-	@Inject
-	KlasClient klas;
+	KlasRepository mKlasRepository;
 
 	public ObservableString mId = new ObservableString();
 	public ObservableString mPw = new ObservableString();
@@ -50,7 +48,7 @@ public class LoginViewModel extends BaseViewModel {
 	}
 
 	public void clickLogin(View view) {
-		addDisposable(klas.login(mId.get(), mPw.get())
+		addDisposable(mKlasRepository.performLogin(mId.get(), mPw.get())
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(

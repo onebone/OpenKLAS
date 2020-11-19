@@ -17,8 +17,6 @@ class KlasClient @Inject constructor(
 	private val service: KlasService,
 	private val gson: Gson
 ) {
-	private var semesters: Array<Semester>? = null
-
 	fun login(username: String, password: String): Single<String> {
 		val securityResponse = service.loginSecurity()
 		return securityResponse.flatMap { security ->
@@ -56,14 +54,6 @@ class KlasClient @Inject constructor(
 	}
 
 	fun getSemesters(): Single<Array<Semester>> {
-		synchronized(this) {
-			if (semesters != null) return Single.just(semesters)
-		}
-
-		return service.semesters().doOnSuccess {
-			synchronized(this) {
-				semesters = it
-			}
-		}
+		return service.semesters()
 	}
 }

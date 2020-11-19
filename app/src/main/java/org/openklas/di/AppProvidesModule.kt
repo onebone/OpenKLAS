@@ -21,7 +21,6 @@ import org.openklas.base.Config
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
 import org.openklas.net.RWJacksonConfig
-import org.openklas.repository.PreferenceRepository
 import pyxis.uzuki.live.richutilskt.utils.RPreference
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,18 +36,6 @@ class AppProvidesModule {
 	@Singleton
 	fun provideRPerference(application: MainApplication?): RPreference {
 		return RPreference.getInstance(application!!)
-	}
-
-	@Provides
-	@Singleton
-	fun providePreferenceRepository(impl: org.openklas.repository.PreferenceRepositoryImpl): PreferenceRepository {
-		return impl
-	}
-
-	@Provides
-	@Singleton
-	fun providePreferenceRepositoryImpl(application: MainApplication?): org.openklas.repository.PreferenceRepositoryImpl {
-		return org.openklas.repository.PreferenceRepositoryImpl(application)
 	}
 
 	@Provides
@@ -120,6 +107,7 @@ class AppProvidesModule {
 		builder.connectTimeout(Config.config.connectTimeout.toLong(), TimeUnit.MILLISECONDS)
 		builder.retryOnConnectionFailure(Config.config.retryOnConnectionFailure)
 		builder.cookieJar(cookieJar)
+		builder.followRedirects(false)
 
 		if (interceptors.isNotEmpty()) {
 			interceptors.forEach {

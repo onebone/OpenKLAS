@@ -58,6 +58,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInte
 
 	override fun setContentView(layoutResID: Int) {
 		mBinding = DataBindingUtil.inflate(LayoutInflater.from(this), layoutResID, null, false)
+		mBinding.lifecycleOwner = this
 		super.setContentView(mBinding.root)
 	}
 

@@ -5,12 +5,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 
 import com.github.windsekirun.bindadapters.observable.ObservableString;
 import com.github.windsekirun.daggerautoinject.InjectViewModel;
 
 import org.openklas.MainApplication;
-import org.openklas.klas.KlasClient;
 import org.openklas.repository.KlasRepository;
 
 import org.openklas.base.BaseViewModel;
@@ -37,6 +37,8 @@ public class LoginViewModel extends BaseViewModel {
 
 	public ObservableString mResult = new ObservableString();
 
+	public MutableLiveData<Void> mDidLogin = new MutableLiveData<>();
+
 	@Inject
 	public LoginViewModel(MainApplication application) {
 		super(application);
@@ -52,7 +54,7 @@ public class LoginViewModel extends BaseViewModel {
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
-						v -> mResult.set("Success"),
+						v -> mDidLogin.setValue(null),
 						e -> mResult.set("Failure: " + e.getMessage())
 				));
 	}

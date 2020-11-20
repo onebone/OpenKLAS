@@ -1,9 +1,7 @@
 package org.openklas.base
 
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.Observable
 import io.reactivex.Single
-import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.repository.SessionRepository
 import javax.inject.Inject
 

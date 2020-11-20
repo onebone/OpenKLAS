@@ -1,7 +1,6 @@
 package org.openklas.main;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -29,5 +28,7 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
 		setContentView(R.layout.login_activity);
 		mViewModel = getViewModel(LoginViewModel.class);
 		mBinding.setViewModel(mViewModel);
+
+		mViewModel.mDidLogin.observe(this, v -> startActivity(HomeActivity.class));
 	}
 }

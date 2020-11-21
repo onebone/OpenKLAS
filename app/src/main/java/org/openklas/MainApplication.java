@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import com.github.windsekirun.daggerautoinject.DaggerAutoInject;
 import com.github.windsekirun.daggerautoinject.InjectApplication;
 
@@ -18,6 +20,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser;
 
 /**
@@ -29,11 +32,14 @@ import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser;
  */
 @AttributeParser("org.openklas")
 @InjectApplication(component = AppComponent.class)
-public class MainApplication extends BaseApplication implements HasActivityInjector, HasServiceInjector {
+public class MainApplication extends BaseApplication implements HasActivityInjector, HasServiceInjector, HasSupportFragmentInjector {
 	@Inject
 	DispatchingAndroidInjector<Activity> mActivityDispatchingAndroidInjector;
 	@Inject
 	DispatchingAndroidInjector<Service> mServiceDispatchingAndroidInjector;
+	@Inject
+	DispatchingAndroidInjector<Fragment> mFragmentDispatchingAndroidInjector;
+
 	private static AppComponent mAppComponent;
 
 	@Override
@@ -71,6 +77,10 @@ public class MainApplication extends BaseApplication implements HasActivityInjec
 		return mServiceDispatchingAndroidInjector;
 	}
 
+	@Override
+	public AndroidInjector<Fragment> supportFragmentInjector() {
+		return mFragmentDispatchingAndroidInjector;
+	}
 
 	/**
 	 * @return {@link DaggerAppComponent} to inject

@@ -1,4 +1,4 @@
-package org.openklas.main;
+package org.openklas.ui.login;
 
 
 import android.view.View;
@@ -32,12 +32,12 @@ public class LoginViewModel extends BaseViewModel {
 	@Inject
 	KlasRepository mKlasRepository;
 
-	public ObservableString mId = new ObservableString();
-	public ObservableString mPw = new ObservableString();
+	public final ObservableString mId = new ObservableString();
+	public final ObservableString mPw = new ObservableString();
 
-	public ObservableString mResult = new ObservableString();
+	public final ObservableString mResult = new ObservableString();
 
-	public MutableLiveData<Void> mDidLogin = new MutableLiveData<>();
+	public final MutableLiveData<Void> mDidLogin = new MutableLiveData<>();
 
 	@Inject
 	public LoginViewModel(MainApplication application) {

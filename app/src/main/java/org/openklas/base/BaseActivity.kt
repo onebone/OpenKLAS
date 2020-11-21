@@ -8,14 +8,11 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.openklas.base.impl.BaseInterface
-import org.openklas.di.argsinjector.ArgsParser
-import org.openklas.main.LoginActivity
 import org.openklas.utils.catchAll
 import org.openklas.utils.setupEditContentScrollable
 import org.openklas.utils.weak
@@ -64,7 +61,6 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInte
 
 	override fun onContentChanged() {
 		super.onContentChanged()
-		ArgsParser.inject(this)
 		if (hideKeyboardOnTouch) setupEditContentScrollable(mBinding.root, this)
 	}
 
@@ -106,11 +102,11 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInte
 		viewModel.lifecycle = lifecycle
 		this.viewModel = viewModel
 
-		if(viewModel is SessionViewModelDelegate) {
+		/*if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(this, Observer {
 				startActivity(LoginActivity::class.java)
 			})
-		}
+		}*/
 	}
 
 	private fun registerEventBus() {

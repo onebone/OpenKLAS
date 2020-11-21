@@ -1,4 +1,4 @@
-package org.openklas.main
+package org.openklas.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

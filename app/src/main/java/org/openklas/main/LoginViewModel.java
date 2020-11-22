@@ -14,6 +14,8 @@ import org.openklas.klas.KlasClient;
 import org.openklas.repository.MainRepository;
 
 import org.openklas.base.BaseViewModel;
+import org.openklas.repository.PreferenceRepository;
+import org.openklas.repository.PreferenceRepositoryImpl;
 
 import javax.inject.Inject;
 
@@ -32,7 +34,11 @@ public class LoginViewModel extends BaseViewModel {
 	@Inject
 	MainRepository mMainRepository;
 	@Inject
+	PreferenceRepository mPreferenceRepository;
+	@Inject
 	KlasClient klas;
+
+
 
 	public ObservableString mId = new ObservableString();
 	public ObservableString mPw = new ObservableString();

@@ -2,12 +2,14 @@ package org.openklas.klas
 
 import android.util.Base64
 import com.google.gson.Gson
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.service.KlasService
+import org.openklas.net.compose.AsyncTransformer
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -49,8 +51,8 @@ class KlasClient @Inject constructor(
 		}
 	}
 
-	fun getHome(semester: String): Single<Home> {
-		return service.home(RequestHome(semester))
+	fun getHome(semester: String): Observable<Home>? {
+		return service.home(RequestHome(semester)).toObservable().compose(AsyncTransformer())
 	}
 
 	fun getSemesters(): Single<Array<Semester>> {

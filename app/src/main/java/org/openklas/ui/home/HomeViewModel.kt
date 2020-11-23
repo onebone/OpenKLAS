@@ -1,5 +1,6 @@
 package org.openklas.ui.home
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -46,5 +47,9 @@ class HomeViewModel @Inject constructor(
 				error.value = err
 			}
 		})
+	}
+
+	fun clickBtn(view: View){
+		showToast("클릭됨")
 	}
 }

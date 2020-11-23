@@ -60,7 +60,7 @@ public class TitleView extends LinearLayout {
 
 	public void clickBack(View view) {
 		if (mOnClickBackListener != null) {
-			mOnClickBackListener.onClickBack();
+			mOnClickBackListener.onClickBack(view);
 		}
 //		else {
 //			BaseActivity activity = (BaseActivity) getContext();
@@ -70,7 +70,7 @@ public class TitleView extends LinearLayout {
 
 	public void clickMypage(View view) {
 		if (mOnClickMypageListner != null) {
-			mOnClickMypageListner.onClickMypage();
+			mOnClickMypageListner.onClickMypage(view);
 		}
 		else {
 			EventBus.getDefault().post(new ControlDrawerEvent(Mode.Open));
@@ -109,14 +109,6 @@ public class TitleView extends LinearLayout {
 		mMode.set(mode);
 	}
 
-	public interface OnClickBackListener {
-		void onClickBack();
-	}
-
-	public interface OnClickMypageListener {
-		void onClickMypage();
-	}
-
 	@BindingAdapter("bindTitle")
 	public static void bindTitleName(TitleView view, String title) {
 		view.setTitle(title);
@@ -135,5 +127,13 @@ public class TitleView extends LinearLayout {
 	@BindingAdapter("onClickMypage")
 	public static void bindClickBack(TitleView view, OnClickMypageListener listener) {
 		view.setOnClickMypageListner(listener);
+	}
+
+	public interface OnClickBackListener {
+		void onClickBack(View view);
+	}
+
+	public interface OnClickMypageListener {
+		void onClickMypage(View view);
 	}
 }

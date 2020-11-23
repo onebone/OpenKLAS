@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             app:titleName="@string/app_name"
             app:titleMode="mypage"
+            app:onClickMypage="@{viewModel::clickBtn}"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView

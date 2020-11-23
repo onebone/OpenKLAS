@@ -14,7 +14,7 @@ class SettingFragment : BaseFragment<SettingFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		return createAndBindView(inflater, R.layout.setting_fragment, container)
 	}
 

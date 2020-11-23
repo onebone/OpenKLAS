@@ -6,7 +6,7 @@
         android:icon="@drawable/baseline_home_black_18_dp"/>
     <item
         android:id="@id/fragment_timetable"
-        android:title="@string/titletable"
+        android:title="@string/timetable"
         android:icon="@drawable/baseline_home_black_18_dp"/>
     <item
         android:id="@id/fragment_notification"

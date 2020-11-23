@@ -38,8 +38,6 @@ public class LoginViewModel extends BaseViewModel {
 
 	public final ObservableString mResult = new ObservableString();
 
-	public final MutableLiveData<Void> mDidLogin = new MutableLiveData<>();
-
 	@Inject
 	public LoginViewModel(MainApplication application) {
 		super(application);

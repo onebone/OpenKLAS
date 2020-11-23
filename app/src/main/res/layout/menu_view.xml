@@ -67,6 +67,5 @@
             app:layout_constraintStart_toStartOf="@id/image"
             app:layout_constraintTop_toBottomOf="@id/view1" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

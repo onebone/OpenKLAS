@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.navGraphViewModels
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -14,14 +15,14 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		return createAndBindView(inflater, R.layout.home_fragment, container)
 	}
 
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
 
-		val viewModel = getViewModel<HomeViewModel>()
+		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) { viewModelProvideFactory }
 		mBinding.viewModel = viewModel
 
 		// TODO set semester value dynamically

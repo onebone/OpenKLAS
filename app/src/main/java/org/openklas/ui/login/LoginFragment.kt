@@ -14,7 +14,7 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		return createAndBindView(inflater, R.layout.login_fragment, container)
 	}
 

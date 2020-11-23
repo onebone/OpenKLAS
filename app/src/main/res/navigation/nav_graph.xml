@@ -16,51 +16,16 @@
 
         <action
             android:id="@+id/action_login_home"
-            app:destination="@id/fragment_home"
-            app:popUpTo="@id/fragment_login"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_login_timetable"
-            app:destination="@id/fragment_timetable"
-            app:popUpTo="@id/fragment_login"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_login_noti"
-            app:destination="@id/fragment_notification"
-            app:popUpTo="@id/fragment_login"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_login_setting"
-            app:destination="@id/fragment_setting"
+            app:destination="@id/fragment_home_container"
             app:popUpTo="@id/fragment_login"
             app:popUpToInclusive="true" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_home"
-        android:name="org.openklas.ui.home.HomeFragment"
-        tools:layout="@layout/home_fragment">
-
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_timetable"
-        android:name="org.openklas.ui.timetable.TimetableFragment"
-        tools:layout="@layout/timetable_fragment">
-
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_notification"
-        android:name="org.openklas.ui.notification.NotificationFragment"
-        tools:layout="@layout/notification_fragment">
-
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_setting"
-        android:name="org.openklas.ui.setting.SettingFragment"
-        tools:layout="@layout/setting_fragment">
+        android:id="@+id/fragment_home_container"
+        android:name="org.openklas.ui.home.HomeContainerFragment"
+        tools:layout="@layout/home_container_fragment">
 
     </fragment>
 

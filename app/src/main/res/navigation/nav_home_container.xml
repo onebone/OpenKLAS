@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_home_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="org.openklas.ui.home.HomeFragment"
+        tools:layout="@layout/home_fragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_timetable"
+        android:name="org.openklas.ui.home.TimetableFragment"
+        tools:layout="@layout/timetable_fragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_notification"
+        android:name="org.openklas.ui.notification.NotificationFragment"
+        tools:layout="@layout/notification_fragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="org.openklas.ui.setting.SettingFragment"
+        tools:layout="@layout/setting_fragment">
+
+    </fragment>
+
+</navigation>

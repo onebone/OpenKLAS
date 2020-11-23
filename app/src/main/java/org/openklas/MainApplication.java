@@ -30,6 +30,7 @@ import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser;
  * <p>
  * Description:
  */
+
 @AttributeParser("org.openklas")
 @InjectApplication(component = AppComponent.class)
 public class MainApplication extends BaseApplication implements HasActivityInjector, HasServiceInjector, HasSupportFragmentInjector {

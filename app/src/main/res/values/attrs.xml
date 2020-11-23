@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleView">
+        <attr name="titleName" format="string"/>
+
+        <attr name="titleMode" format="integer">
+            <enum name="none" value="0" />
+            <enum name="back" value="1" />
+            <enum name="mypage" value="2" />
+            <enum name="backsearch" value="3" />
+            <enum name="mypagesearch" value="4" />
+        </attr>
+    </declare-styleable>
+</resources>

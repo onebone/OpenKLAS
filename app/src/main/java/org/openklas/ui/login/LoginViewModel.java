@@ -47,7 +47,6 @@ public class LoginViewModel extends BaseViewModel {
 
 	@Override
 	public void onCreate(@NonNull LifecycleOwner owner) {
-
 	}
 
 	public void clickLogin(View view) {

@@ -1,5 +1,6 @@
 package org.openklas.ui.timetable
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import io.reactivex.schedulers.Schedulers
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.event.Event
 import org.openklas.klas.model.Home
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
@@ -46,5 +48,9 @@ class TimetableViewModel @Inject constructor(
 				error.value = err
 			}
 		})
+	}
+
+	fun clickText(view : View){
+		postEvent(Event(true))
 	}
 }

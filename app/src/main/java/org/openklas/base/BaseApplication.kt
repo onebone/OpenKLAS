@@ -17,7 +17,7 @@ import pyxis.uzuki.live.richutilskt.module.reference.ActivityReference
  *
  * Description:
  */
-@AttributeParser("org.openklas.base")
+@AttributeParser("org.openklas")
 abstract class BaseApplication : Application() {
 	abstract val configFilePath: String
 

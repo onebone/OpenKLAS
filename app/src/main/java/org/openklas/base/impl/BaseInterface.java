@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 import org.openklas.base.BaseViewModel;
 
 @SuppressWarnings("ALL")
-public interface BaseInterface extends ActivityInterface {
+public interface BaseInterface extends ActivityInterface,AlertInterface {
 
 	default <T extends BaseViewModel> T getViewModel(FragmentActivity owner, ViewModelProvider.Factory factory,
 	                                                 Class<T> viewModelClass) {

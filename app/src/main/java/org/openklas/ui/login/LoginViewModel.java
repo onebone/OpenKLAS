@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.navigation.Navigation;
 
 import com.github.windsekirun.bindadapters.observable.ObservableString;
 import com.github.windsekirun.daggerautoinject.InjectViewModel;
@@ -54,7 +55,10 @@ public class LoginViewModel extends BaseViewModel {
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
-						v -> mDidLogin.setValue(null),
+						v -> {
+//							mDidLogin.setValue(null);
+							Navigation.findNavController(view).navigate(LoginFragmentDirections.Companion.actionLoginHome());
+						},
 						e -> mResult.set("Failure: " + e.getMessage())
 				));
 	}

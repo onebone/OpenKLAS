@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.openklas.R
@@ -26,9 +27,9 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 		mBinding.viewModel = viewModel
 		prepareViewModel(viewModel)
 
-		viewModel.mDidLogin.observe(viewLifecycleOwner, {
+		viewModel.mDidLogin.observe(viewLifecycleOwner) {
 			findNavController().navigate(LoginFragmentDirections.actionLoginHome())
-		})
+		}
 	}
 
 	companion object {

@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
 import javax.inject.Inject
@@ -31,9 +32,9 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 		viewModel.lifecycle = this.lifecycle
 
 		if(viewModel is SessionViewModelDelegate) {
-			viewModel.mustAuthenticate.observe(viewLifecycleOwner, {
+			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())
-			})
+			}
 		}
 	}
 

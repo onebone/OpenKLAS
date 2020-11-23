@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.openklas.R
 import org.openklas.base.BaseFragment
-import org.openklas.databinding.HomeFragmentBinding
 import org.openklas.databinding.SettingFragmentBinding
 
 @InjectFragment
@@ -24,7 +23,5 @@ class SettingFragment : BaseFragment<SettingFragmentBinding>() {
 
 		val viewModel = getViewModel<SettingViewModel>()
 		mBinding.viewModel = viewModel
-
-		viewModel.semester.value = "2020,2"
 	}
 }

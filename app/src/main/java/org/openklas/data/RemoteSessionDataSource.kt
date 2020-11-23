@@ -8,6 +8,7 @@ class RemoteSessionDataSource @Inject constructor(
 	private val klas: KlasClient
 ): SessionDataSource {
 	override fun tryLogin(username: String, password: String): Single<Boolean> {
+		@Suppress("RedundantLambdaArrow", "RemoveExplicitTypeArguments")
 		return klas.login(username, password)
 			.flatMap {
 				Single.just<String?>(it)
@@ -18,4 +19,3 @@ class RemoteSessionDataSource @Inject constructor(
 			}
 	}
 }
-

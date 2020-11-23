@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.openklas.R
 import org.openklas.base.BaseFragment
-import org.openklas.databinding.HomeFragmentBinding
 import org.openklas.databinding.TimetableFragmentBinding
 
 @InjectFragment

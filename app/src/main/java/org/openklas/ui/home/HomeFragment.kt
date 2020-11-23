@@ -24,6 +24,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 		val viewModel = getViewModel<HomeViewModel>()
 		mBinding.viewModel = viewModel
 
+		// TODO set semester value dynamically
 		viewModel.semester.value = "2020,2"
 	}
 }

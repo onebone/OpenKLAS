@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import okhttp3.Interceptor
 import org.openklas.MainApplication
 import org.openklas.base.DefaultSessionViewModelDelegate

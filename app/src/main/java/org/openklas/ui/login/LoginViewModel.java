@@ -55,7 +55,6 @@ public class LoginViewModel extends BaseViewModel {
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
 						v -> {
-//							mDidLogin.setValue(null);
 							Navigation.findNavController(view).navigate(LoginFragmentDirections.Companion.actionLoginHome());
 						},
 						e -> mResult.set("Failure: " + e.getMessage())

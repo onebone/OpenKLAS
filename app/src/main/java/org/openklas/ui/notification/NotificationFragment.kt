@@ -23,7 +23,5 @@ class NotificationFragment : BaseFragment<NotificationFragmentBinding>() {
 
 		val viewModel = getViewModel<NotificationViewModel>()
 		mBinding.viewModel = viewModel
-
-		viewModel.semester.value = "2020,2"
 	}
 }

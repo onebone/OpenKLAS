@@ -26,15 +26,19 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 		return mBinding.root
 	}
 
-	protected fun prepareViewModel(viewModel: BaseViewModel) {
-		this.lifecycle.addObserver(viewModel)
-		viewModel.lifecycle = this.lifecycle
-
+	protected fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())
 			}
 		}
+	}
+
+	protected fun prepareViewModel(viewModel: BaseViewModel) {
+		this.lifecycle.addObserver(viewModel)
+		viewModel.lifecycle = this.lifecycle
+
+		setupSessionViewModel(viewModel)
 	}
 
 	protected inline fun <reified T : BaseViewModel> getViewModel(): T {

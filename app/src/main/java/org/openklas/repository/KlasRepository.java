@@ -31,4 +31,6 @@ public interface KlasRepository {
 	Single<Home> getHome(@NonNull String semester);
 	Single<Semester[]> getSemesters();
 	Single<Board> getNotices(String semester, String subjectId, int page);
+	Single<Board> getQnas(String semester, String subjectId, int page);
+	Single<Board> getLectureMaterials(String semester, String subjectId, int page);
 }

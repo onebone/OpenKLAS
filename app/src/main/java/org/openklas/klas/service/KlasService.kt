@@ -24,7 +24,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
-import org.openklas.klas.request.RequestNoticeList
+import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
 import retrofit2.http.Body
@@ -44,5 +44,11 @@ interface KlasService {
 	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Array<Semester>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
-	fun notices(@Body payload: RequestNoticeList): Single<Board>
+	fun notices(@Body payload: RequestPostList): Single<Board>
+
+	@POST(KlasUri.STD_MATERIAL_LIST)
+	fun materials(@Body payload: RequestPostList): Single<Board>
+
+	@POST(KlasUri.STD_QNA_LIST)
+	fun qnas(@Body payload: RequestPostList): Single<Board>
 }

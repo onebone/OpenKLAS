@@ -43,4 +43,12 @@ class RemoteKlasDataSource @Inject constructor(
 	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
 		return klas.getNotices(semester, subjectId, page)
 	}
+
+	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klas.getQnas(semester, subjectId, page)
+	}
+
+	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klas.getLectureMaterials(semester, subjectId, page)
+	}
 }

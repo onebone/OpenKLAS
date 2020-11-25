@@ -28,4 +28,6 @@ interface KlasDataSource {
 	fun getHome(semester: String): Single<Home>
 	fun getSemesters(): Single<Array<Semester>>
 	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board>
 }

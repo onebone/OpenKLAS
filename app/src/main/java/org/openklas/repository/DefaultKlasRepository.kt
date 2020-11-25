@@ -51,4 +51,12 @@ class DefaultKlasRepository @Inject constructor(
 	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
 		return klasDataSource.getNotices(semester, subjectId, page).compose(AsyncTransformer())
 	}
+
+	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klasDataSource.getQnas(semester, subjectId, page).compose(AsyncTransformer())
+	}
+
+	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klasDataSource.getLectureMaterials(semester, subjectId, page).compose(AsyncTransformer())
+	}
 }

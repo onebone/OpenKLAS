@@ -20,7 +20,7 @@ package org.openklas.klas.request
 
 import com.google.gson.annotations.SerializedName
 
-data class RequestNoticeList(
+data class RequestPostList(
 	@SerializedName("currentPage")
 	val page: Int,
 	@SerializedName("selectSubj")

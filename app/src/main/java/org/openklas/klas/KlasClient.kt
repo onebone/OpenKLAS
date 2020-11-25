@@ -26,7 +26,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
-import org.openklas.klas.request.RequestNoticeList
+import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -78,7 +78,19 @@ class KlasClient @Inject constructor(
 	}
 
 	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
-		return service.notices(RequestNoticeList(
+		return service.notices(RequestPostList(
+			page = page, subject = subjectId, semester = semester
+		))
+	}
+
+	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
+		return service.materials(RequestPostList(
+			page = page, subject = subjectId, semester = semester
+		))
+	}
+
+	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
+		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester
 		))
 	}

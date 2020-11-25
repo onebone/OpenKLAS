@@ -18,54 +18,91 @@
  -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="viewModel"
-            type="org.openklas.ui.login.LoginViewModel"/>
-    </data>
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<data>
+		<variable
+			name="viewModel"
+			type="org.openklas.ui.login.LoginViewModel"/>
+	</data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.login.LoginFragment">
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/copper">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={viewModel.mId}"
-                android:hint="id"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={viewModel.mPw}"
-                android:inputType="textPassword"
-                android:hint="password"/>
+		<TextView
+			android:id="@+id/label_app_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toTopOf="@id/et_username"
+			app:layout_constraintVertical_chainStyle="packed"
+			android:text="@string/app_name"
+			android:textSize="60sp"
+			android:textStyle="bold"
+			android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.mResult}"
-                android:textColor="@android:color/holo_red_light" />
-        </LinearLayout>
+		<EditText
+			android:id="@+id/et_username"
+			android:layout_width="300dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/label_app_name"
+			app:layout_constraintBottom_toTopOf="@id/et_password"
+			android:layout_marginTop="24dp"
+			android:padding="10dp"
+			android:background="@drawable/rounded_corners_bg_white"
+			android:hint="@string/login_username"
+			android:inputType="text"
+			android:text="@={viewModel.mId}" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="로그인"
-            android:onClick="@{viewModel.clickLogin}"
-            android:layout_marginBottom="20dp"/>
+		<EditText
+			android:id="@+id/et_password"
+			android:layout_width="300dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/et_username"
+			app:layout_constraintBottom_toTopOf="@id/btn_login_submit"
+			android:layout_marginTop="24dp"
+			android:padding="10dp"
+			android:background="@drawable/rounded_corners_bg_white"
+			android:hint="@string/login_password"
+			android:inputType="textPassword"
+			android:text="@={viewModel.mPw}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+		<!-- FIXME button background color is overridden by MaterialButton -->
+		<Button
+			android:id="@+id/btn_login_submit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:minWidth="200dp"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/et_password"
+			app:layout_constraintBottom_toTopOf="@id/chk_remember_me"
+			android:layout_marginTop="24dp"
+			android:background="@drawable/rounded_corners_bg_green"
+			android:text="@string/login_submit"
+			android:onClick="@{viewModel::clickLogin}" />
+
+		<!-- TODO change checkbox button color to white or something similar -->
+		<CheckBox
+			android:id="@+id/chk_remember_me"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/btn_login_submit"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:layout_marginTop="18dp"
+			android:checked="@={viewModel.mRememberMe}"
+			android:text="@string/login_remember_me"
+			android:textColor="@android:color/white" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

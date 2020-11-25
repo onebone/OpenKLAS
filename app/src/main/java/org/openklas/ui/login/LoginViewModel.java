@@ -21,6 +21,7 @@ package org.openklas.ui.login;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
@@ -52,6 +53,7 @@ public class LoginViewModel extends BaseViewModel {
 
 	public final ObservableString mId = new ObservableString();
 	public final ObservableString mPw = new ObservableString();
+	public final ObservableBoolean mRememberMe = new ObservableBoolean();
 
 	public final ObservableString mResult = new ObservableString();
 
@@ -65,6 +67,8 @@ public class LoginViewModel extends BaseViewModel {
 	}
 
 	public void clickLogin(View view) {
+		// TODO handle empty username and password field
+
 		addDisposable(mKlasRepository.performLogin(mId.get(), mPw.get())
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())

@@ -25,6 +25,11 @@
     <string name="notification">Notifications</string>
     <string name="setting">Settings</string>
 
+    <string name="login_username">학번</string>
+    <string name="login_password">비밀번호</string>
+    <string name="login_submit">로그인</string>
+    <string name="login_remember_me">자동 로그인</string>
+
     <string name="empty_lecture">남은 강의</string>
     <string name="empty_hw">남은 과제</string>
     <string name="courses">수강 과목</string>
@@ -36,6 +41,5 @@
     <string name="course_name">강의명</string>
     <string name="course_time">수업 시간</string>
     <string name="course_loc">수업 장소</string>
-
 
 </resources>

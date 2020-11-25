@@ -20,6 +20,7 @@ package org.openklas.data
 
 import io.reactivex.Single
 import org.openklas.klas.KlasClient
+import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import javax.inject.Inject
@@ -37,5 +38,9 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override fun getSemesters(): Single<Array<Semester>> {
 		return klas.getSemesters()
+	}
+
+	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klas.getNotices(semester, subjectId, page)
 	}
 }

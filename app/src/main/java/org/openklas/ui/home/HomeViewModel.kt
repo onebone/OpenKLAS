@@ -24,8 +24,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.github.windsekirun.daggerautoinject.InjectViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate

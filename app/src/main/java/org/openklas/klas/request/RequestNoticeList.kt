@@ -1,4 +1,4 @@
-package org.openklas.repository;
+package org.openklas.klas.request
 
 /*
  * OpenKLAS
@@ -18,17 +18,14 @@ package org.openklas.repository;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.annotation.NonNull;
+import com.google.gson.annotations.SerializedName
 
-import org.openklas.klas.model.Board;
-import org.openklas.klas.model.Home;
-import org.openklas.klas.model.Semester;
-
-import io.reactivex.Single;
-
-public interface KlasRepository {
-	Single<String> performLogin(@NonNull String username, @NonNull String password);
-	Single<Home> getHome(@NonNull String semester);
-	Single<Semester[]> getSemesters();
-	Single<Board> getNotices(String semester, String subjectId, int page);
-}
+data class RequestNoticeList(
+	@SerializedName("currentPage")
+	val page: Int,
+	@SerializedName("selectSubj")
+	val subject: String,
+	@SerializedName("selectYearhakgi")
+	val semester: String,
+	val selectChangeYn: String = "Y"
+)

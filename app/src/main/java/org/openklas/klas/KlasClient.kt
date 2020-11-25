@@ -22,9 +22,11 @@ import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
+import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestNoticeList
 import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -73,5 +75,11 @@ class KlasClient @Inject constructor(
 
 	fun getSemesters(): Single<Array<Semester>> {
 		return service.semesters()
+	}
+
+	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
+		return service.notices(RequestNoticeList(
+			page = page, subject = subjectId, semester = semester
+		))
 	}
 }

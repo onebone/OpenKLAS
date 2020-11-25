@@ -21,6 +21,7 @@ package org.openklas.repository
 import io.reactivex.Single
 import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
+import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.net.transformer.AsyncTransformer
@@ -45,5 +46,9 @@ class DefaultKlasRepository @Inject constructor(
 
 	override fun getSemesters(): Single<Array<Semester>> {
 		return klasDataSource.getSemesters().compose(AsyncTransformer())
+	}
+
+	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
+		return klasDataSource.getNotices(semester, subjectId, page).compose(AsyncTransformer())
 	}
 }

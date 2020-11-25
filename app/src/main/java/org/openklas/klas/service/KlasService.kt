@@ -20,9 +20,11 @@ package org.openklas.klas.service
 
 import io.reactivex.Single
 import org.openklas.klas.KlasUri
+import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestNoticeList
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
 import retrofit2.http.Body
@@ -40,4 +42,7 @@ interface KlasService {
 
 	@POST(KlasUri.STD_SEMESTERS)
 	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Array<Semester>>
+
+	@POST(KlasUri.STD_NOTICE_LIST)
+	fun notices(@Body payload: RequestNoticeList): Single<Board>
 }

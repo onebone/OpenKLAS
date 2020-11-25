@@ -24,4 +24,6 @@ object KlasUri {
 	const val LOGIN_CONFIRM = "$ROOT_URI/usr/cmn/login/LoginConfirm.do"
 	const val STD_HOME = "$ROOT_URI/std/cmn/frame/StdHome.do"
 	const val STD_SEMESTERS = "$ROOT_URI/std/cmn/frame/YearhakgiAtnlcSbjectList.do"
+
+	const val STD_NOTICE_LIST = "$ROOT_URI/std/lis/sport/d052b8f845784c639f036b102fdc3023/BoardStdList.do"
 }

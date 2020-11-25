@@ -1,4 +1,4 @@
-package orgopenklas
+package org.openklas
 
 /*
  * OpenKLAS

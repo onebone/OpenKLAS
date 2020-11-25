@@ -23,6 +23,7 @@ import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.net.transformer.AsyncTransformer
 import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
@@ -31,6 +32,7 @@ class DefaultKlasRepository @Inject constructor(
 ): KlasRepository {
 	override fun performLogin(username: String, password: String): Single<String> {
 		return klasDataSource.performLogin(username, password)
+			.compose(AsyncTransformer())
 			.doOnSuccess {
 				preferenceDataSource.userID = username
 				preferenceDataSource.password = password
@@ -38,10 +40,10 @@ class DefaultKlasRepository @Inject constructor(
 	}
 
 	override fun getHome(semester: String): Single<Home> {
-		return klasDataSource.getHome(semester)
+		return klasDataSource.getHome(semester).compose(AsyncTransformer())
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
-		return klasDataSource.getSemesters()
+		return klasDataSource.getSemesters().compose(AsyncTransformer())
 	}
 }

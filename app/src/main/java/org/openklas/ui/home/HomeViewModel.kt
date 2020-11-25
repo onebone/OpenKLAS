@@ -30,6 +30,7 @@ import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.Semester
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
 
@@ -39,11 +40,19 @@ class HomeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
 ): BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
-	val semester = MutableLiveData<String>()
+	init {
+		fetchSemesters()
+	}
+
+	private val _semesters = MutableLiveData<Array<Semester>>()
+	val semesters: LiveData<Array<Semester>> = _semesters
+
+	private val _semester = MutableLiveData<Semester>()
+	val semester: LiveData<Semester> = _semester
 
 	private val home = MediatorLiveData<Home>().apply {
 		addSource(semester) {
-			fetchHome(it)
+			fetchHome(it.id)
 		}
 	}
 
@@ -51,18 +60,37 @@ class HomeViewModel @Inject constructor(
 		it.semesterLabel
 	}
 
-	val error = MutableLiveData<Throwable>()
+	private val _error = MutableLiveData<Throwable>()
+	val error: LiveData<Throwable> = _error
+
+	private fun fetchSemesters() {
+		addDisposable(requestWithSession {
+			klasRepository.semesters
+		}.subscribe { v, err ->
+			if(err == null) {
+				_semesters.value = v
+
+				if(_semester.value == null && v.isNotEmpty()) {
+					// TODO set default semester according to current time
+					// if the user has enrolled in winter or summer session,
+					// default semester will be set to it even if a fall or
+					// spring session is not finished.
+					_semester.value = v[0]
+				}
+			}else{
+				_error.value = err
+			}
+		})
+	}
 
 	private fun fetchHome(semester: String) {
 		addDisposable(requestWithSession {
 			klasRepository.getHome(semester)
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
 		}.subscribe { v, err ->
 			if(err == null) {
 				home.value = v
 			}else{
-				error.value = err
+				_error.value = err
 			}
 		})
 	}

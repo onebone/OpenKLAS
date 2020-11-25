@@ -44,8 +44,5 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 		mBinding.viewModel = viewModel
 
 		setupSessionViewModel(viewModel)
-
-		// TODO set semester value dynamically
-		viewModel.semester.value = "2020,2"
 	}
 }

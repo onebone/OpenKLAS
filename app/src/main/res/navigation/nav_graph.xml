@@ -36,7 +36,9 @@
             android:id="@+id/action_login_home"
             app:destination="@id/fragment_home_container"
             app:popUpTo="@id/fragment_login"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slightly_scale_up"
+            app:exitAnim="@anim/slightly_scale_down" />
 
     </fragment>
 

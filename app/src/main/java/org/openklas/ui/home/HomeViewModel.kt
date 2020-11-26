@@ -59,6 +59,10 @@ class HomeViewModel @Inject constructor(
 		it.semesterLabel
 	}
 
+	val subjectCount: LiveData<Int> = Transformations.map(home) {
+		it.subjects.size
+	}
+
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
 	}

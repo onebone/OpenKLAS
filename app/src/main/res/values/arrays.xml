@@ -18,20 +18,31 @@
  -->
 
 <resources>
-    <declare-styleable name="TitleView">
-        <attr name="titleName" format="string"/>
+	<string-array name="short_day_names">
+		<item>Mon</item>
+		<item>Tue</item>
+		<item>Wed</item>
+		<item>Thu</item>
+		<item>Fri</item>
+		<item>Sat</item>
+		<item>Sun</item>
+	</string-array>
 
-        <attr name="titleMode" format="integer">
-            <enum name="none" value="0" />
-            <enum name="back" value="1" />
-            <enum name="mypage" value="2" />
-            <enum name="backsearch" value="3" />
-            <enum name="mypagesearch" value="4" />
-        </attr>
-    </declare-styleable>
-
-    <declare-styleable name="TimetableView">
-        <attr name="cellMinHeight" format="dimension" />
-        <attr name="minPeriods" format="integer" />
-    </declare-styleable>
+	<array name="timetable_colors">
+		<item>#7DD1C1</item>
+		<item>#ECC369</item>
+		<item>#7ACF96</item>
+		<item>#CC9AEF</item>
+		<item>#EF99EF</item>
+		<item>#99ABEF</item>
+		<item>#EFB399</item>
+		<item>#FFCC00</item>
+		<item>#FFCCFF</item>
+		<item>#CC0303</item>
+		<item>#5882FA</item>
+		<item>#F3F781</item>
+		<item>#F8E0EC</item>
+		<item>#2E9AFE</item>
+		<item>#D8F781</item>
+	</array>
 </resources>

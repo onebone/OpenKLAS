@@ -29,6 +29,7 @@ import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
 
@@ -56,6 +57,10 @@ class HomeViewModel @Inject constructor(
 
 	val semesterLabel: LiveData<String> = Transformations.map(home) {
 		it.semesterLabel
+	}
+
+	val timetable: LiveData<Timetable>  = Transformations.map(home) {
+		it.timetable
 	}
 
 	private val _error = MutableLiveData<Throwable>()

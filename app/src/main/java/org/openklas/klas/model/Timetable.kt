@@ -24,6 +24,8 @@ data class Timetable (
 ) {
 	data class Entry (
 		val day: Int,
+		// wtTime
+		val time: Int,
 		// wtLocHname_%d
 		val classroom: String,
 		// wtProfNm_%d

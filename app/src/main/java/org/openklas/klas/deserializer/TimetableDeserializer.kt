@@ -46,6 +46,7 @@ class TimetableDeserializer: TypeResolvableJsonDeserializer<Timetable> {
 			val professor = obj["wtProfNm_$i"].asStringOrNull ?: ""
 
 			// properties below must have value
+			val time = obj["wtTime"].asInt
 			val classroom = obj["wtLocHname_$i"].asString
 			val subjectName = obj["wtSubjNm_$i"].asString
 			val subjectId = obj["wtSubj_$i"].asString
@@ -53,7 +54,7 @@ class TimetableDeserializer: TypeResolvableJsonDeserializer<Timetable> {
 			val semester = obj["wtYearhakgi_$i"].asString
 
 			entries += Timetable.Entry(
-				i, classroom, professor, length, subjectName,
+				i, time, classroom, professor, length, subjectName,
 				subjectId, semester, printSeq
 			)
 		}

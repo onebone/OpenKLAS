@@ -27,7 +27,7 @@ import org.openklas.klas.model.Semester;
 import io.reactivex.Single;
 
 public interface KlasRepository {
-	Single<String> performLogin(@NonNull String username, @NonNull String password);
+	Single<String> performLogin(@NonNull String username, @NonNull String password, boolean rememberMe);
 	Single<Home> getHome(@NonNull String semester);
 	Single<Semester[]> getSemesters();
 	Single<Board> getNotices(String semester, String subjectId, int page);

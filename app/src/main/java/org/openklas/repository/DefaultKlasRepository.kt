@@ -31,12 +31,15 @@ class DefaultKlasRepository @Inject constructor(
 	private val klasDataSource: KlasDataSource,
 	private val preferenceDataSource: PreferenceDataSource
 ): KlasRepository {
-	override fun performLogin(username: String, password: String): Single<String> {
+	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
 		return klasDataSource.performLogin(username, password)
-			.compose(AsyncTransformer())
-			.doOnSuccess {
-				preferenceDataSource.userID = username
-				preferenceDataSource.password = password
+			.compose(AsyncTransformer()).apply {
+				if(rememberMe) {
+					doOnSuccess {
+						preferenceDataSource.userID = username
+						preferenceDataSource.password = password
+					}
+				}
 			}
 	}
 

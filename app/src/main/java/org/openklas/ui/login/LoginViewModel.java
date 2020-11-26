@@ -53,7 +53,7 @@ public class LoginViewModel extends BaseViewModel {
 
 	public final ObservableString mId = new ObservableString();
 	public final ObservableString mPw = new ObservableString();
-	public final ObservableBoolean mRememberMe = new ObservableBoolean();
+	public final ObservableBoolean mRememberMe = new ObservableBoolean(true);
 
 	public final ObservableString mResult = new ObservableString();
 
@@ -69,7 +69,7 @@ public class LoginViewModel extends BaseViewModel {
 	public void clickLogin(View view) {
 		// TODO handle empty username and password field
 
-		addDisposable(mKlasRepository.performLogin(mId.get(), mPw.get())
+		addDisposable(mKlasRepository.performLogin(mId.get(), mPw.get(), mRememberMe.get())
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(

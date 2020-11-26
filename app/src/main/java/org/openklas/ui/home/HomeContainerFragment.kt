@@ -22,16 +22,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.github.windsekirun.daggerautoinject.InjectFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.openklas.R
+import org.openklas.base.BaseFragment
 
-
-class HomeContainerFragment : Fragment() {
+@InjectFragment
+class HomeContainerFragment : BaseFragment<ViewDataBinding>() {
 	private var controller: NavController? = null
 	private val navListener: OnDestinationChangedListener? = null
 
@@ -39,6 +42,9 @@ class HomeContainerFragment : Fragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
+		val viewModel by viewModels<HomeViewModel> { viewModelProvideFactory }
+		setupSessionViewModel(viewModel)
+
 		val view = inflater.inflate(R.layout.home_container_fragment, container, false)
 
 		val navHostFragment =

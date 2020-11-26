@@ -29,11 +29,8 @@ class RemoteSessionDataSource @Inject constructor(
 		@Suppress("RedundantLambdaArrow", "RemoveExplicitTypeArguments")
 		return klas.login(username, password)
 			.flatMap {
-				Single.just<String?>(it)
+				Single.just<Boolean>(true)
 			}
-			.onErrorResumeNext { Single.just<String?>(null) }
-			.map { it: String? ->
-				it != null
-			}
+			.onErrorResumeNext(Single.just(false))
 	}
 }

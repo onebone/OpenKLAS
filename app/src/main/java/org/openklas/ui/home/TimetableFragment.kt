@@ -42,7 +42,5 @@ class TimetableFragment : BaseFragment<TimetableFragmentBinding>() {
 
 		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) { viewModelProvideFactory }
 		mBinding.viewModel = viewModel
-
-		setupSessionViewModel(viewModel)
 	}
 }

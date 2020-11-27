@@ -22,7 +22,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -42,5 +44,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
 		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) { viewModelProvideFactory }
 		mBinding.viewModel = viewModel
+		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
+		mBinding.list.adapter = HomeTodayAdapter()
 	}
 }

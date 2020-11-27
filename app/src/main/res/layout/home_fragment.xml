@@ -205,6 +205,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="9dp"
+                app:items="@{viewModel.todaySubList}"
                 app:layout_constraintTop_toBottomOf="@id/text4"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -18,8 +18,11 @@ package org.openklas.ui.home
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.util.Log
 import android.view.View
+import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.findFragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,6 +37,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
 import org.openklas.ui.postlist.PostType
+import java.util.Calendar
 import javax.inject.Inject
 
 @InjectViewModel
@@ -68,6 +72,10 @@ class HomeViewModel @Inject constructor(
 
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
+	}
+	val todaySubList : LiveData<List<Timetable.Entry>> = Transformations.map(timetable) { it ->
+		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+		it.entries.filter { item -> item.day == day -4 }.sortedWith(compareBy { it.day }).toList() //  day -3 for test  day -1 is correct
 	}
 
 	private val _error = MutableLiveData<Throwable>()

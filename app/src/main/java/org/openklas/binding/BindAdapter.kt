@@ -19,10 +19,14 @@ package org.openklas.binding
  */
 
 import android.graphics.drawable.Drawable
+import android.widget.BaseAdapter
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import org.openklas.base.recycler.BaseRecyclerAdapter
+import org.openklas.base.recycler.ViewTypeRecyclerAdapter
 
 
 object BindAdapter {
@@ -38,5 +42,16 @@ object BindAdapter {
 	fun bindCircleImage(imageView: ImageView, url: String?, placeholder: Drawable?) {
 		Glide.with(imageView.context).load(url)
 			.apply(RequestOptions.circleCropTransform().placeholder(placeholder)).into(imageView)
+	}
+
+	@JvmStatic
+	@BindingAdapter("items")
+	fun <T> bindItems(recyclerView: RecyclerView, list: List<T>?) {
+		recyclerView.adapter?.let {
+			if (recyclerView.adapter is ViewTypeRecyclerAdapter<*>) {
+				(recyclerView.adapter as ViewTypeRecyclerAdapter<T>).setItems(list)
+			}
+		}
+
 	}
 }

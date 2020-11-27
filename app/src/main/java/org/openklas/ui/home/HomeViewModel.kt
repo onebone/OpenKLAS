@@ -106,15 +106,24 @@ class HomeViewModel @Inject constructor(
 	}
 
 	fun onClickNotice(view: View) {
+		navigateToPostList(view, PostType.NOTICE)
+	}
+
+	fun onClickLectureMaterial(view: View) {
+		navigateToPostList(view, PostType.LECTURE_MATERIAL)
+	}
+
+	fun onClickQna(view: View) {
+		navigateToPostList(view, PostType.QNA)
+	}
+
+	private fun navigateToPostList(view: View, type: PostType) {
 		semester.value?.let {
 			// fragment: HomeContainerFragment
 			val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
 
 			NavHostFragment.findNavController(fragment).navigate(
-				HomeContainerFragmentDirections.actionHomePostList(
-					it.id,
-					PostType.NOTICE
-				)
+				HomeContainerFragmentDirections.actionHomePostList(it.id, type)
 			)
 		}
 	}

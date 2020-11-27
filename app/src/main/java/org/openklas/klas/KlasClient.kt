@@ -24,9 +24,11 @@ import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.service.KlasService
@@ -100,5 +102,11 @@ class KlasClient @Inject constructor(
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
 			year = year, term = term, keyword = keyword, professor = professor))
+	}
+
+	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {
+		return service.onlineContentList(RequestOnlineContents(
+			semester = semester, subjectId = subjectId
+		))
 	}
 }

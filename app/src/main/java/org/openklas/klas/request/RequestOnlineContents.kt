@@ -1,4 +1,4 @@
-package org.openklas.repository
+package org.openklas.klas.request
 
 /*
  * OpenKLAS
@@ -18,19 +18,12 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
-import org.openklas.data.AccountDataSource
-import org.openklas.data.SessionDataSource
-import org.openklas.net.transformer.AsyncTransformer
-import javax.inject.Inject
+import com.google.gson.annotations.SerializedName
 
-class DefaultSessionRepository @Inject constructor(
-	private val sessionDataSource: SessionDataSource,
-	private val accountDataSource: AccountDataSource
-): SessionRepository {
-	override fun tryLogin(): Single<Boolean> {
-		val account = accountDataSource.getAccount() ?: return Single.just(false)
-
-		return sessionDataSource.tryLogin(account.username, account.password).compose(AsyncTransformer())
-	}
-}
+data class RequestOnlineContents(
+	@SerializedName("selectYearhakgi")
+	val semester: String,
+	@SerializedName("selectSubj")
+	val subjectId: String,
+	val selectChangeYn: String = "Y"
+)

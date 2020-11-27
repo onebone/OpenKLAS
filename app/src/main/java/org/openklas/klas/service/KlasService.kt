@@ -22,9 +22,11 @@ import io.reactivex.Single
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.response.ResponseLoginConfirm
@@ -56,4 +58,7 @@ interface KlasService {
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
 	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Array<SyllabusSummary>>
+
+	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
+	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Array<OnlineContentEntry>>
 }

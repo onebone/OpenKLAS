@@ -21,6 +21,8 @@ package org.openklas.di
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
+import org.openklas.klas.deserializer.DateDeserializer
+import org.openklas.klas.deserializer.OnlineContentEntryDeserializer
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.deserializer.TimetableDeserializer
 import javax.inject.Singleton
@@ -32,5 +34,19 @@ class GsonDeserializerModule {
 	@Singleton
 	fun provideTimetableDeserializer(): TypeResolvableJsonDeserializer<*> {
 		return TimetableDeserializer()
+	}
+
+	@Provides
+	@IntoSet
+	@Singleton
+	fun provideOnlineLectureEntryDeserializer(): TypeResolvableJsonDeserializer<*> {
+		return OnlineContentEntryDeserializer()
+	}
+
+	@Provides
+	@IntoSet
+	@Singleton
+	fun provideDateDeserializer(): TypeResolvableJsonDeserializer<*> {
+		return DateDeserializer()
 	}
 }

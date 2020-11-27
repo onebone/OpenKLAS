@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 
 import org.openklas.klas.model.Board;
 import org.openklas.klas.model.Home;
+import org.openklas.klas.model.OnlineContentEntry;
 import org.openklas.klas.model.Semester;
 import org.openklas.klas.model.SyllabusSummary;
 
@@ -35,4 +36,5 @@ public interface KlasRepository {
 	Single<Board> getQnas(String semester, String subjectId, int page);
 	Single<Board> getLectureMaterials(String semester, String subjectId, int page);
 	Single<SyllabusSummary[]> getSyllabusList(int year, int term, String keyword, String professor);
+	Single<OnlineContentEntry[]> getOnlineContentList(String semester, String subjectId);
 }

@@ -47,6 +47,39 @@
         android:name="org.openklas.ui.home.HomeContainerFragment"
         tools:layout="@layout/home_container_fragment">
 
+        <action
+            android:id="@+id/action_home_post_list"
+            app:destination="@id/fragment_post_list">
+
+            <argument
+                android:name="semester"
+                app:argType="string"
+                app:nullable="false" />
+
+            <argument
+                android:name="type"
+                app:argType=".ui.postlist.PostType"
+                app:nullable="false" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_post_list"
+        android:name="org.openklas.ui.postlist.PostListFragment"
+        tools:layout="@layout/post_list_fragment">
+
+        <argument
+            android:name="semester"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="type"
+            app:argType=".ui.postlist.PostType"
+            app:nullable="false" />
+
     </fragment>
 
 </navigation>

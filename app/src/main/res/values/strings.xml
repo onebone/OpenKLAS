@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  ~ OpenKLAS
  ~ Copyright (C) 2020 OpenKLAS Team
  ~
@@ -18,28 +17,33 @@
  -->
 
 <resources>
-    <string name="app_name">OpenKlas</string>
+	<string name="app_name">OpenKlas</string>
 
-    <string name="home">Main</string>
-    <string name="timetable">Timetable</string>
-    <string name="notification">Notifications</string>
-    <string name="setting">Settings</string>
+	<string name="home">Main</string>
+	<string name="timetable">Timetable</string>
+	<string name="notification">Notifications</string>
+	<string name="setting">Settings</string>
 
-    <string name="login_username">학번</string>
-    <string name="login_password">비밀번호</string>
-    <string name="login_submit">로그인</string>
-    <string name="login_remember_me">자동 로그인</string>
+	<string name="login_username">학번</string>
+	<string name="login_password">비밀번호</string>
+	<string name="login_submit">로그인</string>
+	<string name="login_remember_me">자동 로그인</string>
 
-    <string name="empty_lecture">남은 강의</string>
-    <string name="empty_hw">남은 과제</string>
-    <string name="courses">수강 과목</string>
-    <string name="course_notice">강의 공지사항</string>
-    <string name="course_plan">강의 계획서</string>
-    <string name="course_material">강의 자료실</string>
-    <string name="course_submit">과제 제출</string>
-    <string name="course_qna">강의 묻고답하기</string>
-    <string name="course_name">강의명</string>
-    <string name="course_time">수업 시간</string>
-    <string name="course_loc">수업 장소</string>
+	<string name="empty_lecture">남은 강의</string>
+	<string name="empty_hw">남은 과제</string>
+	<string name="courses">수강 과목</string>
+	<string name="course_notice">강의 공지사항</string>
+	<string name="course_plan">강의 계획서</string>
+	<string name="course_material">강의 자료실</string>
+	<string name="course_submit">과제 제출</string>
+	<string name="course_qna">강의 묻고답하기</string>
+	<string name="course_name">강의명</string>
+	<string name="course_time">수업 시간</string>
+	<string name="course_loc">수업 장소</string>
+
+	<string name="post_list_title">게시글</string>
+	<string name="post_list_all_posts">전체 게시글</string>
+	<string name="post_hits">조회수: %d</string>
+	<string name="post_author">작성자: %s</string>
 
 </resources>

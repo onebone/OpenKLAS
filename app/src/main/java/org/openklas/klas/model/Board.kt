@@ -73,6 +73,8 @@ data class Board(
 		val order: Int,
 		@SerializedName("subj")
 		val subjectId: String,
+		@SerializedName("title")
+		val title: String,
 		@SerializedName("topAt")
 		val isPinned: Boolean,
 		@SerializedName("userNm")

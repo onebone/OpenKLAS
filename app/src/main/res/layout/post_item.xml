@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<variable
+			name="post"
+			type="org.openklas.klas.model.Board.Entry" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="12dp">
+
+		<TextView
+			android:id="@+id/tv_post_title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:text="@{post.title}"
+			android:textSize="24sp"
+			tools:text="Lorem ipsum" />
+
+		<TextView
+			android:id="@+id/tv_post_hits"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+			android:text="@{String.format(@string/post_hits, post.hits)}"
+			tools:text="Hits: 12" />
+
+		<TextView
+			android:id="@+id/tv_post_author"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toRightOf="@id/tv_post_hits"
+			app:layout_constraintTop_toTopOf="@id/tv_post_hits"
+			android:layout_marginStart="8dp"
+			android:text="@{String.format(@string/post_author, post.author)}"
+			tools:text="Author: dolor sit" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

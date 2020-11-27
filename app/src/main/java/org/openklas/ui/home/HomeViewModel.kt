@@ -19,10 +19,12 @@ package org.openklas.ui.home
  */
 
 import android.view.View
+import androidx.fragment.app.findFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.navigation.fragment.NavHostFragment
 import com.github.windsekirun.daggerautoinject.InjectViewModel
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
@@ -31,6 +33,7 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
+import org.openklas.ui.postlist.PostType
 import javax.inject.Inject
 
 @InjectViewModel
@@ -100,6 +103,20 @@ class HomeViewModel @Inject constructor(
 				_error.value = err
 			}
 		})
+	}
+
+	fun onClickNotice(view: View) {
+		semester.value?.let {
+			// fragment: HomeContainerFragment
+			val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
+
+			NavHostFragment.findNavController(fragment).navigate(
+				HomeContainerFragmentDirections.actionHomePostList(
+					it.id,
+					PostType.NOTICE
+				)
+			)
+		}
 	}
 
 	fun clickBtn(view: View){

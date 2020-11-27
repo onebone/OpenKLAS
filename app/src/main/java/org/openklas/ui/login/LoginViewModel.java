@@ -23,7 +23,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
 
 import com.github.windsekirun.bindadapters.observable.ObservableString;

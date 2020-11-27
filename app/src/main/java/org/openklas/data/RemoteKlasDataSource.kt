@@ -23,6 +23,7 @@ import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 import javax.inject.Inject
 
 class RemoteKlasDataSource @Inject constructor(
@@ -50,5 +51,10 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
 		return klas.getLectureMaterials(semester, subjectId, page)
+	}
+
+	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)
+		: Single<Array<SyllabusSummary>> {
+		return klas.getSyllabusList(year, term, keyword, professor)
 	}
 }

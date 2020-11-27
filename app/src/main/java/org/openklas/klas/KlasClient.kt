@@ -25,8 +25,10 @@ import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestPostList
+import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -93,5 +95,10 @@ class KlasClient @Inject constructor(
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester
 		))
+	}
+
+	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
+		return service.syllabusList(RequestSyllabusSummary(
+			year = year, term = term, keyword = keyword, professor = professor))
 	}
 }

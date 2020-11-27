@@ -23,8 +23,10 @@ import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestPostList
+import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
 import retrofit2.http.Body
@@ -51,4 +53,7 @@ interface KlasService {
 
 	@POST(KlasUri.STD_QNA_LIST)
 	fun qnas(@Body payload: RequestPostList): Single<Board>
+
+	@POST(KlasUri.STD_SYLLABUS_LIST)
+	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Array<SyllabusSummary>>
 }

@@ -24,6 +24,7 @@ import org.openklas.data.PreferenceDataSource
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 import org.openklas.net.transformer.AsyncTransformer
 import javax.inject.Inject
 
@@ -61,5 +62,10 @@ class DefaultKlasRepository @Inject constructor(
 
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
 		return klasDataSource.getLectureMaterials(semester, subjectId, page).compose(AsyncTransformer())
+	}
+
+	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)
+		: Single<Array<SyllabusSummary>> {
+		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
 	}
 }

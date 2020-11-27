@@ -22,6 +22,7 @@ import io.reactivex.Single
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 
 interface KlasDataSource {
 	fun performLogin(username: String, password: String): Single<String>
@@ -30,4 +31,5 @@ interface KlasDataSource {
 	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board>
 	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board>
 	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 }

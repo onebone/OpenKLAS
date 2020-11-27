@@ -105,8 +105,6 @@ class PostListViewModel @Inject constructor(
 			fetchPosts()
 		}
 
-		addSource(subjects) {}
-
 		addSource(subject) {
 			fetchPosts()
 		}

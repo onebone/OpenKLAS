@@ -38,7 +38,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="29dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@{view.mTitle}"
             android:textColor="@color/white"
@@ -64,10 +64,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
             android:onClick="@{view::clickMypage}"
             android:visibility="@{(view.mMode==2 || view.mMode==4 )? View.VISIBLE : View.GONE}"
             android:src="@drawable/baseline_person_white_18_dp"
+            android:padding="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

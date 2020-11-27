@@ -18,11 +18,63 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.klas.model.Board
+import org.openklas.klas.model.BriefSubject
 
 @BindingAdapter("postList")
 fun setPostList(listView: RecyclerView, postList: Array<Board.Entry>?) {
 	(listView.adapter as PostListAdapter).submitList(postList?.toList())
+}
+
+@BindingAdapter("subjects")
+fun setSpinnerSubjectEntries(spinner: Spinner, subjects: Array<BriefSubject>?) {
+	spinner.adapter = ArrayAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, subjects?.map {
+		it.name
+	}?.toTypedArray() ?: arrayOf())
+}
+
+@BindingAdapter("onSubjectIndexChanged")
+fun setSpinnerOnSubjectIndexChanged(spinner: Spinner, listener: ItemChangeListener) {
+	spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+		override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+			listener.onIndexChanged(position)
+		}
+
+		override fun onNothingSelected(parent: AdapterView<*>?) {
+		}
+	}
+}
+
+@BindingAdapter("selectedIndex")
+fun setSpinnerSelectedIndex(spinner: Spinner, index: Int) {
+	spinner.setSelection(index)
+}
+
+@BindingAdapter("selectedIndexValueChanged")
+fun setSpinnerInverseBindingListener(spinner: Spinner, listener: InverseBindingListener) {
+	spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+		override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+			listener.onChange()
+		}
+
+		override fun onNothingSelected(parent: AdapterView<*>?) {
+		}
+	}
+}
+
+@InverseBindingAdapter(attribute = "selectedIndex", event = "selectedIndexValueChanged")
+fun getSpinnerSelectedIndex(spinner: Spinner): Int {
+	return spinner.selectedItemPosition
+}
+
+interface ItemChangeListener {
+	fun onIndexChanged(index: Int)
 }

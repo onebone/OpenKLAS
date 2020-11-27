@@ -51,7 +51,9 @@
 			android:layout_height="wrap_content"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/title"
-			android:layout_margin="8dp" />
+			android:layout_margin="8dp"
+			app:subjects="@{viewModel.subjects}"
+			app:onSubjectIndexChanged="@{v -> viewModel.onSubjectIndexChanged(v)}" />
 
 		<TextView
 			android:id="@+id/tv_subject_name"
@@ -61,7 +63,7 @@
 			app:layout_constraintTop_toBottomOf="@id/spn_subjects"
 			android:layout_margin="8dp"
 			android:text="@{viewModel.subjectObject.name}"
-			android:textSize="32sp"
+			android:textSize="28sp"
 			tools:text="Subject" />
 
 		<View

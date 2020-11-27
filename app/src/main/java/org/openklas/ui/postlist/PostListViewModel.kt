@@ -136,6 +136,14 @@ class PostListViewModel @Inject constructor(
 		fetchSemesters()
 	}
 
+	// called from res/layout/post_list_fragment.xml
+	fun onSubjectIndexChanged(index: Int) {
+		val allSubjects = subjects.value ?: return
+		if(allSubjects.lastIndex < index) return
+
+		subject.value = allSubjects[index].id
+	}
+
 	private fun fetchSemesters() {
 		addDisposable(requestWithSession {
 			klasRepository.semesters
@@ -154,10 +162,6 @@ class PostListViewModel @Inject constructor(
 		_subjects.value = semesters.value?.first {
 			it.id == currentSemester
 		}?.subjects
-
-		if(subject.value == null && _subjects.value?.isNotEmpty() == true) {
-			subject.value = _subjects.value!![0].id
-		}
 	}
 
 	private fun fetchPosts() {

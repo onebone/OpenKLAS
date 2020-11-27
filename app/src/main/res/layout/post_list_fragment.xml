@@ -24,6 +24,8 @@
 	tools:context=".ui.postlist.PostListFragment">
 
 	<data>
+		<import type="android.view.View" />
+
 		<variable
 			name="viewModel"
 			type="org.openklas.ui.postlist.PostListViewModel" />
@@ -118,6 +120,16 @@
 			android:background="@drawable/bg_white_r7"
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 			app:postList="@{viewModel.posts}" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="@id/rv_posts"
+			app:layout_constraintRight_toRightOf="@id/rv_posts"
+			app:layout_constraintTop_toTopOf="@id/rv_posts"
+			app:layout_constraintBottom_toBottomOf="@id/rv_posts"
+			android:text="@string/post_list_none"
+			android:visibility="@{viewModel.postsIsEmpty ? View.VISIBLE : View.GONE}" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

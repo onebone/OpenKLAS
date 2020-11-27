@@ -124,6 +124,10 @@ class PostListViewModel @Inject constructor(
 		it.posts
 	}
 
+	val postsIsEmpty: LiveData<Boolean> = Transformations.map(posts) {
+		it.isEmpty()
+	}
+
 	val pageInfo: LiveData<Board.PageInfo> = Transformations.map(board) {
 		it.pageInfo
 	}

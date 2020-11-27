@@ -43,6 +43,7 @@
 
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>
+	<string name="post_list_none">게시글이 없습니다</string>
 	<string name="post_hits">조회수: %d</string>
 	<string name="post_author">작성자: %s</string>
 

@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
 		val now = Date()
 
 		it.count { entry ->
-			entry is OnlineContentEntry.Video && entry.startDate < now && now < entry.endDate
+			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.endDate
 		}
 	}
 
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
 		val now = Date()
 
 		it.count { entry ->
-			entry is OnlineContentEntry.Homework && entry.startDate < now && now < entry.endDate
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.endDate
 		}
 	}
 

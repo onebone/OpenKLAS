@@ -1,4 +1,4 @@
-package org.openklas;
+package org.openklas
 
 /*
  * OpenKLAS
@@ -18,31 +18,15 @@ package org.openklas;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import com.github.windsekirun.daggerautoinject.InjectActivity;
-
-
-import org.greenrobot.eventbus.Subscribe;
-import org.openklas.base.BaseActivity;
-import org.openklas.databinding.MainActivityBinding;
-import org.openklas.event.Event;
-
-/**
- * OpenKlas
- * Class: MainActivity
- * Created by limmoong on 2020/11/10.
- * <p>
- * Description:
- */
+import android.os.Bundle
+import com.github.windsekirun.daggerautoinject.InjectActivity
+import org.openklas.base.BaseActivity
+import org.openklas.databinding.MainActivityBinding
 
 @InjectActivity
-public class MainActivity extends BaseActivity<MainActivityBinding> {
-	@Override
-	protected void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activity);
+class MainActivity : BaseActivity<MainActivityBinding>() {
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContentView(R.layout.main_activity)
 	}
 }

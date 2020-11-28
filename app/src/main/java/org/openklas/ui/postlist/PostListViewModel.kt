@@ -144,7 +144,7 @@ class PostListViewModel @Inject constructor(
 
 	private fun fetchSemesters() {
 		addDisposable(requestWithSession {
-			klasRepository.semesters
+			klasRepository.getSemesters()
 		}.subscribe { v, err ->
 			if(err == null) {
 				semesters.value = v

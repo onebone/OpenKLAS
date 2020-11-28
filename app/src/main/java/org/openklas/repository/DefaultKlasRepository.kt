@@ -65,7 +65,7 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getLectureMaterials(semester, subjectId, page).compose(AsyncTransformer())
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<List<SyllabusSummary>>? {
+	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<List<SyllabusSummary>> {
 		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
 	}
 

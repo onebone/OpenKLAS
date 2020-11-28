@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
 
 	private fun fetchSemesters() {
 		addDisposable(requestWithSession {
-			klasRepository.semesters
+			klasRepository.getSemesters()
 		}.subscribe { v, err ->
 			if(err == null) {
 				_semesters.value = v

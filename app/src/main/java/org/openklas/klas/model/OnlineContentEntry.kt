@@ -34,13 +34,15 @@ sealed class OnlineContentEntry {
 		@SerializedName("startDate")
 		val startDate: Date,
 		@SerializedName("endDate")
-		val endDate: Date
+		val endDate: Date,
+		@SerializedName("prog")
+		val progress: Int
 	): OnlineContentEntry()
 
 	data class Homework(
 		override val evltnSe: String,
 		@SerializedName("registDt")
-		val registerDate: Date,
+		val submitDate: Date?,
 		@SerializedName("startDate")
 		val startDate: Date,
 		@SerializedName("endDate")

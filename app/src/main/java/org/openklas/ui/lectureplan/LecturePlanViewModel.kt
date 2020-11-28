@@ -55,6 +55,7 @@ class LecturePlanViewModel @Inject constructor(
 			klasRepository.getSyllabusList(2020, 2, keyword, "")
 		}.subscribe { v, err ->
 			if (err == null) {
+				mListKeyword.clear()
 				mListKeyword.addAll(v)
 			} else {
 				_error.value = err

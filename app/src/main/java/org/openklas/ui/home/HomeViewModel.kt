@@ -29,15 +29,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.navigation.fragment.NavHostFragment
 import com.github.windsekirun.daggerautoinject.InjectViewModel
+import io.reactivex.Single
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
 import org.openklas.ui.postlist.PostType
 import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @InjectViewModel
@@ -59,6 +62,28 @@ class HomeViewModel @Inject constructor(
 	private val home = MediatorLiveData<Home>().apply {
 		addSource(semester) {
 			fetchHome(it.id)
+		}
+	}
+
+	private val onlineContents = MediatorLiveData<Array<OnlineContentEntry>>().apply {
+		addSource(semester) {
+			fetchOnlineContents(it)
+		}
+	}
+
+	val videoCount: LiveData<Int> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		it.count { entry ->
+			entry is OnlineContentEntry.Video && entry.startDate < now && now < entry.endDate
+		}
+	}
+
+	val homeworkCount: LiveData<Int> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		it.count { entry ->
+			entry is OnlineContentEntry.Homework && entry.startDate < now && now < entry.endDate
 		}
 	}
 
@@ -142,6 +167,25 @@ class HomeViewModel @Inject constructor(
 				HomeContainerFragmentDirections.actionHomePostList(it.id, type)
 			)
 		}
+	}
+
+	private fun fetchOnlineContents(currentSemester: Semester) {
+		addDisposable(Single.zip(currentSemester.subjects.map { subject ->
+			requestWithSession {
+				klasRepository.getOnlineContentList(currentSemester.id, subject.id)
+			}
+		}) {
+			it.filterIsInstance<Array<*>>()
+				.toTypedArray()
+				.flatten()
+				.filterIsInstance<OnlineContentEntry>()
+		}.subscribe { v, err ->
+			if(err == null) {
+				onlineContents.value = v.toTypedArray()
+			}else{
+				_error.value = err
+			}
+		})
 	}
 
 	fun clickBtn(view: View){

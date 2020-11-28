@@ -21,17 +21,13 @@ package org.openklas.klas.deserializer
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
+import java.lang.Exception
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
-	private val formats = arrayOf(
-		SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.KOREA),
-		SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA)
-	)
-
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
@@ -39,12 +35,19 @@ class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
 	): Date {
 		val string = json.asString!!
 
-		formats.forEach {
-			val date = kotlin.runCatching {
-				it.parse(string)
-			}
+		// SimpleDateFormat is NOT thread-safe.
+		// DateDeserializer might parse multiple Date strings simultaneously,
+		// so date format objects must be created at the time of formatting.
+		val formats = arrayOf(
+			SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault()),
+			SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+		)
 
-			if(date.isSuccess) return date.getOrThrow()!!
+		for(format in formats) {
+			try {
+				return format.parse(string) ?: continue
+			}catch(e: Exception) {
+			}
 		}
 
 		throw JsonParseException("Unable to parse Date: \"$string\"")

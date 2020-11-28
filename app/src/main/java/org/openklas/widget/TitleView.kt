@@ -41,9 +41,11 @@ import pyxis.uzuki.live.attribute.parser.annotation.CustomView
 
 @CustomView
 class TitleView: LinearLayout {
+	@JvmField
 	@AttrString
 	var titleName: String? = null
 
+	@JvmField
 	@AttrInt
 	var titleMode = 0
 

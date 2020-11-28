@@ -21,17 +21,17 @@
     <item
         android:id="@id/fragment_home"
         android:title="@string/home"
-        android:icon="@drawable/baseline_home_black_18_dp"/>
+        android:icon="@drawable/home_btn"/>
     <item
         android:id="@id/fragment_timetable"
         android:title="@string/timetable"
-        android:icon="@drawable/baseline_home_black_18_dp"/>
+        android:icon="@drawable/time_table_btn"/>
     <item
         android:id="@id/fragment_notification"
         android:title="@string/notification"
-        android:icon="@drawable/baseline_home_black_18_dp"/>
+        android:icon="@drawable/notifications_btn"/>
     <item
         android:id="@id/fragment_setting"
         android:title="@string/setting"
-        android:icon="@drawable/baseline_home_black_18_dp"/>
+        android:icon="@drawable/settins_btn"/>
 </menu>

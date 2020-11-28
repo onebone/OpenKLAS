@@ -31,6 +31,8 @@ class DefaultSessionRepository @Inject constructor(
 	override fun tryLogin(): Single<Boolean> {
 		val account = accountDataSource.getAccount() ?: return Single.just(false)
 
-		return sessionDataSource.tryLogin(account.username, account.password).compose(AsyncTransformer())
+		return sessionDataSource.tryLogin(account.username, account.password).compose(
+			AsyncTransformer()
+		)
 	}
 }

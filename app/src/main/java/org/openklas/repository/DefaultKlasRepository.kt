@@ -18,7 +18,6 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
@@ -27,7 +26,7 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
-import org.openklas.net.transformer.AsyncSingleTransformer
+import org.openklas.net.transformer.AsyncTransformer
 import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
@@ -36,7 +35,7 @@ class DefaultKlasRepository @Inject constructor(
 ): KlasRepository {
 	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
 		return klasDataSource.performLogin(username, password)
-			.compose(AsyncSingleTransformer()).apply {
+			.compose(AsyncTransformer()).apply {
 				if(rememberMe) {
 					doOnSuccess {
 						preferenceDataSource.userID = username
@@ -47,27 +46,27 @@ class DefaultKlasRepository @Inject constructor(
 	}
 
 	override fun getHome(semester: String): Single<Home> {
-		return klasDataSource.getHome(semester).compose(AsyncSingleTransformer())
+		return klasDataSource.getHome(semester).compose(AsyncTransformer())
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
-		return klasDataSource.getSemesters().compose(AsyncSingleTransformer())
+		return klasDataSource.getSemesters().compose(AsyncTransformer())
 	}
 
 	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klasDataSource.getNotices(semester, subjectId, page).compose(AsyncSingleTransformer())
+		return klasDataSource.getNotices(semester, subjectId, page).compose(AsyncTransformer())
 	}
 
 	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klasDataSource.getQnas(semester, subjectId, page).compose(AsyncSingleTransformer())
+		return klasDataSource.getQnas(semester, subjectId, page).compose(AsyncTransformer())
 	}
 
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klasDataSource.getLectureMaterials(semester, subjectId, page).compose(AsyncSingleTransformer())
+		return klasDataSource.getLectureMaterials(semester, subjectId, page).compose(AsyncTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<List<SyllabusSummary>>? {
-		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncSingleTransformer())
+		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String)

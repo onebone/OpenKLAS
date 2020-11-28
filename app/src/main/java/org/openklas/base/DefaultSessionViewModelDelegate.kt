@@ -19,9 +19,7 @@ package org.openklas.base
  */
 
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.Observable
 import io.reactivex.Single
-import org.openklas.net.transformer.AsyncSingleTransformer
 import org.openklas.net.transformer.AsyncTransformer
 import org.openklas.repository.SessionRepository
 import javax.inject.Inject
@@ -36,7 +34,7 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 			.onErrorResumeNext { err ->
 				// TODO check if [err] is session-related error
 				sessionRepository.tryLogin()
-					.compose(AsyncSingleTransformer())
+					.compose(AsyncTransformer())
 					.flatMap {
 						if(it) {
 							f()

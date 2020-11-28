@@ -18,6 +18,7 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import org.greenrobot.eventbus.EventBus
 import org.openklas.NavGraphDirections
+import org.openklas.utils.catchAll
 import javax.inject.Inject
 
 abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
@@ -64,5 +68,36 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 		prepareViewModel(viewModel)
 
 		return viewModel
+	}
+
+	override fun onActivityCreated(savedInstanceState: Bundle?) {
+		super.onActivityCreated(savedInstanceState)
+		if (Config.config.registerBusOnCreate) registerEventBus()
+	}
+	override fun onStart() {
+		super.onStart()
+		if (!Config.config.registerBusOnCreate) registerEventBus()
+	}
+
+	override fun onStop() {
+		super.onStop()
+		if (!Config.config.registerBusOnCreate) unregisterEventBus()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		if (Config.config.registerBusOnCreate) unregisterEventBus()
+	}
+
+	private fun registerEventBus() {
+		catchAll {
+			EventBus.getDefault().register(this)
+		}
+	}
+
+	private fun unregisterEventBus() {
+		catchAll {
+			EventBus.getDefault().unregister(this)
+		}
 	}
 }

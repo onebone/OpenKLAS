@@ -125,6 +125,14 @@ class HomeViewModel @Inject constructor(
 		navigateToPostList(view, PostType.QNA)
 	}
 
+	fun onClickLecturePlan(view: View){
+		val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
+
+		NavHostFragment.findNavController(fragment).navigate(
+			HomeContainerFragmentDirections.actionHomeLectureList()
+		)
+	}
+
 	private fun navigateToPostList(view: View, type: PostType) {
 		semester.value?.let {
 			// fragment: HomeContainerFragment

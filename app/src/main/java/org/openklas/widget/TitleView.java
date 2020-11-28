@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.openklas.R;
 import org.openklas.databinding.TitleViewBinding;
 import org.openklas.event.ControlDrawerEvent;
+import org.openklas.event.Event;
 import org.openklas.event.Mode;
 
 import pyxis.uzuki.live.attribute.parser.TitleViewAttributes;
@@ -73,6 +74,10 @@ public class TitleView extends LinearLayout {
 	public TitleView(Context context, @Nullable AttributeSet attrs) {
 		super(context, attrs);
 		init(attrs);
+	}
+
+	public void clickSearch(View view){
+		EventBus.getDefault().post(new Event(true));
 	}
 
 	public void clickBack(View view) {

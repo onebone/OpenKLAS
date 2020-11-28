@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  ~ OpenKLAS
  ~ Copyright (C) 2020 OpenKLAS Team
  ~
@@ -18,72 +17,84 @@
  -->
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_login">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/fragment_login">
 
-    <action
-        android:id="@+id/action_global_login"
-        app:destination="@id/fragment_login" />
+	<action
+		android:id="@+id/action_global_login"
+		app:destination="@id/fragment_login" />
 
-    <fragment
-        android:id="@+id/fragment_login"
-        android:name="org.openklas.ui.login.LoginFragment"
-        tools:layout="@layout/login_fragment">
+	<fragment
+		android:id="@+id/fragment_login"
+		android:name="org.openklas.ui.login.LoginFragment"
+		tools:layout="@layout/login_fragment">
 
-        <action
-            android:id="@+id/action_login_home"
-            app:destination="@id/fragment_home_container"
-            app:popUpTo="@id/fragment_login"
-            app:popUpToInclusive="true"
-            app:enterAnim="@anim/slightly_scale_up"
-            app:exitAnim="@anim/slightly_scale_down" />
+		<action
+			android:id="@+id/action_login_home"
+			app:destination="@id/fragment_home_container"
+			app:enterAnim="@anim/slightly_scale_up"
+			app:exitAnim="@anim/slightly_scale_down"
+			app:popUpTo="@id/fragment_login"
+			app:popUpToInclusive="true" />
 
-    </fragment>
+	</fragment>
 
-    <fragment
-        android:id="@+id/fragment_home_container"
-        android:name="org.openklas.ui.home.HomeContainerFragment"
-        tools:layout="@layout/home_container_fragment">
+	<fragment
+		android:id="@+id/fragment_home_container"
+		android:name="org.openklas.ui.home.HomeContainerFragment"
+		tools:layout="@layout/home_container_fragment">
 
-        <action
-            android:id="@+id/action_home_post_list"
-            app:destination="@id/fragment_post_list"
-            app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slightly_scale_down_left"
-            app:popEnterAnim="@anim/slightly_scale_up_left"
-            app:popExitAnim="@anim/slide_right_pop">
+		<action
+			android:id="@+id/action_home_post_list"
+			app:destination="@id/fragment_post_list"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
 
-            <argument
-                android:name="semester"
-                app:argType="string"
-                app:nullable="false" />
+			<argument
+				android:name="semester"
+				app:argType="string"
+				app:nullable="false" />
 
-            <argument
-                android:name="type"
-                app:argType=".ui.postlist.PostType"
-                app:nullable="false" />
+			<argument
+				android:name="type"
+				app:argType=".ui.postlist.PostType"
+				app:nullable="false" />
 
-        </action>
+		</action>
+		<action
+			android:id="@+id/action_home_lecture_list"
+			app:destination="@id/fragment_lecture_pan"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop"/>
 
-    </fragment>
+	</fragment>
 
-    <fragment
-        android:id="@+id/fragment_post_list"
-        android:name="org.openklas.ui.postlist.PostListFragment"
-        tools:layout="@layout/post_list_fragment">
+	<fragment
+		android:id="@+id/fragment_post_list"
+		android:name="org.openklas.ui.postlist.PostListFragment"
+		tools:layout="@layout/post_list_fragment">
 
-        <argument
-            android:name="semester"
-            app:argType="string"
-            app:nullable="false" />
+		<argument
+			android:name="semester"
+			app:argType="string"
+			app:nullable="false" />
 
-        <argument
-            android:name="type"
-            app:argType=".ui.postlist.PostType"
-            app:nullable="false" />
+		<argument
+			android:name="type"
+			app:argType=".ui.postlist.PostType"
+			app:nullable="false" />
 
-    </fragment>
+	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_lecture_pan"
+		android:name="org.openklas.ui.lectureplan.LecturePlanFragment"
+		tools:layout="@layout/lectureplan_fragment"/>
 
 </navigation>

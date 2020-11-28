@@ -45,11 +45,4 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
 	}
-
-	@Subscribe
-	public void getEvent(Event e){
-		if(e.getEvent()){
-			showToast("event hi");
-		}
-	}
 }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  ~ OpenKLAS
  ~ Copyright (C) 2020 OpenKLAS Team
  ~
@@ -18,335 +17,356 @@
  -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.HomeFragment">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".ui.home.HomeFragment">
 
-    <data>
+	<data>
 
-        <variable
-            name="viewModel"
-            type="org.openklas.ui.home.HomeViewModel" />
-    </data>
+		<variable
+			name="viewModel"
+			type="org.openklas.ui.home.HomeViewModel" />
+	</data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/pale_grey">
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/pale_grey">
 
-        <org.openklas.widget.TitleView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:onClickMypage="@{viewModel::clickBtn}"
-            app:titleMode="mypage"
-            app:titleName="@string/app_name" />
+		<org.openklas.widget.TitleView
+			android:id="@+id/title"
+			android:layout_width="match_parent"
+			android:layout_height="56dp"
+			app:layout_constraintTop_toTopOf="parent"
+			app:onClickMypage="@{viewModel::clickBtn}"
+			app:titleMode="mypage"
+			app:titleName="@string/app_name" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/title">
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/constraint1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/title">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/copper"
-                app:layout_constraintBottom_toBottomOf="@id/guide1"
-                app:layout_constraintTop_toTopOf="parent" />
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:background="@color/copper"
+				app:layout_constraintBottom_toBottomOf="@id/guide1"
+				app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide1"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+			<androidx.constraintlayout.widget.Guideline
+				android:id="@+id/guide1"
+				android:layout_width="wrap_content"
+				android:layout_height="1dp"
+				android:orientation="horizontal"
+				app:layout_constraintGuide_percent="0.5" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/bg_white_r7"
-                android:paddingTop="9dp"
-                android:paddingBottom="11dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="20dp"
+				android:background="@drawable/bg_white_r7"
+				android:paddingTop="9dp"
+				android:paddingBottom="11dp"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:text="@string/empty_lecture"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="남은 강의" />
+				<TextView
+					android:id="@+id/text1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="30dp"
+					android:text="@string/empty_lecture"
+					android:textColor="@color/black"
+					android:textSize="12sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					tools:text="남은 강의" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/text1"
-                    app:layout_constraintEnd_toEndOf="@id/text1"
-                    app:layout_constraintStart_toStartOf="@id/text1"
-                    tools:text="00" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="00"
+					android:textColor="@color/black"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toTopOf="@id/text1"
+					app:layout_constraintEnd_toEndOf="@id/text1"
+					app:layout_constraintStart_toStartOf="@id/text1"
+					tools:text="00" />
 
-                <TextView
-                    android:id="@+id/text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/empty_hw"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/text3"
-                    app:layout_constraintStart_toEndOf="@id/text1"
-                    tools:text="남은 과목" />
+				<TextView
+					android:id="@+id/text2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/empty_hw"
+					android:textColor="@color/black"
+					android:textSize="12sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintEnd_toStartOf="@id/text3"
+					app:layout_constraintStart_toEndOf="@id/text1"
+					tools:text="남은 과목" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/text2"
-                    app:layout_constraintEnd_toEndOf="@id/text2"
-                    app:layout_constraintStart_toStartOf="@id/text2"
-                    tools:text="00" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/black"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toTopOf="@id/text2"
+					app:layout_constraintEnd_toEndOf="@id/text2"
+					app:layout_constraintStart_toStartOf="@id/text2"
+					tools:text="00" />
 
-                <TextView
-                    android:id="@+id/text3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:text="@string/courses"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="수강 과목" />
+				<TextView
+					android:id="@+id/text3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="30dp"
+					android:text="@string/courses"
+					android:textColor="@color/black"
+					android:textSize="12sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					tools:text="수강 과목" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@{String.format(`%02d`, viewModel.subjectCount)}"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/text3"
-                    app:layout_constraintEnd_toEndOf="@id/text3"
-                    app:layout_constraintStart_toStartOf="@id/text3"
-                    tools:text="00" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@{String.format(`%02d`, viewModel.subjectCount)}"
+					android:textColor="@color/black"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:layout_constraintBottom_toTopOf="@id/text3"
+					app:layout_constraintEnd_toEndOf="@id/text3"
+					app:layout_constraintStart_toStartOf="@id/text3"
+					tools:text="00" />
+			</androidx.constraintlayout.widget.ConstraintLayout>
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/bg_white_r9"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="14dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toTopOf="@id/linear1"
-            app:layout_constraintTop_toBottomOf="@id/constraint1">
-            <TextView
-                android:id="@+id/text4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_time"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginTop="9dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_name"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/text4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/text4"
-                app:layout_constraintBottom_toBottomOf="@id/text4"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_loc"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/text4"
-                app:layout_constraintStart_toEndOf="@id/text4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/text4"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                app:layout_constraintTop_toBottomOf="@id/text4"
-                android:background="@color/brownish_grey"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="9dp"
-                app:items="@{viewModel.todaySubList}"
-                app:layout_constraintTop_toBottomOf="@id/text4"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_marginStart="10dp"
+			android:layout_marginTop="14dp"
+			android:layout_marginEnd="10dp"
+			android:background="@drawable/bg_white_r9"
+			android:paddingStart="10dp"
+			android:paddingEnd="10dp"
+			app:layout_constraintBottom_toTopOf="@id/linear1"
+			app:layout_constraintTop_toBottomOf="@id/constraint1">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
-            android:id="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="7dp"
-                android:gravity="center"
-                android:baselineAligned="false">
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:image="@{@drawable/ic_alarm}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        android:onClick="@{viewModel::onClickNotice}"
-                        app:title="@{@string/course_notice}" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:image="@{@drawable/ic_plan}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        app:title="@{@string/course_plan}" />
-                </FrameLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="7dp"
-                android:gravity="center"
-                android:baselineAligned="false">
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:onClick="@{viewModel::onClickQna}"
-                        app:image="@{@drawable/ic_folder}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        app:title="@{@string/course_material}" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:image="@{@drawable/ic_hw_submit}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        app:title="@{@string/course_submit}" />
-                </FrameLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="7dp"
-                android:gravity="center"
-                android:baselineAligned="false">
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:onClick="@{viewModel::onClickLectureMaterial}"
-                        app:image="@{@drawable/ic_qna}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        app:title="@{@string/course_qna}" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:background="@drawable/bg_white_r7">
-                    <include
-                        layout="@layout/include_ic_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/list"
-                        />
-                </FrameLayout>
-            </LinearLayout>
-        </LinearLayout>
+			<TextView
+				android:id="@+id/text4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="9dp"
+				android:text="@string/course_time"
+				android:textColor="@color/black"
+				android:textStyle="bold"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/course_name"
+				android:textColor="@color/black"
+				android:textStyle="bold"
+				app:layout_constraintBottom_toBottomOf="@id/text4"
+				app:layout_constraintEnd_toStartOf="@id/text4"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="@id/text4" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/course_loc"
+				android:textColor="@color/black"
+				android:textStyle="bold"
+				app:layout_constraintBottom_toBottomOf="@id/text4"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/text4"
+				app:layout_constraintTop_toTopOf="@id/text4" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginTop="2dp"
+				android:background="@color/brownish_grey"
+				app:layout_constraintTop_toBottomOf="@id/text4" />
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/list"
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_marginTop="5dp"
+				android:layout_marginBottom="9dp"
+				app:items="@{viewModel.todaySubList}"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/text4" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<LinearLayout
+			android:id="@+id/linear1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingStart="14dp"
+			android:paddingEnd="14dp"
+			android:paddingBottom="10dp"
+			app:layout_constraintBottom_toBottomOf="parent">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:baselineAligned="false"
+				android:gravity="center"
+				android:orientation="horizontal">
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="14dp"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						android:onClick="@{viewModel::onClickNotice}"
+						app:image="@{@drawable/ic_alarm}"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list"
+						app:title="@{@string/course_notice}" />
+				</FrameLayout>
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7"
+					android:onClick="@{viewModel.onClickLecturePlan}">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						app:image="@{@drawable/ic_plan}"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list"
+						app:title="@{@string/course_plan}" />
+				</FrameLayout>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:baselineAligned="false"
+				android:gravity="center"
+				android:orientation="horizontal">
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="14dp"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						android:onClick="@{viewModel::onClickQna}"
+						app:image="@{@drawable/ic_folder}"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list"
+						app:title="@{@string/course_material}" />
+				</FrameLayout>
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						app:image="@{@drawable/ic_hw_submit}"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list"
+						app:title="@{@string/course_submit}" />
+				</FrameLayout>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:baselineAligned="false"
+				android:gravity="center"
+				android:orientation="horizontal">
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="14dp"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						android:onClick="@{viewModel::onClickLectureMaterial}"
+						app:image="@{@drawable/ic_qna}"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list"
+						app:title="@{@string/course_qna}" />
+				</FrameLayout>
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@drawable/bg_white_r7"
+					android:visibility="invisible">
+
+					<include
+						layout="@layout/include_ic_btn"
+						android:layout_width="match_parent"
+						android:layout_height="80dp"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@id/list" />
+				</FrameLayout>
+			</LinearLayout>
+		</LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

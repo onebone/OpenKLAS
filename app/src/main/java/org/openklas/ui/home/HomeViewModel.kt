@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(
 	}
 	val todaySubList : LiveData<List<Timetable.Entry>> = Transformations.map(timetable) { it ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		it.entries.filter { item -> item.day == day -4 }.sortedWith(compareBy { it.time }).toList() //  day -3 for test  day -1 is correct
+		it.entries.filter { item -> item.day == day - 1 }.sortedWith(compareBy { it.time }).toList()
 	}
 
 	private val _error = MutableLiveData<Throwable>()

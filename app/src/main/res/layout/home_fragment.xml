@@ -22,6 +22,7 @@
 	tools:context=".ui.home.HomeFragment">
 
 	<data>
+		<import type="android.view.View" />
 
 		<variable
 			name="viewModel"
@@ -213,6 +214,16 @@
 				app:items="@{viewModel.todaySubList}"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/text4" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintTop_toTopOf="@id/list"
+				app:layout_constraintBottom_toBottomOf="@id/list"
+				android:visibility="@{viewModel.todaySubList.size() > 0 ? View.GONE : View.VISIBLE}"
+				android:text="@string/home_no_class_today" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

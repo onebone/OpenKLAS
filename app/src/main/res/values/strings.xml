@@ -40,6 +40,7 @@
 	<string name="course_name">강의명</string>
 	<string name="course_time">수업 시간</string>
 	<string name="course_loc">수업 장소</string>
+	<string name="home_no_class_today">오늘은 강의가 없어요!</string>
 
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>

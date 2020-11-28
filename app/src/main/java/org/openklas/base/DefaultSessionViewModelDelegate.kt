@@ -18,6 +18,7 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Single
 import org.openklas.net.transformer.AsyncTransformer
@@ -27,11 +28,16 @@ import javax.inject.Inject
 class DefaultSessionViewModelDelegate @Inject constructor(
 	private val sessionRepository: SessionRepository
 ): SessionViewModelDelegate {
+	companion object {
+		const val TAG = "SessionViewModel"
+	}
+
 	override val mustAuthenticate = MutableLiveData<Boolean>()
 
 	override fun <T> requestWithSession(f: () -> Single<T>): Single<T> {
 		return f()
 			.onErrorResumeNext { err ->
+				Log.e(TAG, "requestWithSession:", err)
 				// TODO check if [err] is session-related error
 				sessionRepository.tryLogin()
 					.compose(AsyncTransformer())

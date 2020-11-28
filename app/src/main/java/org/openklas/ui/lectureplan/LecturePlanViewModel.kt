@@ -18,23 +18,21 @@ package org.openklas.ui.lectureplan
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.util.Log
 import android.view.View
-import androidx.fragment.app.findFragment
+import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.navigation.fragment.NavHostFragment
 import com.github.windsekirun.daggerautoinject.InjectViewModel
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Consumer
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.event.Event
-import org.openklas.klas.model.Board
-import org.openklas.klas.model.BriefSubject
-import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
-import org.openklas.ui.home.HomeFragment
 import javax.inject.Inject
 
 @InjectViewModel
@@ -42,17 +40,33 @@ class LecturePlanViewModel @Inject constructor(
 	app: MainApplication,
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
-	// semester must be set externally, others are optional
-	init{
+) : BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
 
+	init {
 	}
 
-	fun clickBack(view : View){
+	private val _error = MutableLiveData<Throwable>()
+	val mListKeyword = ObservableArrayList<SyllabusSummary>()
+
+
+	fun getList(keyword: String) {
+
+		addDisposable(requestWithSession {
+			klasRepository.getSyllabusList(2020, 2, keyword, "")
+		}.subscribe { v, err ->
+			if (err == null) {
+				mListKeyword.addAll(v)
+			} else {
+				_error.value = err
+			}
+		})
+	}
+
+	fun clickBack(view: View) {
 		requireActivity().onBackPressed()
 	}
 
-	fun clickSearch(view: View){
+	fun clickSearch(view: View) {
 		postEvent(Event(true))
 	}
 }

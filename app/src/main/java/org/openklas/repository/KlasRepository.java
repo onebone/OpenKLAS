@@ -26,6 +26,8 @@ import org.openklas.klas.model.OnlineContentEntry;
 import org.openklas.klas.model.Semester;
 import org.openklas.klas.model.SyllabusSummary;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 public interface KlasRepository {
@@ -35,6 +37,6 @@ public interface KlasRepository {
 	Single<Board> getNotices(String semester, String subjectId, int page);
 	Single<Board> getQnas(String semester, String subjectId, int page);
 	Single<Board> getLectureMaterials(String semester, String subjectId, int page);
-	Single<SyllabusSummary[]> getSyllabusList(int year, int term, String keyword, String professor);
+	Single<List<SyllabusSummary>> getSyllabusList(int year, int term, String keyword, String professor);
 	Single<OnlineContentEntry[]> getOnlineContentList(String semester, String subjectId);
 }

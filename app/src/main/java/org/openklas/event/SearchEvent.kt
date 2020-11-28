@@ -1,4 +1,4 @@
-package org.openklas.base
+package org.openklas.event
 
 /*
  * OpenKLAS
@@ -18,13 +18,11 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Observable
-import io.reactivex.Single
-
-interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Boolean>
-
-	fun <T> requestWithSession(f: () -> Single<T>): Single<T>
-
-}
+/**
+ * OpenKlas
+ * Class: event
+ * Created by limmoong on 2020/11/23.
+ *
+ * Description:
+ */
+data class SearchEvent(val string: String)

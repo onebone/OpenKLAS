@@ -57,7 +57,7 @@ interface KlasService {
 	fun qnas(@Body payload: RequestPostList): Single<Board>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
-	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Array<SyllabusSummary>>
+	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<List<SyllabusSummary>>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Array<OnlineContentEntry>>

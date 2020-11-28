@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.windsekirun.daggerautoinject.InjectFragment
 import org.greenrobot.eventbus.Subscribe
 import org.openklas.R
@@ -29,6 +30,8 @@ import org.openklas.base.BaseFragment
 import org.openklas.base.impl.port.AlertInterfacePort.showToast
 import org.openklas.databinding.LectureplanFragmentBinding
 import org.openklas.event.Event
+import org.openklas.event.SearchEvent
+import org.openklas.ui.home.HomeTodayAdapter
 
 @InjectFragment
 class LecturePlanFragment : BaseFragment<LectureplanFragmentBinding>() {
@@ -42,14 +45,13 @@ class LecturePlanFragment : BaseFragment<LectureplanFragmentBinding>() {
 		val viewModel = getViewModel<LecturePlanViewModel>()
 
 		mBinding.viewModel = viewModel
-
+		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
+		mBinding.list.adapter = LecturePlanAdapter()
 		return view
 	}
 
 	@Subscribe
-	fun getEvent(e: Event) {
-		if (e.event) {
-			showToast("event hi")
-		}
+	fun getSearchEvent(e: SearchEvent) {
+		mBinding.viewModel?.getList(e.string)
 	}
 }

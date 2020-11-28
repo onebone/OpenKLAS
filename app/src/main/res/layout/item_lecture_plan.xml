@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="bean"
+			type="org.openklas.klas.model.SyllabusSummary" />
+
+		<variable
+			name="adapter"
+			type="org.openklas.ui.lectureplan.LecturePlanAdapter" />
+
+		<variable
+			name="position"
+			type="Integer" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/text1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@{bean.subjectName}"
+			android:textColor="@color/black"
+			android:textSize="17sp"
+			android:layout_marginTop="22dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="오픈소스소프트웨어 개발" />
+
+		<TextView
+			android:id="@+id/text2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/brownish_grey"
+			android:text="@{bean.tutor}"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/text1"
+			tools:text="교수명" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="16dp"
+			android:text="@{@string/format_lec_plan2(bean.credits,bean.lessonHour)}"
+			app:layout_constraintBottom_toBottomOf="@id/text2"
+			app:layout_constraintStart_toEndOf="@id/text2"
+			tools:text="학점/수업시간"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:layout_marginStart="16dp"
+			android:text="@{@string/format_lec_plan(bean.departmentCode,bean.targetGrade,bean.openGwamokNo,bean.division)}"
+			app:layout_constraintStart_toEndOf="@id/text1"
+			app:layout_constraintBottom_toBottomOf="@id/text1"
+			tools:text="학정번호" />
+
+		<View
+			android:id="@+id/view"
+			android:layout_width="match_parent"
+			android:layout_height="0.5dp"
+			android:background="@color/brownish_grey"
+			android:layout_marginTop="14dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/text2"/>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

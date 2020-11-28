@@ -18,11 +18,8 @@ package org.openklas.ui.home
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.util.Log
 import android.view.View
-import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.findFragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData

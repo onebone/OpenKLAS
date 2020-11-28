@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
 
 import com.github.windsekirun.bindadapters.observable.ObservableString;
@@ -38,6 +39,7 @@ import org.openklas.databinding.TitleViewBinding;
 import org.openklas.event.ControlDrawerEvent;
 import org.openklas.event.Event;
 import org.openklas.event.Mode;
+import org.openklas.event.SearchEvent;
 
 import pyxis.uzuki.live.attribute.parser.TitleViewAttributes;
 import pyxis.uzuki.live.attribute.parser.annotation.AttrInt;
@@ -65,6 +67,8 @@ public class TitleView extends LinearLayout {
 
 	public ObservableString mTitle = new ObservableString("");
 	public ObservableInt mMode = new ObservableInt(0);
+	public ObservableBoolean mEditText_Opened = new ObservableBoolean(false);
+	public ObservableString mKeyword = new ObservableString();
 
 	public TitleView(Context context) {
 		super(context);
@@ -77,7 +81,7 @@ public class TitleView extends LinearLayout {
 	}
 
 	public void clickSearch(View view){
-		EventBus.getDefault().post(new Event(true));
+		EventBus.getDefault().post(new SearchEvent(mKeyword.get()));
 	}
 
 	public void clickBack(View view) {

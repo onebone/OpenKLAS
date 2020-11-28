@@ -37,6 +37,8 @@ data class SyllabusSummary(
 	val tutor: String,
 	@SerializedName("openGrade")
 	val targetGrade: Int,
+	@SerializedName("openGwamokNo")
+	val openGwamokNo: String,
 	@SerializedName("openMajorCode")
 	val departmentCode: String,
 	@SerializedName("hakjumNum")

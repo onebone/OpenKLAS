@@ -97,6 +97,7 @@
             android:paddingBottom="4dp"
             android:textAlignment="center"
             android:singleLine="true"
+            android:visibility="@{(view.mMode==3 || view.mMode==4 )? View.VISIBLE : View.GONE}"
             android:text="@={view.mKeyword}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

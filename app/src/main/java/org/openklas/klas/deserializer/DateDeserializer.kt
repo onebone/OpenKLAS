@@ -21,27 +21,23 @@ package org.openklas.klas.deserializer
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
+import org.apache.commons.lang3.time.FastDateFormat
 import java.lang.Exception
 import java.lang.reflect.Type
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
+	private val formats = arrayOf(
+		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS"),
+		FastDateFormat.getInstance("yyyy-MM-dd HH:mm")
+	)
+
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
 		context: JsonDeserializationContext?
 	): Date {
 		val string = json.asString!!
-
-		// SimpleDateFormat is NOT thread-safe.
-		// DateDeserializer might parse multiple Date strings simultaneously,
-		// so date format objects must be created at the time of formatting.
-		val formats = arrayOf(
-			SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault()),
-			SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-		)
 
 		for(format in formats) {
 			try {

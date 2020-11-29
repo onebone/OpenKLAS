@@ -18,7 +18,7 @@
  -->
 
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-	android:duration="800"
+	android:duration="400"
 	android:interpolator="@android:anim/accelerate_decelerate_interpolator">
 	<translate
 		android:fromYDelta="0%"

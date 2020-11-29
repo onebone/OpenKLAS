@@ -131,16 +131,19 @@ class TitleView: LinearLayout {
 	}
 
 	companion object {
+		@JvmStatic
 		@BindingAdapter("bindTitle")
 		fun bindTitleName(view: TitleView, title: String?) {
 			view.setTitle(title)
 		}
 
+		@JvmStatic
 		@BindingAdapter("bindMode")
 		fun bindTitleMode(view: TitleView, mode: Int) {
 			view.setMode(mode)
 		}
 
+		@JvmStatic
 		@BindingAdapter("onClickBack")
 		fun bindClickBack(view: TitleView, listener: OnClickBackListener?) {
 			view.setOnClickBackListener(listener)

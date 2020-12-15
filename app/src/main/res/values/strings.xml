@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
  ~ OpenKLAS
  ~ Copyright (C) 2020 OpenKLAS Team
  ~
@@ -17,7 +18,7 @@
  -->
 
 <resources>
-	<string name="app_name">OpenKlas</string>
+	<string name="app_name">OpenKLAS</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>

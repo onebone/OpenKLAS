@@ -17,4 +17,4 @@
  */
 
 include ':app'
-rootProject.name = "OpenKlas"
+rootProject.name = "OpenKLAS"

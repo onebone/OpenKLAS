@@ -270,7 +270,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:background="@drawable/bg_white_r7"
-					android:onClick="@{viewModel.onClickLecturePlan}">
+					android:onClick="@{viewModel::onClickSyllabusSearch}">
 
 					<include
 						layout="@layout/include_ic_btn"

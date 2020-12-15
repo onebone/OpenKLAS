@@ -23,7 +23,7 @@
 
 		<variable
 			name="viewModel"
-			type="org.openklas.ui.lectureplan.LecturePlanViewModel" />
+			type="org.openklas.ui.sylsearch.SylSearchViewModel" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="14dp"
 			android:layout_marginTop="10dp"
-			android:text="@string/lecture_plan_result"
+			android:text="@string/syllabus_search_result"
 			android:textColor="@color/black"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/title" />

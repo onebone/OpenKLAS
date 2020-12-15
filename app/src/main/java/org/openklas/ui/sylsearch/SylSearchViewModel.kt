@@ -1,4 +1,4 @@
-package org.openklas.ui.lectureplan
+package org.openklas.ui.sylsearch
 
 /*
  * OpenKLAS
@@ -19,7 +19,6 @@ package org.openklas.ui.lectureplan
  */
 
 import android.view.View
-import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,13 +26,12 @@ import com.github.windsekirun.daggerautoinject.InjectViewModel
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
-import org.openklas.event.Event
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
 
 @InjectViewModel
-class LecturePlanViewModel @Inject constructor(
+class SylSearchViewModel @Inject constructor(
 	app: MainApplication,
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate

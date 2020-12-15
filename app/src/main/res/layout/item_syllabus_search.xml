@@ -11,7 +11,7 @@
 
 		<variable
 			name="adapter"
-			type="org.openklas.ui.lectureplan.LecturePlanAdapter" />
+			type="org.openklas.ui.sylsearch.SylSearchAdapter" />
 
 		<variable
 			name="position"
@@ -48,7 +48,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="16dp"
-			android:text="@{@string/format_lec_plan2(bean.credits,bean.lessonHour)}"
+			android:text="@{@string/syllabus_search_format_credit(bean.credits,bean.lessonHour)}"
 			app:layout_constraintBottom_toBottomOf="@id/text2"
 			app:layout_constraintStart_toEndOf="@id/text2"
 			tools:text="학점/수업시간"/>
@@ -58,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:textColor="@color/black"
 			android:layout_marginStart="16dp"
-			android:text="@{@string/format_lec_plan(bean.departmentCode,bean.targetGrade,bean.openGwamokNo,bean.division)}"
+			android:text="@{@string/syllabus_search_format_academic_number(bean.departmentCode,bean.targetGrade,bean.openGwamokNo,bean.division)}"
 			app:layout_constraintStart_toEndOf="@id/text1"
 			app:layout_constraintBottom_toBottomOf="@id/text1"
 			tools:text="학정번호" />

@@ -37,7 +37,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="12sp"
-			android:text="@{@string/format_lec_time(bean.time)}"
+			android:text="@{@string/syllabus_search_format_time(bean.time)}"
 			android:textColor="@color/black"
 			android:layout_marginTop="5dp"
 			android:layout_marginBottom="5dp"

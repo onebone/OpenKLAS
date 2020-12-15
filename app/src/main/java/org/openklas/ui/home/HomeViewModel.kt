@@ -148,11 +148,11 @@ class HomeViewModel @Inject constructor(
 		navigateToPostList(view, PostType.QNA)
 	}
 
-	fun onClickLecturePlan(view: View){
+	fun onClickSyllabusSearch(view: View){
 		val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
 
 		NavHostFragment.findNavController(fragment).navigate(
-			HomeContainerFragmentDirections.actionHomeLectureList()
+			HomeContainerFragmentDirections.actionHomeSylSearch()
 		)
 	}
 

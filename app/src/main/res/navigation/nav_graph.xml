@@ -66,8 +66,8 @@
 
 		</action>
 		<action
-			android:id="@+id/action_home_lecture_list"
-			app:destination="@id/fragment_lecture_pan"
+			android:id="@+id/action_home_syl_search"
+			app:destination="@id/fragment_syllabus_search"
 			app:enterAnim="@anim/slide_right"
 			app:exitAnim="@anim/slightly_scale_down_left"
 			app:popEnterAnim="@anim/slightly_scale_up_left"
@@ -93,8 +93,8 @@
 	</fragment>
 
 	<fragment
-		android:id="@+id/fragment_lecture_pan"
-		android:name="org.openklas.ui.lectureplan.LecturePlanFragment"
-		tools:layout="@layout/lectureplan_fragment"/>
+		android:id="@+id/fragment_syllabus_search"
+		android:name="org.openklas.ui.sylsearch.SylSearchFragment"
+		tools:layout="@layout/syllabus_search_fragment"/>
 
 </navigation>

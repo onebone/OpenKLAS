@@ -1,4 +1,4 @@
-package org.openklas.ui.lectureplan
+package org.openklas.ui.sylsearch
 
 /*
  * OpenKLAS
@@ -24,27 +24,27 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import org.openklas.R
 import org.openklas.base.recycler.BaseRecyclerAdapter
-import org.openklas.databinding.ItemLecturePlanBinding
+import org.openklas.databinding.ItemSyllabusSearchBinding
 import org.openklas.klas.model.SyllabusSummary
 
 
-class LecturePlanAdapter : BaseRecyclerAdapter<SyllabusSummary, ItemLecturePlanBinding>() {
+class SylSearchAdapter : BaseRecyclerAdapter<SyllabusSummary, ItemSyllabusSearchBinding>() {
 
-	override fun bind(binding: ItemLecturePlanBinding, item: SyllabusSummary, position: Int) {
+	override fun bind(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int) {
 		binding.adapter = this
 		binding.bean = item
 		binding.position = position
 	}
 
-	override fun onClickedItem(binding: ItemLecturePlanBinding, item: SyllabusSummary, position: Int) {
+	override fun onClickedItem(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int) {
 
 	}
 
-	override fun onLongClickedItem(binding: ItemLecturePlanBinding, item: SyllabusSummary, position: Int): Boolean {
+	override fun onLongClickedItem(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int): Boolean {
 		return false
 	}
 
 	override fun createBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): ViewDataBinding {
-		return DataBindingUtil.inflate(inflater, R.layout.item_lecture_plan, parent, false)
+		return DataBindingUtil.inflate(inflater, R.layout.item_syllabus_search, parent, false)
 	}
 }

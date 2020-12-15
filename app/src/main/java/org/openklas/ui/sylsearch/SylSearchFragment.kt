@@ -1,4 +1,4 @@
-package org.openklas.ui.lectureplan
+package org.openklas.ui.sylsearch
 
 /*
  * OpenKLAS
@@ -24,29 +24,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.windsekirun.daggerautoinject.InjectFragment
-import org.greenrobot.eventbus.Subscribe
 import org.openklas.R
 import org.openklas.base.BaseFragment
-import org.openklas.base.impl.port.AlertInterfacePort.showToast
-import org.openklas.databinding.LectureplanFragmentBinding
-import org.openklas.event.Event
-import org.openklas.event.SearchEvent
-import org.openklas.ui.home.HomeTodayAdapter
+import org.openklas.databinding.SyllabusSearchFragmentBinding
 
 @InjectFragment
-class LecturePlanFragment : BaseFragment<LectureplanFragmentBinding>() {
+class SylSearchFragment : BaseFragment<SyllabusSearchFragmentBinding>() {
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val view = createAndBindView(inflater, R.layout.lectureplan_fragment, container)
+		val view = createAndBindView(inflater, R.layout.syllabus_search_fragment, container)
 
-		val viewModel = getViewModel<LecturePlanViewModel>()
+		val viewModel = getViewModel<SylSearchViewModel>()
 
 		mBinding.viewModel = viewModel
 		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
-		mBinding.list.adapter = LecturePlanAdapter()
+		mBinding.list.adapter = SylSearchAdapter()
 		return view
 	}
 }

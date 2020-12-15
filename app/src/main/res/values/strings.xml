@@ -49,10 +49,10 @@
 	<string name="post_author">작성자: %s</string>
 
 	<string name="search_hint">검색어를 입력</string>
-	<string name="lecture_plan_result">강의 계획서 검색 결과</string>
+	<string name="syllabus_search_result">강의 계획서 검색 결과</string>
 
-	<string name="format_lec_plan">%s-%s-%s-%s</string>
-	<string name="format_lec_plan2">%d/%d</string>
-	<string name="format_lec_time">"%d교시"</string>
+	<string name="syllabus_search_format_academic_number">%s-%s-%s-%s</string>
+	<string name="syllabus_search_format_credit">%d/%d</string>
+	<string name="syllabus_search_format_time">"%d교시"</string>
 
 </resources>

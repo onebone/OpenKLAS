@@ -49,9 +49,4 @@ class LecturePlanFragment : BaseFragment<LectureplanFragmentBinding>() {
 		mBinding.list.adapter = LecturePlanAdapter()
 		return view
 	}
-
-	@Subscribe
-	fun getSearchEvent(e: SearchEvent) {
-		mBinding.viewModel?.getList(e.string)
-	}
 }

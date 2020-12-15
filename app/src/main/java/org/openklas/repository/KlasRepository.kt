@@ -37,7 +37,7 @@ interface KlasRepository {
 		term: Int,
 		keyword: String,
 		professor: String
-	): Single<List<SyllabusSummary>>
+	): Single<Array<SyllabusSummary>>
 
 	fun getOnlineContentList(
 		semester: String,

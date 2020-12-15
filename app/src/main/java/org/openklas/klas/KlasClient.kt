@@ -99,7 +99,7 @@ class KlasClient @Inject constructor(
 		))
 	}
 
-	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<List<SyllabusSummary>> {
+	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
 			year = year, term = term, keyword = keyword, professor = professor))
 	}

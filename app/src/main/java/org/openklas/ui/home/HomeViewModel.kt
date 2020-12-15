@@ -95,10 +95,11 @@ class HomeViewModel @Inject constructor(
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
 	}
-	val todaySubList : LiveData<List<Timetable.Entry>> = Transformations.map(timetable) { it ->
+	val todaySubList : LiveData<Array<Timetable.Entry>> = Transformations.map(timetable) { it ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		it.entries.filter { item -> item.day == day - 1 }.sortedWith(compareBy { it.time }).toList()
+		it.entries.filter { item -> item.day == day - 1 }.sortedWith(compareBy { it.time }).toTypedArray()
 	}
+	val todayVisible: LiveData<Boolean> = Transformations.map(todaySubList) { it.isEmpty() }
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error

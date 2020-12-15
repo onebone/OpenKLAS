@@ -18,15 +18,12 @@ package org.openklas.ui.lectureplan
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.windsekirun.daggerautoinject.InjectViewModel
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
@@ -41,22 +38,24 @@ class LecturePlanViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
 ) : BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
-
-	init {
-	}
-
 	private val _error = MutableLiveData<Throwable>()
-	val mListKeyword = ObservableArrayList<SyllabusSummary>()
 
+	private val keyword = MutableLiveData<String>()
 
-	fun getList(keyword: String) {
+	private val _syllabusList = MediatorLiveData<Array<SyllabusSummary>>().apply {
+		addSource(keyword) {
+			fetchSyllabus(it)
+		}
+	}
+	val syllabusList: LiveData<Array<SyllabusSummary>> = _syllabusList
 
+	private fun fetchSyllabus(keyword: String) {
+		// TODO configure semester
 		addDisposable(requestWithSession {
 			klasRepository.getSyllabusList(2020, 2, keyword, "")
 		}.subscribe { v, err ->
 			if (err == null) {
-				mListKeyword.clear()
-				mListKeyword.addAll(v)
+				_syllabusList.value = v
 			} else {
 				_error.value = err
 			}
@@ -67,7 +66,7 @@ class LecturePlanViewModel @Inject constructor(
 		requireActivity().onBackPressed()
 	}
 
-	fun clickSearch(view: View) {
-		postEvent(Event(true))
+	fun clickSearch(view: View, keyword: String) {
+		this.keyword.value = keyword
 	}
 }

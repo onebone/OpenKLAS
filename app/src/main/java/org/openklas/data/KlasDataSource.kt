@@ -32,6 +32,6 @@ interface KlasDataSource {
 	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board>
 	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board>
 	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board>
-	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<List<SyllabusSummary>>
+	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>>
 }

@@ -51,9 +51,9 @@ class TitleView: LinearLayout {
 
 	private var mBinding: TitleViewBinding? = null
 
-	private var mOnClickBackListener: OnClickBackListener? = null
-
-	private var mOnClickMypageListner: OnClickMypageListener? = null
+	var onClickBackListener: OnClickBackListener? = null
+	var onClickMypageListener: OnClickMypageListener? = null
+	var onClickSearchListener: OnClickSearchListener? = null
 
 	var mTitle = ObservableString("")
 	var mMode = ObservableInt(0)
@@ -69,33 +69,19 @@ class TitleView: LinearLayout {
 	}
 
 	fun clickSearch(view: View) {
-		EventBus.getDefault().post(SearchEvent(mKeyword.get()))
+		onClickSearchListener?.onClickSearch(view, mKeyword.get())
 	}
 
 	fun clickBack(view: View) {
-		if (mOnClickBackListener != null) {
-			mOnClickBackListener!!.onClickBack(view)
-		}
-		//		else {
-//			BaseActivity activity = (BaseActivity) getContext();
-//			activity.finish();
-//		}
+		onClickBackListener?.onClickBack(view)
 	}
 
 	fun clickMypage(view: View) {
-		if (mOnClickMypageListner != null) {
-			mOnClickMypageListner!!.onClickMypage(view)
+		if (onClickMypageListener != null) {
+			onClickMypageListener!!.onClickMypage(view)
 		} else {
 			EventBus.getDefault().post(ControlDrawerEvent(Mode.Open))
 		}
-	}
-
-	fun setOnClickBackListener(onClickBackListener: OnClickBackListener?) {
-		mOnClickBackListener = onClickBackListener
-	}
-
-	fun setOnClickMypageListner(onClickMypageListner: OnClickMypageListener?) {
-		mOnClickMypageListner = onClickMypageListner
 	}
 
 	private fun init(attrs: AttributeSet?) {
@@ -123,11 +109,15 @@ class TitleView: LinearLayout {
 	}
 
 	interface OnClickBackListener {
-		fun onClickBack(view: View?)
+		fun onClickBack(view: View)
 	}
 
 	interface OnClickMypageListener {
-		fun onClickMypage(view: View?)
+		fun onClickMypage(view: View)
+	}
+
+	interface OnClickSearchListener {
+		fun onClickSearch(view: View, keyword: String)
 	}
 
 	companion object {
@@ -146,13 +136,19 @@ class TitleView: LinearLayout {
 		@JvmStatic
 		@BindingAdapter("onClickBack")
 		fun bindClickBack(view: TitleView, listener: OnClickBackListener?) {
-			view.setOnClickBackListener(listener)
+			view.onClickBackListener = listener
 		}
 
 		@JvmStatic
 		@BindingAdapter("onClickMypage")
 		fun bindClickBack(view: TitleView, listener: OnClickMypageListener?) {
-			view.setOnClickMypageListner(listener)
+			view.onClickMypageListener = listener
+		}
+
+		@JvmStatic
+		@BindingAdapter("onClickSearch")
+		fun bindOnClickSearch(view: TitleView, listener: OnClickSearchListener?) {
+			view.onClickSearchListener = listener
 		}
 	}
 }

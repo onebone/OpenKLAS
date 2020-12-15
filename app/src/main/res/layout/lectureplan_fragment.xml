@@ -37,6 +37,7 @@
 			android:layout_height="wrap_content"
 			app:layout_constraintTop_toTopOf="parent"
 			app:onClickBack="@{viewModel::clickBack}"
+			app:onClickSearch="@{viewModel::clickSearch}"
 			app:titleMode="backsearch"
 			app:titleName="@string/course_plan" />
 
@@ -62,7 +63,7 @@
 			android:background="@drawable/bg_white_r7"
 			android:paddingStart="20dp"
 			android:paddingEnd="20dp"
-			app:items="@{viewModel.mListKeyword}"
+			app:items="@{viewModel.syllabusList}"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/text" />
 

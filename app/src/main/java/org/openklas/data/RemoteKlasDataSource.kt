@@ -55,7 +55,7 @@ class RemoteKlasDataSource @Inject constructor(
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)
-		: Single<List<SyllabusSummary>> {
+		: Single<Array<SyllabusSummary>> {
 		return klas.getSyllabusList(year, term, keyword, professor)
 	}
 

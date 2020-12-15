@@ -222,7 +222,7 @@
 				app:layout_constraintRight_toRightOf="parent"
 				app:layout_constraintTop_toTopOf="@id/list"
 				app:layout_constraintBottom_toBottomOf="@id/list"
-				android:visibility="@{viewModel.todaySubList.size() > 0 ? View.GONE : View.VISIBLE}"
+				android:visibility="@{viewModel.todayVisible ? View.VISIBLE : View.GONE}"
 				android:text="@string/home_no_class_today" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>

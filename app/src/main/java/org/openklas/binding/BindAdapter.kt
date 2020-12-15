@@ -46,10 +46,10 @@ object BindAdapter {
 
 	@JvmStatic
 	@BindingAdapter("items")
-	fun <T> bindItems(recyclerView: RecyclerView, list: List<T>?) {
+	fun <T> bindItems(recyclerView: RecyclerView, list: Array<T>?) {
 		recyclerView.adapter?.let {
 			if (recyclerView.adapter is ViewTypeRecyclerAdapter<*>) {
-				(recyclerView.adapter as ViewTypeRecyclerAdapter<T>).setItems(list)
+				(recyclerView.adapter as ViewTypeRecyclerAdapter<T>).setItems(list?.toList())
 			}
 		}
 

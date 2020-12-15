@@ -23,13 +23,14 @@ import org.openklas.net.interceptor.RWInterceptor;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
 import dagger.multibindings.IntoSet;
 import okhttp3.Interceptor;
 
-
 @Module
+@InstallIn(SingletonComponent.class)
 public class AppInterceptorModule {
-
 	@Provides
 	@IntoSet
 	public Interceptor provideRWProvider() {

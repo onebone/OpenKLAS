@@ -19,11 +19,11 @@ package org.openklas
  */
 
 import android.os.Bundle
-import com.github.windsekirun.daggerautoinject.InjectActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.base.BaseActivity
 import org.openklas.databinding.MainActivityBinding
 
-@InjectActivity
+@AndroidEntryPoint
 class MainActivity : BaseActivity<MainActivityBinding>() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

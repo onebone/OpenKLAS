@@ -20,22 +20,18 @@ package org.openklas.ui.login
 
 import android.view.View
 import androidx.databinding.ObservableBoolean
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.navigation.Navigation
 import com.github.windsekirun.bindadapters.observable.ObservableString
-import com.github.windsekirun.daggerautoinject.InjectViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.repository.KlasRepository
 import org.openklas.ui.login.LoginFragmentDirections.Companion.actionLoginHome
-import javax.inject.Inject
 
-@InjectViewModel
-class LoginViewModel @Inject constructor(application: MainApplication): BaseViewModel(application) {
-	@Inject
-	lateinit var mKlasRepository: KlasRepository
-
+class LoginViewModel @ViewModelInject constructor(
+	private val klasRepository: KlasRepository
+): BaseViewModel() {
 	val mId = ObservableString()
 	val mPw = ObservableString()
 	val mRememberMe = ObservableBoolean(true)
@@ -45,10 +41,10 @@ class LoginViewModel @Inject constructor(application: MainApplication): BaseView
 	fun clickLogin(view: View) {
 		// TODO handle empty username and password field
 
-		addDisposable(mKlasRepository.performLogin(mId.get(), mPw.get(), mRememberMe.get())
+		addDisposable(klasRepository.performLogin(mId.get(), mPw.get(), mRememberMe.get())
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe { v, err ->
+			.subscribe { _, err ->
 				if(err == null) {
 					Navigation.findNavController(view).navigate(actionLoginHome())
 				}else{

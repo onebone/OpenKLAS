@@ -18,13 +18,8 @@ package org.openklas.ui.setting
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.github.windsekirun.daggerautoinject.InjectViewModel
-import org.openklas.MainApplication
+import androidx.hilt.lifecycle.ViewModelInject
 import org.openklas.base.BaseViewModel
-import javax.inject.Inject
 
-@InjectViewModel
-class SettingViewModel @Inject constructor(
-	app: MainApplication
-): BaseViewModel(app) {
+class SettingViewModel @ViewModelInject constructor(): BaseViewModel() {
 }

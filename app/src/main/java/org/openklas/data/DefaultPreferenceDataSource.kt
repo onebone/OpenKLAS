@@ -18,16 +18,17 @@ package org.openklas.data
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import org.openklas.MainApplication
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import pyxis.uzuki.live.richutilskt.utils.RPreference
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DefaultPreferenceDataSource @Inject constructor(
-	application: MainApplication
+	@ApplicationContext context: Context
 ): PreferenceDataSource {
-	private val mPreference: RPreference = RPreference.getInstance(application)
+	private val mPreference: RPreference = RPreference.getInstance(context)
 
 	override var userID: String?
 		get() = mPreference.getString(USERID_KEY, "")

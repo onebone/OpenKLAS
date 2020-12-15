@@ -23,12 +23,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class SylSearchFragment : BaseFragment<SyllabusSearchFragmentBinding>() {
 
 	override fun onCreateView(

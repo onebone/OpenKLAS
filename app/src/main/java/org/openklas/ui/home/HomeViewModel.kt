@@ -20,14 +20,13 @@ package org.openklas.ui.home
 
 import android.view.View
 import androidx.fragment.app.findFragment
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.navigation.fragment.NavHostFragment
-import com.github.windsekirun.daggerautoinject.InjectViewModel
 import io.reactivex.Single
-import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Home
@@ -38,14 +37,11 @@ import org.openklas.repository.KlasRepository
 import org.openklas.ui.postlist.PostType
 import java.util.Calendar
 import java.util.Date
-import javax.inject.Inject
 
-@InjectViewModel
-class HomeViewModel @Inject constructor(
-	app: MainApplication,
+class HomeViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
+): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	init {
 		fetchSemesters()
 	}

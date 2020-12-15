@@ -18,13 +18,12 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Application
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -33,11 +32,11 @@ import org.openklas.base.impl.NonActivityInterface
 import org.openklas.utils.weak
 
 
-abstract class BaseViewModel(application: Application) : AndroidViewModel(application),
+abstract class BaseViewModel : ViewModel(),
 	BaseInterface,
 	DefaultLifecycleObserver, Observable, NonActivityInterface {
 	private var mCallbacks: PropertyChangeRegistry? = null
-	protected val compositeDisposable = CompositeDisposable()
+	private val compositeDisposable = CompositeDisposable()
 
 	var lifecycle: Lifecycle? by weak(null)
 

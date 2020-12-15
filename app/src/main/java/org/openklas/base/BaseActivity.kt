@@ -26,20 +26,14 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.openklas.base.impl.BaseInterface
 import org.openklas.utils.catchAll
 import org.openklas.utils.setupEditContentScrollable
-import org.openklas.utils.weak
-import javax.inject.Inject
 
 abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInterface {
-	@Inject
-	lateinit var viewModelProvideFactory: ViewModelProvider.Factory
-
 	protected lateinit var mBinding: V
 	protected open val requireLandscape: Boolean
 		get() = false
@@ -48,8 +42,6 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInte
 	protected open val hideKeyboardOnTouch: Boolean
 		get() = false
 	protected val compositeDisposable = CompositeDisposable()
-
-	private var viewModel: BaseViewModel? by weak(null)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -95,36 +87,11 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInte
 	override fun onDestroy() {
 		super.onDestroy()
 		compositeDisposable.clear()
-		viewModel?.let { lifecycle.removeObserver(it) }
 		unregisterEventBus()
-	}
-
-	fun <T : BaseViewModel> getViewModel(viewModelClass: Class<T>): T {
-		val viewModel = getViewModel(this, viewModelProvideFactory, viewModelClass)
-		setViewModelObject(viewModel)
-		return viewModel
 	}
 
 	protected fun addDisposable(disposable: Disposable) {
 		compositeDisposable.add(disposable)
-	}
-
-
-	@Deprecated("Don't need to call manually")
-	protected fun setViewModelReference(viewModel: BaseViewModel) {
-		setViewModelObject(viewModel)
-	}
-
-	private fun setViewModelObject(viewModel: BaseViewModel) {
-		lifecycle.addObserver(viewModel)
-		viewModel.lifecycle = lifecycle
-		this.viewModel = viewModel
-
-		/*if(viewModel is SessionViewModelDelegate) {
-			viewModel.mustAuthenticate.observe(this, Observer {
-				startActivity(LoginActivity::class.java)
-			})
-		}*/
 	}
 
 	private fun registerEventBus() {

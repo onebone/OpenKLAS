@@ -22,17 +22,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.NotificationFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class NotificationFragment : BaseFragment<NotificationFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		return createAndBindView(inflater, R.layout.notification_fragment, container)
 	}
 

@@ -18,65 +18,13 @@ package org.openklas
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Activity
-import android.app.Service
-import androidx.fragment.app.Fragment
-import com.github.windsekirun.daggerautoinject.DaggerAutoInject
-import com.github.windsekirun.daggerautoinject.InjectApplication
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.hilt.android.HiltAndroidApp
 import org.openklas.base.BaseApplication
-import org.openklas.di.AppComponent
-import org.openklas.di.DaggerAppComponent
 import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser
-import javax.inject.Inject
 
 @AttributeParser("org.openklas")
-@InjectApplication(component = AppComponent::class)
-class MainApplication : BaseApplication(),
-	HasActivityInjector, HasServiceInjector,
-	HasSupportFragmentInjector {
-
-	@Inject
-	lateinit var mActivityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-	@Inject
-	lateinit var mServiceDispatchingAndroidInjector: DispatchingAndroidInjector<Service>
-
-	@Inject
-	lateinit var mFragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
+@HiltAndroidApp
+class MainApplication : BaseApplication() {
 	override val configFilePath: String
 		get() = "config.json"
-
-	override fun onCreate() {
-		super.onCreate()
-
-		mAppComponent = DaggerAppComponent.builder()
-			.application(this)
-			.build()
-		DaggerAutoInject.init(this, mAppComponent)
-	}
-
-	override fun activityInjector(): DispatchingAndroidInjector<Activity> {
-		return mActivityDispatchingAndroidInjector
-	}
-
-	override fun serviceInjector(): AndroidInjector<Service> {
-		return mServiceDispatchingAndroidInjector
-	}
-
-	override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-		return mFragmentDispatchingAndroidInjector
-	}
-
-	companion object {
-		private var mAppComponent: AppComponent? = null
-
-		val appComponent: AppComponent?
-			get() = mAppComponent
-	}
 }

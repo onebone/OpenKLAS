@@ -31,6 +31,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -49,10 +51,11 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class AppProvidesModule {
 	@Provides
 	@Singleton
-	fun provideRPerference(application: MainApplication?): RPreference {
+	fun provideRPreference(application: MainApplication?): RPreference {
 		return RPreference.getInstance(application!!)
 	}
 

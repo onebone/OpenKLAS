@@ -19,23 +19,19 @@ package org.openklas.ui.sylsearch
  */
 
 import android.view.View
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.windsekirun.daggerautoinject.InjectViewModel
-import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
-import javax.inject.Inject
 
-@InjectViewModel
-class SylSearchViewModel @Inject constructor(
-	app: MainApplication,
+class SylSearchViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-) : BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
+) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
 	private val keyword = MutableLiveData<String>()

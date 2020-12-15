@@ -18,12 +18,11 @@ package org.openklas.di
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Application
-import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
-import org.openklas.MainApplication
 import org.openklas.base.DefaultSessionViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.data.AccountDataSource
@@ -34,7 +33,6 @@ import org.openklas.data.PreferenceDataSource
 import org.openklas.data.RemoteKlasDataSource
 import org.openklas.data.RemoteSessionDataSource
 import org.openklas.data.SessionDataSource
-import org.openklas.di.factory.DaggerViewModelFactory
 import org.openklas.net.interceptor.LogInterceptor
 import org.openklas.repository.DefaultKlasRepository
 import org.openklas.repository.DefaultSessionRepository
@@ -52,13 +50,8 @@ import javax.inject.Singleton
  * Description:
  */
 @Module
+@InstallIn(SingletonComponent::class)
 abstract class AppBindsModule {
-	@Binds
-	abstract fun bindApplication(application: MainApplication?): Application?
-
-	@Binds
-	abstract fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
-
 	@Binds
 	@Named("loginterceptor")
 	abstract fun bindLogInterceptor(interceptor: LogInterceptor): Interceptor

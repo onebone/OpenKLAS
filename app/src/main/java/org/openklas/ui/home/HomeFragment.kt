@@ -22,15 +22,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +41,10 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
 
-		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) { viewModelProvideFactory }
+		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) {
+			defaultViewModelProviderFactory
+		}
+
 		mBinding.viewModel = viewModel
 		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
 		mBinding.list.adapter = HomeTodayAdapter()

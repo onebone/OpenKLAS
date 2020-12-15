@@ -23,12 +23,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 	private val postListArgs by navArgs<PostListFragmentArgs>()
 

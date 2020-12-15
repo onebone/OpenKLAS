@@ -33,7 +33,6 @@ import org.openklas.R
 import org.openklas.databinding.TitleViewBinding
 import org.openklas.event.ControlDrawerEvent
 import org.openklas.event.Mode
-import org.openklas.event.SearchEvent
 import pyxis.uzuki.live.attribute.parser.TitleViewAttributes
 import pyxis.uzuki.live.attribute.parser.annotation.AttrInt
 import pyxis.uzuki.live.attribute.parser.annotation.AttrString
@@ -141,7 +140,7 @@ class TitleView: LinearLayout {
 
 		@JvmStatic
 		@BindingAdapter("onClickMypage")
-		fun bindClickBack(view: TitleView, listener: OnClickMypageListener?) {
+		fun bindClickMypage(view: TitleView, listener: OnClickMypageListener?) {
 			view.onClickMypageListener = listener
 		}
 

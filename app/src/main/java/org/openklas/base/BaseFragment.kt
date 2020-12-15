@@ -27,18 +27,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import org.greenrobot.eventbus.EventBus
 import org.openklas.NavGraphDirections
 import org.openklas.utils.catchAll
-import javax.inject.Inject
 
 abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
-	@Inject
-	lateinit var viewModelProvideFactory: ViewModelProvider.Factory
-
 	lateinit var mBinding: V
 
 	protected fun createAndBindView(inflater: LayoutInflater,
@@ -64,7 +59,7 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 	}
 
 	protected inline fun <reified T : BaseViewModel> getViewModel(): T {
-		val viewModel by viewModels<T> { viewModelProvideFactory }
+		val viewModel by viewModels<T>()
 		prepareViewModel(viewModel)
 
 		return viewModel

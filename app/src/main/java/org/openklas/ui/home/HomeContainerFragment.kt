@@ -28,12 +28,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.github.windsekirun.daggerautoinject.InjectFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 
-@InjectFragment
+@AndroidEntryPoint
 class HomeContainerFragment : BaseFragment<ViewDataBinding>() {
 	private var controller: NavController? = null
 	private val navListener: OnDestinationChangedListener? = null
@@ -42,7 +42,7 @@ class HomeContainerFragment : BaseFragment<ViewDataBinding>() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
-		val viewModel by viewModels<HomeViewModel> { viewModelProvideFactory }
+		val viewModel by viewModels<HomeViewModel>()
 		viewModel.lifecycle = lifecycle
 		setupSessionViewModel(viewModel)
 

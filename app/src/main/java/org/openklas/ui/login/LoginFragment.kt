@@ -22,12 +22,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.LoginFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,

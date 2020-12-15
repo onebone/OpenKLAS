@@ -18,26 +18,22 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.github.windsekirun.daggerautoinject.InjectViewModel
-import org.openklas.MainApplication
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
 import org.openklas.repository.KlasRepository
-import javax.inject.Inject
 
-@InjectViewModel
-class PostListViewModel @Inject constructor(
-	app: MainApplication,
+class PostListViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(app), SessionViewModelDelegate by sessionViewModelDelegate {
+): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	// semester must be set externally, others are optional
 	val type = MutableLiveData<PostType>()
 	val subject = MutableLiveData<String>()

@@ -23,12 +23,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.navGraphViewModels
-import com.github.windsekirun.daggerautoinject.InjectFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.TimetableFragmentBinding
 
-@InjectFragment
+@AndroidEntryPoint
 class TimetableFragment : BaseFragment<TimetableFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +40,9 @@ class TimetableFragment : BaseFragment<TimetableFragmentBinding>() {
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
 
-		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) { viewModelProvideFactory }
+		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) {
+			defaultViewModelProviderFactory
+		}
 		mBinding.viewModel = viewModel
 	}
 }

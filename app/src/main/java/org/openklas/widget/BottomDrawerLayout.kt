@@ -18,16 +18,23 @@ package org.openklas.widget
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import org.openklas.R
+import org.openklas.utils.dp2px
 import kotlin.math.max
 
 class BottomDrawerLayout: ViewGroup {
-	var lastMotionY = -1f
+	var lastMotionY = 0f
+	var bottomEdgeSize = dp2px(30f, context)
+
+	private var isAnimating = false
 
 	constructor(context: Context): super(context)
 	constructor(context: Context, attrs: AttributeSet?): super(context, attrs)
@@ -64,7 +71,6 @@ class BottomDrawerLayout: ViewGroup {
 	override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
 		var hasBottom = false
 
-		var consumedWidth = 0
 		var consumedHeight = 0
 
 		val childCount = childCount
@@ -77,27 +83,80 @@ class BottomDrawerLayout: ViewGroup {
 				if(hasBottom)
 					throw IllegalStateException("BottomDrawerLayout cannot have more than two bottom layout")
 
+				val onScreen = lp.onScreen
 				val measuredHeight = measuredHeight
 
-				view.layout(lp.leftMargin, lp.topMargin + measuredHeight - 150,
-					lp.leftMargin + view.measuredWidth, lp.topMargin + measuredHeight + view.measuredHeight)
+				val childHeight = view.measuredHeight
+
+				val childVisibleHeight = (childHeight * onScreen).toInt()
+
+				view.layout(lp.leftMargin, lp.topMargin + measuredHeight - childVisibleHeight,
+					lp.leftMargin + view.measuredWidth, lp.topMargin + measuredHeight + childHeight - childVisibleHeight)
 
 				hasBottom = true
 			}else{
 				val childWidth = view.measuredWidth
 				val childHeight = view.measuredHeight
 
-				view.layout(lp.leftMargin + consumedWidth, lp.topMargin + consumedHeight,
-					lp.leftMargin + childWidth + consumedWidth, lp.topMargin + childHeight + consumedHeight)
+				view.layout(lp.leftMargin, lp.topMargin + consumedHeight,
+					lp.leftMargin + childWidth, lp.topMargin + childHeight + consumedHeight)
 
-				consumedWidth += childWidth + lp.leftMargin
-				consumedHeight += childHeight + lp.topMargin
+				consumedHeight += childHeight + lp.topMargin + lp.bottomMargin
 			}
 		}
 	}
 
 	override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+		val y = ev.y
+
+		if(y > measuredHeight - bottomEdgeSize) return true
+
+		val bottom = findBottomView()
+		if(bottom != null) {
+			val lp = bottom.layoutParams as LayoutParams
+			if(lp.onScreen == 1f && y < bottom.top) { // touched outside of bottom view when it is open
+				return true
+			}
+		}
+
 		return super.onInterceptTouchEvent(ev)
+	}
+
+	fun openBottomView() {
+		val bottom = findBottomView() ?: return
+
+		ValueAnimator.ofFloat(0f, 1f).apply {
+			setupAndStartAnimator(bottom, this)
+		}
+	}
+
+	fun closeBottomView() {
+		val bottom = findBottomView() ?: return
+
+		ValueAnimator.ofFloat(1f, 0f).apply {
+			setupAndStartAnimator(bottom, this)
+		}
+	}
+
+	private fun setupAndStartAnimator(bottom: View, animator: ValueAnimator) {
+		val lp = bottom.layoutParams as LayoutParams
+
+		animator.addUpdateListener {
+			lp.onScreen = animator.animatedValue as Float
+
+			bottom.layoutParams = lp
+		}
+
+		animator.doOnStart {
+			isAnimating = true
+		}
+
+		animator.doOnEnd {
+			isAnimating = false
+		}
+
+		animator.duration = 500
+		animator.start()
 	}
 
 	override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -107,18 +166,29 @@ class BottomDrawerLayout: ViewGroup {
 
 				val height = measuredHeight
 
-				if(y > height - 200) { // TODO do not hard code edge height
+				val bottom = findBottomView()
+				if(bottom != null) {
+					val lp = bottom.layoutParams as LayoutParams
+
+					if(lp.onScreen == 1f && y < bottom.top) {
+						closeBottomView()
+						return true
+					}
+				}
+
+				if(y > height - bottomEdgeSize) {
 					lastMotionY = event.y
 					return true
 				}
 			}
 			MotionEvent.ACTION_MOVE -> {
+				if(isAnimating) return true
+
 				val dy = event.y - lastMotionY
+				println("${event.y}, $lastMotionY, $dy")
 				if(dy < 0) { // dragging up
-					findBottomLayout()?.let {
-						it.offsetTopAndBottom(measuredHeight - it.bottom)
-						// TODO animate sliding up
-					}
+					openBottomView()
+					return false
 				}
 
 				lastMotionY = event.y
@@ -126,14 +196,14 @@ class BottomDrawerLayout: ViewGroup {
 				return true
 			}
 			MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-				lastMotionY = -1f
+				lastMotionY = 0f
 			}
 		}
 
 		return super.onTouchEvent(event)
 	}
 
-	private fun findBottomLayout(): View? {
+	private fun findBottomView(): View? {
 		val childCount = childCount
 		for(i in 0 until childCount) {
 			val child = getChildAt(i)
@@ -163,6 +233,7 @@ class BottomDrawerLayout: ViewGroup {
 
 	class LayoutParams(context: Context, attrs: AttributeSet?) : MarginLayoutParams(context, attrs) {
 		var isBottom: Boolean = false
+		var onScreen: Float = 0f
 
 		init {
 			context.obtainStyledAttributes(attrs, R.styleable.BottomDrawerLayout_Layout).apply {

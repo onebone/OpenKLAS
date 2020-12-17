@@ -25,10 +25,13 @@ import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.res.AssetManager
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
+import pyxis.uzuki.live.richutilskt.utils.displayManager
 import pyxis.uzuki.live.richutilskt.utils.hideKeyboard
 import java.nio.charset.Charset
 
@@ -81,3 +84,6 @@ fun AssetManager.fileAsString(filename: String): String {
 		it.readBytes().toString(Charset.defaultCharset())
 	}
 }
+
+fun dp2px(dp: Float, context: Context) =
+	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)

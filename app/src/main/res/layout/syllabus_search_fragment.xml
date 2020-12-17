@@ -24,6 +24,11 @@
 		<variable
 			name="viewModel"
 			type="org.openklas.ui.sylsearch.SylSearchViewModel" />
+
+		<variable
+			name="v"
+			type="org.openklas.ui.sylsearch.SylSearchFragment" />
+
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -36,8 +41,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			app:layout_constraintTop_toTopOf="parent"
-			app:onClickBack="@{viewModel::clickBack}"
-			app:onClickSearch="@{viewModel::clickSearch}"
+			app:onClickBack="@{v::onClickBack}"
+			app:onClickSearch="@{v::onClickSearch}"
 			app:titleMode="backsearch"
 			app:titleName="@string/course_plan" />
 

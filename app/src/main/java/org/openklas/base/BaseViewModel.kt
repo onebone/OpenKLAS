@@ -27,14 +27,11 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
-import org.openklas.base.impl.BaseInterface
-import org.openklas.base.impl.NonActivityInterface
 import org.openklas.utils.weak
 
 
 abstract class BaseViewModel : ViewModel(),
-	BaseInterface,
-	DefaultLifecycleObserver, Observable, NonActivityInterface {
+	DefaultLifecycleObserver, Observable {
 	private var mCallbacks: PropertyChangeRegistry? = null
 	private val compositeDisposable = CompositeDisposable()
 

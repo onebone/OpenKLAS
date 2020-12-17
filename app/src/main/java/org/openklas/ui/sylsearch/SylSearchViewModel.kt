@@ -18,7 +18,6 @@ package org.openklas.ui.sylsearch
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -34,7 +33,7 @@ class SylSearchViewModel @ViewModelInject constructor(
 ) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
-	private val keyword = MutableLiveData<String>()
+	val keyword = MutableLiveData<String>()
 
 	private val _syllabusList = MediatorLiveData<Array<SyllabusSummary>>().apply {
 		addSource(keyword) {
@@ -54,13 +53,5 @@ class SylSearchViewModel @ViewModelInject constructor(
 				_error.value = err
 			}
 		})
-	}
-
-	fun clickBack(view: View) {
-		requireActivity().onBackPressed()
-	}
-
-	fun clickSearch(view: View, keyword: String) {
-		this.keyword.value = keyword
 	}
 }

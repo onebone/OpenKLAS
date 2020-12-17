@@ -181,8 +181,4 @@ class HomeViewModel @ViewModelInject constructor(
 			}
 		})
 	}
-
-	fun clickBtn(view: View){
-		showToast("클릭됨")
-	}
 }

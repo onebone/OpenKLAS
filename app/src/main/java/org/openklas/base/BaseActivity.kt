@@ -29,11 +29,10 @@ import androidx.databinding.ViewDataBinding
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
-import org.openklas.base.impl.BaseInterface
 import org.openklas.utils.catchAll
 import org.openklas.utils.setupEditContentScrollable
 
-abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity(), BaseInterface {
+abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
 	protected lateinit var mBinding: V
 	protected open val requireLandscape: Boolean
 		get() = false

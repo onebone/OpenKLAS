@@ -26,7 +26,6 @@ import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser
 import pyxis.uzuki.live.nyancat.NyanCatGlobal
 import pyxis.uzuki.live.nyancat.config.LoggerConfig
 import pyxis.uzuki.live.nyancat.config.TriggerTiming
-import pyxis.uzuki.live.richutilskt.module.reference.ActivityReference
 
 /**
  * OpenKlas
@@ -48,8 +47,6 @@ abstract class BaseApplication : Application() {
 			if (Config.config.printLogRelease) TriggerTiming.ALL else TriggerTiming.ONLY_DEBUG
 		)
 		NyanCatGlobal.breed(config)
-
-		ActivityReference.initialize(this)
 	}
 
 	override fun attachBaseContext(base: Context) {

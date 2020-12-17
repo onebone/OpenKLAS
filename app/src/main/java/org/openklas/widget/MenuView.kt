@@ -26,13 +26,11 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import org.openklas.R
-import org.openklas.base.impl.ActivityInterface
-import org.openklas.base.impl.AlertInterface
 import org.openklas.databinding.MenuViewBinding
 import pyxis.uzuki.live.attribute.parser.annotation.CustomView
 
 @CustomView
-class MenuView: LinearLayout, ActivityInterface, AlertInterface {
+class MenuView: LinearLayout {
 	private var mBinding: MenuViewBinding? = null
 
 	constructor(context: Context?): super(context) {

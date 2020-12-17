@@ -29,7 +29,8 @@ import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
 
 @AndroidEntryPoint
-class SylSearchFragment : BaseFragment<SyllabusSearchFragmentBinding>() {
+class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
+	private lateinit var viewModel: SylSearchViewModel
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +38,20 @@ class SylSearchFragment : BaseFragment<SyllabusSearchFragmentBinding>() {
 	): View {
 		val view = createAndBindView(inflater, R.layout.syllabus_search_fragment, container)
 
-		val viewModel = getViewModel<SylSearchViewModel>()
+		viewModel = getViewModel()
 
 		mBinding.viewModel = viewModel
+		mBinding.v = this
 		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
 		mBinding.list.adapter = SylSearchAdapter()
 		return view
+	}
+
+	fun onClickBack(view: View) {
+		this.requireActivity().onBackPressed()
+	}
+
+	fun onClickSearch(view: View, keyword: String) {
+		viewModel.keyword.value = keyword
 	}
 }

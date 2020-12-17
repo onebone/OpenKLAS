@@ -28,14 +28,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.benoitquenaudon.rxdatabinding.databinding.RxObservableArrayMap
 import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
-import org.openklas.base.impl.ActivityInterface
-import org.openklas.base.impl.AlertInterface
-import org.openklas.base.impl.NonActivityInterface
 
 
 abstract class ViewTypeRecyclerAdapter<Item> :
-	RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>(), NonActivityInterface, ActivityInterface,
-	AlertInterface {
+	RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 	protected val mSelectedMap = ObservableArrayMap<Int, Boolean>()
 	protected val mItemList: ArrayList<Item> = arrayListOf()
 	protected lateinit var mContext: Context

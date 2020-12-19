@@ -57,7 +57,7 @@
 			android:background="@drawable/rounded_corners_bg_white"
 			android:hint="@string/login_username"
 			android:inputType="text"
-			android:text="@={viewModel.mId}" />
+			android:text="@={viewModel.userId}" />
 
 		<EditText
 			android:id="@+id/et_password"
@@ -72,7 +72,7 @@
 			android:background="@drawable/rounded_corners_bg_white"
 			android:hint="@string/login_password"
 			android:inputType="textPassword"
-			android:text="@={viewModel.mPw}" />
+			android:text="@={viewModel.password}" />
 
 		<!-- FIXME button background color is overridden by MaterialButton -->
 		<Button
@@ -87,7 +87,7 @@
 			android:layout_marginTop="24dp"
 			android:background="@drawable/rounded_corners_bg_green"
 			android:text="@string/login_submit"
-			android:onClick="@{viewModel::clickLogin}" />
+			android:onClick="@{v -> viewModel.handleLogin()}" />
 
 		<!-- TODO change checkbox button color to white or something similar -->
 		<CheckBox
@@ -99,7 +99,7 @@
 			app:layout_constraintTop_toBottomOf="@id/btn_login_submit"
 			app:layout_constraintBottom_toBottomOf="parent"
 			android:layout_marginTop="18dp"
-			android:checked="@={viewModel.mRememberMe}"
+			android:checked="@={viewModel.rememberMe}"
 			android:text="@string/login_remember_me"
 			android:textColor="@android:color/white" />
 

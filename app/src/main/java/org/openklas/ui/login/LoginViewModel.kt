@@ -18,38 +18,36 @@ package org.openklas.ui.login
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.navigation.Navigation
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.github.windsekirun.bindadapters.observable.ObservableString
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.openklas.base.BaseViewModel
 import org.openklas.repository.KlasRepository
-import org.openklas.ui.login.LoginFragmentDirections.Companion.actionLoginHome
 
 class LoginViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository
 ): BaseViewModel() {
-	val mId = ObservableString()
-	val mPw = ObservableString()
-	val mRememberMe = ObservableBoolean(true)
+	val userId = ObservableString()
+	val password = ObservableString()
+	val rememberMe = ObservableBoolean(true)
 
-	val mResult = ObservableString()
+	private val _result = MutableLiveData<Throwable?>()
+	// value of result will be set whenever the login task if succeed or failed.
+	// The value is null if succeed, or Throwable instance otherwise.
+	val result: LiveData<Throwable?> = _result
 
-	fun clickLogin(view: View) {
+	fun handleLogin() {
 		// TODO handle empty username and password field
 
-		addDisposable(klasRepository.performLogin(mId.get(), mPw.get(), mRememberMe.get())
+		addDisposable(klasRepository.performLogin(userId.get(), password.get(), rememberMe.get())
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe { _, err ->
-				if(err == null) {
-					Navigation.findNavController(view).navigate(actionLoginHome())
-				}else{
-					mResult.set("Failure: " + err.message)
-				}
+				_result.value = err
 			})
 	}
 }

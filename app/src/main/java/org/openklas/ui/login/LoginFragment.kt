@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -42,6 +43,13 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 		val viewModel = getViewModel<LoginViewModel>()
 		mBinding.viewModel = viewModel
 		prepareViewModel(viewModel)
+
+		viewModel.result.observe(viewLifecycleOwner) {
+			if(it == null) {
+				NavHostFragment.findNavController(this).navigate(LoginFragmentDirections.actionLoginHome())
+			}
+			// TODO show some error text if login failed
+		}
 	}
 
 	companion object {

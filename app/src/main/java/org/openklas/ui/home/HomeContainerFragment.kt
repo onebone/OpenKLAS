@@ -43,7 +43,6 @@ class HomeContainerFragment : BaseFragment<ViewDataBinding>() {
 		savedInstanceState: Bundle?
 	): View? {
 		val viewModel by viewModels<HomeViewModel>()
-		viewModel.lifecycle = lifecycle
 		setupSessionViewModel(viewModel)
 
 		val view = inflater.inflate(R.layout.home_container_fragment, container, false)

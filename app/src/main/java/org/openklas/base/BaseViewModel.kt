@@ -21,21 +21,16 @@ package org.openklas.base
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.greenrobot.eventbus.EventBus
-import org.openklas.utils.weak
 
 
 abstract class BaseViewModel : ViewModel(),
 	DefaultLifecycleObserver, Observable {
 	private var mCallbacks: PropertyChangeRegistry? = null
 	private val compositeDisposable = CompositeDisposable()
-
-	var lifecycle: Lifecycle? by weak(null)
 
 	override fun onDestroy(owner: LifecycleOwner) {
 		super.onDestroy(owner)
@@ -45,10 +40,6 @@ abstract class BaseViewModel : ViewModel(),
 	override fun onCleared() {
 		super.onCleared()
 		compositeDisposable.clear()
-	}
-
-	protected fun postEvent(event: Any) {
-		EventBus.getDefault().post(event)
 	}
 
 	protected fun addDisposable(disposable: Disposable) {

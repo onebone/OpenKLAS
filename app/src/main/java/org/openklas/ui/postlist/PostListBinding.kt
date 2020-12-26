@@ -29,11 +29,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
 
-@BindingAdapter("postList")
-fun setPostList(listView: RecyclerView, postList: Array<Board.Entry>?) {
-	(listView.adapter as PostListAdapter).submitList(postList?.toList())
-}
-
 @BindingAdapter("subjects")
 fun setSpinnerSubjectEntries(spinner: Spinner, subjects: Array<BriefSubject>?) {
 	spinner.adapter = ArrayAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, subjects?.map {

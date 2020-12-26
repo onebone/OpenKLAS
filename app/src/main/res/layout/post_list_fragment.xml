@@ -121,7 +121,7 @@
 			android:layout_margin="8dp"
 			android:background="@drawable/bg_white_r7"
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-			app:postList="@{viewModel.posts}" />
+			app:items="@{viewModel.posts}" />
 
 		<TextView
 			android:layout_width="wrap_content"

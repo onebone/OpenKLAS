@@ -20,7 +20,6 @@ package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
 
-@Suppress("ArrayInDataClass")
 data class Home (
 	@SerializedName("atnlcSbjectList")
 	val subjects: Array<Subject>,
@@ -32,4 +31,26 @@ data class Home (
 	val semesterLabel: String,
 	@SerializedName("timeTableList")
 	val timetable: Timetable
-)
+) {
+	override fun equals(other: Any?): Boolean {
+		if(this === other) return true
+		if(other !is Home) return false
+
+		if(!subjects.contentEquals(other.subjects)) return false
+		if(professor != other.professor) return false
+		if(!notices.contentEquals(other.notices)) return false
+		if(semesterLabel != other.semesterLabel) return false
+		if(timetable != other.timetable) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int {
+		var result = subjects.contentHashCode()
+		result = 31 * result + professor.hashCode()
+		result = 31 * result + notices.contentHashCode()
+		result = 31 * result + semesterLabel.hashCode()
+		result = 31 * result + timetable.hashCode()
+		return result
+	}
+}

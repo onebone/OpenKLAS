@@ -18,7 +18,6 @@ package org.openklas.klas.model
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@Suppress("ArrayInDataClass")
 data class Timetable (
 	val entries: Array<Entry>
 ) {
@@ -44,4 +43,17 @@ data class Timetable (
 		// item color in timetable
 		val printSeq: Int
 	)
+
+	override fun equals(other: Any?): Boolean {
+		if(this === other) return true
+		if(other !is Timetable) return false
+
+		if(!entries.contentEquals(other.entries)) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int {
+		return entries.contentHashCode()
+	}
 }

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
@@ -8,14 +26,6 @@
 		<variable
 			name="bean"
 			type="org.openklas.klas.model.SyllabusSummary" />
-
-		<variable
-			name="adapter"
-			type="org.openklas.ui.sylsearch.SylSearchAdapter" />
-
-		<variable
-			name="position"
-			type="Integer" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +42,7 @@
 			android:layout_marginTop="22dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			tools:text="오픈소스소프트웨어 개발" />
+			tools:text="과목과목과목" />
 
 		<TextView
 			android:id="@+id/text2"
@@ -70,6 +80,7 @@
 			android:background="@color/brownish_grey"
 			android:layout_marginTop="14dp"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/text2"/>
+			app:layout_constraintTop_toBottomOf="@id/text2" />
+
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

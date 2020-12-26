@@ -1,6 +1,7 @@
-package org.openklas.base.recycler
+package org.openklas.base.list
 
-import androidx.databinding.ViewDataBinding
+import android.annotation.SuppressLint
+import androidx.recyclerview.widget.DiffUtil
 
 /*
  * OpenKLAS
@@ -19,4 +20,15 @@ import androidx.databinding.ViewDataBinding
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class BindingViewHolder<out V : ViewDataBinding>(val binding: V) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
+
+class SimpleDiffUtil<T>(
+	private val idCriteria: (T) -> Any? = { it },
+	private val contentCriteria: (T) -> Any? = { it }
+): DiffUtil.ItemCallback<T>() {
+	override fun areItemsTheSame(oldItem: T, newItem: T) =
+		idCriteria(oldItem) == idCriteria(newItem)
+
+	@SuppressLint("DiffUtilEquals")
+	override fun areContentsTheSame(oldItem: T, newItem: T) =
+		contentCriteria(oldItem) == contentCriteria(newItem)
+}

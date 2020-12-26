@@ -20,30 +20,25 @@ package org.openklas.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import org.openklas.R
-import org.openklas.base.recycler.BaseRecyclerAdapter
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.ItemHomeTodayBinding
 import org.openklas.klas.model.Timetable
 
 
-class HomeTodayAdapter : BaseRecyclerAdapter<Timetable.Entry, ItemHomeTodayBinding>() {
-	override fun bind(binding: ItemHomeTodayBinding, item: Timetable.Entry, position: Int) {
-		binding.adapter = this
-		binding.bean = item
-		binding.position = position
+class HomeTodayAdapter : ListAdapter<Timetable.Entry, HomeTodayAdapter.ViewHolder>(SimpleDiffUtil({ it.subjectId })) {
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+		return ViewHolder(ItemHomeTodayBinding.inflate(LayoutInflater.from(parent.context)))
 	}
 
-	override fun onClickedItem(binding: ItemHomeTodayBinding, item: Timetable.Entry, position: Int) {
-
+	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+		holder.bind(getItem(position))
 	}
 
-	override fun onLongClickedItem(binding: ItemHomeTodayBinding, item: Timetable.Entry, position: Int): Boolean {
-		return false
-	}
-
-	override fun createBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): ViewDataBinding {
-		return DataBindingUtil.inflate(inflater, R.layout.item_home_today, parent, false)
+	class ViewHolder(private val binding: ItemHomeTodayBinding): RecyclerView.ViewHolder(binding.root) {
+		fun bind(item: Timetable.Entry) {
+			binding.bean = item
+		}
 	}
 }

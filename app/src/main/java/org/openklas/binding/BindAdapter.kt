@@ -21,10 +21,10 @@ package org.openklas.binding
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import org.openklas.base.recycler.ViewTypeRecyclerAdapter
 
 
 object BindAdapter {
@@ -45,11 +45,9 @@ object BindAdapter {
 	@JvmStatic
 	@BindingAdapter("items")
 	fun <T> bindItems(recyclerView: RecyclerView, list: Array<T>?) {
-		recyclerView.adapter?.let {
-			if (recyclerView.adapter is ViewTypeRecyclerAdapter<*>) {
-				(recyclerView.adapter as ViewTypeRecyclerAdapter<T>).setItems(list?.toList())
-			}
+		if(recyclerView.adapter is ListAdapter<*, *>) {
+			@Suppress("UNCHECKED_CAST")
+			(recyclerView.adapter as ListAdapter<T, *>).submitList(list?.toList())
 		}
-
 	}
 }

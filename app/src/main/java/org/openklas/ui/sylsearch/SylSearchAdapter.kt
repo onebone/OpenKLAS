@@ -20,31 +20,25 @@ package org.openklas.ui.sylsearch
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import org.openklas.R
-import org.openklas.base.recycler.BaseRecyclerAdapter
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.ItemSyllabusSearchBinding
 import org.openklas.klas.model.SyllabusSummary
 
 
-class SylSearchAdapter : BaseRecyclerAdapter<SyllabusSummary, ItemSyllabusSearchBinding>() {
-
-	override fun bind(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int) {
-		binding.adapter = this
-		binding.bean = item
-		binding.position = position
+class SylSearchAdapter: ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder>(SimpleDiffUtil()) {
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+		return ViewHolder(ItemSyllabusSearchBinding.inflate(LayoutInflater.from(parent.context)))
 	}
 
-	override fun onClickedItem(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int) {
-
+	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+		holder.bind(getItem(position))
 	}
 
-	override fun onLongClickedItem(binding: ItemSyllabusSearchBinding, item: SyllabusSummary, position: Int): Boolean {
-		return false
-	}
-
-	override fun createBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): ViewDataBinding {
-		return DataBindingUtil.inflate(inflater, R.layout.item_syllabus_search, parent, false)
+	class ViewHolder(private val binding: ItemSyllabusSearchBinding): RecyclerView.ViewHolder(binding.root) {
+		fun bind(item: SyllabusSummary) {
+			binding.bean = item
+		}
 	}
 }

@@ -20,20 +20,19 @@ package org.openklas.ui.postlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.PostItemBinding
 import org.openklas.klas.model.Board
 
-class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(PostDiffUtil()) {
+class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(PostItemBinding.inflate(LayoutInflater.from(parent.context)))
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		val entry = getItem(position)
-		holder.bind(entry)
+		holder.bind(getItem(position))
 	}
 
 	class ViewHolder(val binding: PostItemBinding): RecyclerView.ViewHolder(binding.root) {
@@ -41,16 +40,5 @@ class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(Post
 			binding.post = entry
 			binding.executePendingBindings()
 		}
-	}
-
-	class PostDiffUtil: DiffUtil.ItemCallback<Board.Entry>() {
-		override fun areItemsTheSame(oldItem: Board.Entry, newItem: Board.Entry): Boolean {
-			return oldItem.boardNo == newItem.boardNo
-		}
-
-		override fun areContentsTheSame(oldItem: Board.Entry, newItem: Board.Entry): Boolean {
-			return oldItem == newItem
-		}
-
 	}
 }

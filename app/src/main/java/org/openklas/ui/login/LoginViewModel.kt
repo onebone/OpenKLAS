@@ -22,7 +22,6 @@ import androidx.databinding.ObservableBoolean
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.windsekirun.bindadapters.observable.ObservableString
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.openklas.base.BaseViewModel
@@ -31,8 +30,8 @@ import org.openklas.repository.KlasRepository
 class LoginViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository
 ): BaseViewModel() {
-	val userId = ObservableString()
-	val password = ObservableString()
+	val userId = MutableLiveData<String>()
+	val password = MutableLiveData<String>()
 	val rememberMe = ObservableBoolean(true)
 
 	private val _result = MutableLiveData<Throwable?>()
@@ -41,13 +40,21 @@ class LoginViewModel @ViewModelInject constructor(
 	val result: LiveData<Throwable?> = _result
 
 	fun handleLogin() {
-		// TODO handle empty username and password field
+		val userId = userId.value?.trim() ?: ""
+		val password = password.value?.trim() ?: ""
 
-		addDisposable(klasRepository.performLogin(userId.get(), password.get(), rememberMe.get())
+		if(userId == "" || password == "") {
+			_result.value = AuthFieldEmptyException()
+			return
+		}
+
+		addDisposable(klasRepository.performLogin(userId, password, rememberMe.get())
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe { _, err ->
 				_result.value = err
 			})
 	}
+
+	class AuthFieldEmptyException: Throwable()
 }

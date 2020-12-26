@@ -22,11 +22,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.LoginFragmentBinding
+import org.openklas.klas.error.KlasSigninFailError
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
@@ -47,8 +49,17 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 		viewModel.result.observe(viewLifecycleOwner) {
 			if(it == null) {
 				NavHostFragment.findNavController(this).navigate(LoginFragmentDirections.actionLoginHome())
+			}else{
+				AlertDialog.Builder(requireContext())
+					.setTitle(R.string.login_error_title)
+					.setMessage(when(it) {
+						is LoginViewModel.AuthFieldEmptyException -> resources.getString(R.string.login_error_empty_field)
+						is KlasSigninFailError -> it.message
+						else -> resources.getString(R.string.common_unknown_error)
+					})
+					.setPositiveButton(R.string.common_ok, null)
+					.show()
 			}
-			// TODO show some error text if login failed
 		}
 	}
 

@@ -28,11 +28,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.github.windsekirun.bindadapters.observable.ObservableString
-import org.greenrobot.eventbus.EventBus
 import org.openklas.R
 import org.openklas.databinding.TitleViewBinding
-import org.openklas.event.ControlDrawerEvent
-import org.openklas.event.Mode
 import pyxis.uzuki.live.attribute.parser.TitleViewAttributes
 import pyxis.uzuki.live.attribute.parser.annotation.AttrInt
 import pyxis.uzuki.live.attribute.parser.annotation.AttrString
@@ -76,11 +73,7 @@ class TitleView: LinearLayout {
 	}
 
 	fun clickMypage(view: View) {
-		if (onClickMypageListener != null) {
-			onClickMypageListener!!.onClickMypage(view)
-		} else {
-			EventBus.getDefault().post(ControlDrawerEvent(Mode.Open))
-		}
+		onClickMypageListener?.onClickMypage(view)
 	}
 
 	private fun init(attrs: AttributeSet?) {

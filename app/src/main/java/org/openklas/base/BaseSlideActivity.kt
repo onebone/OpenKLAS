@@ -26,11 +26,8 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
-import org.greenrobot.eventbus.Subscribe
 import org.openklas.R
 import org.openklas.databinding.BaseDrawerActivityBinding
-import org.openklas.event.ControlDrawerEvent
-import org.openklas.event.Mode
 
 abstract class BaseSlideActivity<Origin : ViewDataBinding> : BaseActivity<BaseDrawerActivityBinding>() {
 
@@ -103,16 +100,7 @@ abstract class BaseSlideActivity<Origin : ViewDataBinding> : BaseActivity<BaseDr
 		}
 	}
 
-	@Subscribe
-	fun onControlDrawerEvent(event: ControlDrawerEvent) {
-		when (event.mode) {
-			Mode.Open -> openDrawer()
-			Mode.Close -> closeDrawer()
-		}
-	}
-
 	enum class Orientation constructor(val gravity: Int) {
 		START(GravityCompat.START), END(GravityCompat.END)
 	}
-
 }

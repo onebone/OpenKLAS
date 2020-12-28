@@ -55,13 +55,6 @@ object Config {
 		val connectTimeout = 10000
 
 		/**
-		 * Set flags of display logs in release mode.
-		 * caution, this options will work in NyanCat logger, not standard logger.
-		 */
-		@SerializedName("PrintingLog")
-		val printLogRelease = true
-
-		/**
 		 * Set flags of display details log for networking connections.
 		 * if true, it will use ihsanbal/LoggingInterceptor
 		 * otherwise, it will use okhttp3/logging-interceptor
@@ -95,14 +88,6 @@ object Config {
 		 */
 		@SerializedName("DisableRxAdapter")
 		val disableRxAdapter = false
-
-		/**
-		 * Set flags of register Eventbus event in onCreate() and unregister in onDestroy()
-		 * if true, Eventbus will register in onCreate() and un-register in onDestroy()
-		 * otherwise, Eventbus will register in onStart() and un-register in onStop()
-		 */
-		@SerializedName("RegisterEventBusInOnCreate")
-		val registerBusOnCreate: Boolean = false
 
 		/**
 		 * Set flags on enable retryOnConnectionFailure in OKHttp

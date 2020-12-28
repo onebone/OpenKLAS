@@ -49,11 +49,7 @@ class LogInterceptor @Inject constructor() : Interceptor {
 					Config.config.binaryThreshold
 				)
 
-			if (Config.config.printLogRelease) {
-				interceptor.level = HttpLoggingInterceptor.Level.BODY
-			} else {
-				interceptor.level = HttpLoggingInterceptor.Level.NONE
-			}
+			interceptor.level = HttpLoggingInterceptor.Level.BODY
 
 			return interceptor.intercept(chain)
 		}

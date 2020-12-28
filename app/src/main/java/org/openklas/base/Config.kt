@@ -63,25 +63,11 @@ object Config {
 		val provideDetailsLog = false
 
 		/**
-		 * Set url of networking connections.
-		 * it must be end with '/'
-		 * form: http://127.0.0.1:8080
-		 */
-		@SerializedName("ServerUrl")
-		val serverUrl = ""
-
-		/**
 		 * Set timeout of network request.
 		 * detault is 20000ms (20s)
 		 */
 		@SerializedName("Timeout")
 		val timeout = 20000
-
-		/**
-		 * Set flags of require portraint only
-		 */
-		@SerializedName("RequirePortrait")
-		val requirePortrait = true
 
 		/**
 		 * Set flags of enable RxJava-Adapter in Retrofit
@@ -111,22 +97,5 @@ object Config {
 		 */
 		@SerializedName("BinaryThresholdLogInterceptor")
 		val binaryThreshold: Int = 10000
-
-		/**
-		 * Using Jackson as Retrofit converter instead of GSON.
-		 *
-		 * default is false
-		 */
-		@SerializedName("UseJacksonAsConverter")
-		val useJacksonAsConverter: Boolean = false
-
-		/**
-		 * Set port number that using in WatchTower
-		 * it will change port of WebServer.
-		 *
-		 * default is 8085
-		 */
-		@SerializedName("WatchTowerPort")
-		val watchTowerPort: Int = 8085
 	}
 }

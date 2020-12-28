@@ -18,7 +18,6 @@ package org.openklas.di;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.openklas.net.RWJacksonConfig;
 import org.openklas.net.interceptor.RWInterceptor;
 
 import dagger.Module;
@@ -35,11 +34,5 @@ public class AppInterceptorModule {
 	@IntoSet
 	public Interceptor provideRWProvider() {
 		return new RWInterceptor();
-	}
-
-	@Provides
-	@IntoSet
-	public RWJacksonConfig provideRWConfig() {
-		return new RWJacksonConfig();
 	}
 }

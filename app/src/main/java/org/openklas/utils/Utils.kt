@@ -21,33 +21,8 @@ package org.openklas.utils
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Activity
 import android.content.res.AssetManager
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import pyxis.uzuki.live.richutilskt.utils.hideKeyboard
 import java.nio.charset.Charset
-
-/**
- * 에디트 박스 이외 영역 터치시 키보드 숨김 메서드
- */
-fun setupEditContentScrollable(view: View, activity: Activity) {
-	if (view !is EditText) {
-		view.setOnTouchListener { _, _ ->
-			activity.hideKeyboard()
-			false
-		}
-	}
-	if (view is ViewGroup) {
-		for (i in 0 until view.childCount) {
-			setupEditContentScrollable(
-				view.getChildAt(i),
-				activity
-			)
-		}
-	}
-}
 
 fun AssetManager.fileAsString(filename: String): String {
 	return open(filename).use {

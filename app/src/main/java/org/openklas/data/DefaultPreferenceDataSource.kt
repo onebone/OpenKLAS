@@ -19,8 +19,8 @@ package org.openklas.data
 */
 
 import android.content.Context
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pyxis.uzuki.live.richutilskt.utils.RPreference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,22 +28,26 @@ import javax.inject.Singleton
 class DefaultPreferenceDataSource @Inject constructor(
 	@ApplicationContext context: Context
 ): PreferenceDataSource {
-	private val mPreference: RPreference = RPreference.getInstance(context)
+	private val preference = context.getSharedPreferences("org.openklas.data.DefaultPreferenceDataSource", Context.MODE_PRIVATE)
 
 	override var userID: String?
-		get() = mPreference.getString(USERID_KEY, "")
-		set(userID) {
-			mPreference.put(USERID_KEY, userID!!)
+		get() = preference.getString(USER_ID_KEY, null)
+		set(value) {
+			preference.edit {
+				putString(USER_ID_KEY, value)
+			}
 		}
 
 	override var password: String?
-		get() = mPreference.getString(PASSWORD_KEY, "")
-		set(password) {
-			mPreference.put(PASSWORD_KEY, password!!)
+		get() = preference.getString(PASSWORD_KEY, null)
+		set(value) {
+			preference.edit {
+				putString(PASSWORD_KEY, value)
+			}
 		}
 
 	companion object {
-		private const val USERID_KEY = "1af49084-8820-449e-9039-d86863184592"
-		private const val PASSWORD_KEY = "1af49084-8820-449e-9039-d86863184593"
+		private const val USER_ID_KEY = "USER_ID"
+		private const val PASSWORD_KEY = "PASSWORD"
 	}
 }

@@ -36,12 +36,10 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import org.openklas.MainApplication
 import org.openklas.base.Config
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
 import org.openklas.net.RWJacksonConfig
-import pyxis.uzuki.live.richutilskt.utils.RPreference
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -53,12 +51,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppProvidesModule {
-	@Provides
-	@Singleton
-	fun provideRPreference(application: MainApplication?): RPreference {
-		return RPreference.getInstance(application!!)
-	}
-
 	@Provides
 	fun provideGson(
 		deserializers: Set<@JvmSuppressWildcards TypeResolvableJsonDeserializer<*>>

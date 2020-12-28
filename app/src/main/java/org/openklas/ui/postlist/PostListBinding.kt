@@ -25,8 +25,6 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import androidx.recyclerview.widget.RecyclerView
-import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
 
 @BindingAdapter("subjects")

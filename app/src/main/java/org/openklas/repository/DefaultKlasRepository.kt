@@ -35,13 +35,14 @@ class DefaultKlasRepository @Inject constructor(
 ): KlasRepository {
 	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
 		return klasDataSource.performLogin(username, password)
-			.compose(AsyncTransformer()).apply {
-				if(rememberMe) {
+			.compose(AsyncTransformer()).run {
+				if(rememberMe)
 					doOnSuccess {
 						preferenceDataSource.userID = username
 						preferenceDataSource.password = password
 					}
-				}
+				else
+					this
 			}
 	}
 

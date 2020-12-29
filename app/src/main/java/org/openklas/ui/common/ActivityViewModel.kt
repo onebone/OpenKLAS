@@ -10,6 +10,6 @@ class ActivityViewModel: BaseViewModel() {
 	}
 
 	val titleHeaderType = MutableLiveData<TitleView.HeaderType>().also {
-		it.value = TitleView.HeaderType.HAMBURGER
+		it.value = TitleView.HeaderType.NONE
 	}
 }

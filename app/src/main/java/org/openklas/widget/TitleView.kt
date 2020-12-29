@@ -41,13 +41,23 @@ class TitleView: FrameLayout {
 		set(value) {
 			if(value == field) return
 
-			if(field == HeaderType.HAMBURGER) {
+			if(field == HeaderType.NONE) {
+				if(value == HeaderType.HAMBURGER) {
+					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_hidden), true)
+				}else if(value == HeaderType.BACK) {
+					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_hidden, R.attr.icon_state_back), true)
+				}
+			}else if(field == HeaderType.HAMBURGER) {
 				if(value == HeaderType.BACK) {
 					imgHeader.setImageState(intArrayOf(R.attr.icon_state_back), true)
+				}else if(value == HeaderType.NONE) {
+					imgHeader.setImageState(intArrayOf(R.attr.icon_state_hidden), true)
 				}
 			}else if(field == HeaderType.BACK) {
 				if(value == HeaderType.HAMBURGER) {
 					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_back), true)
+				}else if(value == HeaderType.NONE) {
+					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_back, R.attr.icon_state_hidden), true)
 				}
 			}
 
@@ -110,6 +120,6 @@ class TitleView: FrameLayout {
 	}
 
 	enum class HeaderType {
-		HAMBURGER, BACK
+		NONE, HAMBURGER, BACK
 	}
 }

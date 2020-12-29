@@ -36,8 +36,7 @@
 			app:destination="@id/fragment_home_container"
 			app:enterAnim="@anim/slide_right"
 			app:exitAnim="@anim/slightly_scale_down_left"
-			app:popEnterAnim="@anim/slightly_scale_up_left"
-			app:popExitAnim="@anim/slide_right_pop"
+			app:popUpTo="@id/fragment_login"
 			app:popUpToInclusive="true" />
 
 	</fragment>

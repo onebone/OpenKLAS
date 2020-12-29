@@ -23,9 +23,7 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import dagger.hilt.android.HiltAndroidApp
 import org.openklas.base.Config
-import pyxis.uzuki.live.attribute.parser.annotation.AttributeParser
 
-@AttributeParser("org.openklas")
 @HiltAndroidApp
 class MainApplication: Application() {
 	override fun onCreate() {

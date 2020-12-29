@@ -46,12 +46,4 @@ class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
 		mBinding.list.adapter = SylSearchAdapter()
 		return view
 	}
-
-	fun onClickBack(view: View) {
-		this.requireActivity().onBackPressed()
-	}
-
-	fun onClickSearch(view: View, keyword: String) {
-		viewModel.keyword.value = keyword
-	}
 }

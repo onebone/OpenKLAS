@@ -17,92 +17,39 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="56dp"
+	android:background="@color/copper"
+	android:orientation="horizontal">
 
-    <data>
+	<ImageView
+		android:id="@+id/img_header"
+		android:layout_width="42dp"
+		android:layout_height="42dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:layout_marginStart="5dp"
+		android:padding="9dp"
+		app:srcCompat="@drawable/ic_back_hamburger"
+		android:contentDescription="@string/common_header_button_description" />
 
-        <import type="android.view.View" />
+	<TextView
+		android:id="@+id/tv_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:textColor="@color/white"
+		android:textSize="18sp"
+		android:textStyle="bold"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="타이틀" />
 
-        <variable
-            name="view"
-            type="org.openklas.widget.TitleView" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/copper"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{view.mTitle}"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="타이틀" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="17dp"
-            android:onClick="@{view::clickBack}"
-            android:visibility="@{(view.mMode==1 || view.mMode==3 )? View.VISIBLE : View.GONE}"
-            android:src="@drawable/baseline_arrow_white_18_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{view::clickMypage}"
-            android:visibility="@{(view.mMode==2 || view.mMode==4 )? View.VISIBLE : View.GONE}"
-            android:src="@drawable/baseline_person_white_18_dp"
-            android:padding="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="17dp"
-            android:src="@drawable/search_btn"
-            android:onClick="@{view::clickSearch}"
-            android:visibility="@{(view.mMode==3 || view.mMode==4 )? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
-            android:background="@drawable/rounded_corners_bg_white"
-            android:hint="@string/search_hint"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:textAlignment="center"
-            android:singleLine="true"
-            android:visibility="@{(view.mMode==3 || view.mMode==4 )? View.VISIBLE : View.GONE}"
-            android:text="@={view.mKeyword}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

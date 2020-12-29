@@ -27,9 +27,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import org.openklas.R
 import org.openklas.databinding.MenuViewBinding
-import pyxis.uzuki.live.attribute.parser.annotation.CustomView
 
-@CustomView
 class MenuView: LinearLayout {
 	private var mBinding: MenuViewBinding? = null
 

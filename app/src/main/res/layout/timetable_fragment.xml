@@ -29,13 +29,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <org.openklas.widget.TitleView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:titleName="@string/timetable"
-            app:titleMode="mypage"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <org.openklas.widget.TimetableView
             android:id="@+id/timetable"
@@ -45,7 +38,7 @@
             app:timetable="@{viewModel.timetable}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,22 +35,12 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<org.openklas.widget.TitleView
-			android:id="@+id/title"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:titleName="@string/post_list_title"
-			app:titleMode="back" />
-
 		<Spinner
 			android:id="@+id/spn_subjects"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/title"
+			app:layout_constraintTop_toTopOf="parent"
 			android:layout_margin="8dp"
 			app:subjects="@{viewModel.subjects}"
 			app:onSubjectIndexChanged="@{v -> viewModel.onSubjectIndexChanged(v)}" />

@@ -1,4 +1,4 @@
-package org.openklas
+package org.openklas.ui.common
 
 /*
  * OpenKLAS
@@ -19,14 +19,29 @@ package org.openklas
  */
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.base.BaseActivity
 import org.openklas.databinding.MainActivityBinding
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainActivityBinding>() {
+class MainActivity: BaseActivity<MainActivityBinding>() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.main_activity)
+
+		val binding = MainActivityBinding.inflate(LayoutInflater.from(this))
+		setContentView(binding.root)
+
+		val viewModel by viewModels<ActivityViewModel>()
+		binding.viewModel = viewModel
+		binding.view = this
+
+		binding.lifecycleOwner = this
+	}
+
+	fun onTitleClickBack(view: View) {
+		this.onBackPressed()
 	}
 }

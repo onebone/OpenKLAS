@@ -27,7 +27,7 @@
 		<aapt:attr name="android:animation">
 			<objectAnimator
 				android:propertyName="pathData"
-				android:duration="500"
+				android:duration="190"
 				android:valueFrom="@string/path_back_reversed"
 				android:valueTo="@string/path_hamburger"
 				android:valueType="pathType"
@@ -39,7 +39,7 @@
 		<aapt:attr name="android:animation">
 			<objectAnimator
 				android:propertyName="rotation"
-				android:duration="500"
+				android:duration="190"
 				android:valueFrom="180"
 				android:valueTo="360"
 				android:interpolator="@android:anim/accelerate_decelerate_interpolator" />

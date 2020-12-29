@@ -22,12 +22,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
+import org.openklas.ui.common.ActivityViewModel
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
@@ -48,5 +51,13 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 		mBinding.viewModel = viewModel
 		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
 		mBinding.list.adapter = HomeTodayAdapter()
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		val activityViewModel by activityViewModels<ActivityViewModel>()
+		activityViewModel.title.value = resources.getString(R.string.app_name)
+		activityViewModel.titleHeaderType.value = TitleView.HeaderType.HAMBURGER
 	}
 }

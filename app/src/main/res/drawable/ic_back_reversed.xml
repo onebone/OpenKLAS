@@ -17,23 +17,23 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<resources>
-    <declare-styleable name="TitleView">
-        <attr name="titleName" format="string"/>
-
-        <attr name="titleMode" format="integer">
-            <enum name="none" value="0" />
-            <enum name="back" value="1" />
-            <enum name="mypage" value="2" />
-            <enum name="backsearch" value="3" />
-            <enum name="mypagesearch" value="4" />
-        </attr>
-    </declare-styleable>
-
-    <declare-styleable name="TimetableView">
-        <attr name="cellMinHeight" format="dimension" />
-        <attr name="minPeriods" format="integer" />
-    </declare-styleable>
-
-    <attr name="icon_state_back" format="boolean" />
-</resources>
+<vector
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:width="30dp"
+	android:height="30dp"
+	android:viewportWidth="30"
+	android:viewportHeight="30">
+	<group
+		android:name="group"
+		android:pivotX="15"
+		android:pivotY="15"
+		android:rotation="0">
+		<path
+			android:name="root"
+			android:pathData="@string/path_back_reversed"
+			android:strokeWidth="2"
+			android:fillColor="#00000000"
+			android:strokeColor="#ffffff"
+			android:strokeLineCap="round" />
+	</group>
+</vector>

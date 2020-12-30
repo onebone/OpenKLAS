@@ -46,6 +46,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:title="@{viewModel.title}"
             app:headerType="@{viewModel.titleHeaderType}"
+            app:searchType="@{viewModel.titleSearchType}"
             app:onClickBack="@{view::onTitleClickBack}" />
 
         <androidx.fragment.app.FragmentContainerView

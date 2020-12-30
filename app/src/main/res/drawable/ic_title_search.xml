@@ -23,41 +23,45 @@
 	tools:targetApi="lollipop">
 
 	<item android:id="@+id/img_state_none"
-		android:drawable="@drawable/ic_none_30"
+		android:drawable="@drawable/ic_none_23"
 		app:icon_state_hidden="true" />
 
-	<item android:id="@+id/img_state_hamburger"
-		android:drawable="@drawable/ic_hamburger"
-		app:icon_state_back="false" />
+	<item android:id="@+id/img_state_search"
+		android:drawable="@drawable/ic_search"
+		app:icon_state_cancel="false" />
 
-	<item android:id="@+id/img_state_back"
-		android:drawable="@drawable/ic_back_reversed"
-		app:icon_state_back="true" />
-
-	<transition
-		android:fromId="@id/img_state_hamburger"
-		android:toId="@id/img_state_back"
-		android:drawable="@drawable/anim_ic_hamburger_back" />
+	<item android:id="@+id/img_state_cancel"
+		android:drawable="@drawable/ic_cancel"
+		app:icon_state_cancel="true" />
 
 	<transition
-		android:fromId="@id/img_state_back"
-		android:toId="@id/img_state_hamburger"
-		android:drawable="@drawable/anim_ic_back_hamburger" />
-
-	<transition
-		android:fromId="@id/img_state_hamburger"
+		android:fromId="@id/img_state_search"
 		android:toId="@id/img_state_none"
-		android:drawable="@drawable/anim_ic_hamburger_none"
-		android:reversible="true" />
-
-	<transition
-		android:fromId="@id/img_state_back"
-		android:toId="@id/img_state_none"
-		android:drawable="@drawable/anim_ic_back_none" />
+		android:drawable="@drawable/anim_ic_search_none" />
 
 	<transition
 		android:fromId="@id/img_state_none"
-		android:toId="@id/img_state_back"
-		android:drawable="@drawable/anim_ic_none_back" />
+		android:toId="@id/img_state_search"
+		android:drawable="@drawable/anim_ic_none_search" />
+
+	<transition
+		android:fromId="@id/img_state_search"
+		android:toId="@id/img_state_cancel"
+		android:drawable="@drawable/anim_ic_search_cancel" />
+
+	<transition
+		android:fromId="@id/img_state_cancel"
+		android:toId="@id/img_state_search"
+		android:drawable="@drawable/anim_ic_cancel_search" />
+
+	<transition
+		android:fromId="@id/img_state_cancel"
+		android:toId="@id/img_state_none"
+		android:drawable="@drawable/anim_ic_cancel_none" />
+
+	<transition
+		android:fromId="@id/img_state_none"
+		android:toId="@id/img_state_cancel"
+		android:drawable="@drawable/anim_ic_none_cancel" />
 
 </animated-selector>

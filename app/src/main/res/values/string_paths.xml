@@ -18,10 +18,24 @@
  -->
 
 <resources>
+	<!-- ic_header_button.xml -->
 	<string name="path_none">M26,6 L26,6 M26,15 L26,15 M26,24 L26,24</string>
 	<string name="path_hamburger">M4,6 L26,6 M26,15 L4,15 M4,24 L26,24</string>
 	<string name="path_back_reversed">M26,15 L15,6 M4,15 L26,15 M26,15 L15,24</string>
 
 	<!-- path for middle of state changing back -> none -->
 	<string name="path_back_step_none">M26,15 L26,15 M4,15 L26,15 M26,15 L26,15</string>
+
+	<!-- ic_title_search.xml -->
+	<string name="path_search_arc">M7.6471,7.6471 m-6.6471,0 a6.6471,6.6471 0,1,0,13.2941 0 a6.6471,6.6471 0,1,0,-13.2941,0</string>
+	<string name="path_search_line1">M12.4718,13.4106 L20.7071,21.6459</string>
+	<string name="path_search_line2">M20.5,1.5 L20.5,1.5</string>
+
+	<string name="path_cancel_arc">M7.6471,7.6471 m-6.6471,0 a6.6471,6.6471 0,1,0,0,0 a6.6471,6.6471 0,1,0,0,0</string>
+	<string name="path_cancel_line1">M1.5,1.5 L20.5,21.5</string>
+	<string name="path_cancel_line2">M20.5,1.5 L1.5,20.5</string>
+
+	<string name="path_none_arc">M7.6471,7.6471 m-6.6471,0 a6.6471,6.6471 0,1,0,0,0 a6.6471,6.6471 0,1,0,0,0</string>
+	<string name="path_none_line1">M1.5,1.5 L1.5,1.5</string>
+	<string name="path_none_line2">M20.5,1.5 L20.5,1.5</string>
 </resources>

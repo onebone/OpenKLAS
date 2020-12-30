@@ -12,4 +12,8 @@ class ActivityViewModel: BaseViewModel() {
 	val titleHeaderType = MutableLiveData<TitleView.HeaderType>().also {
 		it.value = TitleView.HeaderType.NONE
 	}
+
+	val titleSearchType = MutableLiveData<TitleView.SearchType>().also {
+		it.value = TitleView.SearchType.NONE
+	}
 }

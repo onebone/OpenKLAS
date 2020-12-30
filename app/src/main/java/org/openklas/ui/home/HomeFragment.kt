@@ -59,5 +59,6 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 		val activityViewModel by activityViewModels<ActivityViewModel>()
 		activityViewModel.title.value = resources.getString(R.string.app_name)
 		activityViewModel.titleHeaderType.value = TitleView.HeaderType.HAMBURGER
+		activityViewModel.titleSearchType.value = TitleView.SearchType.NONE
 	}
 }

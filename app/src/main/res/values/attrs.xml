@@ -36,5 +36,6 @@
     </declare-styleable>
 
     <attr name="icon_state_back" format="boolean" />
+    <attr name="icon_state_cancel" format="boolean" />
     <attr name="icon_state_hidden" format="boolean" />
 </resources>

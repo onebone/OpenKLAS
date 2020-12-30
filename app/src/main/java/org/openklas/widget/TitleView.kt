@@ -30,6 +30,7 @@ import org.openklas.R
 class TitleView: FrameLayout {
 	private lateinit var tvTitle: TextView
 	private lateinit var imgHeader: ImageView
+	private lateinit var imgSearch: ImageView
 
 	var title: String = ""
 		set(value) {
@@ -64,7 +65,30 @@ class TitleView: FrameLayout {
 			field = value
 		}
 
+	var searchType: SearchType = SearchType.SEARCH
+		set(value) {
+			if(field == value) return
+
+			var state = intArrayOf()
+			state += if(value == SearchType.NONE) {
+				R.attr.icon_state_hidden
+			}else{
+				-R.attr.icon_state_hidden
+			}
+
+			if(value == SearchType.SEARCH) {
+				state += -R.attr.icon_state_cancel
+			}else if(value == SearchType.CANCEL) {
+				state += R.attr.icon_state_cancel
+			}
+
+			imgSearch.setImageState(state, true)
+
+			field = value
+		}
+
 	var onClickBackListener: OnClickBackListener? = null
+	var onClickSearchListener: OnClickSearchListener? = null
 
 	constructor(context: Context): super(context) {
 		init()
@@ -93,10 +117,25 @@ class TitleView: FrameLayout {
 				}
 			}
 		}
+		imgSearch = findViewById<ImageView>(R.id.img_search).also {
+			it.setOnClickListener { v ->
+				if(searchType == SearchType.SEARCH) {
+					onClickSearchListener?.onClickSearch(v, true)
+					searchType = SearchType.CANCEL
+				}else if(searchType == SearchType.CANCEL) {
+					onClickSearchListener?.onClickSearch(v, false)
+					searchType = SearchType.SEARCH
+				}
+			}
+		}
 	}
 
 	fun interface OnClickBackListener {
 		fun onClickBack(view: View)
+	}
+
+	fun interface OnClickSearchListener {
+		fun onClickSearch(view: View, isSearch: Boolean)
 	}
 
 	companion object {
@@ -113,10 +152,26 @@ class TitleView: FrameLayout {
 		}
 
 		@JvmStatic
+		@BindingAdapter("searchType")
+		fun bindSearchType(view: TitleView, type: SearchType) {
+			view.searchType = type
+		}
+
+		@JvmStatic
 		@BindingAdapter("onClickBack")
 		fun bindOnClickBackListener(view: TitleView, listener: OnClickBackListener?) {
 			view.onClickBackListener = listener
 		}
+
+		@JvmStatic
+		@BindingAdapter("onClickSearch")
+		fun bindOnClickSearchListener(view: TitleView, listener: OnClickSearchListener?) {
+			view.onClickSearchListener = listener
+		}
+	}
+
+	enum class SearchType {
+		NONE, SEARCH, CANCEL
 	}
 
 	enum class HeaderType {

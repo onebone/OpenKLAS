@@ -22,11 +22,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
+import org.openklas.ui.common.ActivityViewModel
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
@@ -45,5 +48,14 @@ class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
 		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
 		mBinding.list.adapter = SylSearchAdapter()
 		return view
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		val activityViewModel by activityViewModels<ActivityViewModel>()
+		activityViewModel.title.value = resources.getString(R.string.app_name)
+		activityViewModel.titleHeaderType.value = TitleView.HeaderType.BACK
+		activityViewModel.titleSearchType.value = TitleView.SearchType.SEARCH
 	}
 }

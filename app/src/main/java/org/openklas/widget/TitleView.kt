@@ -42,25 +42,22 @@ class TitleView: FrameLayout {
 		set(value) {
 			if(value == field) return
 
-			if(field == HeaderType.NONE) {
-				if(value == HeaderType.HAMBURGER) {
-					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_hidden), true)
-				}else if(value == HeaderType.BACK) {
-					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_hidden, R.attr.icon_state_back), true)
-				}
-			}else if(field == HeaderType.HAMBURGER) {
-				if(value == HeaderType.BACK) {
-					imgHeader.setImageState(intArrayOf(R.attr.icon_state_back), true)
-				}else if(value == HeaderType.NONE) {
-					imgHeader.setImageState(intArrayOf(R.attr.icon_state_hidden), true)
-				}
-			}else if(field == HeaderType.BACK) {
-				if(value == HeaderType.HAMBURGER) {
-					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_back), true)
-				}else if(value == HeaderType.NONE) {
-					imgHeader.setImageState(intArrayOf(-R.attr.icon_state_back, R.attr.icon_state_hidden), true)
-				}
+			var state = intArrayOf()
+			state += if(value == HeaderType.NONE) {
+				imgHeader.visibility = View.INVISIBLE
+				R.attr.icon_state_hidden
+			}else{
+				imgHeader.visibility = View.VISIBLE
+				-R.attr.icon_state_hidden
 			}
+
+			if(value == HeaderType.HAMBURGER) {
+				state += -R.attr.icon_state_back
+			}else if(value == HeaderType.BACK) {
+				state += R.attr.icon_state_back
+			}
+
+			imgHeader.setImageState(state, true)
 
 			field = value
 		}
@@ -71,8 +68,10 @@ class TitleView: FrameLayout {
 
 			var state = intArrayOf()
 			state += if(value == SearchType.NONE) {
+				imgSearch.visibility = View.INVISIBLE
 				R.attr.icon_state_hidden
 			}else{
+				imgSearch.visibility = View.VISIBLE
 				-R.attr.icon_state_hidden
 			}
 

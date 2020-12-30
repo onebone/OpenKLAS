@@ -49,8 +49,6 @@ class LoginViewModel @ViewModelInject constructor(
 		}
 
 		addDisposable(klasRepository.performLogin(userId, password, rememberMe.get())
-			.subscribeOn(Schedulers.io())
-			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe { _, err ->
 				_result.value = err
 			})

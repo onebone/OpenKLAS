@@ -29,4 +29,11 @@
     <color name="copper">#d53922</color>
     <color name="pale_grey">#eeeff1</color>
     <color name="brownish_grey">#707070</color>
+
+    <color name="green">#4CAF50</color>
+
+    <color name="gray">#999999</color>
+    <color name="super_light_gray">#EDEDED</color>
+
+    <color name="blue">#42A5F5</color>
 </resources>

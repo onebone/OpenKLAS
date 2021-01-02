@@ -17,18 +17,11 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	tools:context=".ui.home.HomeFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/list_main"
+	<androidx.fragment.app.FragmentContainerView
+		android:id="@+id/main_fragment"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		android:background="@color/super_light_gray"
-		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+		android:layout_height="wrap_content" />
 
 </layout>

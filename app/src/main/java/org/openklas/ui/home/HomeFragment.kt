@@ -23,8 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -33,24 +31,21 @@ import org.openklas.ui.common.ActivityViewModel
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeFragmentBinding>() {
+class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.home_fragment, container)
-	}
+		val view = createAndBindView(inflater, R.layout.home_fragment, container)
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+		val viewModel = getViewModel<HomeViewModel>()
 
-		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) {
-			defaultViewModelProviderFactory
+		mBinding.listMain.adapter = HomeMainAdapter(viewModel, viewLifecycleOwner).apply {
+			// TODO make it changeable
+			submitList(listOf(0))
 		}
 
-		mBinding.viewModel = viewModel
-		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
-		mBinding.list.adapter = HomeTodayAdapter()
+		return view
 	}
 
 	override fun onResume() {

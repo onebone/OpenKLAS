@@ -36,7 +36,11 @@ sealed class OnlineContentEntry {
 		@SerializedName("endDate")
 		val endDate: Date,
 		@SerializedName("prog")
-		val progress: Int
+		val progress: Int,
+		@SerializedName("rcognTime")
+		val lectureTime: Int,
+		@SerializedName("achivTime")
+		val acquiredTime: Int
 	): OnlineContentEntry()
 
 	data class Homework(
@@ -46,7 +50,13 @@ sealed class OnlineContentEntry {
 		@SerializedName("startDate")
 		val startDate: Date,
 		@SerializedName("endDate")
-		val endDate: Date
+		val endDate: Date,
+		@SerializedName("title")
+		val title: String,
+		@SerializedName("rcognTime")
+		val lectureTime: Int,
+		@SerializedName("achivTime")
+		val acquiredTime: Int
 	): OnlineContentEntry()
 
 	data class Dummy(

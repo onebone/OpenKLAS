@@ -29,3 +29,18 @@ fun AssetManager.fileAsString(filename: String): String {
 		it.readBytes().toString(Charset.defaultCharset())
 	}
 }
+
+fun periodToTime(period: Int): String {
+	val map = mapOf(
+		0 to "8:00",
+		1 to "9:00",
+		2 to "10:30",
+		3 to "12:00",
+		4 to "13:30",
+		5 to "15:00",
+		6 to "16:30",
+		7 to "18:00"
+	)
+
+	return map[period] ?: "N/A"
+}

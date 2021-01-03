@@ -29,6 +29,7 @@ import androidx.navigation.fragment.NavHostFragment
 import io.reactivex.Single
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
@@ -59,7 +60,7 @@ class HomeViewModel @ViewModelInject constructor(
 		}
 	}
 
-	private val onlineContents = MediatorLiveData<Array<OnlineContentEntry>>().apply {
+	private val onlineContents = MediatorLiveData<Array<Pair<BriefSubject, OnlineContentEntry>>>().apply {
 		addSource(semester) {
 			fetchOnlineContents(it)
 		}
@@ -68,7 +69,7 @@ class HomeViewModel @ViewModelInject constructor(
 	val videoCount: LiveData<Int> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { entry ->
+		it.count { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.endDate
 		}
 	}
@@ -76,17 +77,18 @@ class HomeViewModel @ViewModelInject constructor(
 	val homeworkCount: LiveData<Int> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { entry ->
+		it.count { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.endDate
 		}
 	}
 
-	val impendingHomework: LiveData<Array<OnlineContentEntry.Homework>> = Transformations.map(onlineContents) {
+	val impendingHomework: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.filterIsInstance<OnlineContentEntry.Homework>().filter { entry ->
-			now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
-		}.toTypedArray()
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 	val hasImpendingHomework: LiveData<Boolean> = Transformations.map(impendingHomework) {
 		it.isNotEmpty()
@@ -178,16 +180,18 @@ class HomeViewModel @ViewModelInject constructor(
 	private fun fetchOnlineContents(currentSemester: Semester) {
 		addDisposable(Single.zip(currentSemester.subjects.map { subject ->
 			requestWithSession {
-				klasRepository.getOnlineContentList(currentSemester.id, subject.id)
+				klasRepository.getOnlineContentList(currentSemester.id, subject.id).map { entries ->
+					entries.map { Pair(subject, it) }
+				}
 			}
 		}) {
-			it.filterIsInstance<Array<*>>()
-				.toTypedArray()
-				.flatten()
-				.filterIsInstance<OnlineContentEntry>()
+			it.flatMap { entry ->
+				@Suppress("UNCHECKED_CAST")
+				entry as List<Pair<BriefSubject, OnlineContentEntry>>
+			}.toTypedArray()
 		}.subscribe { v, err ->
 			if(err == null) {
-				onlineContents.value = v.toTypedArray()
+				onlineContents.value = v
 			}else{
 				_error.value = err
 			}

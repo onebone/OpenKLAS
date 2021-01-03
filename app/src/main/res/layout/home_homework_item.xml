@@ -25,6 +25,10 @@
 		<import type="android.view.View" />
 
 		<variable
+			name="subject"
+			type="org.openklas.klas.model.BriefSubject" />
+
+		<variable
 			name="entry"
 			type="org.openklas.klas.model.OnlineContentEntry.Homework" />
 	</data>
@@ -58,7 +62,7 @@
 			app:layout_constraintLeft_toRightOf="@id/tv_time_left"
 			android:layout_marginStart="6dp"
 			android:textStyle="bold"
-			android:text="@{entry.title}"
+			android:text="@{subject.name}"
 			android:textSize="16sp"
 			tools:text="일반상대성이론실험" />
 

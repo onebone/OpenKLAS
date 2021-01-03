@@ -24,19 +24,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.HomeHomeworkItemBinding
+import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.OnlineContentEntry
 
-class HomeHomeworkAdapter: ListAdapter<OnlineContentEntry.Homework, HomeHomeworkAdapter.HomeworkViewHolder>(SimpleDiffUtil()) {
+class HomeHomeworkAdapter: ListAdapter<Pair<BriefSubject, OnlineContentEntry.Homework>, HomeHomeworkAdapter.HomeworkViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkViewHolder {
 		return HomeworkViewHolder(HomeHomeworkItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
 
 	override fun onBindViewHolder(holder: HomeworkViewHolder, position: Int) {
-		holder.bind(getItem(position))
+		val (subject, entry) = getItem(position)
+		holder.bind(subject, entry)
 	}
 
 	class HomeworkViewHolder(private val binding: HomeHomeworkItemBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(homework: OnlineContentEntry.Homework) {
+		fun bind(subject: BriefSubject, homework: OnlineContentEntry.Homework) {
+			binding.subject = subject
 			binding.entry = homework
 		}
 	}

@@ -15,7 +15,7 @@ OpenKLAS를 빌드하기 위해서는 `gradlew build` 명령어를 이용하거�
 ## 라이선스
 ```
 OpenKLAS
-Copyright (C) 2020 OpenKLAS Team
+Copyright (C) 2020-2021 OpenKLAS Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

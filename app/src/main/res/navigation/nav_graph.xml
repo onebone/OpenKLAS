@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
  ~ OpenKLAS
  ~ Copyright (C) 2020-2021 OpenKLAS Team
  ~
@@ -33,7 +34,7 @@
 
 		<action
 			android:id="@+id/action_login_home"
-			app:destination="@id/fragment_home_container"
+			app:destination="@id/fragment_home"
 			app:enterAnim="@anim/slide_right"
 			app:exitAnim="@anim/slightly_scale_down_left"
 			app:popUpTo="@id/fragment_login"
@@ -42,36 +43,24 @@
 	</fragment>
 
 	<fragment
-		android:id="@+id/fragment_home_container"
-		android:name="org.openklas.ui.home.HomeContainerFragment"
-		tools:layout="@layout/home_container_fragment">
+		android:id="@+id/fragment_timetable"
+		android:name="org.openklas.ui.home.TimetableFragment"
+		tools:layout="@layout/timetable_fragment">
+
+	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_home"
+		android:name="org.openklas.ui.home.HomeFragment"
+		tools:layout="@layout/home_fragment">
 
 		<action
-			android:id="@+id/action_home_post_list"
-			app:destination="@id/fragment_post_list"
+			android:id="@+id/action_home_timetable"
+			app:destination="@id/fragment_timetable"
 			app:enterAnim="@anim/slide_right"
 			app:exitAnim="@anim/slightly_scale_down_left"
 			app:popEnterAnim="@anim/slightly_scale_up_left"
-			app:popExitAnim="@anim/slide_right_pop">
-
-			<argument
-				android:name="semester"
-				app:argType="string"
-				app:nullable="false" />
-
-			<argument
-				android:name="type"
-				app:argType=".ui.postlist.PostType"
-				app:nullable="false" />
-
-		</action>
-		<action
-			android:id="@+id/action_home_syl_search"
-			app:destination="@id/fragment_syllabus_search"
-			app:enterAnim="@anim/slide_right"
-			app:exitAnim="@anim/slightly_scale_down_left"
-			app:popEnterAnim="@anim/slightly_scale_up_left"
-			app:popExitAnim="@anim/slide_right_pop"/>
+			app:popExitAnim="@anim/slide_right_pop" />
 
 	</fragment>
 

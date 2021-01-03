@@ -18,14 +18,11 @@ package org.openklas.ui.home
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.view.View
-import androidx.fragment.app.findFragment
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.navigation.fragment.NavHostFragment
 import io.reactivex.Single
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
@@ -35,7 +32,6 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
-import org.openklas.ui.postlist.PostType
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -144,37 +140,6 @@ class HomeViewModel @ViewModelInject constructor(
 				_error.value = err
 			}
 		})
-	}
-
-	fun onClickNotice(view: View) {
-		navigateToPostList(view, PostType.NOTICE)
-	}
-
-	fun onClickLectureMaterial(view: View) {
-		navigateToPostList(view, PostType.LECTURE_MATERIAL)
-	}
-
-	fun onClickQna(view: View) {
-		navigateToPostList(view, PostType.QNA)
-	}
-
-	fun onClickSyllabusSearch(view: View){
-		val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
-
-		NavHostFragment.findNavController(fragment).navigate(
-			HomeContainerFragmentDirections.actionHomeSylSearch()
-		)
-	}
-
-	private fun navigateToPostList(view: View, type: PostType) {
-		semester.value?.let {
-			// fragment: HomeContainerFragment
-			val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
-
-			NavHostFragment.findNavController(fragment).navigate(
-				HomeContainerFragmentDirections.actionHomePostList(it.id, type)
-			)
-		}
 	}
 
 	private fun fetchOnlineContents(currentSemester: Semester) {

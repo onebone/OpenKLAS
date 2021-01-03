@@ -22,12 +22,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
-import org.openklas.ui.common.ActivityViewModel
+import org.openklas.ui.common.configureTitle
 import org.openklas.utils.dp2px
 import org.openklas.widget.TitleView
 
@@ -44,7 +44,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 		mBinding.listMain.apply {
 			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))
 
-			adapter = HomeMainAdapter(viewModel, viewLifecycleOwner).apply {
+			adapter = HomeMainAdapter(viewModel, this@HomeFragment).apply {
 				// TODO make it changeable
 				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK))
 			}
@@ -53,12 +53,14 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 		return view
 	}
 
+	fun onClickShowMore(v: View) {
+		findNavController().navigate(HomeFragmentDirections.actionHomeTimetable())
+	}
+
 	override fun onResume() {
 		super.onResume()
 
-		val activityViewModel by activityViewModels<ActivityViewModel>()
-		activityViewModel.title.value = resources.getString(R.string.app_name)
-		activityViewModel.titleHeaderType.value = TitleView.HeaderType.HAMBURGER
-		activityViewModel.titleSearchType.value = TitleView.SearchType.NONE
+		configureTitle(resources.getString(R.string.app_name),
+			TitleView.HeaderType.HAMBURGER, TitleView.SearchType.NONE)
 	}
 }

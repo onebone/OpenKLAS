@@ -21,7 +21,6 @@ package org.openklas.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +33,7 @@ import org.openklas.ui.home.schedule.HomeScheduleAdapter
 
 class HomeMainAdapter(
 	private val viewModel: HomeViewModel,
-	private val lifecycleOwner: LifecycleOwner
+	private val fragment: HomeFragment
 ): ListAdapter<HomeViewType, HomeMainAdapter.HomeViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
 		R.layout.home_schedule_root_item ->
@@ -45,15 +44,16 @@ class HomeMainAdapter(
 	}
 
 	override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-		holder.bind(viewModel)
+		holder.bind(viewModel, fragment)
 	}
 
 	override fun getItemViewType(position: Int): Int = getItem(position).layout
 
 	inner class ScheduleViewHolder(private val binding: HomeScheduleRootItemBinding): HomeViewHolder(binding.root) {
-		override fun bind(viewModel: HomeViewModel) {
+		override fun bind(viewModel: HomeViewModel, fragment: HomeFragment) {
 			binding.viewModel = viewModel
-			binding.lifecycleOwner = lifecycleOwner
+			binding.v = fragment
+			binding.lifecycleOwner = fragment.viewLifecycleOwner
 
 			if(binding.rvSchedule.adapter == null)
 				binding.rvSchedule.adapter = HomeScheduleAdapter()
@@ -61,9 +61,9 @@ class HomeMainAdapter(
 	}
 
 	inner class HomeworkViewHolder(private val binding: HomeHomeworkRootItemBinding): HomeViewHolder(binding.root) {
-		override fun bind(viewModel: HomeViewModel) {
+		override fun bind(viewModel: HomeViewModel, fragment: HomeFragment) {
 			binding.viewModel = viewModel
-			binding.lifecycleOwner = lifecycleOwner
+			binding.lifecycleOwner = fragment.viewLifecycleOwner
 
 			binding.rvHomework.apply {
 				layoutManager = LinearLayoutManager(binding.rvHomework.context, RecyclerView.HORIZONTAL, false)
@@ -75,6 +75,6 @@ class HomeMainAdapter(
 	}
 
 	abstract class HomeViewHolder(root: View): RecyclerView.ViewHolder(root) {
-		abstract fun bind(viewModel: HomeViewModel)
+		abstract fun bind(viewModel: HomeViewModel, fragment: HomeFragment)
 	}
 }

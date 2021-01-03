@@ -29,6 +29,8 @@ import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.LoginFragmentBinding
 import org.openklas.klas.error.KlasSigninFailError
+import org.openklas.ui.common.configureTitle
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
@@ -63,11 +65,9 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 		}
 	}
 
-	companion object {
-		@JvmStatic
-		fun newInstance() =
-			LoginFragment().apply {
-				arguments = Bundle()
-			}
+	override fun onResume() {
+		super.onResume()
+
+		configureTitle("", TitleView.HeaderType.NONE, TitleView.SearchType.NONE)
 	}
 }

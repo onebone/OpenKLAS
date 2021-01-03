@@ -39,7 +39,7 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 		return mBinding.root
 	}
 
-	protected fun setupSessionViewModel(viewModel: BaseViewModel) {
+	private fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())

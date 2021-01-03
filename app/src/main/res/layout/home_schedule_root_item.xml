@@ -24,6 +24,10 @@
 		<import type="android.view.View" />
 
 		<variable
+			name="v"
+			type="org.openklas.ui.home.HomeFragment" />
+
+		<variable
 			name="viewModel"
 			type="org.openklas.ui.home.HomeViewModel" />
 	</data>
@@ -68,6 +72,7 @@
 			android:text="@string/home_schedule_show_more"
 			android:textSize="14sp"
 			android:textColor="@color/blue"
+			android:onClick="@{v::onClickShowMore}"
 			app:drawableEndCompat="@drawable/ic_arrow"
 			app:drawableTint="@color/blue"
 			android:background="@drawable/background_hover_light_blue"

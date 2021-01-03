@@ -18,7 +18,7 @@ package org.openklas.di
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Application
+import android.content.Context
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -27,6 +27,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
 import okhttp3.Interceptor
@@ -115,8 +116,8 @@ class AppProvidesModule {
 
 	@Provides
 	@Singleton
-	fun provideCookieJar(app: Application): CookieJar {
-		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(app))
+	fun provideCookieJar(@ApplicationContext context: Context): CookieJar {
+		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 	}
 
 	@Provides

@@ -25,6 +25,7 @@
 	<string name="common_header_button_description">헤더 버튼</string>
 	<string name="common_search_button_description">검색 버튼</string>
 	<string name="common_home_today_schedule_icon">시간표 아이콘</string>
+	<string name="common_home_homework_icon">숙제의 눈물 아이콘</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
@@ -52,6 +53,9 @@
 	<string name="home_schedule_title">오늘의 시간표</string>
 	<string name="home_no_class_today">오늘은 강의가 없어요!</string>
 	<string name="home_schedule_show_more">시간표</string>
+	<string name="home_homework_title">과제</string>
+	<string name="home_no_homework">표시할 과제가 없어요</string>
+	<string name="home_homework_show_more">더 보기 %d</string>
 
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>

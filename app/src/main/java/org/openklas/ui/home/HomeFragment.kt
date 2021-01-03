@@ -28,6 +28,7 @@ import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
 import org.openklas.ui.common.ActivityViewModel
+import org.openklas.utils.dp2px
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
@@ -40,9 +41,13 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 
 		val viewModel = getViewModel<HomeViewModel>()
 
-		mBinding.listMain.adapter = HomeMainAdapter(viewModel, viewLifecycleOwner).apply {
-			// TODO make it changeable
-			submitList(listOf(0))
+		mBinding.listMain.apply {
+			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))
+
+			adapter = HomeMainAdapter(viewModel, viewLifecycleOwner).apply {
+				// TODO make it changeable
+				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK))
+			}
 		}
 
 		return view

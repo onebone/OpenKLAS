@@ -37,6 +37,7 @@ import org.openklas.repository.KlasRepository
 import org.openklas.ui.postlist.PostType
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
@@ -80,6 +81,17 @@ class HomeViewModel @ViewModelInject constructor(
 		}
 	}
 
+	val impendingHomework: LiveData<Array<OnlineContentEntry.Homework>> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		it.filterIsInstance<OnlineContentEntry.Homework>().filter { entry ->
+			now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+		}.toTypedArray()
+	}
+	val hasImpendingHomework: LiveData<Boolean> = Transformations.map(impendingHomework) {
+		it.isNotEmpty()
+	}
+
 	val semesterLabel: LiveData<String> = Transformations.map(home) {
 		it.semesterLabel
 	}
@@ -93,7 +105,7 @@ class HomeViewModel @ViewModelInject constructor(
 	}
 	val todaySchedule: LiveData<Array<Timetable.Entry>> = Transformations.map(timetable) { timetable ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		timetable.entries.sortedWith(compareBy { it.time }).toTypedArray()
+		timetable.entries.filter{ it.day == day - 1 }.sortedBy { it.time }.toTypedArray()
 	}
 	val todayScheduleEmpty: LiveData<Boolean> = Transformations.map(todaySchedule) { it.isEmpty() }
 

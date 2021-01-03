@@ -22,18 +22,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import org.openklas.R
 import org.openklas.base.list.SimpleDiffUtil
+import org.openklas.databinding.HomeHomeworkRootItemBinding
 import org.openklas.databinding.HomeScheduleRootItemBinding
+import org.openklas.ui.home.homework.HomeHomeworkAdapter
 import org.openklas.ui.home.schedule.HomeScheduleAdapter
 
 class HomeMainAdapter(
 	private val viewModel: HomeViewModel,
 	private val lifecycleOwner: LifecycleOwner
-): ListAdapter<Int, HomeMainAdapter.HomeViewHolder>(SimpleDiffUtil()) {
+): ListAdapter<HomeViewType, HomeMainAdapter.HomeViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
-		0 -> ScheduleViewHolder(HomeScheduleRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+		R.layout.home_schedule_root_item ->
+			ScheduleViewHolder(HomeScheduleRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+		R.layout.home_homework_root_item ->
+			HomeworkViewHolder(HomeHomeworkRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 		else -> throw IllegalStateException("invalid viewType given: $viewType")
 	}
 
@@ -41,14 +48,29 @@ class HomeMainAdapter(
 		holder.bind(viewModel)
 	}
 
-	override fun getItemViewType(position: Int): Int = getItem(position)
+	override fun getItemViewType(position: Int): Int = getItem(position).layout
 
 	inner class ScheduleViewHolder(private val binding: HomeScheduleRootItemBinding): HomeViewHolder(binding.root) {
 		override fun bind(viewModel: HomeViewModel) {
 			binding.viewModel = viewModel
 			binding.lifecycleOwner = lifecycleOwner
 
-			binding.rvSchedule.adapter = binding.rvSchedule.adapter ?: HomeScheduleAdapter()
+			if(binding.rvSchedule.adapter == null)
+				binding.rvSchedule.adapter = HomeScheduleAdapter()
+		}
+	}
+
+	inner class HomeworkViewHolder(private val binding: HomeHomeworkRootItemBinding): HomeViewHolder(binding.root) {
+		override fun bind(viewModel: HomeViewModel) {
+			binding.viewModel = viewModel
+			binding.lifecycleOwner = lifecycleOwner
+
+			binding.rvHomework.apply {
+				layoutManager = LinearLayoutManager(binding.rvHomework.context, RecyclerView.HORIZONTAL, false)
+
+				if(adapter == null)
+					adapter = HomeHomeworkAdapter()
+			}
 		}
 	}
 

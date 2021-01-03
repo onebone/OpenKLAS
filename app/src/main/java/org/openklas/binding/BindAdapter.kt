@@ -20,6 +20,7 @@ package org.openklas.binding
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -49,5 +50,11 @@ object BindAdapter {
 			@Suppress("UNCHECKED_CAST")
 			(recyclerView.adapter as ListAdapter<T, *>).submitList(list?.toList())
 		}
+	}
+
+	@JvmStatic
+	@BindingAdapter("tint")
+	fun bindImageTint(imageView: ImageView, @ColorInt color: Int) {
+		imageView.setColorFilter(color)
 	}
 }

@@ -1,7 +1,4 @@
-@file:JvmName("Utils")
-@file:JvmMultifileClass
-
-package org.openklas.utils
+package org.openklas.ui.home
 
 /*
  * OpenKLAS
@@ -21,31 +18,24 @@ package org.openklas.utils
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.content.Context
-import android.content.res.AssetManager
-import android.util.TypedValue
-import java.nio.charset.Charset
+import android.graphics.Rect
+import android.view.View
+import androidx.annotation.IntRange
+import androidx.recyclerview.widget.RecyclerView
 
-fun AssetManager.fileAsString(filename: String): String {
-	return open(filename).use {
-		it.readBytes().toString(Charset.defaultCharset())
+class RecyclerMarginDecoration(
+	@IntRange(from=0) private val margin: Int
+): RecyclerView.ItemDecoration() {
+	override fun getItemOffsets(
+		outRect: Rect,
+		view: View,
+		parent: RecyclerView,
+		state: RecyclerView.State
+	) {
+		val position = parent.getChildLayoutPosition(view)
+
+		if(position > 0) {
+			outRect.top += margin
+		}
 	}
 }
-
-fun periodToTime(period: Int): String {
-	val map = mapOf(
-		0 to "8:00",
-		1 to "9:00",
-		2 to "10:30",
-		3 to "12:00",
-		4 to "13:30",
-		5 to "15:00",
-		6 to "16:30",
-		7 to "18:00"
-	)
-
-	return map[period] ?: "N/A"
-}
-
-fun dp2px(context: Context, dp: Float) =
-	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)

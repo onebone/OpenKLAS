@@ -31,10 +31,14 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import org.openklas.BuildConfig
 import org.openklas.base.Config
+import org.openklas.klas.DefaultKlasClient
+import org.openklas.klas.KlasClient
 import org.openklas.klas.KlasUri
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
+import org.openklas.klas.test.DemoKlasClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -113,5 +117,12 @@ class AppProvidesModule {
 	@Singleton
 	fun provideCookieJar(app: Application): CookieJar {
 		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(app))
+	}
+
+	@Provides
+	@Singleton
+	fun provideKlasClient(service: KlasService, gson: Gson): KlasClient {
+		return if(BuildConfig.FETCH_ONLINE) DefaultKlasClient(service, gson)
+			else DemoKlasClient()
 	}
 }

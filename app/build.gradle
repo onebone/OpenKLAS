@@ -40,12 +40,26 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "FETCH_ONLINE", 'true'
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+
+            buildConfigField "boolean", "FETCH_ONLINE", 'true'
+        }
+
+        offlineDebug {
+            initWith debug
+
+            buildConfigField "boolean", "FETCH_ONLINE", 'false'
         }
     }
     compileOptions {

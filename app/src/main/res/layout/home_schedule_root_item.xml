@@ -63,16 +63,24 @@
 			app:layout_constraintTop_toTopOf="@id/label_schedule"
 			app:layout_constraintBottom_toBottomOf="@id/label_schedule"
 			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginEnd="6dp"
+			android:layout_marginEnd="4dp"
+			android:padding="4dp"
 			android:text="@string/home_schedule_show_more"
 			android:textSize="14sp"
-			android:textColor="@color/blue" />
+			android:textColor="@color/blue"
+			app:drawableEndCompat="@drawable/ic_arrow"
+			app:drawableTint="@color/blue"
+			android:background="@drawable/background_hover_light_blue"
+			android:clickable="true"
+			android:focusable="true"
+			android:drawablePadding="4dp" />
 
 		<androidx.constraintlayout.widget.Barrier
 			android:id="@+id/barrier"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
+			app:barrierMargin="4dp"
 			app:barrierDirection="bottom"
 			app:constraint_referenced_ids="label_schedule,img_icon" />
 

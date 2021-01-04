@@ -2,7 +2,7 @@ package org.openklas.base
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 		return mBinding.root
 	}
 
-	protected fun setupSessionViewModel(viewModel: BaseViewModel) {
+	private fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())

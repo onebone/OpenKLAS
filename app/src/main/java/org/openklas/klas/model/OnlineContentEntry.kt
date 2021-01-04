@@ -2,7 +2,7 @@ package org.openklas.klas.model
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,11 @@ sealed class OnlineContentEntry {
 	abstract val evltnSe: String
 
 	data class Video(
-		override val evltnSe: String,
+		override val evltnSe: String, // lesson
 		@SerializedName("bunban")
 		val division: String,
+		@SerializedName("sbjt")
+		val title: String,
 		@SerializedName("registDt")
 		val registerDate: Date,
 		@SerializedName("startDate")
@@ -36,17 +38,29 @@ sealed class OnlineContentEntry {
 		@SerializedName("endDate")
 		val endDate: Date,
 		@SerializedName("prog")
-		val progress: Int
+		val progress: Int,
+		@SerializedName("rcognTime")
+		val lectureTime: Int,
+		@SerializedName("achivTime")
+		val acquiredTime: Int,
+		@SerializedName("starting")
+		val uri: String,
 	): OnlineContentEntry()
 
 	data class Homework(
-		override val evltnSe: String,
+		override val evltnSe: String, // proj
 		@SerializedName("registDt")
 		val submitDate: Date?,
 		@SerializedName("startDate")
 		val startDate: Date,
 		@SerializedName("endDate")
-		val endDate: Date
+		val endDate: Date,
+		@SerializedName("title")
+		val title: String,
+		@SerializedName("rcognTime")
+		val lectureTime: Int,
+		@SerializedName("achivTime")
+		val acquiredTime: Int
 	): OnlineContentEntry()
 
 	data class Dummy(

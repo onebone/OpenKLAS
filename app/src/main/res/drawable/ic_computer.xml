@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  ~ OpenKLAS
- ~ Copyright (C) 2020 OpenKLAS Team
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
  ~
  ~ This program is free software: you can redistribute it and/or modify
  ~ it under the terms of the GNU General Public License as published by
@@ -17,17 +17,19 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<set xmlns:android="http://schemas.android.com/apk/res/android"
-	android:duration="400"
-	android:interpolator="@android:anim/accelerate_decelerate_interpolator">
-	<translate
-		android:fromYDelta="-100%"
-		android:toYDelta="0%" />
-
-	<scale
-		android:fromXScale="0.8"
-		android:toXScale="1.0"
-		android:fromYScale="0.8"
-		android:toYScale="1.0"
-		android:pivotX="50%" />
-</set>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp"
+    android:height="18dp"
+    android:viewportWidth="22"
+    android:viewportHeight="18">
+  <path
+      android:pathData="M1.9208,1h18.4719v10.0909h-18.4719z"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#4CAF50"/>
+  <path
+      android:pathData="M7.87,15.625L11.1567,13.3135L14.4435,15.625H7.87Z"
+      android:strokeWidth="1"
+      android:fillColor="#00000000"
+      android:strokeColor="#4CAF50"/>
+</vector>

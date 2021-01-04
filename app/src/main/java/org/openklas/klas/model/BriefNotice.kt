@@ -2,7 +2,7 @@ package org.openklas.klas.model
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,18 @@ import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 data class BriefNotice (
+	@SerializedName("subj")
+	val subjectId: String,
 	@SerializedName("bunban")
 	val division: String,
 	// grcode?
 	val param: String,
+	@SerializedName("year")
+	val year: Int,
 	@SerializedName("hakgi")
 	val term: Int,
 	@SerializedName("registDt")
 	val postDate: Date,
-	@SerializedName("subj")
-	val subjectId: String,
 	@SerializedName("subjNm")
 	val subjectName: String,
 	@SerializedName("title")
@@ -39,8 +41,6 @@ data class BriefNotice (
 	val type: Int,
 	@SerializedName("typeNm")
 	val typeName: String,
-	@SerializedName("year")
-	val year: Int,
 	@SerializedName("yearhakgi")
 	val semester: String
 )

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  ~ OpenKLAS
- ~ Copyright (C) 2020 OpenKLAS Team
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
  ~
  ~ This program is free software: you can redistribute it and/or modify
  ~ it under the terms of the GNU General Public License as published by
@@ -17,27 +17,24 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<animated-selector xmlns:tools="http://schemas.android.com/tools"
+<vector
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	tools:targetApi="lollipop">
+	android:width="30dp"
+	android:height="30dp"
+	android:viewportWidth="30"
+	android:viewportHeight="30">
 
-	<item android:id="@+id/anim_state_hamburger"
-		android:drawable="@drawable/ic_hamburger"
-		app:icon_state_back="false" />
+	<group
+		android:name="group"
+		android:pivotX="15"
+		android:pivotY="15"
+		android:rotation="0">
+		<path
+			android:name="root"
+			android:pathData="@string/path_none"
+			android:fillColor="#00000000"
+			android:strokeColor="#ffffff"
+			android:strokeLineCap="round" />
+	</group>
 
-	<item android:id="@+id/anim_state_back"
-		android:drawable="@drawable/ic_back_reversed"
-		app:icon_state_back="true" />
-	
-	<transition
-		android:fromId="@id/anim_state_hamburger"
-		android:toId="@id/anim_state_back"
-		android:drawable="@drawable/anim_ic_hamburger_back" />
-
-	<transition
-		android:fromId="@id/anim_state_back"
-		android:toId="@id/anim_state_hamburger"
-		android:drawable="@drawable/anim_ic_back_hamburger" />
-
-</animated-selector>
+</vector>

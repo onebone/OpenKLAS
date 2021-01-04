@@ -2,7 +2,7 @@ package org.openklas.binding
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,16 @@ package org.openklas.binding
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import org.openklas.R
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
 
 object BindAdapter {
@@ -48,6 +53,39 @@ object BindAdapter {
 		if(recyclerView.adapter is ListAdapter<*, *>) {
 			@Suppress("UNCHECKED_CAST")
 			(recyclerView.adapter as ListAdapter<T, *>).submitList(list?.toList())
+		}
+	}
+
+	@JvmStatic
+	@BindingAdapter("tint")
+	fun bindImageTint(imageView: ImageView, @ColorInt color: Int) {
+		imageView.setColorFilter(color)
+	}
+
+	@JvmStatic
+	@BindingAdapter("endDate")
+	fun bindEndDate(textView: TextView, endDate: Date?) {
+		endDate?.let {
+			val time = it.time - Date().time
+
+			val context = textView.context
+
+			val hoursLeft = time / TimeUnit.HOURS.toMillis(1)
+			textView.text = if(hoursLeft > 0) {
+				context.resources.getQuantityString(R.plurals.home_left_time_hour, hoursLeft.toInt(), hoursLeft)
+			}else{
+				val minutesLeft = time / TimeUnit.MINUTES.toMillis(1)
+
+				if(minutesLeft < 10) {
+					context.resources.getString(R.string.home_left_time_soon)
+				}else{
+					context.resources.getQuantityString(
+						R.plurals.home_left_time_minute,
+						minutesLeft.toInt(),
+						minutesLeft
+					)
+				}
+			}
 		}
 	}
 }

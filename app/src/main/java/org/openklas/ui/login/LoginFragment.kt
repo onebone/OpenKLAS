@@ -2,7 +2,7 @@ package org.openklas.ui.login
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.LoginFragmentBinding
 import org.openklas.klas.error.KlasSigninFailError
+import org.openklas.ui.common.configureTitle
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
@@ -63,11 +65,9 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 		}
 	}
 
-	companion object {
-		@JvmStatic
-		fun newInstance() =
-			LoginFragment().apply {
-				arguments = Bundle()
-			}
+	override fun onResume() {
+		super.onResume()
+
+		configureTitle("", TitleView.HeaderType.NONE, TitleView.SearchType.NONE)
 	}
 }

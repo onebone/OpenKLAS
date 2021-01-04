@@ -2,7 +2,7 @@ package org.openklas.widget
 
 /*
 * OpenKLAS
-* Copyright (C) 2020 OpenKLAS Team
+* Copyright (C) 2020-2021 OpenKLAS Team
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -20,127 +20,160 @@ package org.openklas.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableInt
-import com.github.windsekirun.bindadapters.observable.ObservableString
 import org.openklas.R
-import org.openklas.databinding.TitleViewBinding
-import pyxis.uzuki.live.attribute.parser.TitleViewAttributes
-import pyxis.uzuki.live.attribute.parser.annotation.AttrInt
-import pyxis.uzuki.live.attribute.parser.annotation.AttrString
-import pyxis.uzuki.live.attribute.parser.annotation.CustomView
 
-@CustomView
-class TitleView: LinearLayout {
-	@JvmField
-	@AttrString
-	var titleName: String? = null
+class TitleView: FrameLayout {
+	private lateinit var tvTitle: TextView
+	private lateinit var imgHeader: ImageView
+	private lateinit var imgSearch: ImageView
 
-	@JvmField
-	@AttrInt
-	var titleMode = 0
+	var title: String = ""
+		set(value) {
+			tvTitle.text = value
+			field = value
+		}
 
-	private var mBinding: TitleViewBinding? = null
+	var headerType: HeaderType = HeaderType.HAMBURGER
+		set(value) {
+			if(value == field) return
+
+			var state = intArrayOf()
+			state += if(value == HeaderType.NONE) {
+				imgHeader.visibility = View.INVISIBLE
+				R.attr.icon_state_hidden
+			}else{
+				imgHeader.visibility = View.VISIBLE
+				-R.attr.icon_state_hidden
+			}
+
+			if(value == HeaderType.HAMBURGER) {
+				state += -R.attr.icon_state_back
+			}else if(value == HeaderType.BACK) {
+				state += R.attr.icon_state_back
+			}
+
+			imgHeader.setImageState(state, true)
+
+			field = value
+		}
+
+	var searchType: SearchType = SearchType.SEARCH
+		set(value) {
+			if(field == value) return
+
+			var state = intArrayOf()
+			state += if(value == SearchType.NONE) {
+				imgSearch.visibility = View.INVISIBLE
+				R.attr.icon_state_hidden
+			}else{
+				imgSearch.visibility = View.VISIBLE
+				-R.attr.icon_state_hidden
+			}
+
+			if(value == SearchType.SEARCH) {
+				state += -R.attr.icon_state_cancel
+			}else if(value == SearchType.CANCEL) {
+				state += R.attr.icon_state_cancel
+			}
+
+			imgSearch.setImageState(state, true)
+
+			field = value
+		}
 
 	var onClickBackListener: OnClickBackListener? = null
-	var onClickMypageListener: OnClickMypageListener? = null
 	var onClickSearchListener: OnClickSearchListener? = null
 
-	var mTitle = ObservableString("")
-	var mMode = ObservableInt(0)
-	var isEditTextOpen = ObservableBoolean(false)
-	var mKeyword = ObservableString()
-
 	constructor(context: Context): super(context) {
-		init(null)
+		init()
 	}
 
 	constructor(context: Context, attrs: AttributeSet?): super(context, attrs) {
-		init(attrs)
+		init()
 	}
 
-	fun clickSearch(view: View) {
-		onClickSearchListener?.onClickSearch(view, mKeyword.get())
+	constructor(context: Context, attrs: AttributeSet?, defAttrStyle: Int): super(context, attrs, defAttrStyle) {
+		init()
 	}
 
-	fun clickBack(view: View) {
-		onClickBackListener?.onClickBack(view)
+	private fun init() {
+		inflate(context, R.layout.title_view, this)
 	}
 
-	fun clickMypage(view: View) {
-		onClickMypageListener?.onClickMypage(view)
-	}
+	override fun onFinishInflate() {
+		super.onFinishInflate()
 
-	private fun init(attrs: AttributeSet?) {
-		val inflater = LayoutInflater.from(context)
-		mBinding = DataBindingUtil.inflate(inflater, R.layout.title_view, this, true)
-		mBinding!!.view = this
-		if (attrs != null) {
-			val array = context.obtainStyledAttributes(attrs, R.styleable.TitleView)
-			TitleViewAttributes.apply(this, array)
+		tvTitle = findViewById(R.id.tv_title)
+		imgHeader = findViewById<ImageView>(R.id.img_header).also {
+			it.setOnClickListener { v ->
+				if(headerType == HeaderType.BACK) {
+					onClickBackListener?.onClickBack(v)
+				}
+			}
 		}
-
-		if (titleName != null) mTitle.set(titleName!!)
-
-		mMode.set(titleMode)
-		
-		mBinding!!.notifyChange()
+		imgSearch = findViewById<ImageView>(R.id.img_search).also {
+			it.setOnClickListener { v ->
+				if(searchType == SearchType.SEARCH) {
+					onClickSearchListener?.onClickSearch(v, true)
+					searchType = SearchType.CANCEL
+				}else if(searchType == SearchType.CANCEL) {
+					onClickSearchListener?.onClickSearch(v, false)
+					searchType = SearchType.SEARCH
+				}
+			}
+		}
 	}
 
-	fun setTitle(title: String?) {
-		mTitle.set(title!!)
-	}
-
-	fun setMode(mode: Int) {
-		mMode.set(mode)
-	}
-
-	interface OnClickBackListener {
+	fun interface OnClickBackListener {
 		fun onClickBack(view: View)
 	}
 
-	interface OnClickMypageListener {
-		fun onClickMypage(view: View)
-	}
-
-	interface OnClickSearchListener {
-		fun onClickSearch(view: View, keyword: String)
+	fun interface OnClickSearchListener {
+		fun onClickSearch(view: View, isSearch: Boolean)
 	}
 
 	companion object {
 		@JvmStatic
-		@BindingAdapter("bindTitle")
-		fun bindTitleName(view: TitleView, title: String?) {
-			view.setTitle(title)
+		@BindingAdapter("title")
+		fun bindTitle(view: TitleView, title: String) {
+			view.title = title
 		}
 
 		@JvmStatic
-		@BindingAdapter("bindMode")
-		fun bindTitleMode(view: TitleView, mode: Int) {
-			view.setMode(mode)
+		@BindingAdapter("headerType")
+		fun bindHeaderType(view: TitleView, type: HeaderType) {
+			view.headerType = type
+		}
+
+		@JvmStatic
+		@BindingAdapter("searchType")
+		fun bindSearchType(view: TitleView, type: SearchType) {
+			view.searchType = type
 		}
 
 		@JvmStatic
 		@BindingAdapter("onClickBack")
-		fun bindClickBack(view: TitleView, listener: OnClickBackListener?) {
+		fun bindOnClickBackListener(view: TitleView, listener: OnClickBackListener?) {
 			view.onClickBackListener = listener
 		}
 
 		@JvmStatic
-		@BindingAdapter("onClickMypage")
-		fun bindClickMypage(view: TitleView, listener: OnClickMypageListener?) {
-			view.onClickMypageListener = listener
-		}
-
-		@JvmStatic
 		@BindingAdapter("onClickSearch")
-		fun bindOnClickSearch(view: TitleView, listener: OnClickSearchListener?) {
+		fun bindOnClickSearchListener(view: TitleView, listener: OnClickSearchListener?) {
 			view.onClickSearchListener = listener
 		}
+	}
+
+	enum class SearchType {
+		NONE, SEARCH, CANCEL
+	}
+
+	enum class HeaderType {
+		NONE, HAMBURGER, BACK
 	}
 }

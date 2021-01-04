@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  ~ OpenKLAS
- ~ Copyright (C) 2020 OpenKLAS Team
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
  ~
  ~ This program is free software: you can redistribute it and/or modify
  ~ it under the terms of the GNU General Public License as published by
@@ -17,17 +17,9 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<set xmlns:android="http://schemas.android.com/apk/res/android"
-	android:duration="400"
-	android:interpolator="@android:anim/accelerate_decelerate_interpolator">
-	<translate
-		android:fromYDelta="0%"
-		android:toYDelta="70%" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_focused="true" android:drawable="@drawable/bg_light_blue" />
+	<item android:state_pressed="true" android:drawable="@drawable/bg_light_blue" />
 
-	<scale
-		android:fromXScale="1.0"
-		android:toXScale="0.8"
-		android:fromYScale="1.0"
-		android:toYScale="0.8"
-		android:pivotX="50%" />
-</set>
+	<item android:drawable="@drawable/bg_transparent" />
+</selector>

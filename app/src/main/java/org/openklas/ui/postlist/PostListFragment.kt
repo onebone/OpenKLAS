@@ -2,7 +2,7 @@ package org.openklas.ui.postlist
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
+import org.openklas.ui.common.ActivityViewModel
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class PostListFragment : BaseFragment<PostListFragmentBinding>() {
@@ -47,5 +50,13 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 		mBinding.viewModel = viewModel
 
 		return view
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		val activityViewModel: ActivityViewModel by activityViewModels()
+		activityViewModel.title.value = resources.getString(R.string.post_list_title)
+		activityViewModel.titleHeaderType.value = TitleView.HeaderType.BACK
 	}
 }

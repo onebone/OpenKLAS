@@ -2,7 +2,7 @@ package org.openklas.di
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ package org.openklas.di
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.app.Application
+import android.content.Context
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -27,14 +27,19 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import org.openklas.BuildConfig
 import org.openklas.base.Config
+import org.openklas.klas.DefaultKlasClient
+import org.openklas.klas.KlasClient
 import org.openklas.klas.KlasUri
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
+import org.openklas.klas.test.DemoKlasClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -111,7 +116,14 @@ class AppProvidesModule {
 
 	@Provides
 	@Singleton
-	fun provideCookieJar(app: Application): CookieJar {
-		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(app))
+	fun provideCookieJar(@ApplicationContext context: Context): CookieJar {
+		return PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
+	}
+
+	@Provides
+	@Singleton
+	fun provideKlasClient(service: KlasService, gson: Gson): KlasClient {
+		return if(BuildConfig.FETCH_ONLINE) DefaultKlasClient(service, gson)
+			else DemoKlasClient()
 	}
 }

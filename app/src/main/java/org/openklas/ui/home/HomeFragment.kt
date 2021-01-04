@@ -2,7 +2,7 @@ package org.openklas.ui.home
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,31 +22,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
+import org.openklas.ui.common.configureTitle
+import org.openklas.utils.dp2px
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeFragmentBinding>() {
+class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.home_fragment, container)
-	}
+		val view = createAndBindView(inflater, R.layout.home_fragment, container)
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+		val viewModel = getViewModel<HomeViewModel>()
 
-		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) {
-			defaultViewModelProviderFactory
+		mBinding.listMain.apply {
+			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))
+
+			adapter = HomeMainAdapter(viewModel, this@HomeFragment).apply {
+				// TODO make it changeable
+				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK, HomeViewType.ONLINE_CONTENTS))
+			}
 		}
 
-		mBinding.viewModel = viewModel
-		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
-		mBinding.list.adapter = HomeTodayAdapter()
+		return view
+	}
+
+	fun onClickShowMore(v: View) {
+		findNavController().navigate(HomeFragmentDirections.actionHomeTimetable())
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		configureTitle(resources.getString(R.string.app_name),
+			TitleView.HeaderType.HAMBURGER, TitleView.SearchType.NONE)
 	}
 }

@@ -2,7 +2,7 @@ package org.openklas.widget
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import org.openklas.R
 import org.openklas.databinding.MenuViewBinding
-import pyxis.uzuki.live.attribute.parser.annotation.CustomView
 
-@CustomView
 class MenuView: LinearLayout {
 	private var mBinding: MenuViewBinding? = null
 

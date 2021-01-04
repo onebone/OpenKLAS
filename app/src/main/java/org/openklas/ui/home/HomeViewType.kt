@@ -1,8 +1,8 @@
-package org.openklas
+package org.openklas.ui.home
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@ package org.openklas
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.os.Bundle
-import dagger.hilt.android.AndroidEntryPoint
-import org.openklas.base.BaseActivity
-import org.openklas.databinding.MainActivityBinding
+import androidx.annotation.LayoutRes
+import org.openklas.R
 
-@AndroidEntryPoint
-class MainActivity : BaseActivity<MainActivityBinding>() {
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.main_activity)
-	}
+enum class HomeViewType(
+	@LayoutRes val layout: Int
+) {
+	SCHEDULE(R.layout.home_schedule_root_item),
+	HOMEWORK(R.layout.home_homework_root_item),
+	ONLINE_CONTENTS(R.layout.home_online_video_root_item)
 }

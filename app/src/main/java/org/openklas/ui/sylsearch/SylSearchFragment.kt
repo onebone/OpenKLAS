@@ -2,7 +2,7 @@ package org.openklas.ui.sylsearch
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
+import org.openklas.ui.common.configureTitle
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
@@ -47,11 +49,9 @@ class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
 		return view
 	}
 
-	fun onClickBack(view: View) {
-		this.requireActivity().onBackPressed()
-	}
+	override fun onResume() {
+		super.onResume()
 
-	fun onClickSearch(view: View, keyword: String) {
-		viewModel.keyword.value = keyword
+		configureTitle(resources.getString(R.string.syllabus_search), TitleView.HeaderType.BACK, TitleView.SearchType.SEARCH)
 	}
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<animated-vector xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:aapt="http://schemas.android.com/aapt"
+	android:drawable="@drawable/ic_search"
+	tools:targetApi="lollipop">
+
+	<target android:name="arc">
+		<aapt:attr name="android:animation">
+			<objectAnimator
+				android:propertyName="pathData"
+				android:duration="190"
+				android:valueFrom="@string/path_search_arc"
+				android:valueTo="@string/path_none_arc"
+				android:valueType="pathType"
+				android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+		</aapt:attr>
+	</target>
+
+	<target android:name="line1">
+		<aapt:attr name="android:animation">
+			<objectAnimator
+				android:propertyName="pathData"
+				android:duration="190"
+				android:valueFrom="@string/path_search_line1"
+				android:valueTo="@string/path_none_line1"
+				android:valueType="pathType"
+				android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+		</aapt:attr>
+	</target>
+
+	<target android:name="line2">
+		<aapt:attr name="android:animation">
+			<objectAnimator
+				android:propertyName="pathData"
+				android:duration="190"
+				android:valueFrom="@string/path_search_line2"
+				android:valueTo="@string/path_none_line2"
+				android:valueType="pathType"
+				android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+		</aapt:attr>
+	</target>
+
+</animated-vector>

@@ -2,7 +2,7 @@ package org.openklas.klas.model
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,22 +21,22 @@ package org.openklas.klas.model
 import com.google.gson.annotations.SerializedName
 
 data class Subject (
+	@SerializedName("subj")
+	val id: String,
 	@SerializedName("bunban")
 	val division: String,
 	// codenmord
 	// grcode
-	@SerializedName("hakgi")
-	val term: String,
 	@SerializedName("hakjungno")
 	val academicNumber: String,
 	@SerializedName("profNm")
 	val professor: String,
-	@SerializedName("subj")
-	val id: String,
 	@SerializedName("subjNm")
 	val name: String,
 	@SerializedName("year")
 	val year: Int,
+	@SerializedName("hakgi")
+	val term: Int,
 	@SerializedName("yearhakgi")
 	val semester: String,
 	@SerializedName("openOrganCodeNm")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  ~ OpenKLAS
- ~ Copyright (C) 2020 OpenKLAS Team
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
  ~
  ~ This program is free software: you can redistribute it and/or modify
  ~ it under the terms of the GNU General Public License as published by
@@ -17,21 +17,9 @@
  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@id/fragment_home"
-        android:title="@string/home"
-        android:icon="@drawable/home_btn"/>
-    <item
-        android:id="@id/fragment_timetable"
-        android:title="@string/timetable"
-        android:icon="@drawable/time_table_btn"/>
-    <item
-        android:id="@id/fragment_notification"
-        android:title="@string/notification"
-        android:icon="@drawable/notifications_btn"/>
-    <item
-        android:id="@id/fragment_setting"
-        android:title="@string/setting"
-        android:icon="@drawable/settins_btn"/>
-</menu>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="rectangle">
+
+	<solid android:color="@color/light_blue" />
+
+</shape>

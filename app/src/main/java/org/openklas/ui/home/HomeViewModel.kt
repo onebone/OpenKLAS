@@ -2,7 +2,7 @@ package org.openklas.ui.home
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,23 @@ package org.openklas.ui.home
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.view.View
-import androidx.fragment.app.findFragment
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.navigation.fragment.NavHostFragment
 import io.reactivex.Single
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
-import org.openklas.ui.postlist.PostType
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
@@ -58,7 +56,7 @@ class HomeViewModel @ViewModelInject constructor(
 		}
 	}
 
-	private val onlineContents = MediatorLiveData<Array<OnlineContentEntry>>().apply {
+	private val onlineContents = MediatorLiveData<Array<Pair<BriefSubject, OnlineContentEntry>>>().apply {
 		addSource(semester) {
 			fetchOnlineContents(it)
 		}
@@ -67,17 +65,41 @@ class HomeViewModel @ViewModelInject constructor(
 	val videoCount: LiveData<Int> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { entry ->
+		it.count { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.endDate
 		}
+	}
+
+	val impendingVideo: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Video && entry.progress < 100 && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Video>>
+	}
+	val impendingVideoCount: LiveData<Int> = Transformations.map(impendingVideo) {
+		it.size
 	}
 
 	val homeworkCount: LiveData<Int> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { entry ->
+		it.count { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.endDate
 		}
+	}
+
+	val impendingHomework: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Homework>>
+	}
+	val impendingHomeworkCount: LiveData<Int> = Transformations.map(impendingHomework) {
+		it.size
 	}
 
 	val semesterLabel: LiveData<String> = Transformations.map(home) {
@@ -91,11 +113,11 @@ class HomeViewModel @ViewModelInject constructor(
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
 	}
-	val todaySubList : LiveData<Array<Timetable.Entry>> = Transformations.map(timetable) { it ->
+	val todaySchedule: LiveData<Array<Timetable.Entry>> = Transformations.map(timetable) { timetable ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		it.entries.filter { item -> item.day == day - 1 }.sortedWith(compareBy { it.time }).toTypedArray()
+		timetable.entries.filter{ it.day == day - 1 }.sortedBy { it.time }.toTypedArray()
 	}
-	val todayVisible: LiveData<Boolean> = Transformations.map(todaySubList) { it.isEmpty() }
+	val todayScheduleEmpty: LiveData<Boolean> = Transformations.map(todaySchedule) { it.isEmpty() }
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
@@ -132,50 +154,21 @@ class HomeViewModel @ViewModelInject constructor(
 		})
 	}
 
-	fun onClickNotice(view: View) {
-		navigateToPostList(view, PostType.NOTICE)
-	}
-
-	fun onClickLectureMaterial(view: View) {
-		navigateToPostList(view, PostType.LECTURE_MATERIAL)
-	}
-
-	fun onClickQna(view: View) {
-		navigateToPostList(view, PostType.QNA)
-	}
-
-	fun onClickSyllabusSearch(view: View){
-		val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
-
-		NavHostFragment.findNavController(fragment).navigate(
-			HomeContainerFragmentDirections.actionHomeSylSearch()
-		)
-	}
-
-	private fun navigateToPostList(view: View, type: PostType) {
-		semester.value?.let {
-			// fragment: HomeContainerFragment
-			val fragment = view.findFragment<HomeFragment>().requireParentFragment().requireParentFragment()
-
-			NavHostFragment.findNavController(fragment).navigate(
-				HomeContainerFragmentDirections.actionHomePostList(it.id, type)
-			)
-		}
-	}
-
 	private fun fetchOnlineContents(currentSemester: Semester) {
 		addDisposable(Single.zip(currentSemester.subjects.map { subject ->
 			requestWithSession {
-				klasRepository.getOnlineContentList(currentSemester.id, subject.id)
+				klasRepository.getOnlineContentList(currentSemester.id, subject.id).map { entries ->
+					entries.map { Pair(subject, it) }
+				}
 			}
 		}) {
-			it.filterIsInstance<Array<*>>()
-				.toTypedArray()
-				.flatten()
-				.filterIsInstance<OnlineContentEntry>()
+			it.flatMap { entry ->
+				@Suppress("UNCHECKED_CAST")
+				entry as List<Pair<BriefSubject, OnlineContentEntry>>
+			}.toTypedArray()
 		}.subscribe { v, err ->
 			if(err == null) {
-				onlineContents.value = v.toTypedArray()
+				onlineContents.value = v
 			}else{
 				_error.value = err
 			}

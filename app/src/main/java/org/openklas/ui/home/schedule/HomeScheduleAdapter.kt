@@ -1,8 +1,8 @@
-package org.openklas.ui.home
+package org.openklas.ui.home.schedule
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +23,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.base.list.SimpleDiffUtil
-import org.openklas.databinding.ItemHomeTodayBinding
+import org.openklas.databinding.HomeScheduleItemBinding
 import org.openklas.klas.model.Timetable
 
-
-class HomeTodayAdapter : ListAdapter<Timetable.Entry, HomeTodayAdapter.ViewHolder>(SimpleDiffUtil({ it.subjectId })) {
+class HomeScheduleAdapter: ListAdapter<Timetable.Entry, HomeScheduleAdapter.ViewHolder>(SimpleDiffUtil { it.subjectId }) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		return ViewHolder(ItemHomeTodayBinding.inflate(LayoutInflater.from(parent.context)))
+		return ViewHolder(HomeScheduleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		holder.bind(getItem(position))
+		 holder.bind(getItem(position))
 	}
 
-	class ViewHolder(private val binding: ItemHomeTodayBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(item: Timetable.Entry) {
-			binding.bean = item
+	class ViewHolder(private val binding: HomeScheduleItemBinding): RecyclerView.ViewHolder(binding.root) {
+		fun bind(entry: Timetable.Entry) {
+			binding.entry = entry
 		}
 	}
 }

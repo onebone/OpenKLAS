@@ -2,7 +2,7 @@ package org.openklas.ui.home
 
 /*
  * OpenKLAS
- * Copyright (C) 2020 OpenKLAS Team
+ * Copyright (C) 2020-2021 OpenKLAS Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.navGraphViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.TimetableFragmentBinding
+import org.openklas.ui.common.configureTitle
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class TimetableFragment : BaseFragment<TimetableFragmentBinding>() {
+class TimetableFragment: BaseFragment<TimetableFragmentBinding>() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -40,9 +41,13 @@ class TimetableFragment : BaseFragment<TimetableFragmentBinding>() {
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
 
-		val viewModel by navGraphViewModels<HomeViewModel>(R.id.nav_home_container) {
-			defaultViewModelProviderFactory
-		}
+		val viewModel = getViewModel<HomeViewModel>()
 		mBinding.viewModel = viewModel
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		configureTitle(resources.getString(R.string.timetable), TitleView.HeaderType.BACK, TitleView.SearchType.NONE)
 	}
 }

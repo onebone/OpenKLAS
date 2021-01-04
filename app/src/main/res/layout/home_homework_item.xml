@@ -23,6 +23,7 @@
 
 	<data>
 		<import type="android.view.View" />
+		<import type="java.util.Date" />
 
 		<variable
 			name="subject"
@@ -52,6 +53,7 @@
 			android:background="@color/red"
 			android:textSize="13sp"
 			android:textColor="@android:color/white"
+			app:endDate="@{entry.endDate}"
 			tools:text="곧" />
 
 		<TextView

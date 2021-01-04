@@ -42,7 +42,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override fun getHome(semester: String): Single<Home> {
 		return Single.just(Home(
 			subjects = arrayOf(
-				Subject("U202012345678", "01", "0000-1-456-7890",
+				Subject("U202012345678", "01", "0000-1-4567-01",
 					"아인슈타인", "일반상대성이론실험", 2020, 2, "2020,2", "학부", false)
 			),
 			professor = Professor("010-1234-5678", "", "", "", null),
@@ -103,6 +103,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			OnlineContentEntry.Homework(
 				"proj", null, now, Date(now.time + TimeUnit.HOURS.toMillis(2)),
 				"사건의 지평선 실험1", 40, 0
+			),
+			OnlineContentEntry.Homework(
+				"proj", null, now, Date(now.time + TimeUnit.MINUTES.toMillis(30)),
+				"시공간 왜곡 관찰 보고서", 40, 0
 			)
 		))
 	}

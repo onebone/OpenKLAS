@@ -86,8 +86,8 @@ class HomeViewModel @ViewModelInject constructor(
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
 		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
-	val hasImpendingHomework: LiveData<Boolean> = Transformations.map(impendingHomework) {
-		it.isNotEmpty()
+	val impendingHomeworkCount: LiveData<Int> = Transformations.map(impendingHomework) {
+		it.size
 	}
 
 	val semesterLabel: LiveData<String> = Transformations.map(home) {

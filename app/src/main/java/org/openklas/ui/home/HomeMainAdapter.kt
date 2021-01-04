@@ -32,6 +32,7 @@ import org.openklas.databinding.HomeScheduleRootItemBinding
 import org.openklas.ui.home.homework.HomeHomeworkAdapter
 import org.openklas.ui.home.schedule.HomeScheduleAdapter
 import org.openklas.ui.home.video.HomeVideoAdapter
+import org.openklas.utils.dp2px
 
 class HomeMainAdapter(
 	private val viewModel: HomeViewModel,
@@ -70,7 +71,8 @@ class HomeMainAdapter(
 			binding.lifecycleOwner = fragment.viewLifecycleOwner
 
 			binding.rvHomework.apply {
-				layoutManager = LinearLayoutManager(binding.rvHomework.context, RecyclerView.HORIZONTAL, false)
+				layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+				addItemDecoration(RecyclerMarginDecoration(dp2px(context, 14f).toInt(), false))
 
 				if(adapter == null)
 					adapter = HomeHomeworkAdapter()
@@ -85,6 +87,7 @@ class HomeMainAdapter(
 
 			binding.rvVideos.apply {
 				layoutManager = LinearLayoutManager(binding.rvVideos.context, RecyclerView.HORIZONTAL, false)
+				addItemDecoration(RecyclerMarginDecoration(dp2px(context, 14f).toInt(), false))
 
 				if(adapter == null)
 					adapter = HomeVideoAdapter()

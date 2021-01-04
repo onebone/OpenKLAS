@@ -38,10 +38,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:background="@color/light_red"
-		android:layout_margin="4dp"
-		android:padding="8dp">
+		android:padding="12dp">
 
-		<!-- TODO show left time for homework entry -->
 		<TextView
 			android:id="@+id/tv_time_left"
 			android:layout_width="wrap_content"
@@ -81,6 +79,7 @@
 			android:layout_height="wrap_content"
 			app:layout_constraintTop_toBottomOf="@id/barrier"
 			app:layout_constraintLeft_toLeftOf="parent"
+			android:layout_marginTop="6dp"
 			android:text="@{entry.title}"
 			tools:text="사건의 지평선 실험1" />
 

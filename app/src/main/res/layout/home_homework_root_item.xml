@@ -32,7 +32,7 @@
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="8dp"
+		android:padding="14dp"
 		android:background="@color/white">
 
 		<ImageView
@@ -95,6 +95,7 @@
 			android:layout_height="wrap_content"
 			app:layout_constraintTop_toBottomOf="@id/barrier"
 			app:layout_constraintLeft_toLeftOf="parent"
+			android:layout_marginTop="8dp"
 			app:drawableLeftCompat="@drawable/ic_caution"
 			android:drawablePadding="4dp"
 			android:textColor="@color/red"
@@ -109,7 +110,7 @@
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/label_due"
 			app:items="@{viewModel.impendingHomework}"
-			android:layout_marginTop="8dp" />
+			android:layout_marginTop="12dp" />
 
 		<TextView
 			android:layout_width="match_parent"

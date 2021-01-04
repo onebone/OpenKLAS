@@ -24,7 +24,8 @@ import androidx.annotation.IntRange
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerMarginDecoration(
-	@IntRange(from=0) private val margin: Int
+	@IntRange(from=0) private val margin: Int,
+	private val vertical: Boolean = true
 ): RecyclerView.ItemDecoration() {
 	override fun getItemOffsets(
 		outRect: Rect,
@@ -35,7 +36,11 @@ class RecyclerMarginDecoration(
 		val position = parent.getChildLayoutPosition(view)
 
 		if(position > 0) {
-			outRect.top += margin
+			if(vertical) {
+				outRect.top += margin
+			}else{
+				outRect.left += margin
+			}
 		}
 	}
 }

@@ -35,7 +35,7 @@
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="8dp"
+		android:padding="14dp"
 		android:background="@color/white">
 
 		<ImageView
@@ -107,6 +107,7 @@
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintRight_toRightOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/barrier"
+			android:layout_marginTop="8dp"
 			android:text="@string/home_no_class_today"
 			android:visibility="@{viewModel.todayScheduleEmpty ? View.VISIBLE : View.GONE}"
 			android:textColor="@color/gray" />

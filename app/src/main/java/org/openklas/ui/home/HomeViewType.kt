@@ -25,5 +25,6 @@ enum class HomeViewType(
 	@LayoutRes val layout: Int
 ) {
 	SCHEDULE(R.layout.home_schedule_root_item),
-	HOMEWORK(R.layout.home_homework_root_item)
+	HOMEWORK(R.layout.home_homework_root_item),
+	ONLINE_CONTENTS(R.layout.home_online_video_root_item)
 }

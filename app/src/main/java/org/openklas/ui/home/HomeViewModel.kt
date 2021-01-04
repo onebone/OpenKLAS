@@ -70,6 +70,18 @@ class HomeViewModel @ViewModelInject constructor(
 		}
 	}
 
+	val impendingVideo: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
+		val now = Date()
+
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Video && entry.progress < 100 && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Video>>
+	}
+	val impendingVideoCount: LiveData<Int> = Transformations.map(impendingVideo) {
+		it.size
+	}
+
 	val homeworkCount: LiveData<Int> = Transformations.map(onlineContents) {
 		val now = Date()
 

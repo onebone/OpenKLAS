@@ -26,9 +26,11 @@ sealed class OnlineContentEntry {
 	abstract val evltnSe: String
 
 	data class Video(
-		override val evltnSe: String,
+		override val evltnSe: String, // lesson
 		@SerializedName("bunban")
 		val division: String,
+		@SerializedName("sbjt")
+		val title: String,
 		@SerializedName("registDt")
 		val registerDate: Date,
 		@SerializedName("startDate")
@@ -40,11 +42,13 @@ sealed class OnlineContentEntry {
 		@SerializedName("rcognTime")
 		val lectureTime: Int,
 		@SerializedName("achivTime")
-		val acquiredTime: Int
+		val acquiredTime: Int,
+		@SerializedName("starting")
+		val uri: String,
 	): OnlineContentEntry()
 
 	data class Homework(
-		override val evltnSe: String,
+		override val evltnSe: String, // proj
 		@SerializedName("registDt")
 		val submitDate: Date?,
 		@SerializedName("startDate")

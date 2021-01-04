@@ -107,6 +107,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			OnlineContentEntry.Homework(
 				"proj", null, now, Date(now.time + TimeUnit.MINUTES.toMillis(30)),
 				"시공간 왜곡 관찰 보고서", 40, 0
+			),
+			OnlineContentEntry.Video(
+				"lesson", "01", "사건의 지평선 1", now, now, Date(now.time + TimeUnit.MINUTES.toMillis(30)),
+				0, 40, 0, "https://example.com/video1.mp4"
 			)
 		))
 	}

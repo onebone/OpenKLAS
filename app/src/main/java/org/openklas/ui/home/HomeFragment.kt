@@ -46,7 +46,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 
 			adapter = HomeMainAdapter(viewModel, this@HomeFragment).apply {
 				// TODO make it changeable
-				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK))
+				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK, HomeViewType.ONLINE_CONTENTS))
 			}
 		}
 

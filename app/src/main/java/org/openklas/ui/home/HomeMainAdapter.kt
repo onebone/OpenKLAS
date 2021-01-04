@@ -27,9 +27,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.openklas.R
 import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.HomeHomeworkRootItemBinding
+import org.openklas.databinding.HomeOnlineVideoRootItemBinding
 import org.openklas.databinding.HomeScheduleRootItemBinding
 import org.openklas.ui.home.homework.HomeHomeworkAdapter
 import org.openklas.ui.home.schedule.HomeScheduleAdapter
+import org.openklas.ui.home.video.HomeVideoAdapter
 
 class HomeMainAdapter(
 	private val viewModel: HomeViewModel,
@@ -40,6 +42,8 @@ class HomeMainAdapter(
 			ScheduleViewHolder(HomeScheduleRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 		R.layout.home_homework_root_item ->
 			HomeworkViewHolder(HomeHomeworkRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+		R.layout.home_online_video_root_item ->
+			VideoViewHolder(HomeOnlineVideoRootItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 		else -> throw IllegalStateException("invalid viewType given: $viewType")
 	}
 
@@ -70,6 +74,20 @@ class HomeMainAdapter(
 
 				if(adapter == null)
 					adapter = HomeHomeworkAdapter()
+			}
+		}
+	}
+
+	inner class VideoViewHolder(private val binding: HomeOnlineVideoRootItemBinding): HomeViewHolder(binding.root) {
+		override fun bind(viewModel: HomeViewModel, fragment: HomeFragment) {
+			binding.viewModel = viewModel
+			binding.lifecycleOwner = fragment.viewLifecycleOwner
+
+			binding.rvVideos.apply {
+				layoutManager = LinearLayoutManager(binding.rvVideos.context, RecyclerView.HORIZONTAL, false)
+
+				if(adapter == null)
+					adapter = HomeVideoAdapter()
 			}
 		}
 	}

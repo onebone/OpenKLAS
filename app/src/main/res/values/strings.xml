@@ -26,6 +26,7 @@
 	<string name="common_search_button_description">검색 버튼</string>
 	<string name="common_home_today_schedule_icon">시간표 아이콘</string>
 	<string name="common_home_homework_icon">숙제의 눈물 아이콘</string>
+	<string name="common_home_online_video_icon">온라인 콘텐츠 아이콘</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
@@ -54,9 +55,12 @@
 	<string name="home_no_class_today">오늘은 강의가 없어요!</string>
 	<string name="home_schedule_show_more">시간표</string>
 	<string name="home_homework_title">과제</string>
-	<string name="home_due_in_24hours">24시간 안에 마감되는 과제 %d</string>
+	<string name="home_online_video_title">온라인 강의</string>
+	<string name="home_due_in_24hours">24시간 안에 마감 %d</string>
 	<string name="home_no_homework">표시할 과제가 없어요</string>
+	<string name="home_no_video">표시할 강의가 없어요</string>
 	<string name="home_homework_show_more">남은 과제 %d</string>
+	<string name="home_online_video_show_more">남은 강의 %d</string>
 	<string name="home_left_time_soon">곧</string>
 	<plurals name="home_left_time_minute">
 		<item quantity="one">1분</item>

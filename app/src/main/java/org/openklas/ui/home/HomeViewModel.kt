@@ -74,9 +74,11 @@ class HomeViewModel @ViewModelInject constructor(
 		val now = Date()
 
 		@Suppress("UNCHECKED_CAST")
-		it.filter { (_, entry) ->
+		(it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
-		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Video>>
+		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
+		.sortedBy { (_, entry) -> entry.endDate.time }
+		.toTypedArray()
 	}
 	val impendingVideoCount: LiveData<Int> = Transformations.map(impendingVideo) {
 		it.size
@@ -94,9 +96,11 @@ class HomeViewModel @ViewModelInject constructor(
 		val now = Date()
 
 		@Suppress("UNCHECKED_CAST")
-		it.filter { (_, entry) ->
+		(it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
-		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Homework>>
+		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
+		.sortedBy { (_, entry: OnlineContentEntry.Homework) -> entry.endDate.time }
+		.toTypedArray()
 	}
 	val impendingHomeworkCount: LiveData<Int> = Transformations.map(impendingHomework) {
 		it.size

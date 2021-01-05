@@ -18,15 +18,12 @@ package org.openklas.binding
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.openklas.R
 import java.util.Date
 import java.util.concurrent.TimeUnit

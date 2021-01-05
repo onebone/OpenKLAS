@@ -22,7 +22,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import org.openklas.base.DefaultSessionViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.data.AccountDataSource
@@ -33,29 +32,15 @@ import org.openklas.data.PreferenceDataSource
 import org.openklas.data.RemoteKlasDataSource
 import org.openklas.data.RemoteSessionDataSource
 import org.openklas.data.SessionDataSource
-import org.openklas.net.interceptor.LogInterceptor
 import org.openklas.repository.DefaultKlasRepository
 import org.openklas.repository.DefaultSessionRepository
 import org.openklas.repository.KlasRepository
 import org.openklas.repository.SessionRepository
-import javax.inject.Named
 import javax.inject.Singleton
 
-/**
- * OpenKlas
- * Class: AppBindsModule
- * Created by limmoong on 2020/11/10.
- *
- *
- * Description:
- */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AppBindsModule {
-	@Binds
-	@Named("loginterceptor")
-	abstract fun bindLogInterceptor(interceptor: LogInterceptor): Interceptor
-
 	@Binds
 	@Singleton
 	abstract fun bindKlasRepository(klasRepository: DefaultKlasRepository): KlasRepository

@@ -30,7 +30,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.CookieJar
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.openklas.BuildConfig
 import org.openklas.base.Config
@@ -44,7 +43,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -84,8 +82,6 @@ class AppProvidesModule {
 
 	@Provides
 	fun provideClient(
-		interceptors: Set<@JvmSuppressWildcards Interceptor>,
-		@Named("loginterceptor") logsInterceptor: Interceptor,
 		cookieJar: CookieJar
 	): OkHttpClient {
 		val builder = OkHttpClient().newBuilder()
@@ -94,16 +90,6 @@ class AppProvidesModule {
 		builder.retryOnConnectionFailure(Config.config.retryOnConnectionFailure)
 		builder.cookieJar(cookieJar)
 		builder.followRedirects(false)
-
-		if (interceptors.isNotEmpty()) {
-			interceptors.forEach {
-				builder.addInterceptor(it)
-			}
-		}
-
-		if (!Config.config.notUseLogInterceptor) {
-			builder.addInterceptor(logsInterceptor)
-		}
 
 		return builder.build()
 	}

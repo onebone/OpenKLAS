@@ -55,14 +55,6 @@ object Config {
 		val connectTimeout = 10000
 
 		/**
-		 * Set flags of display details log for networking connections.
-		 * if true, it will use ihsanbal/LoggingInterceptor
-		 * otherwise, it will use okhttp3/logging-interceptor
-		 */
-		@SerializedName("ProvideDetailLog")
-		val provideDetailsLog = false
-
-		/**
 		 * Set timeout of network request.
 		 * detault is 20000ms (20s)
 		 */
@@ -81,21 +73,5 @@ object Config {
 		 */
 		@SerializedName("RetryOnConnectionFailure")
 		val retryOnConnectionFailure: Boolean = true
-
-		/**
-		 * Set flags on disable LogInterceptor in OKHttp
-		 * default is false
-		 */
-		@SerializedName("NotUseLogInterceptor")
-		val notUseLogInterceptor: Boolean = false
-
-		/**
-		 * Set threshold of Binary omitted size.
-		 * It may helpful for large-body size
-		 *
-		 * default is 10000
-		 */
-		@SerializedName("BinaryThresholdLogInterceptor")
-		val binaryThreshold: Int = 10000
 	}
 }

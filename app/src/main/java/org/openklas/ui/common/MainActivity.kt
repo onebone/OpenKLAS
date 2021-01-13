@@ -22,12 +22,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import org.openklas.base.BaseActivity
 import org.openklas.databinding.MainActivityBinding
 
 @AndroidEntryPoint
-class MainActivity: BaseActivity<MainActivityBinding>() {
+class MainActivity: AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 

@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
@@ -34,6 +35,7 @@ import org.openklas.widget.TitleView
 @AndroidEntryPoint
 class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 	private val postListArgs by navArgs<PostListFragmentArgs>()
+	private val viewModel: PostListViewModel by viewModels()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +43,7 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 	): View {
 		val view = createAndBindView(inflater, R.layout.post_list_fragment, container)
 
-		val viewModel = getViewModel<PostListViewModel>()
+		prepareViewModel(viewModel)
 		viewModel.semester.value = postListArgs.semester
 		viewModel.type.value = postListArgs.type
 
@@ -56,7 +58,12 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 		super.onResume()
 
 		val activityViewModel: ActivityViewModel by activityViewModels()
-		activityViewModel.title.value = resources.getString(R.string.post_list_title)
+		activityViewModel.title.value = resources.getString(when(viewModel.type.value) {
+			null -> R.string.post_list_title
+			PostType.NOTICE -> R.string.course_notice
+			PostType.LECTURE_MATERIAL -> R.string.course_material
+			PostType.QNA -> R.string.course_qna
+		})
 		activityViewModel.titleHeaderType.value = TitleView.HeaderType.BACK
 	}
 }

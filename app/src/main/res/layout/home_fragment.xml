@@ -22,13 +22,27 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	tools:context=".ui.home.HomeFragment">
 
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/list_main"
+	<androidx.drawerlayout.widget.DrawerLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		android:background="@color/super_light_gray"
-		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+		android:layout_height="match_parent">
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/list_main"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:background="@color/super_light_gray"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+		<com.google.android.material.navigation.NavigationView
+			android:id="@+id/nav_view"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			android:fitsSystemWindows="true"
+			app:menu="@menu/nav_drawer_menu" />
+
+	</androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

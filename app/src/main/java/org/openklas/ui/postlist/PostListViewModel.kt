@@ -44,11 +44,17 @@ class PostListViewModel @ViewModelInject constructor(
 
 	private val _semesterObject = MediatorLiveData<Semester>().apply {
 		fun combine() {
-			val currentSemester = semester.value ?: return
 			val allSemesters = semesters.value ?: return
 
-			this.value = allSemesters.find {
-				it.id == currentSemester
+			semester.value.let { currentSemester ->
+				if(currentSemester != null) {
+					this.value = allSemesters.find {
+						it.id == currentSemester
+					}
+				}else{
+					// TODO select default semester by current time
+					this.value = allSemesters.firstOrNull()
+				}
 			}
 		}
 

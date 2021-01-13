@@ -62,6 +62,26 @@
 			app:popEnterAnim="@anim/slightly_scale_up_left"
 			app:popExitAnim="@anim/slide_right_pop" />
 
+		<action
+			android:id="@+id/action_home_post_list"
+			app:destination="@id/fragment_post_list"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
+
+			<argument
+				android:name="semester"
+				app:argType="string"
+				app:nullable="true" />
+
+			<argument
+				android:name="type"
+				app:argType=".ui.postlist.PostType"
+				app:nullable="false" />
+
+		</action>
+
 	</fragment>
 
 	<fragment
@@ -72,7 +92,7 @@
 		<argument
 			android:name="semester"
 			app:argType="string"
-			app:nullable="false" />
+			app:nullable="true" />
 
 		<argument
 			android:name="type"

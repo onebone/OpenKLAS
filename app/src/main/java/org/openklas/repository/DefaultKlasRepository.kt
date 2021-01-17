@@ -34,8 +34,7 @@ class DefaultKlasRepository @Inject constructor(
 	private val preferenceDataSource: PreferenceDataSource
 ): KlasRepository {
 	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
-		return klasDataSource.performLogin(username, password)
-			.compose(AsyncTransformer()).run {
+		return klasDataSource.performLogin(username, password).run {
 				if(rememberMe)
 					doOnSuccess {
 						preferenceDataSource.userID = username
@@ -43,7 +42,7 @@ class DefaultKlasRepository @Inject constructor(
 					}
 				else
 					this
-			}
+			}.compose(AsyncTransformer())
 	}
 
 	override fun getHome(semester: String): Single<Home> {

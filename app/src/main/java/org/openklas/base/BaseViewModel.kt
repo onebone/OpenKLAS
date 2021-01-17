@@ -18,24 +18,12 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-
-abstract class BaseViewModel : ViewModel(),
-	DefaultLifecycleObserver, Observable {
-	private var mCallbacks: PropertyChangeRegistry? = null
+abstract class BaseViewModel: ViewModel() {
 	private val compositeDisposable = CompositeDisposable()
-
-	override fun onDestroy(owner: LifecycleOwner) {
-		super.onDestroy(owner)
-		compositeDisposable.clear()
-	}
 
 	override fun onCleared() {
 		super.onCleared()
@@ -44,44 +32,5 @@ abstract class BaseViewModel : ViewModel(),
 
 	protected fun addDisposable(disposable: Disposable) {
 		compositeDisposable.add(disposable)
-	}
-
-	protected fun removeDisposable(disposable: Disposable) {
-		compositeDisposable.delete(disposable)
-	}
-
-
-	override fun addOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
-		if (mCallbacks == null) {
-			mCallbacks = PropertyChangeRegistry()
-		}
-
-		mCallbacks?.add(onPropertyChangedCallback)
-	}
-
-	override fun removeOnPropertyChangedCallback(onPropertyChangedCallback: Observable.OnPropertyChangedCallback) {
-		if (mCallbacks == null) {
-			mCallbacks = PropertyChangeRegistry()
-		}
-
-		mCallbacks?.remove(onPropertyChangedCallback)
-	}
-
-	fun notifyChange() {
-		synchronized(this) {
-			if (mCallbacks == null) {
-				return
-			}
-		}
-		mCallbacks?.notifyCallbacks(this, 0, null)
-	}
-
-	fun notifyPropertyChanged(fieldId: Int) {
-		synchronized(this) {
-			if (mCallbacks == null) {
-				return
-			}
-		}
-		mCallbacks?.notifyCallbacks(this, fieldId, null)
 	}
 }

@@ -48,8 +48,6 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 	}
 
 	protected fun prepareViewModel(viewModel: BaseViewModel) {
-		this.lifecycle.addObserver(viewModel)
-
 		setupSessionViewModel(viewModel)
 	}
 

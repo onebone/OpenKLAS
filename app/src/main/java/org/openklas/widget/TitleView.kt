@@ -86,6 +86,7 @@ class TitleView: FrameLayout {
 			field = value
 		}
 
+	var onClickDrawerListener: OnClickDrawerListener? = null
 	var onClickBackListener: OnClickBackListener? = null
 	var onClickSearchListener: OnClickSearchListener? = null
 
@@ -113,6 +114,8 @@ class TitleView: FrameLayout {
 			it.setOnClickListener { v ->
 				if(headerType == HeaderType.BACK) {
 					onClickBackListener?.onClickBack(v)
+				}else if(headerType == HeaderType.HAMBURGER) {
+					onClickDrawerListener?.onClickDrawer(v)
 				}
 			}
 		}
@@ -135,6 +138,10 @@ class TitleView: FrameLayout {
 
 	fun interface OnClickSearchListener {
 		fun onClickSearch(view: View, isSearch: Boolean)
+	}
+
+	fun interface OnClickDrawerListener {
+		fun onClickDrawer(view: View)
 	}
 
 	companion object {
@@ -166,6 +173,12 @@ class TitleView: FrameLayout {
 		@BindingAdapter("onClickSearch")
 		fun bindOnClickSearchListener(view: TitleView, listener: OnClickSearchListener?) {
 			view.onClickSearchListener = listener
+		}
+
+		@JvmStatic
+		@BindingAdapter("onClickDrawer")
+		fun bindOnClickDrawerListener(view: TitleView, listener: OnClickDrawerListener) {
+			view.onClickDrawerListener = listener
 		}
 	}
 

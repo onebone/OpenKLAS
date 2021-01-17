@@ -33,6 +33,7 @@ import org.openklas.R
 import org.openklas.databinding.MainActivityBinding
 import org.openklas.ui.home.HomeFragmentDirections
 import org.openklas.ui.postlist.PostType
+import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
@@ -48,6 +49,14 @@ class MainActivity: AppCompatActivity() {
 		binding.viewModel = viewModel
 		binding.view = this
 
+		binding.mainTitle.onClickDrawerListener = TitleView.OnClickDrawerListener {
+			if(binding.drawerRoot.isOpen) {
+				binding.drawerRoot.close()
+			}else{
+				binding.drawerRoot.open()
+			}
+		}
+
 		binding.navView.setNavigationItemSelectedListener(DrawerNavigationListener())
 
 		navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!.findNavController()
@@ -55,7 +64,7 @@ class MainActivity: AppCompatActivity() {
 			binding.drawerRoot.close()
 
 			binding.drawerRoot.setDrawerLockMode(
-				// locked at non-top level destination
+				// lock at non-top level destination
 				if(destination.id == R.id.fragment_home) DrawerLayout.LOCK_MODE_UNLOCKED
 				else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 			)

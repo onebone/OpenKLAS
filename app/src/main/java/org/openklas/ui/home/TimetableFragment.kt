@@ -30,19 +30,18 @@ import org.openklas.ui.common.configureTitle
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class TimetableFragment: BaseFragment<TimetableFragmentBinding>() {
+class TimetableFragment: BaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.timetable_fragment, container)
-	}
+		val binding = TimetableFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@TimetableFragment
+		}
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+		binding.viewModel = getViewModel()
 
-		val viewModel = getViewModel<HomeViewModel>()
-		mBinding.viewModel = viewModel
+		return binding.root
 	}
 
 	override fun onResume() {

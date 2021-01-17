@@ -28,18 +28,16 @@ import org.openklas.base.BaseFragment
 import org.openklas.databinding.NotificationFragmentBinding
 
 @AndroidEntryPoint
-class NotificationFragment : BaseFragment<NotificationFragmentBinding>() {
+class NotificationFragment: BaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.notification_fragment, container)
-	}
+		val binding = NotificationFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@NotificationFragment
+		}
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
-
-		val viewModel = getViewModel<NotificationViewModel>()
-		mBinding.viewModel = viewModel
+		binding.viewModel = getViewModel()
+		return binding.root
 	}
 }

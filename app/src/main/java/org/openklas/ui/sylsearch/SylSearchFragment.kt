@@ -31,22 +31,24 @@ import org.openklas.ui.common.configureTitle
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class SylSearchFragment: BaseFragment<SyllabusSearchFragmentBinding>() {
+class SylSearchFragment: BaseFragment() {
 	private lateinit var viewModel: SylSearchViewModel
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val view = createAndBindView(inflater, R.layout.syllabus_search_fragment, container)
+		val binding = SyllabusSearchFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@SylSearchFragment
+		}
 
 		viewModel = getViewModel()
 
-		mBinding.viewModel = viewModel
-		mBinding.v = this
-		mBinding.list.layoutManager = LinearLayoutManager(mBinding.list.context)
-		mBinding.list.adapter = SylSearchAdapter()
-		return view
+		binding.viewModel = viewModel
+		binding.v = this
+		binding.list.layoutManager = LinearLayoutManager(binding.list.context)
+		binding.list.adapter = SylSearchAdapter()
+		return binding.root
 	}
 
 	override fun onResume() {

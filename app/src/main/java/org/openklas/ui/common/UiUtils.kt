@@ -1,11 +1,10 @@
 package org.openklas.ui.common
 
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import org.openklas.base.BaseFragment
 import org.openklas.widget.TitleView
 
-fun <V: ViewDataBinding> BaseFragment<V>.configureTitle(title: String?,
+fun BaseFragment.configureTitle(title: String?,
                                                         titleHeaderType: TitleView.HeaderType?,
                                                         titleSearchType: TitleView.SearchType?) {
 	val activityViewModel by activityViewModels<ActivityViewModel> {

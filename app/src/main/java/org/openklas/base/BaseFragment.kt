@@ -18,27 +18,12 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
 
-abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
-	lateinit var mBinding: V
-
-	protected fun createAndBindView(inflater: LayoutInflater,
-	                                @LayoutRes layoutResID: Int, parent: ViewGroup?): View {
-		mBinding = DataBindingUtil.inflate(inflater, layoutResID, parent, false)
-		mBinding.lifecycleOwner = this
-		return mBinding.root
-	}
-
+abstract class BaseFragment: Fragment() {
 	private fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {

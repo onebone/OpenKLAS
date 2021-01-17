@@ -34,19 +34,20 @@ import org.openklas.utils.dp2px
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class HomeFragment: BaseFragment<HomeFragmentBinding>() {
+class HomeFragment: BaseFragment() {
 	private lateinit var navController: NavController
-	private lateinit var viewModel: HomeViewModel
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val view = createAndBindView(inflater, R.layout.home_fragment, container)
+		val binding = HomeFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@HomeFragment
+		}
 
-		viewModel = getViewModel()
+		val viewModel = getViewModel<HomeViewModel>()
 
-		mBinding.listMain.apply {
+		binding.listMain.apply {
 			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))
 
 			adapter = HomeMainAdapter(viewModel, this@HomeFragment).apply {
@@ -58,7 +59,7 @@ class HomeFragment: BaseFragment<HomeFragmentBinding>() {
 		val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 		navController = navHostFragment.navController
 
-		return view
+		return binding.root
 	}
 
 	fun onClickShowMore(v: View) {

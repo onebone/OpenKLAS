@@ -33,20 +33,17 @@ import org.openklas.ui.common.configureTitle
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginFragmentBinding>() {
+class LoginFragment: BaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.login_fragment, container)
-	}
-
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+		val binding = LoginFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@LoginFragment
+		}
 
 		val viewModel = getViewModel<LoginViewModel>()
-		mBinding.viewModel = viewModel
-		prepareViewModel(viewModel)
+		binding.viewModel = viewModel
 
 		viewModel.result.observe(viewLifecycleOwner) {
 			if(it == null) {
@@ -63,6 +60,8 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 					.show()
 			}
 		}
+
+		return binding.root
 	}
 
 	override fun onResume() {

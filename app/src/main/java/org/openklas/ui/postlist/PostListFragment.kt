@@ -33,7 +33,7 @@ import org.openklas.ui.common.ActivityViewModel
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
-class PostListFragment : BaseFragment<PostListFragmentBinding>() {
+class PostListFragment: BaseFragment() {
 	private val postListArgs by navArgs<PostListFragmentArgs>()
 	private val viewModel: PostListViewModel by viewModels()
 
@@ -41,18 +41,19 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val view = createAndBindView(inflater, R.layout.post_list_fragment, container)
+		val binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = this@PostListFragment
+		}
 
 		prepareViewModel(viewModel)
 		if(!viewModel.hasQuery()) {
 			viewModel.setQuery("", "", postListArgs.type, 1)
 		}
 
-		mBinding.rvPosts.adapter = PostListAdapter()
+		binding.rvPosts.adapter = PostListAdapter()
+		binding.viewModel = viewModel
 
-		mBinding.viewModel = viewModel
-
-		return view
+		return binding.root
 	}
 
 	override fun onResume() {

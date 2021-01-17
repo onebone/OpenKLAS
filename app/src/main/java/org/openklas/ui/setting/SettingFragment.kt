@@ -28,18 +28,14 @@ import org.openklas.base.BaseFragment
 import org.openklas.databinding.SettingFragmentBinding
 
 @AndroidEntryPoint
-class SettingFragment : BaseFragment<SettingFragmentBinding>() {
+class SettingFragment: BaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		return createAndBindView(inflater, R.layout.setting_fragment, container)
-	}
+		val binding = SettingFragmentBinding.inflate(inflater, container, false)
+		binding.viewModel = getViewModel()
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
-
-		val viewModel = getViewModel<SettingViewModel>()
-		mBinding.viewModel = viewModel
+		return binding.root
 	}
 }

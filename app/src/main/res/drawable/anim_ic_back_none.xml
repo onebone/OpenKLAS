@@ -29,7 +29,7 @@
 				<objectAnimator
 					android:propertyName="pathData"
 					android:duration="190"
-					android:valueFrom="@string/path_back_reversed"
+					android:valueFrom="@string/path_back"
 					android:valueTo="@string/path_back_step_none"
 					android:valueType="pathType"
 					android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
@@ -60,8 +60,8 @@
 			<objectAnimator
 				android:propertyName="rotation"
 				android:duration="300"
-				android:valueFrom="180"
-				android:valueTo="360"
+				android:valueFrom="0"
+				android:valueTo="180"
 				android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
 		</aapt:attr>
 	</target>

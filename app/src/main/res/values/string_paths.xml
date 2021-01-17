@@ -21,7 +21,7 @@
 	<!-- ic_header_button.xml -->
 	<string name="path_none">M26,6 L26,6 M26,15 L26,15 M26,24 L26,24</string>
 	<string name="path_hamburger">M4,6 L26,6 M26,15 L4,15 M4,24 L26,24</string>
-	<string name="path_back_reversed">M26,15 L15,6 M4,15 L26,15 M26,15 L15,24</string>
+	<string name="path_back">M4,15 L15,6 M4,15 L26,15 M4,15 L15,24</string>
 
 	<!-- path for middle of state changing back -> none -->
 	<string name="path_back_step_none">M26,15 L26,15 M4,15 L26,15 M26,15 L26,15</string>

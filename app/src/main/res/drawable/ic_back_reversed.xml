@@ -30,7 +30,7 @@
 		android:rotation="0">
 		<path
 			android:name="root"
-			android:pathData="@string/path_back_reversed"
+			android:pathData="@string/path_back"
 			android:strokeWidth="2"
 			android:fillColor="#00000000"
 			android:strokeColor="#ffffff"

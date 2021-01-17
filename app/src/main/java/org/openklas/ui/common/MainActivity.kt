@@ -43,7 +43,9 @@ class MainActivity: AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val binding = MainActivityBinding.inflate(LayoutInflater.from(this))
+		val binding = MainActivityBinding.inflate(LayoutInflater.from(this)).apply {
+			lifecycleOwner = this@MainActivity
+		}
 		setContentView(binding.root)
 
 		binding.viewModel = viewModel
@@ -69,8 +71,6 @@ class MainActivity: AppCompatActivity() {
 				else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 			)
 		}
-
-		binding.lifecycleOwner = this
 	}
 
 	fun onTitleClickBack(view: View) {

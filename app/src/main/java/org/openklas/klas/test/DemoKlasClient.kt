@@ -69,7 +69,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	}
 
 	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
-		return Single.just(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
+		return Single.just(Board(arrayOf(
+			Board.Entry(
+				null, -1, "01", 0, 0, "01", 1, 5,
+				isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
+				"사건의 지평선 접근시 주의사항", isPinned = false, "아인슈타인", 2020
+			)
+		), Board.PageInfo(1, 0, 0, 1)))
 	}
 
 	override fun getLectureMaterials(

@@ -41,7 +41,7 @@ data class Board(
 	// unknown fields are written as comments
 	data class Entry(
 		@SerializedName("atchFileId")
-		val attachment: String,
+		val attachment: String?,
 		val boardNo: Int,
 		@SerializedName("bunban")
 		val division: String,

@@ -36,15 +36,14 @@ class PostListViewModel @ViewModelInject constructor(
 	semesterViewModelDelegate: SemesterViewModelDelegate
 ): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
-	// semester must be set externally, others are optional
-	val type = MutableLiveData<PostType>()
-	val subject = MutableLiveData<String>()
-	val semester = MutableLiveData<String>()
-	val page = MutableLiveData(0)
+	// board type, target subject, target page, current semester is an argument to search posts
+	private val targetType = MutableLiveData<PostType>()
+	private val targetSubject = MutableLiveData<String>()
+	private val targetPage = MutableLiveData(0)
 
 	private val _subjectObject = MediatorLiveData<BriefSubject>().apply {
 		fun combine() {
-			val currentSubject = subject.value ?: return
+			val currentSubject = targetSubject.value ?: return
 			val currentSemester = currentSemester.value ?: return
 
 			this.value = currentSemester.subjects.find {
@@ -56,7 +55,7 @@ class PostListViewModel @ViewModelInject constructor(
 			combine()
 		}
 
-		addSource(subject) {
+		addSource(targetSubject) {
 			combine()
 		}
 	}
@@ -65,23 +64,7 @@ class PostListViewModel @ViewModelInject constructor(
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	private val board = MediatorLiveData<Board>().apply {
-		addSource(semester) {
-			fetchPosts()
-		}
-
-		addSource(subject) {
-			fetchPosts()
-		}
-
-		addSource(type) {
-			fetchPosts()
-		}
-
-		addSource(page) {
-			fetchPosts()
-		}
-	}
+	private val board = MutableLiveData<Board>()
 
 	val posts: LiveData<Array<Board.Entry>> = Transformations.map(board) {
 		it.posts
@@ -95,19 +78,33 @@ class PostListViewModel @ViewModelInject constructor(
 		it.pageInfo
 	}
 
+	fun hasQuery(): Boolean {
+		return currentSemester.value != null && targetSubject.value != null
+				&& targetType.value != null && targetPage.value!! >= 0
+	}
+
+	fun setQuery(semester: String, subject: String, type: PostType, page: Int) {
+		setCurrentSemester(semester)
+		targetSubject.value = subject
+		targetType.value = type
+		targetPage.value = page
+
+		fetchPosts()
+	}
+
 	// called from res/layout/post_list_fragment.xml
 	fun onSubjectIndexChanged(index: Int) {
 		val allSubjects = subjects.value ?: return
 		if(allSubjects.lastIndex < index) return
 
-		subject.value = allSubjects[index].id
+		targetSubject.value = allSubjects[index].id
 	}
 
 	private fun fetchPosts() {
-		val queryType = type.value
-		val querySubject = subject.value
-		val querySemester = semester.value
-		val queryPage = page.value!!
+		val queryType = targetType.value
+		val querySubject = targetSubject.value
+		val querySemester = currentSemester.value?.id
+		val queryPage = targetPage.value!!
 
 		if(queryType == null || querySubject == null || querySemester == null) return
 		if(queryPage < 0) return

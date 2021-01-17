@@ -44,8 +44,9 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 		val view = createAndBindView(inflater, R.layout.post_list_fragment, container)
 
 		prepareViewModel(viewModel)
-		viewModel.semester.value = postListArgs.semester
-		viewModel.type.value = postListArgs.type
+		if(!viewModel.hasQuery()) {
+			viewModel.setQuery("", "", postListArgs.type, 1)
+		}
 
 		mBinding.rvPosts.adapter = PostListAdapter()
 
@@ -58,7 +59,7 @@ class PostListFragment : BaseFragment<PostListFragmentBinding>() {
 		super.onResume()
 
 		val activityViewModel: ActivityViewModel by activityViewModels()
-		activityViewModel.title.value = resources.getString(when(viewModel.type.value) {
+		activityViewModel.title.value = resources.getString(when(postListArgs.type) {
 			null -> R.string.post_list_title
 			PostType.NOTICE -> R.string.course_notice
 			PostType.LECTURE_MATERIAL -> R.string.course_material

@@ -35,8 +35,6 @@ import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
-	private lateinit var navController: NavController
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -55,9 +53,6 @@ class HomeFragment: BaseFragment() {
 				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK, HomeViewType.ONLINE_CONTENTS))
 			}
 		}
-
-		val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-		navController = navHostFragment.navController
 
 		return binding.root
 	}

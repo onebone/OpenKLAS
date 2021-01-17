@@ -22,7 +22,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.openklas.base.DefaultSemesterViewModelDelegate
 import org.openklas.base.DefaultSessionViewModelDelegate
+import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.data.AccountDataSource
 import org.openklas.data.DefaultAccountDataSource
@@ -68,4 +70,8 @@ abstract class AppBindsModule {
 	@Binds
 	@Singleton
 	abstract fun bindSessionViewModelDelegate(sessionViewModelDelegate: DefaultSessionViewModelDelegate): SessionViewModelDelegate
+
+	@Binds
+	@Singleton
+	abstract fun bindSemesterViewModelDelegate(semesterViewModelDelegate: DefaultSemesterViewModelDelegate): SemesterViewModelDelegate
 }

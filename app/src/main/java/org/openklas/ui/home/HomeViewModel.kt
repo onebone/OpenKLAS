@@ -25,6 +25,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import io.reactivex.Single
 import org.openklas.base.BaseViewModel
+import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Home
@@ -38,26 +39,19 @@ import java.util.concurrent.TimeUnit
 
 class HomeViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
-	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
-	init {
-		fetchSemesters()
-	}
-
-	private val _semesters = MutableLiveData<Array<Semester>>()
-	val semesters: LiveData<Array<Semester>> = _semesters
-
-	private val _semester = MutableLiveData<Semester>()
-	val semester: LiveData<Semester> = _semester
+	sessionViewModelDelegate: SessionViewModelDelegate,
+	semesterViewModelDelegate: SemesterViewModelDelegate
+): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
+	SemesterViewModelDelegate by semesterViewModelDelegate {
 
 	private val home = MediatorLiveData<Home>().apply {
-		addSource(semester) {
+		addSource(currentSemester) {
 			fetchHome(it.id)
 		}
 	}
 
 	private val onlineContents = MediatorLiveData<Array<Pair<BriefSubject, OnlineContentEntry>>>().apply {
-		addSource(semester) {
+		addSource(currentSemester) {
 			fetchOnlineContents(it)
 		}
 	}
@@ -125,26 +119,6 @@ class HomeViewModel @ViewModelInject constructor(
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
-
-	private fun fetchSemesters() {
-		addDisposable(requestWithSession {
-			klasRepository.getSemesters()
-		}.subscribe { v, err ->
-			if(err == null) {
-				_semesters.value = v
-
-				if(_semester.value == null && v.isNotEmpty()) {
-					// TODO set default semester according to current time
-					// if the user has enrolled in winter or summer session,
-					// default semester will be set to it even if a fall or
-					// spring session is not finished.
-					_semester.value = v[0]
-				}
-			}else{
-				_error.value = err
-			}
-		})
-	}
 
 	private fun fetchHome(semester: String) {
 		addDisposable(requestWithSession {

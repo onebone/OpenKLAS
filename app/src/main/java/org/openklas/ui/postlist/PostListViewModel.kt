@@ -24,61 +24,35 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import org.openklas.base.BaseViewModel
+import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
-import org.openklas.klas.model.Semester
 import org.openklas.repository.KlasRepository
 
 class PostListViewModel @ViewModelInject constructor(
 	private val klasRepository: KlasRepository,
-	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+	sessionViewModelDelegate: SessionViewModelDelegate,
+	semesterViewModelDelegate: SemesterViewModelDelegate
+): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
+	SemesterViewModelDelegate by semesterViewModelDelegate {
 	// semester must be set externally, others are optional
 	val type = MutableLiveData<PostType>()
 	val subject = MutableLiveData<String>()
 	val semester = MutableLiveData<String>()
 	val page = MutableLiveData(0)
 
-	private val semesters = MutableLiveData<Array<Semester>>()
-
-	private val _semesterObject = MediatorLiveData<Semester>().apply {
-		fun combine() {
-			val allSemesters = semesters.value ?: return
-
-			semester.value.let { currentSemester ->
-				if(currentSemester != null) {
-					this.value = allSemesters.find {
-						it.id == currentSemester
-					}
-				}else{
-					// TODO select default semester by current time
-					this.value = allSemesters.firstOrNull()
-				}
-			}
-		}
-
-		addSource(semesters) {
-			combine()
-		}
-
-		addSource(semester) {
-			combine()
-		}
-	}
-	val semesterObject: LiveData<Semester> = _semesterObject
-
 	private val _subjectObject = MediatorLiveData<BriefSubject>().apply {
 		fun combine() {
 			val currentSubject = subject.value ?: return
-			val currentSemester = semesterObject.value ?: return
+			val currentSemester = currentSemester.value ?: return
 
 			this.value = currentSemester.subjects.find {
 				it.id == currentSubject
 			}
 		}
 
-		addSource(semesterObject) {
+		addSource(currentSemester) {
 			combine()
 		}
 
@@ -87,17 +61,6 @@ class PostListViewModel @ViewModelInject constructor(
 		}
 	}
 	val subjectObject: LiveData<BriefSubject> = _subjectObject
-
-	private val _subjects = MediatorLiveData<Array<BriefSubject>>().apply {
-		addSource(semesters) {
-			setSubjects()
-		}
-
-		addSource(semester) {
-			setSubjects()
-		}
-	}
-	val subjects: LiveData<Array<BriefSubject>> = _subjects
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
@@ -132,36 +95,12 @@ class PostListViewModel @ViewModelInject constructor(
 		it.pageInfo
 	}
 
-	init {
-		fetchSemesters()
-	}
-
 	// called from res/layout/post_list_fragment.xml
 	fun onSubjectIndexChanged(index: Int) {
 		val allSubjects = subjects.value ?: return
 		if(allSubjects.lastIndex < index) return
 
 		subject.value = allSubjects[index].id
-	}
-
-	private fun fetchSemesters() {
-		addDisposable(requestWithSession {
-			klasRepository.getSemesters()
-		}.subscribe { v, err ->
-			if(err == null) {
-				semesters.value = v
-			}else{
-				_error.value = err
-			}
-		})
-	}
-
-	private fun setSubjects() {
-		val currentSemester = semester.value ?: return
-
-		_subjects.value = semesters.value?.first {
-			it.id == currentSemester
-		}?.subjects
 	}
 
 	private fun fetchPosts() {

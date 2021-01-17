@@ -20,28 +20,71 @@ package org.openklas.ui.common
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import org.openklas.R
 import org.openklas.databinding.MainActivityBinding
+import org.openklas.ui.home.HomeFragmentDirections
+import org.openklas.ui.postlist.PostType
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
+	private val viewModel by viewModels<ActivityViewModel>()
+	private lateinit var navController: NavController
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		val binding = MainActivityBinding.inflate(LayoutInflater.from(this))
 		setContentView(binding.root)
 
-		val viewModel by viewModels<ActivityViewModel>()
 		binding.viewModel = viewModel
 		binding.view = this
+
+		binding.navView.setNavigationItemSelectedListener(DrawerNavigationListener())
+
+		navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!.findNavController()
+		navController.addOnDestinationChangedListener { _, destination, _ ->
+			binding.drawerRoot.close()
+
+			binding.drawerRoot.setDrawerLockMode(
+				// locked at non-top level destination
+				if(destination.id == R.id.fragment_home) DrawerLayout.LOCK_MODE_UNLOCKED
+				else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+			)
+		}
 
 		binding.lifecycleOwner = this
 	}
 
 	fun onTitleClickBack(view: View) {
 		this.onBackPressed()
+	}
+
+	internal inner class DrawerNavigationListener: NavigationView.OnNavigationItemSelectedListener {
+		override fun onNavigationItemSelected(item: MenuItem): Boolean {
+			navController.navigate(when(item.itemId) {
+				R.id.nav_notice_list ->
+					HomeFragmentDirections.actionHomePostList(viewModel.currentSemester.value?.id, PostType.NOTICE)
+
+				R.id.nav_material_list ->
+					HomeFragmentDirections.actionHomePostList(viewModel.currentSemester.value?.id, PostType.LECTURE_MATERIAL)
+
+				R.id.nav_qna_list ->
+					HomeFragmentDirections.actionHomePostList(viewModel.currentSemester.value?.id, PostType.QNA)
+
+				else ->
+					throw IllegalStateException("invalid drawer menu selected: ${item.itemId}")
+			})
+
+			return true
+		}
 	}
 }

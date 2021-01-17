@@ -1,10 +1,14 @@
 package org.openklas.ui.common
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import org.openklas.base.BaseViewModel
+import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.widget.TitleView
 
-class ActivityViewModel: BaseViewModel() {
+class ActivityViewModel @ViewModelInject constructor(
+	semesterViewModelDelegate: SemesterViewModelDelegate
+): BaseViewModel(), SemesterViewModelDelegate by semesterViewModelDelegate {
 	val title = MutableLiveData<String>().also {
 		it.value = ""
 	}

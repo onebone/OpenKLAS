@@ -73,7 +73,11 @@
 
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>
-	<string name="post_list_none">게시글이 없습니다</string>
+	<string name="post_list_none">게시글이 없어요</string>
+	<string name="post_list_search_keyword">검색어</string>
+	<plurals name="post_list_match_count">
+		<item quantity="other">총 %d개의 게시글이 있어요</item>
+	</plurals>
 	<string name="post_hits">조회수: %d</string>
 	<string name="post_author">작성자: %s</string>
 

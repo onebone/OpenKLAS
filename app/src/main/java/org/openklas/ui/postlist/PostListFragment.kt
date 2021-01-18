@@ -37,11 +37,13 @@ class PostListFragment: BaseFragment() {
 	private val postListArgs by navArgs<PostListFragmentArgs>()
 	private val viewModel: PostListViewModel by viewModels()
 
+	private lateinit var binding: PostListFragmentBinding
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		val binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
+		binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@PostListFragment
 		}
 
@@ -54,6 +56,20 @@ class PostListFragment: BaseFragment() {
 		binding.viewModel = viewModel
 
 		return binding.root
+	}
+
+	internal fun onClickSearch(view: View) {
+		binding.motionRoot.apply {
+			getTransition(R.id.transition_backdrop).setEnable(true)
+			setTransition(R.id.set_backdrop_open)
+		}
+	}
+
+	internal fun onClickCancel(view: View) {
+		binding.motionRoot.apply {
+			getTransition(R.id.transition_backdrop).setEnable(false)
+			setTransition(R.id.set_backdrop_closed)
+		}
 	}
 
 	override fun onResume() {

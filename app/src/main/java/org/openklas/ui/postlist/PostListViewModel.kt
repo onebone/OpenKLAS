@@ -41,14 +41,14 @@ class PostListViewModel @ViewModelInject constructor(
 	private val targetSubject = MutableLiveData<String>()
 	private val targetPage = MutableLiveData(0)
 
-	private val _subjectObject = MediatorLiveData<BriefSubject>().apply {
+	private val _subject = MediatorLiveData<BriefSubject>().apply {
 		fun combine() {
 			val currentSubject = targetSubject.value ?: return
 			val currentSemester = currentSemester.value ?: return
 
 			val newValue = currentSemester.subjects.find {
 				it.id == currentSubject
-			} ?: subjects.value?.firstOrNull()
+			} ?: currentSemester.subjects.firstOrNull()
 
 			if(value != newValue) value = newValue
 
@@ -63,7 +63,7 @@ class PostListViewModel @ViewModelInject constructor(
 			combine()
 		}
 	}
-	val subjectObject: LiveData<BriefSubject> = _subjectObject
+	val subject: LiveData<BriefSubject> = _subject
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
@@ -74,8 +74,8 @@ class PostListViewModel @ViewModelInject constructor(
 		it.posts
 	}
 
-	val postsIsEmpty: LiveData<Boolean> = Transformations.map(posts) {
-		it.isEmpty()
+	val postCount: LiveData<Int> = Transformations.map(posts) {
+		it.size
 	}
 
 	val pageInfo: LiveData<Board.PageInfo> = Transformations.map(board) {
@@ -104,7 +104,7 @@ class PostListViewModel @ViewModelInject constructor(
 
 	private fun fetchPosts() {
 		val queryType = targetType.value
-		val querySubject = targetSubject.value
+		val querySubject = subject.value
 		val querySemester = currentSemester.value?.id
 		val queryPage = targetPage.value!!
 
@@ -113,9 +113,9 @@ class PostListViewModel @ViewModelInject constructor(
 
 		addDisposable(requestWithSession {
 			when(queryType) {
-				PostType.NOTICE -> klasRepository.getNotices(querySemester, querySubject, queryPage)
-				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(querySemester, querySubject, queryPage)
-				PostType.QNA -> klasRepository.getQnas(querySemester, querySubject, queryPage)
+				PostType.NOTICE -> klasRepository.getNotices(querySemester, querySubject.id, queryPage)
+				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(querySemester, querySubject.id, queryPage)
+				PostType.QNA -> klasRepository.getQnas(querySemester, querySubject.id, queryPage)
 			}
 		}.subscribe { v, err ->
 			if(err == null) {

@@ -31,97 +31,112 @@
 			type="org.openklas.ui.postlist.PostListViewModel" />
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<androidx.constraintlayout.motion.widget.MotionLayout
+		android:id="@+id/motion_root"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		app:layoutDescription="@xml/backdrop_motion"
+		android:background="@color/copper">
 
-		<Spinner
-			android:id="@+id/spn_subjects"
-			android:layout_width="wrap_content"
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/layout_layer_back"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:padding="8dp"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			android:layout_margin="8dp"
-			app:subjects="@{viewModel.subjects}"
-			app:onSubjectIndexChanged="@{v -> viewModel.onSubjectIndexChanged(v)}" />
+			app:layout_constraintRight_toRightOf="parent">
 
-		<TextView
-			android:id="@+id/tv_subject_name"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/spn_subjects"
-			android:layout_margin="8dp"
-			android:text="@{viewModel.subjectObject.name}"
-			android:textSize="28sp"
-			tools:text="Subject" />
+			<EditText
+				android:id="@+id/et_keyword"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				android:layout_marginBottom="8dp"
+				android:padding="8dp"
+				android:drawableStart="@drawable/ic_search"
+				android:drawablePadding="4dp"
+				app:drawableTint="?android:textColorHint"
+				android:background="@drawable/bg_white_alpha03"
+				android:singleLine="true"
+				android:inputType="text"
+				android:hint="@string/post_list_search_keyword" />
 
-		<View
-			android:id="@+id/divider_subject"
-			android:layout_width="0dp"
-			android:layout_height="1dp"
-			android:layout_marginTop="2dp"
-			android:layout_margin="8dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="@id/tv_subject_name"
-			app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
-			android:background="@color/brownish_grey" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
-		<!-- TODO set professor name here -->
-		<TextView
-			android:id="@+id/tv_subject_professor"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/divider_subject"
-			android:layout_margin="8dp"
-			android:text="@{viewModel.subjectObject.id}"
-			android:textSize="18sp"
-			tools:text="Professor" />
-
-		<View
-			android:id="@+id/v_post_box"
+		<org.openklas.widget.BackdropFrontView
+			android:id="@+id/layout_layer_front"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/tv_subject_professor"
+			app:layout_constraintTop_toBottomOf="@id/layout_layer_back"
 			app:layout_constraintBottom_toBottomOf="parent"
-			android:layout_marginTop="8dp"
-			android:background="@color/pale_grey" />
-
-		<TextView
-			android:id="@+id/label_posts"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintTop_toTopOf="@id/v_post_box"
 			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_margin="8dp"
-			android:text="@string/post_list_all_posts"
-			tools:text="Notice" />
+			app:layout_constraintRight_toRightOf="parent">
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/rv_posts"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintTop_toBottomOf="@id/label_posts"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"
-			android:layout_margin="8dp"
-			android:background="@drawable/bg_white_r7"
-			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-			app:items="@{viewModel.posts}" />
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="@id/rv_posts"
-			app:layout_constraintRight_toRightOf="@id/rv_posts"
-			app:layout_constraintTop_toTopOf="@id/rv_posts"
-			app:layout_constraintBottom_toBottomOf="@id/rv_posts"
-			android:text="@string/post_list_none"
-			android:visibility="@{viewModel.postsIsEmpty ? View.VISIBLE : View.GONE}" />
+				<TextView
+					android:id="@+id/tv_subject_name"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintLeft_toLeftOf="parent"
+					android:layout_marginTop="18dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginBottom="8dp"
+					android:text="@{viewModel.subject.name}"
+					android:textColor="@color/copper"
+					android:textStyle="bold"
+					android:textSize="24sp" />
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+				<TextView
+					android:id="@+id/tv_post_count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="8dp"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
+					android:text="@{viewModel.postCount != null ? @plurals/post_list_match_count(viewModel.postCount, viewModel.postCount) : `-`}" />
+
+				<View
+					android:id="@+id/v_divider"
+					android:layout_width="match_parent"
+					android:layout_height="8dp"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/tv_post_count"
+					android:layout_marginTop="8dp"
+					android:background="@color/super_light_gray" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rv_posts"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/v_divider"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:items="@{viewModel.posts}" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintTop_toTopOf="@id/rv_posts"
+					app:layout_constraintBottom_toBottomOf="@id/rv_posts"
+					app:layout_constraintLeft_toLeftOf="@id/rv_posts"
+					app:layout_constraintRight_toRightOf="@id/rv_posts"
+					android:text="@string/post_list_none"
+					android:textColor="@color/gray"
+					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</org.openklas.widget.BackdropFrontView>
+
+	</androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

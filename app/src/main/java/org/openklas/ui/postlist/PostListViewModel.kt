@@ -46,9 +46,13 @@ class PostListViewModel @ViewModelInject constructor(
 			val currentSubject = targetSubject.value ?: return
 			val currentSemester = currentSemester.value ?: return
 
-			this.value = currentSemester.subjects.find {
+			val newValue = currentSemester.subjects.find {
 				it.id == currentSubject
-			}
+			} ?: subjects.value?.firstOrNull()
+
+			if(value != newValue) value = newValue
+
+			fetchPosts()
 		}
 
 		addSource(currentSemester) {
@@ -88,8 +92,6 @@ class PostListViewModel @ViewModelInject constructor(
 		targetSubject.value = subject
 		targetType.value = type
 		targetPage.value = page
-
-		fetchPosts()
 	}
 
 	// called from res/layout/post_list_fragment.xml

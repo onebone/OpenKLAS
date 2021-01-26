@@ -28,7 +28,7 @@ import org.openklas.klas.model.Board
 
 class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		return ViewHolder(PostItemBinding.inflate(LayoutInflater.from(parent.context)))
+		return ViewHolder(PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {

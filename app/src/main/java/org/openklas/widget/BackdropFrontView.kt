@@ -44,7 +44,7 @@ class BackdropFrontView: FrameLayout {
 	}
 
 	override fun onDraw(canvas: Canvas) {
-		canvas.clipPath(clipPath.apply {
+		canvas.drawPath(clipPath.apply {
 			reset()
 			moveTo(clipWidth, 0f)
 			lineTo(width.toFloat(), 0f)
@@ -52,9 +52,7 @@ class BackdropFrontView: FrameLayout {
 			lineTo(0f, height.toFloat())
 			lineTo(0f, clipWidth)
 			close()
-		})
-
-		canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
+		}, paint)
 
 		super.onDraw(canvas)
 	}

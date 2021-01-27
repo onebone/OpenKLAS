@@ -29,7 +29,7 @@
 		<OnSwipe
 			app:dragDirection="dragUp"
 			app:touchAnchorId="@id/layout_layer_front"
-			app:touchAnchorSide="top" />
+			app:touchRegionId="@id/layout_layer_front" />
 
 	</Transition>
 

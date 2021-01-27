@@ -38,7 +38,10 @@ class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(Simp
 	class ViewHolder(val binding: PostItemBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(entry: Board.Entry) {
 			binding.post = entry
-			binding.executePendingBindings()
+
+			binding.root.setOnClickListener {
+				// TODO navigate to post content
+			}
 		}
 	}
 }

@@ -85,13 +85,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Single.fromCallable {
 			Thread.sleep(NETWORK_DELAY)
 
-			Board(arrayOf(
+			Board(Array(15) {
 				Board.Entry(
 					null, -1, "01", 0, 0, "01", 1, 5,
 					isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
-					"사건의 지평선 접근시 주의사항", isPinned = false, "아인슈타인", 2020
+					"사건의 지평선 접근시 주의사항 $it", isPinned = false, "아인슈타인", 2020
 				)
-			), Board.PageInfo(1, 0, 0, 1))
+			}, Board.PageInfo(1, 0, 0, 1))
 		}
 	}
 

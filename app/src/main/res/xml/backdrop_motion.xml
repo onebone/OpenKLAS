@@ -24,6 +24,7 @@
 		android:id="@+id/transition_backdrop"
 		app:constraintSetStart="@id/set_backdrop_open"
 		app:constraintSetEnd="@id/set_backdrop_closed"
+		app:motionInterpolator="@android:anim/decelerate_interpolator"
 		app:duration="500">
 
 		<OnSwipe

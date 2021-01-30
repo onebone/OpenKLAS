@@ -91,7 +91,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
 					"사건의 지평선 접근시 주의사항 $it", isPinned = false, "아인슈타인", 2020
 				)
-			}, Board.PageInfo(1, 0, 0, 1))
+			}, Board.PageInfo(1, 0, 15, 1))
 		}
 	}
 

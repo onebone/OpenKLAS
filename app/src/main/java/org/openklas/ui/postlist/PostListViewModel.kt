@@ -74,12 +74,8 @@ class PostListViewModel @ViewModelInject constructor(
 		it.posts
 	}
 
-	val postCount: LiveData<Int> = Transformations.map(posts) {
-		it.size
-	}
-
-	val pageInfo: LiveData<Board.PageInfo> = Transformations.map(board) {
-		it.pageInfo
+	val postCount: LiveData<Int> = Transformations.map(board) {
+		it.pageInfo.postCount
 	}
 
 	fun hasQuery(): Boolean {

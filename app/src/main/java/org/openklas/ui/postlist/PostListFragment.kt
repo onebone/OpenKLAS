@@ -22,14 +22,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
-import org.openklas.ui.common.ActivityViewModel
+import org.openklas.ui.common.configureTitle
 import org.openklas.widget.TitleView
 
 @AndroidEntryPoint
@@ -75,13 +74,10 @@ class PostListFragment: BaseFragment() {
 	override fun onResume() {
 		super.onResume()
 
-		val activityViewModel: ActivityViewModel by activityViewModels()
-		activityViewModel.title.value = resources.getString(when(postListArgs.type) {
-			null -> R.string.post_list_title
+		configureTitle(resources.getString(when(postListArgs.type) {
 			PostType.NOTICE -> R.string.course_notice
 			PostType.LECTURE_MATERIAL -> R.string.course_material
 			PostType.QNA -> R.string.course_qna
-		})
-		activityViewModel.titleHeaderType.value = TitleView.HeaderType.BACK
+		}), TitleView.HeaderType.BACK, TitleView.SearchType.SEARCH)
 	}
 }

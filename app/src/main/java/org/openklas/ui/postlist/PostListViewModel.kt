@@ -36,31 +36,19 @@ class PostListViewModel @ViewModelInject constructor(
 	semesterViewModelDelegate: SemesterViewModelDelegate
 ): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
-	// board type, target subject, target page, current semester is an argument to search posts
-	private val targetType = MutableLiveData<PostType>()
-	private val targetSubject = MutableLiveData<String>()
-	private val targetPage = MutableLiveData(0)
+	private var query: Query? = null
 
 	private val _subject = MediatorLiveData<BriefSubject>().apply {
-		fun combine() {
-			val currentSubject = targetSubject.value ?: return
-			val currentSemester = currentSemester.value ?: return
-
-			val newValue = currentSemester.subjects.find {
-				it.id == currentSubject
-			} ?: currentSemester.subjects.firstOrNull()
-
-			if(value != newValue) value = newValue
-
-			fetchPosts()
-		}
-
 		addSource(currentSemester) {
-			combine()
-		}
+			if(hasQuery()) {
+				val query = query!!
 
-		addSource(targetSubject) {
-			combine()
+				resolveCurrentSubject(query.subject)?.let { subject ->
+					this.value = subject
+
+					fetchPosts()
+				}
+			}
 		}
 	}
 	val subject: LiveData<BriefSubject> = _subject
@@ -79,39 +67,45 @@ class PostListViewModel @ViewModelInject constructor(
 	}
 
 	fun hasQuery(): Boolean {
-		return currentSemester.value != null && targetSubject.value != null
-				&& targetType.value != null && targetPage.value!! >= 0
+		return query?.isValid() == true
+	}
+
+	private fun resolveCurrentSubject(id: String): BriefSubject? {
+		val currentSemester = currentSemester.value ?: return null
+
+		return currentSemester.subjects.find { subject -> subject.id == id } ?: currentSemester.subjects.firstOrNull()
 	}
 
 	fun setQuery(semester: String, subject: String, type: PostType, page: Int) {
 		setCurrentSemester(semester)
-		targetSubject.value = subject
-		targetType.value = type
-		targetPage.value = page
-	}
 
-	// called from res/layout/post_list_fragment.xml
-	fun onSubjectIndexChanged(index: Int) {
-		val allSubjects = subjects.value ?: return
-		if(allSubjects.lastIndex < index) return
+		val newQuery = Query(
+			type = type, subject = subject, page = page
+		)
 
-		targetSubject.value = allSubjects[index].id
+		if(!newQuery.isValid())
+			throw IllegalArgumentException("invalid query is given")
+
+		query = newQuery
+
+		if(currentSemester.value != null) {
+			resolveCurrentSubject(subject)?.let {
+				_subject.value = it
+				fetchPosts()
+			}
+		}
 	}
 
 	private fun fetchPosts() {
-		val queryType = targetType.value
-		val querySubject = subject.value
-		val querySemester = currentSemester.value?.id
-		val queryPage = targetPage.value!!
-
-		if(queryType == null || querySubject == null || querySemester == null) return
-		if(queryPage < 0) return
+		val query = query ?: return
+		val currentSemester = currentSemester.value ?: return
+		if(!query.isValid()) return
 
 		addDisposable(requestWithSession {
-			when(queryType) {
-				PostType.NOTICE -> klasRepository.getNotices(querySemester, querySubject.id, queryPage)
-				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(querySemester, querySubject.id, queryPage)
-				PostType.QNA -> klasRepository.getQnas(querySemester, querySubject.id, queryPage)
+			when(query.type) {
+				PostType.NOTICE -> klasRepository.getNotices(currentSemester.id, query.subject, query.page)
+				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(currentSemester.id, query.subject, query.page)
+				PostType.QNA -> klasRepository.getQnas(currentSemester.id, query.subject, query.page)
 			}
 		}.subscribe { v, err ->
 			if(err == null) {
@@ -120,5 +114,15 @@ class PostListViewModel @ViewModelInject constructor(
 				_error.value = err
 			}
 		})
+	}
+
+	private data class Query(
+		val type: PostType,
+		val subject: String,
+		val page: Int
+	) {
+		fun isValid(): Boolean {
+			return page > 0
+		}
 	}
 }

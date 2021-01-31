@@ -18,12 +18,89 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
+import org.openklas.ui.common.AppbarHolder
+import org.openklas.widget.AppbarView
 
 abstract class BaseFragment: Fragment() {
+	private var appbarHolder: AppbarHolder? = null
+	private var appbarConfiguration: AppbarConfiguration? = null
+
+	override fun onAttach(context: Context) {
+		super.onAttach(context)
+
+		if(context is AppbarHolder) {
+			appbarHolder = context
+		}
+	}
+
+	override fun onDetach() {
+		super.onDetach()
+
+		appbarHolder = null
+	}
+
+	private fun ensureAppbarConfiguration() {
+		if(appbarConfiguration == null) {
+			appbarConfiguration = AppbarConfiguration("", AppbarView.HeaderType.NONE, AppbarView.SearchType.NONE, null)
+		}
+	}
+
+	fun configureTitle(title: String, headerType: AppbarView.HeaderType, searchType: AppbarView.SearchType) {
+		if(appbarHolder == null) {
+			throw RuntimeException("configureTitle() is called, but the fragment is not attached to AppbarHolder")
+		}
+
+		appbarHolder!!.configureAppbar(title, headerType, searchType)
+
+		ensureAppbarConfiguration()
+		appbarConfiguration!!.apply {
+			this.title = title
+			this.headerType = headerType
+			this.searchType = searchType
+		}
+	}
+
+	fun setAppbarOnClickSearchListener(listener: AppbarView.OnClickSearchListener) {
+		if(appbarHolder == null) {
+			throw RuntimeException("setAppbarOnClickSearchListener() is called, but the fragment is not attached to AppbarHolder")
+		}
+
+		appbarHolder!!.setAppbarOnClickSearchListener(listener)
+
+		ensureAppbarConfiguration()
+		appbarConfiguration!!.apply {
+			onClickSearchListener = listener
+		}
+	}
+
+	fun setAppbarSearchState(search: Boolean) {
+		if(appbarHolder == null) {
+			throw RuntimeException("setAppbarSearchState() is called, but the fragment is not attached to AppbarHolder")
+		}
+
+		appbarHolder!!.setAppbarSearchState(search)
+
+		ensureAppbarConfiguration()
+		appbarConfiguration!!.apply {
+			searchType = if(search) AppbarView.SearchType.SEARCH else AppbarView.SearchType.CANCEL
+		}
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		appbarConfiguration?.let {
+			appbarHolder?.configureAppbar(it.title, it.headerType, it.searchType)
+
+			appbarHolder?.setAppbarOnClickSearchListener(it.onClickSearchListener)
+		}
+	}
+
 	private fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
@@ -42,4 +119,11 @@ abstract class BaseFragment: Fragment() {
 
 		return viewModel
 	}
+
+	private data class AppbarConfiguration(
+		var title: String,
+		var headerType: AppbarView.HeaderType,
+		var searchType: AppbarView.SearchType,
+		var onClickSearchListener: AppbarView.OnClickSearchListener?
+	)
 }

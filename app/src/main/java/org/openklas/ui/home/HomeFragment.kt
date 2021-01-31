@@ -22,16 +22,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.HomeFragmentBinding
-import org.openklas.ui.common.configureTitle
 import org.openklas.utils.dp2px
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -39,6 +36,9 @@ class HomeFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(resources.getString(R.string.app_name),
+			AppbarView.HeaderType.HAMBURGER, AppbarView.SearchType.NONE)
+
 		val binding = HomeFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@HomeFragment
 		}
@@ -59,12 +59,5 @@ class HomeFragment: BaseFragment() {
 
 	fun onClickShowMore(v: View) {
 		findNavController().navigate(HomeFragmentDirections.actionHomeTimetable())
-	}
-
-	override fun onResume() {
-		super.onResume()
-
-		configureTitle(resources.getString(R.string.app_name),
-			TitleView.HeaderType.HAMBURGER, TitleView.SearchType.NONE)
 	}
 }

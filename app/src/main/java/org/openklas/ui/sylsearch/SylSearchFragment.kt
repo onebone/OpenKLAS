@@ -27,8 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
-import org.openklas.ui.common.configureTitle
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class SylSearchFragment: BaseFragment() {
@@ -38,6 +37,8 @@ class SylSearchFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(resources.getString(R.string.syllabus_search), AppbarView.HeaderType.BACK, AppbarView.SearchType.SEARCH)
+
 		val binding = SyllabusSearchFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@SylSearchFragment
 		}
@@ -49,11 +50,5 @@ class SylSearchFragment: BaseFragment() {
 		binding.list.layoutManager = LinearLayoutManager(binding.list.context)
 		binding.list.adapter = SylSearchAdapter()
 		return binding.root
-	}
-
-	override fun onResume() {
-		super.onResume()
-
-		configureTitle(resources.getString(R.string.syllabus_search), TitleView.HeaderType.BACK, TitleView.SearchType.SEARCH)
 	}
 }

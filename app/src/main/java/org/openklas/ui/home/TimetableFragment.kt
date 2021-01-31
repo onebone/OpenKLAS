@@ -26,8 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.TimetableFragmentBinding
-import org.openklas.ui.common.configureTitle
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class TimetableFragment: BaseFragment() {
@@ -35,6 +34,8 @@ class TimetableFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(resources.getString(R.string.timetable), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
+
 		val binding = TimetableFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@TimetableFragment
 		}
@@ -42,11 +43,5 @@ class TimetableFragment: BaseFragment() {
 		binding.viewModel = getViewModel()
 
 		return binding.root
-	}
-
-	override fun onResume() {
-		super.onResume()
-
-		configureTitle(resources.getString(R.string.timetable), TitleView.HeaderType.BACK, TitleView.SearchType.NONE)
 	}
 }

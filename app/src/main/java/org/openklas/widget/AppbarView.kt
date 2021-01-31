@@ -27,7 +27,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import org.openklas.R
 
-class TitleView: FrameLayout {
+class AppbarView: FrameLayout {
 	private lateinit var tvTitle: TextView
 	private lateinit var imgHeader: ImageView
 	private lateinit var imgSearch: ImageView
@@ -103,7 +103,7 @@ class TitleView: FrameLayout {
 	}
 
 	private fun init() {
-		inflate(context, R.layout.title_view, this)
+		inflate(context, R.layout.appbar_view, this)
 	}
 
 	override fun onFinishInflate() {
@@ -147,37 +147,37 @@ class TitleView: FrameLayout {
 	companion object {
 		@JvmStatic
 		@BindingAdapter("title")
-		fun bindTitle(view: TitleView, title: String) {
+		fun bindTitle(view: AppbarView, title: String) {
 			view.title = title
 		}
 
 		@JvmStatic
 		@BindingAdapter("headerType")
-		fun bindHeaderType(view: TitleView, type: HeaderType) {
+		fun bindHeaderType(view: AppbarView, type: HeaderType) {
 			view.headerType = type
 		}
 
 		@JvmStatic
 		@BindingAdapter("searchType")
-		fun bindSearchType(view: TitleView, type: SearchType) {
+		fun bindSearchType(view: AppbarView, type: SearchType) {
 			view.searchType = type
 		}
 
 		@JvmStatic
 		@BindingAdapter("onClickBack")
-		fun bindOnClickBackListener(view: TitleView, listener: OnClickBackListener?) {
+		fun bindOnClickBackListener(view: AppbarView, listener: OnClickBackListener?) {
 			view.onClickBackListener = listener
 		}
 
 		@JvmStatic
 		@BindingAdapter("onClickSearch")
-		fun bindOnClickSearchListener(view: TitleView, listener: OnClickSearchListener?) {
+		fun bindOnClickSearchListener(view: AppbarView, listener: OnClickSearchListener?) {
 			view.onClickSearchListener = listener
 		}
 
 		@JvmStatic
 		@BindingAdapter("onClickDrawer")
-		fun bindOnClickDrawerListener(view: TitleView, listener: OnClickDrawerListener) {
+		fun bindOnClickDrawerListener(view: AppbarView, listener: OnClickDrawerListener) {
 			view.onClickDrawerListener = listener
 		}
 	}

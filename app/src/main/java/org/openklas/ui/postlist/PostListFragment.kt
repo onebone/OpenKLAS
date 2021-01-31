@@ -22,14 +22,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
-import org.openklas.ui.common.configureTitle
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class PostListFragment: BaseFragment() {
@@ -42,6 +42,12 @@ class PostListFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(resources.getString(when(postListArgs.type) {
+			PostType.NOTICE -> R.string.course_notice
+			PostType.LECTURE_MATERIAL -> R.string.course_material
+			PostType.QNA -> R.string.course_qna
+		}), AppbarView.HeaderType.BACK, AppbarView.SearchType.SEARCH)
+
 		binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@PostListFragment
 		}
@@ -54,30 +60,41 @@ class PostListFragment: BaseFragment() {
 		binding.rvPosts.adapter = PostListAdapter()
 		binding.viewModel = viewModel
 
+		binding.etKeyword.isEnabled = false
+
+		val motionRoot = binding.motionRoot
+		val backdropTransition = motionRoot.getTransition(R.id.transition_backdrop)
+		backdropTransition.setEnable(false)
+
+		setAppbarOnClickSearchListener { _, cancel ->
+			motionRoot.apply {
+				transitionToState(
+					if(cancel) R.id.set_backdrop_closed
+					else R.id.set_backdrop_open
+				)
+			}
+		}
+
+		motionRoot.setTransitionListener(object: MotionLayout.TransitionListener {
+			override fun onTransitionStarted(v: MotionLayout, begin: Int, end: Int) {}
+
+			override fun onTransitionChange(v: MotionLayout, begin: Int, end: Int, progress: Float) {}
+
+			override fun onTransitionCompleted(v: MotionLayout, state: Int) {
+				if(state == R.id.set_backdrop_closed) {
+					binding.etKeyword.isEnabled = true
+					backdropTransition.setEnable(true)
+					setAppbarSearchState(false)
+				}else if(state == R.id.set_backdrop_open) {
+					binding.etKeyword.isEnabled = false
+					backdropTransition.setEnable(false)
+					setAppbarSearchState(true)
+				}
+			}
+
+			override fun onTransitionTrigger(v: MotionLayout, triggerId: Int, positive: Boolean, progress: Float) {}
+		})
+
 		return binding.root
-	}
-
-	internal fun onClickSearch(view: View) {
-		binding.motionRoot.apply {
-			getTransition(R.id.transition_backdrop).setEnable(true)
-			setTransition(R.id.set_backdrop_open)
-		}
-	}
-
-	internal fun onClickCancel(view: View) {
-		binding.motionRoot.apply {
-			getTransition(R.id.transition_backdrop).setEnable(false)
-			setTransition(R.id.set_backdrop_closed)
-		}
-	}
-
-	override fun onResume() {
-		super.onResume()
-
-		configureTitle(resources.getString(when(postListArgs.type) {
-			PostType.NOTICE -> R.string.course_notice
-			PostType.LECTURE_MATERIAL -> R.string.course_material
-			PostType.QNA -> R.string.course_qna
-		}), TitleView.HeaderType.BACK, TitleView.SearchType.SEARCH)
 	}
 }

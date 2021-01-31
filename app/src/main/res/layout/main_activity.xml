@@ -18,64 +18,57 @@
  -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.common.MainActivity">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".ui.common.MainActivity">
 
-    <data>
+	<data>
 
-        <variable
-            name="view"
-            type="org.openklas.ui.common.MainActivity" />
+		<variable
+			name="view"
+			type="org.openklas.ui.common.MainActivity" />
 
-        <variable
-            name="viewModel"
-            type="org.openklas.ui.common.ActivityViewModel" />
-        
-    </data>
+	</data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+	<androidx.drawerlayout.widget.DrawerLayout
+		android:id="@+id/drawer_root"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 
-            <org.openklas.widget.TitleView
-                android:id="@+id/main_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:title="@{viewModel.title}"
-                app:headerType="@{viewModel.titleHeaderType}"
-                app:searchType="@{viewModel.titleSearchType}"
-                app:onClickBack="@{view::onTitleClickBack}" />
+			<org.openklas.widget.AppbarView
+				android:id="@+id/appbar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:onClickBack="@{view::onTitleClickBack}" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:defaultNavHost="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_title"
-                app:navGraph="@navigation/nav_graph" />
+			<androidx.fragment.app.FragmentContainerView
+				android:id="@+id/nav_host_fragment"
+				android:name="androidx.navigation.fragment.NavHostFragment"
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				app:defaultNavHost="true"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/appbar"
+				app:navGraph="@navigation/nav_graph" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/nav_drawer_menu" />
+		<com.google.android.material.navigation.NavigationView
+			android:id="@+id/nav_view"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			android:fitsSystemWindows="true"
+			app:menu="@menu/nav_drawer_menu" />
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+	</androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

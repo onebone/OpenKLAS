@@ -29,8 +29,7 @@ import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.LoginFragmentBinding
 import org.openklas.klas.error.KlasSigninFailError
-import org.openklas.ui.common.configureTitle
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class LoginFragment: BaseFragment() {
@@ -38,6 +37,8 @@ class LoginFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle("", AppbarView.HeaderType.NONE, AppbarView.SearchType.NONE)
+
 		val binding = LoginFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@LoginFragment
 		}
@@ -62,11 +63,5 @@ class LoginFragment: BaseFragment() {
 		}
 
 		return binding.root
-	}
-
-	override fun onResume() {
-		super.onResume()
-
-		configureTitle("", TitleView.HeaderType.NONE, TitleView.SearchType.NONE)
 	}
 }

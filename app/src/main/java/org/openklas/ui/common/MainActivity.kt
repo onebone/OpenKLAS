@@ -33,25 +33,25 @@ import org.openklas.R
 import org.openklas.databinding.MainActivityBinding
 import org.openklas.ui.home.HomeFragmentDirections
 import org.openklas.ui.postlist.PostType
-import org.openklas.widget.TitleView
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), AppbarHolder {
+	private lateinit var binding: MainActivityBinding
 	private val viewModel by viewModels<ActivityViewModel>()
 	private lateinit var navController: NavController
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val binding = MainActivityBinding.inflate(LayoutInflater.from(this)).apply {
+		binding = MainActivityBinding.inflate(LayoutInflater.from(this)).apply {
 			lifecycleOwner = this@MainActivity
 		}
 		setContentView(binding.root)
 
-		binding.viewModel = viewModel
 		binding.view = this
 
-		binding.mainTitle.onClickDrawerListener = TitleView.OnClickDrawerListener {
+		binding.appbar.onClickDrawerListener = AppbarView.OnClickDrawerListener {
 			if(binding.drawerRoot.isOpen) {
 				binding.drawerRoot.close()
 			}else{
@@ -71,6 +71,22 @@ class MainActivity: AppCompatActivity() {
 				else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 			)
 		}
+	}
+
+	override fun configureAppbar(title: String, headerType: AppbarView.HeaderType, searchType: AppbarView.SearchType) {
+		with(binding.appbar) {
+			this.title = title
+			this.headerType = headerType
+			this.searchType = searchType
+		}
+	}
+
+	override fun setAppbarOnClickSearchListener(listener: AppbarView.OnClickSearchListener?) {
+		binding.appbar.onClickSearchListener = listener
+	}
+
+	override fun setAppbarSearchState(search: Boolean) {
+		binding.appbar.searchType = if(search) AppbarView.SearchType.SEARCH else AppbarView.SearchType.CANCEL
 	}
 
 	fun onTitleClickBack(view: View) {

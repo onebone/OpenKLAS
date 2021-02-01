@@ -24,6 +24,7 @@
 
 	<data>
 		<import type="org.openklas.utils.Utils" />
+		<import type="android.view.ViewGroup.LayoutParams" />
 
 		<variable
 			name="post"
@@ -37,10 +38,9 @@
 		android:padding="12dp"
 		android:background="?android:attr/selectableItemBackground">
 
-		<!-- layout_width: -2 is wrap_content-->
 		<TextView
 			android:id="@+id/tv_post_title"
-			android:layout_width="@{post != null ? -2 : Utils.randomWidthLength(postRoot, 0.3f, 0.7f), default=wrap_content}"
+			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.3f, 0.7f), default=wrap_content}"
 			android:layout_height="wrap_content"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
@@ -51,7 +51,7 @@
 
 		<TextView
 			android:id="@+id/tv_post_hits"
-			android:layout_width="@{post != null ? -2 : Utils.randomWidthLength(postRoot, 0.15f, 0.2f), default=wrap_content}"
+			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.15f, 0.2f), default=wrap_content}"
 			android:layout_height="wrap_content"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/tv_post_title"
@@ -62,7 +62,7 @@
 
 		<TextView
 			android:id="@+id/tv_post_author"
-			android:layout_width="@{post != null ? -2 : Utils.randomWidthLength(postRoot, 0.15f, 0.3f), default=wrap_content}"
+			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.15f, 0.3f), default=wrap_content}"
 			android:layout_height="wrap_content"
 			app:layout_constraintLeft_toRightOf="@id/tv_post_hits"
 			app:layout_constraintTop_toTopOf="@id/tv_post_hits"

@@ -36,7 +36,7 @@ class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(Simp
 	}
 
 	class ViewHolder(val binding: PostItemBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(entry: Board.Entry) {
+		fun bind(entry: Board.Entry?) {
 			binding.post = entry
 
 			binding.root.setOnClickListener {

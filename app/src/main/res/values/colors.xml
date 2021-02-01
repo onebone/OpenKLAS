@@ -37,6 +37,8 @@
 	<color name="gray">#999999</color>
 	<color name="super_light_gray">#EDEDED</color>
 
+	<drawable name="placeholder">@color/gray</drawable>
+
 	<color name="blue">#42A5F5</color>
 	<color name="light_blue">#BBDEFB</color>
 </resources>

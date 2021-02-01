@@ -24,7 +24,9 @@ package org.openklas.utils
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.TypedValue
+import android.view.ViewGroup
 import java.nio.charset.Charset
+import java.util.Random
 
 fun AssetManager.fileAsString(filename: String): String {
 	return open(filename).use {
@@ -49,3 +51,10 @@ fun periodToTime(period: Int): String {
 
 fun dp2px(context: Context, dp: Float) =
 	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)
+
+fun randomWidthLength(parent: ViewGroup, fromFactor: Float, toFactor: Float): Int {
+	val width = parent.width
+
+	val factor = fromFactor + Random().nextFloat() * (toFactor - fromFactor)
+	return (factor * width).toInt()
+}

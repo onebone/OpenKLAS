@@ -18,6 +18,7 @@ package org.openklas.binding
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -30,6 +31,14 @@ import java.util.concurrent.TimeUnit
 
 
 object BindAdapter {
+	@JvmStatic
+	@BindingAdapter("android:layout_width")
+	fun bindLayoutWidth(view: View, width: Int) {
+		view.layoutParams = view.layoutParams.apply {
+			this.width = width
+		}
+	}
+
 	@JvmStatic
 	@BindingAdapter("items")
 	fun <T> bindItems(recyclerView: RecyclerView, list: Array<T>?) {

@@ -32,7 +32,7 @@ data class Board(
 		@SerializedName("pageSize")
 		val postsPerPage: Int,
 		@SerializedName("totalElements")
-		val postCount: Int,
+		val totalPosts: Int,
 		@SerializedName("totalPages")
 		// maximum page that can be requested is totalPages-1
 		val totalPages: Int

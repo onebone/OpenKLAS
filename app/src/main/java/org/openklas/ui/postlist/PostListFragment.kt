@@ -25,10 +25,12 @@ import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.paging.PagedList
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
+import org.openklas.klas.model.Board
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -57,7 +59,13 @@ class PostListFragment: BaseFragment() {
 			viewModel.setQuery("", "", postListArgs.type, 1)
 		}
 
-		binding.rvPosts.adapter = PostListAdapter()
+		val adapter = PostListAdapter()
+		binding.rvPosts.adapter = adapter
+
+		viewModel.posts.observe(viewLifecycleOwner) {
+			adapter.submitList(it)
+		}
+
 		binding.viewModel = viewModel
 
 		binding.etKeyword.isEnabled = false

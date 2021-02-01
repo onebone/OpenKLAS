@@ -23,6 +23,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
@@ -38,6 +41,18 @@ class PostListViewModel @ViewModelInject constructor(
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 	private var query: Query? = null
 
+	val posts = LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
+		override fun create(): DataSource<Int, Board.Entry>
+			= PostListSource(klasRepository, compositeDisposable,
+				if(currentSemester.value == null || subject.value == null || !hasQuery()) null
+				else PostListSource.Query(
+					currentSemester.value!!.id, subject.value!!.id, query!!.type
+				)
+			) {
+				pageInfo.value = it
+			}
+	}, PagedList.Config.Builder().setPageSize(15).build()).build()
+
 	private val _subject = MediatorLiveData<BriefSubject>().apply {
 		addSource(currentSemester) {
 			if(hasQuery()) {
@@ -46,7 +61,7 @@ class PostListViewModel @ViewModelInject constructor(
 				resolveCurrentSubject(query.subject)?.let { subject ->
 					this.value = subject
 
-					fetchPosts()
+					posts.value?.dataSource?.invalidate()
 				}
 			}
 		}
@@ -56,14 +71,9 @@ class PostListViewModel @ViewModelInject constructor(
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	private val board = MutableLiveData<Board>()
-
-	val posts: LiveData<Array<Board.Entry>> = Transformations.map(board) {
-		it.posts
-	}
-
-	val postCount: LiveData<Int> = Transformations.map(board) {
-		it.pageInfo.postCount
+	private val pageInfo = MutableLiveData<Board.PageInfo>()
+	val postCount: LiveData<Int> = Transformations.map(pageInfo) {
+		it.totalPosts
 	}
 
 	fun hasQuery(): Boolean {
@@ -91,29 +101,10 @@ class PostListViewModel @ViewModelInject constructor(
 		if(currentSemester.value != null) {
 			resolveCurrentSubject(subject)?.let {
 				_subject.value = it
-				fetchPosts()
+
+				posts.value?.dataSource?.invalidate()
 			}
 		}
-	}
-
-	private fun fetchPosts() {
-		val query = query ?: return
-		val currentSemester = currentSemester.value ?: return
-		if(!query.isValid()) return
-
-		addDisposable(requestWithSession {
-			when(query.type) {
-				PostType.NOTICE -> klasRepository.getNotices(currentSemester.id, query.subject, query.page)
-				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(currentSemester.id, query.subject, query.page)
-				PostType.QNA -> klasRepository.getQnas(currentSemester.id, query.subject, query.page)
-			}
-		}.subscribe { v, err ->
-			if(err == null) {
-				board.value = v
-			}else{
-				_error.value = err
-			}
-		})
 	}
 
 	private data class Query(
@@ -122,7 +113,7 @@ class PostListViewModel @ViewModelInject constructor(
 		val page: Int
 	) {
 		fun isValid(): Boolean {
-			return page > 0
+			return page >= 0
 		}
 	}
 }

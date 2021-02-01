@@ -20,13 +20,13 @@ package org.openklas.ui.postlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.PostItemBinding
 import org.openklas.klas.model.Board
 
-class PostListAdapter: ListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
+class PostListAdapter: PagedListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}

@@ -89,9 +89,9 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				Board.Entry(
 					null, -1, "01", 0, 0, "01", 1, 5,
 					isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
-					"사건의 지평선 접근시 주의사항 $it", isPinned = false, "아인슈타인", 2020
+					"사건의 지평선 접근시 주의사항 ${15 * page + it}", isPinned = false, "아인슈타인", 2020
 				)
-			}, Board.PageInfo(1, 0, 15, 1))
+			}, Board.PageInfo(page, 15, 75, 5))
 		}
 	}
 

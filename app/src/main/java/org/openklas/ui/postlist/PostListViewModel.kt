@@ -48,28 +48,6 @@ class PostListViewModel @ViewModelInject constructor(
 	}
 	private val queryResolver = PostListQueryResolver()
 
-	private val subjectObserver = Observer<BriefSubject> {
-		// intentional empty block
-	}
-	val posts by lazy {
-		// Workaround for the problem that posts are not fetched if [subject] is not being observed.
-		// The observer registered here is unsubscribed in onCleared().
-		// This problem occurs when [posts] is being observed but [subject] is not observed, because
-		// AAC does not trigger transformation if one is not being observed.
-		// This is actually not a violation of the recommendation of the official Android document, which
-		// prohibits ViewModel to observe lifecycle-aware objects such as LiveData, because this
-		// observation is not bound to any lifecycle. As long as we remove observer in onCleared(),
-		// there will be no potential memory leaks.
-		_subject.observeForever(subjectObserver)
-
-		LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
-			override fun create(): DataSource<Int, Board.Entry> =
-				PostListSource(klasRepository, compositeDisposable, queryResolver) {
-					pageInfo.value = it
-				}
-		}, PagedList.Config.Builder().setPageSize(15).build()).build()
-	}
-
 	private val _subject = MediatorLiveData<BriefSubject>().apply {
 		addSource(currentSemester) {
 			// providing semester to resolver will make subject to be resolved
@@ -77,6 +55,15 @@ class PostListViewModel @ViewModelInject constructor(
 		}
 	}
 	val subject: LiveData<BriefSubject> = _subject
+
+	val posts = Transformations.switchMap(subject) {
+		LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
+			override fun create(): DataSource<Int, Board.Entry> =
+				PostListSource(klasRepository, compositeDisposable, queryResolver) {
+					pageInfo.value = it
+				}
+		}, PagedList.Config.Builder().setPageSize(15).build()).build()
+	}
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
@@ -107,6 +94,5 @@ class PostListViewModel @ViewModelInject constructor(
 		super.onCleared()
 
 		queryResolver.removeListener(queryResolvedListener)
-		_subject.removeObserver(subjectObserver)
 	}
 }

@@ -22,21 +22,36 @@ import androidx.paging.PageKeyedDataSource
 import io.reactivex.disposables.CompositeDisposable
 import org.openklas.klas.model.Board
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.helper.PostListQuery
+import org.openklas.utils.helper.PostListQueryCallback
 
 class PostListSource(
 	private val klasRepository: KlasRepository,
 	private val compositeDisposable: CompositeDisposable,
-	private val query: Query?,
+	private val queryResolver: PostListQueryResolver,
 	private val pageInfoCallback: (Board.PageInfo) -> Unit
-): PageKeyedDataSource<Int, Board.Entry>() {
+): PageKeyedDataSource<Int, Board.Entry>(), PostListQueryCallback {
+	init {
+		queryResolver.addListener(this)
+
+		addInvalidatedCallback {
+			queryResolver.removeListener(this)
+		}
+	}
+
+	override fun onQueryReady(query: PostListQuery) {
+		// invalidate this data source when query is resolved or changed
+		invalidate()
+	}
+
 	override fun loadInitial(
 		params: LoadInitialParams<Int>,
 		callback: LoadInitialCallback<Int, Board.Entry>
 	) {
 		// there is nothing to show when query is not set
-		val query = query ?: return callback.onResult(listOf(), 0, 0, null, null)
+		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), 0, 0, null, null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester, query.subject, 0).subscribe { v, e ->
+		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, 0).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
@@ -46,9 +61,9 @@ class PostListSource(
 	}
 
 	override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = query ?: return callback.onResult(listOf(), null)
+		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester, query.subject, params.key).subscribe { v, e ->
+		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, params.key).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
@@ -58,9 +73,9 @@ class PostListSource(
 	}
 
 	override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = query ?: return callback.onResult(listOf(), null)
+		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester, query.subject, params.key).subscribe { v, e ->
+		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, params.key).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
@@ -68,11 +83,4 @@ class PostListSource(
 			callback.onResult(v.posts.toList(), if(page.currentPage < page.totalPages - 1) page.currentPage + 1 else null)
 		})
 	}
-
-	// query provided here is considered validated already
-	data class Query(
-		val semester: String,
-		val subject: String,
-		val type: PostType
-	)
 }

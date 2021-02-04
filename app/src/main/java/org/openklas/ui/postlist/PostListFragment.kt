@@ -25,12 +25,10 @@ import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.paging.PagedList
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
-import org.openklas.klas.model.Board
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -56,7 +54,8 @@ class PostListFragment: BaseFragment() {
 
 		prepareViewModel(viewModel)
 		if(!viewModel.hasQuery()) {
-			viewModel.setQuery("", "", postListArgs.type, 1)
+			// empty semester and subject delegates decision to view model
+			viewModel.setQuery("", "", postListArgs.type)
 		}
 
 		val adapter = PostListAdapter()

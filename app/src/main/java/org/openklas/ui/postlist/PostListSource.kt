@@ -19,6 +19,7 @@ package org.openklas.ui.postlist
  */
 
 import androidx.paging.PageKeyedDataSource
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.openklas.klas.model.Board
 import org.openklas.repository.KlasRepository
@@ -51,7 +52,7 @@ class PostListSource(
 		// there is nothing to show when query is not set
 		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), 0, 0, null, null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, 0).subscribe { v, e ->
+		compositeDisposable.add(getSingle(query, 0).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
@@ -63,7 +64,7 @@ class PostListSource(
 	override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
 		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, params.key).subscribe { v, e ->
+		compositeDisposable.add(getSingle(query, params.key).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
@@ -75,12 +76,20 @@ class PostListSource(
 	override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
 		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
 
-		compositeDisposable.add(klasRepository.getNotices(query.semester.id, query.subject.id, params.key).subscribe { v, e ->
+		compositeDisposable.add(getSingle(query, params.key).subscribe { v, e ->
 			if(e != null) throw e
 
 			val page = v.pageInfo
 			pageInfoCallback(page)
 			callback.onResult(v.posts.toList(), if(page.currentPage < page.totalPages - 1) page.currentPage + 1 else null)
 		})
+	}
+
+	private fun getSingle(query: PostListQuery, page: Int): Single<Board> {
+		return when(query.type) {
+			PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page)
+			PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page)
+			PostType.QNA -> klasRepository.getQnas(query.semester.id, query.subject.id, page)
+		}
 	}
 }

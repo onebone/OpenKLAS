@@ -18,16 +18,18 @@ package org.openklas.ui.sylsearch
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
+import javax.inject.Inject
 
-class SylSearchViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SylSearchViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
 ) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {

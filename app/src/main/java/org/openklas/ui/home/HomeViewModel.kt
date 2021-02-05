@@ -18,11 +18,11 @@ package org.openklas.ui.home
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Single
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
@@ -36,8 +36,10 @@ import org.openklas.repository.KlasRepository
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate

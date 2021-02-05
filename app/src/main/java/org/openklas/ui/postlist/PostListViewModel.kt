@@ -18,7 +18,6 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +25,7 @@ import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
@@ -34,8 +34,10 @@ import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.helper.PostListQueryCallback
+import javax.inject.Inject
 
-class PostListViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PostListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate

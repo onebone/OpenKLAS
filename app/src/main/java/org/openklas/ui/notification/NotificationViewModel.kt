@@ -18,9 +18,11 @@ package org.openklas.ui.notification
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.hilt.lifecycle.ViewModelInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
+import javax.inject.Inject
 
-class NotificationViewModel @ViewModelInject constructor(): BaseViewModel() {
+@HiltViewModel
+class NotificationViewModel @Inject constructor(): BaseViewModel() {
 
 }

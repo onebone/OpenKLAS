@@ -19,13 +19,15 @@ package org.openklas.ui.login
  */
 
 import androidx.databinding.ObservableBoolean
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.repository.KlasRepository
+import javax.inject.Inject
 
-class LoginViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
 	private val klasRepository: KlasRepository
 ): BaseViewModel() {
 	val userId = MutableLiveData<String>()

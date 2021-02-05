@@ -22,7 +22,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -32,6 +31,7 @@ import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
+import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.helper.PostListQueryCallback
 
@@ -88,6 +88,10 @@ class PostListViewModel @ViewModelInject constructor(
 			setSubject(subject)
 			setType(type)
 		}
+	}
+
+	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
+		queryResolver.setFilter(criteria, keyword)
 	}
 
 	override fun onCleared() {

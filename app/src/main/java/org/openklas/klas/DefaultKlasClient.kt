@@ -27,6 +27,7 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
@@ -81,21 +82,21 @@ class DefaultKlasClient @Inject constructor(
 		return service.semesters()
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
+	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.notices(RequestPostList(
-			page = page, subject = subjectId, semester = semester
+			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		))
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
+	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.materials(RequestPostList(
-			page = page, subject = subjectId, semester = semester
+			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		))
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
+	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.qnas(RequestPostList(
-			page = page, subject = subjectId, semester = semester
+			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		))
 	}
 

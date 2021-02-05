@@ -87,9 +87,9 @@ class PostListSource(
 
 	private fun getSingle(query: PostListQuery, page: Int): Single<Board> {
 		return when(query.type) {
-			PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page)
-			PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page)
-			PostType.QNA -> klasRepository.getQnas(query.semester.id, query.subject.id, page)
+			PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+			PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+			PostType.QNA -> klasRepository.getQnas(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
 		}
 	}
 }

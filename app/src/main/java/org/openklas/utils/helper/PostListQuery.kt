@@ -2,6 +2,7 @@ package org.openklas.utils.helper
 
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
+import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.ui.postlist.PostType
 
 /*
@@ -26,4 +27,6 @@ data class PostListQuery(
 	val semester: Semester,
 	val subject: BriefSubject,
 	val type: PostType,
+	val searchCriteria: BoardSearchCriteria,
+	val keyword: String?
 )

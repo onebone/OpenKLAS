@@ -30,7 +30,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Subject
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.Timetable
-import org.openklas.net.transformer.AsyncTransformer
+import org.openklas.klas.request.BoardSearchCriteria
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -81,7 +81,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
+	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return Single.fromCallable {
 			Thread.sleep(NETWORK_DELAY)
 
@@ -98,7 +98,9 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override fun getLectureMaterials(
 		semester: String,
 		subjectId: String,
-		page: Int
+		page: Int,
+		criteria: BoardSearchCriteria,
+		keyword: String?
 	): Single<Board> {
 		return Single.fromCallable {
 			Thread.sleep(NETWORK_DELAY)
@@ -107,7 +109,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
+	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return Single.fromCallable {
 			Thread.sleep(NETWORK_DELAY)
 

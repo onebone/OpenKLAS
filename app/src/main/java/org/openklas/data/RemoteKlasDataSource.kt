@@ -25,6 +25,7 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.request.BoardSearchCriteria
 import javax.inject.Inject
 
 class RemoteKlasDataSource @Inject constructor(
@@ -42,16 +43,16 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getSemesters()
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klas.getNotices(semester, subjectId, page)
+	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+		return klas.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klas.getQnas(semester, subjectId, page)
+	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+		return klas.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board> {
-		return klas.getLectureMaterials(semester, subjectId, page)
+	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+		return klas.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)

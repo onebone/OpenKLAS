@@ -20,6 +20,7 @@ package org.openklas.ui.postlist
 
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
+import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.helper.PostListQuery
 import org.openklas.utils.helper.PostListQueryCallback
 
@@ -33,10 +34,14 @@ class PostListQueryResolver(
 		it.firstOrNull()
 	}
 ) {
+	private var changed = false
+
 	private var semester: Semester? = null
 	private var subjectId: String? = null
 	private var subject: BriefSubject? = null
 	private var type: PostType? = null
+	private var criteria: BoardSearchCriteria? = null
+	private var keyword: String? = null
 
 	var resolvedQuery: PostListQuery? = null
 		private set
@@ -53,6 +58,7 @@ class PostListQueryResolver(
 
 	fun setSemester(semester: Semester) {
 		this.semester = semester
+		changed = true
 
 		tryResolveSubject()
 		callListenersIfResolved()
@@ -60,6 +66,7 @@ class PostListQueryResolver(
 
 	fun setSubject(subject: String) {
 		this.subjectId = subject
+		changed = true
 
 		tryResolveSubject()
 		callListenersIfResolved()
@@ -67,6 +74,15 @@ class PostListQueryResolver(
 
 	fun setType(type: PostType) {
 		this.type = type
+		changed = true
+
+		callListenersIfResolved()
+	}
+
+	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
+		this.criteria = criteria
+		this.keyword = keyword
+		changed = true
 
 		callListenersIfResolved()
 	}
@@ -94,15 +110,17 @@ class PostListQueryResolver(
 	private fun callListenersIfResolved() {
 		val query = resolvedQuery
 
-		if(query != null) {
+		if(!changed && query != null) {
 			listeners.forEach { it.onQueryReady(query) }
+			return
 		}
 
 		if(semester != null && subject != null && type != null) {
-			val resolved = PostListQuery(semester!!, subject!!, type!!)
+			val resolved = PostListQuery(semester!!, subject!!, type!!, criteria ?: BoardSearchCriteria.ALL, keyword)
 			listeners.forEach { it.onQueryReady(resolved) }
 
 			resolvedQuery = resolved
+			changed = false
 		}
 	}
 }

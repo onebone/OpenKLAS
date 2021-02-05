@@ -20,6 +20,17 @@ package org.openklas.klas.request
 
 import com.google.gson.annotations.SerializedName
 
+enum class BoardSearchCriteria(val id: String) {
+	@SerializedName("ALL")
+	ALL("ALL"),
+	@SerializedName("TLE")
+	TITLE("TLE"),
+	@SerializedName("CNT")
+	CONTENT("CNT"),
+	@SerializedName("AUT")
+	AUTHOR("AUT")
+}
+
 data class RequestPostList(
 	@SerializedName("currentPage")
 	val page: Int,
@@ -27,5 +38,9 @@ data class RequestPostList(
 	val subject: String,
 	@SerializedName("selectYearhakgi")
 	val semester: String,
+	@SerializedName("searchCondition")
+	val searchCriteria: BoardSearchCriteria = BoardSearchCriteria.ALL,
+	@SerializedName("searchKeyword")
+	val keyword: String? = null,
 	val selectChangeYn: String = "Y"
 )

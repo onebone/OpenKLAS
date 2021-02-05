@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
-import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.NotificationFragmentBinding
 

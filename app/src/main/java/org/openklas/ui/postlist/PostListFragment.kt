@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -29,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
+import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -52,6 +54,9 @@ class PostListFragment: BaseFragment() {
 			lifecycleOwner = this@PostListFragment
 		}
 
+		binding.viewModel = viewModel
+		binding.v = this
+
 		prepareViewModel(viewModel)
 		if(!viewModel.hasQuery()) {
 			// empty semester and subject delegates decision to view model
@@ -64,8 +69,16 @@ class PostListFragment: BaseFragment() {
 		viewModel.posts.observe(viewLifecycleOwner) {
 			adapter.submitList(it)
 		}
-
-		binding.viewModel = viewModel
+		
+		binding.etKeyword.setOnEditorActionListener { v, actionId, _ ->
+			return@setOnEditorActionListener when(actionId) {
+				EditorInfo.IME_ACTION_SEND -> {
+					onClickFilterSubmit(v.text.toString())
+					true
+				}
+				else -> false
+			}
+		}
 
 		binding.etKeyword.isEnabled = false
 
@@ -103,5 +116,12 @@ class PostListFragment: BaseFragment() {
 		})
 
 		return binding.root
+	}
+
+	fun onClickFilterSubmit(keyword: String) {
+		// TODO implement changing search criteria
+		viewModel.setFilter(BoardSearchCriteria.ALL, keyword)
+
+		binding.motionRoot.transitionToState(R.id.set_backdrop_open)
 	}
 }

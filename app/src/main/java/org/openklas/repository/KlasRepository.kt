@@ -24,14 +24,15 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.request.BoardSearchCriteria
 
 interface KlasRepository {
 	fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String>
 	fun getHome(semester: String): Single<Home>
 	fun getSemesters(): Single<Array<Semester>>
-	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board>
-	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board>
-	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 	fun getSyllabusList(
 		year: Int,
 		term: Int,

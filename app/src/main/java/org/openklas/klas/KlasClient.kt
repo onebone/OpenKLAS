@@ -6,6 +6,7 @@ import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.request.BoardSearchCriteria
 
 interface KlasClient {
 	fun login(username: String, password: String): Single<String>
@@ -14,11 +15,11 @@ interface KlasClient {
 
 	fun getSemesters(): Single<Array<Semester>>
 
-	fun getNotices(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 
-	fun getLectureMaterials(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 
-	fun getQnas(semester: String, subjectId: String, page: Int): Single<Board>
+	fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 

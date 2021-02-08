@@ -57,6 +57,17 @@ class BackdropContainerView @JvmOverloads constructor(
 		})
 	}
 
+	override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+		super.onLayout(changed, left, top, right, bottom)
+
+		val frontView = findViewById<BackdropFrontView>(R.id.layout_layer_front)
+		frontView?.findViewById<View>(R.id.backdrop_content_divider)?.let { divider ->
+			getConstraintSet(R.id.set_backdrop_open).apply {
+				setMargin(R.id.layout_layer_front, ConstraintSet.TOP, measuredHeight - divider.top)
+			}
+		}
+	}
+
 	override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
 		isMotionLayoutTraversing = true
 		val intercepted = super.onInterceptTouchEvent(event)

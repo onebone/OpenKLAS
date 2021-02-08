@@ -89,8 +89,8 @@ class PostListFragment: BaseFragment() {
 		setAppbarOnClickSearchListener { _, cancel ->
 			motionRoot.apply {
 				transitionToState(
-					if(cancel) R.id.set_backdrop_closed
-					else R.id.set_backdrop_open
+					if(cancel) R.id.set_backdrop_open
+					else R.id.set_backdrop_closed
 				)
 			}
 		}
@@ -101,11 +101,11 @@ class PostListFragment: BaseFragment() {
 			override fun onTransitionChange(v: MotionLayout, begin: Int, end: Int, progress: Float) {}
 
 			override fun onTransitionCompleted(v: MotionLayout, state: Int) {
-				if(state == R.id.set_backdrop_closed) {
+				if(state == R.id.set_backdrop_open) {
 					binding.etKeyword.isEnabled = true
 					backdropTransition.setEnable(true)
 					setAppbarSearchState(false)
-				}else if(state == R.id.set_backdrop_open) {
+				}else if(state == R.id.set_backdrop_closed) {
 					binding.etKeyword.isEnabled = false
 					backdropTransition.setEnable(false)
 					setAppbarSearchState(true)
@@ -122,6 +122,6 @@ class PostListFragment: BaseFragment() {
 		// TODO implement changing search criteria
 		viewModel.setFilter(BoardSearchCriteria.ALL, keyword)
 
-		binding.motionRoot.transitionToState(R.id.set_backdrop_open)
+		binding.motionRoot.transitionToState(R.id.set_backdrop_closed)
 	}
 }

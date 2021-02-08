@@ -22,8 +22,8 @@
 
 	<Transition
 		android:id="@+id/transition_backdrop"
-		app:constraintSetStart="@id/set_backdrop_open"
-		app:constraintSetEnd="@id/set_backdrop_closed"
+		app:constraintSetStart="@id/set_backdrop_closed"
+		app:constraintSetEnd="@id/set_backdrop_open"
 		app:motionInterpolator="@android:anim/decelerate_interpolator"
 		app:duration="500">
 
@@ -34,7 +34,7 @@
 
 	</Transition>
 
-	<ConstraintSet android:id="@+id/set_backdrop_closed">
+	<ConstraintSet android:id="@+id/set_backdrop_open">
 
 		<Constraint android:id="@id/layout_layer_front">
 			<Layout
@@ -48,8 +48,8 @@
 
 	</ConstraintSet>
 
-	<ConstraintSet android:id="@+id/set_backdrop_open"
-		app:deriveConstraintsFrom="@id/set_backdrop_closed">
+	<ConstraintSet android:id="@+id/set_backdrop_closed"
+		app:deriveConstraintsFrom="@id/set_backdrop_open">
 
 		<Constraint android:id="@id/layout_layer_front">
 			<Layout

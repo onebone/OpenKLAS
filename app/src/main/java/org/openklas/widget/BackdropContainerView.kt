@@ -63,6 +63,7 @@ class BackdropContainerView @JvmOverloads constructor(
 		val frontView = findViewById<BackdropFrontView>(R.id.layout_layer_front)
 		frontView?.findViewById<View>(R.id.backdrop_content_divider)?.let { divider ->
 			getConstraintSet(R.id.set_backdrop_open).apply {
+				// use negative margin when ConstraintLayout supports (>= 2.1.0)
 				setMargin(R.id.layout_layer_front, ConstraintSet.TOP, measuredHeight - divider.top)
 			}
 		}

@@ -82,6 +82,14 @@
 
 		</action>
 
+		<action
+			android:id="@+id/action_home_sylsearch"
+			app:destination="@id/fragment_syllabus_search"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop" />
+
 	</fragment>
 
 	<fragment

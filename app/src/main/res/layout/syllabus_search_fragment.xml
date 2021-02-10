@@ -31,37 +31,98 @@
 
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<org.openklas.widget.BackdropContainerView
+		android:id="@+id/motion_root"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/pale_grey">
+		app:layoutDescription="@xml/backdrop_motion"
+		android:background="@color/copper">
 
-		<TextView
-			android:id="@+id/text"
-			android:layout_width="wrap_content"
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/layout_layer_back"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="14dp"
-			android:layout_marginTop="10dp"
-			android:text="@string/syllabus_search_result"
-			android:textColor="@color/black"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/list"
-			android:layout_width="match_parent"
+			<Spinner
+				android:id="@+id/spinner_year"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toLeftOf="@id/spinner_term"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintWidth_percent="0.5" />
+
+			<Spinner
+				android:id="@+id/spinner_term"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toRightOf="@id/spinner_year"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintWidth_percent="0.5" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<org.openklas.widget.BackdropFrontView
+			android:id="@+id/layout_layer_front"
+			android:layout_width="0dp"
 			android:layout_height="0dp"
-			android:layout_marginStart="14dp"
-			android:layout_marginTop="16dp"
-			android:layout_marginEnd="14dp"
-			android:layout_marginBottom="16dp"
-			android:background="@drawable/bg_white_r7"
-			android:paddingStart="20dp"
-			android:paddingEnd="20dp"
-			app:items="@{viewModel.syllabusList}"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/text" />
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+				<TextView
+					android:id="@+id/tv_search_result"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="24dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginEnd="8dp"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:text="@{@string/syllabus_search_result_count(viewModel.syllabusList.length)}"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<Space
+					android:id="@+id/backdrop_content_divider"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					android:layout_marginTop="16dp"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/tv_search_result" />
+
+				<View
+					android:id="@+id/v_divider"
+					android:layout_width="match_parent"
+					android:layout_height="8dp"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/backdrop_content_divider"
+					android:background="@color/super_light_gray" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rv_syllabus"
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					app:items="@{viewModel.syllabusList}"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/v_divider" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</org.openklas.widget.BackdropFrontView>
+
+	</org.openklas.widget.BackdropContainerView>
 </layout>

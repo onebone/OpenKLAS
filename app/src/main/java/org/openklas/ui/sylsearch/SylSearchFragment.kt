@@ -22,7 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.constraintlayout.motion.widget.MotionLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -47,8 +47,34 @@ class SylSearchFragment: BaseFragment() {
 
 		binding.viewModel = viewModel
 		binding.v = this
-		binding.list.layoutManager = LinearLayoutManager(binding.list.context)
-		binding.list.adapter = SylSearchAdapter()
+		binding.rvSyllabus.adapter = SylSearchAdapter()
+
+		val motionRoot = binding.motionRoot
+		val backdropTransition = motionRoot.getTransition(R.id.transition_backdrop)
+
+		setAppbarOnClickSearchListener { _, cancel ->
+			motionRoot.transitionToState(if(cancel) R.id.set_backdrop_open else R.id.set_backdrop_closed)
+		}
+
+		motionRoot.transitionToState(R.id.set_backdrop_open)
+		motionRoot.setTransitionListener(object: MotionLayout.TransitionListener {
+			override fun onTransitionStarted(v: MotionLayout, begin: Int, end: Int) {}
+
+			override fun onTransitionChange(v: MotionLayout, begin: Int, end: Int, progress: Float) {}
+
+			override fun onTransitionCompleted(v: MotionLayout, state: Int) {
+				if(state == R.id.set_backdrop_open) {
+					backdropTransition.setEnable(true)
+					setAppbarSearchState(false)
+				}else if(state == R.id.set_backdrop_closed) {
+					backdropTransition.setEnable(false)
+					setAppbarSearchState(true)
+				}
+			}
+
+			override fun onTransitionTrigger(v: MotionLayout, triggerId: Int, positive: Boolean, progress: Float) {}
+		})
+
 		return binding.root
 	}
 }

@@ -86,6 +86,7 @@
 	<string name="search_hint">검색어를 입력</string>
 	<string name="syllabus_search_result">강의 계획서 검색 결과</string>
 
+	<string name="syllabus_search_result_count">해당되는 강의계획서가 %d개 있어요</string>
 	<string name="syllabus_search_format_academic_number">%s-%s-%s-%s</string>
 	<string name="syllabus_search_format_credit">%d/%d</string>
 	<string name="syllabus_search_format_time">"%d교시"</string>

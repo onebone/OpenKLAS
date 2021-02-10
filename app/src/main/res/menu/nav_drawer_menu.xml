@@ -32,4 +32,9 @@
 
 	</group>
 
+	<group android:id="@+id/nav_group_course">
+		<item android:id="@+id/nav_syllabus_search"
+			android:title="@string/syllabus_search" />
+	</group>
+
 </menu>

@@ -105,6 +105,9 @@ class MainActivity: AppCompatActivity(), AppbarHolder {
 				R.id.nav_qna_list ->
 					HomeFragmentDirections.actionHomePostList(viewModel.currentSemester.value?.id, PostType.QNA)
 
+				R.id.nav_syllabus_search ->
+					HomeFragmentDirections.actionHomeSylsearch()
+
 				else ->
 					throw IllegalStateException("invalid drawer menu selected: ${item.itemId}")
 			})

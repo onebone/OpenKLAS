@@ -22,16 +22,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.constraintlayout.motion.widget.MotionLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
 import org.openklas.widget.AppbarView
+import java.util.Calendar
 
 @AndroidEntryPoint
 class SylSearchFragment: BaseFragment() {
 	private lateinit var viewModel: SylSearchViewModel
+	private lateinit var binding: SyllabusSearchFragmentBinding
+
+	private val currentYear: Int = Calendar.getInstance().get(Calendar.YEAR)
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +44,7 @@ class SylSearchFragment: BaseFragment() {
 	): View {
 		configureTitle(resources.getString(R.string.syllabus_search), AppbarView.HeaderType.BACK, AppbarView.SearchType.SEARCH)
 
-		val binding = SyllabusSearchFragmentBinding.inflate(inflater, container, false).apply {
+		binding = SyllabusSearchFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = this@SylSearchFragment
 		}
 
@@ -48,6 +53,12 @@ class SylSearchFragment: BaseFragment() {
 		binding.viewModel = viewModel
 		binding.v = this
 		binding.rvSyllabus.adapter = SylSearchAdapter()
+
+		binding.spinnerYear.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, Array(YEARS) {
+			currentYear - it
+		})
+
+		binding.spinnerTerm.adapter = ArrayAdapter.createFromResource(requireContext(), R.array.term_names, android.R.layout.simple_spinner_dropdown_item)
 
 		val motionRoot = binding.motionRoot
 		val backdropTransition = motionRoot.getTransition(R.id.transition_backdrop)
@@ -76,5 +87,14 @@ class SylSearchFragment: BaseFragment() {
 		})
 
 		return binding.root
+	}
+
+	fun onClickQuerySubmit() {
+		val year = currentYear - binding.spinnerYear.selectedItemPosition
+		val term = binding.spinnerTerm.selectedItemPosition + 1
+	}
+
+	private companion object {
+		const val YEARS = 11
 	}
 }

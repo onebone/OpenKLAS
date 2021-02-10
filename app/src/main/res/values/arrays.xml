@@ -28,6 +28,13 @@
 		<item>Sun</item>
 	</string-array>
 
+	<string-array name="term_names">
+		<item>Spring</item>
+		<item>Fall</item>
+		<item>Summer</item>
+		<item>Winter</item>
+	</string-array>
+
 	<array name="timetable_colors">
 		<item>#7DD1C1</item>
 		<item>#ECC369</item>

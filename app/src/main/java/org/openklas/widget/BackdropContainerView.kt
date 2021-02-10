@@ -23,6 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import org.openklas.R
@@ -42,19 +43,8 @@ class BackdropContainerView @JvmOverloads constructor(
 		}
 
 		// interceptor view must be in the index of 0 to receive its touch event at last
-		addView(interceptor, 0, LayoutParams(0, 0).also {
-			setConstraintSet(ConstraintSet().also { set ->
-				set.clone(this)
-
-				// interceptor view fills the whole backdrop container view
-				set.connect(interceptor.id, ConstraintSet.LEFT, this.id, ConstraintSet.LEFT)
-				set.connect(interceptor.id, ConstraintSet.RIGHT, this.id, ConstraintSet.RIGHT)
-				set.connect(interceptor.id, ConstraintSet.TOP, this.id, ConstraintSet.TOP)
-				set.connect(interceptor.id, ConstraintSet.BOTTOM, this.id, ConstraintSet.BOTTOM)
-
-				set.applyTo(this)
-			})
-		})
+		findViewById<BackdropFrontView>(R.id.layout_layer_front)
+			?.addView(interceptor, 0, LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
 	}
 
 	override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

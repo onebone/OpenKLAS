@@ -67,7 +67,6 @@ class SylSearchFragment: BaseFragment() {
 			motionRoot.transitionToState(if(cancel) R.id.set_backdrop_open else R.id.set_backdrop_closed)
 		}
 
-		motionRoot.transitionToState(R.id.set_backdrop_open)
 		motionRoot.setTransitionListener(object: MotionLayout.TransitionListener {
 			override fun onTransitionStarted(v: MotionLayout, begin: Int, end: Int) {}
 

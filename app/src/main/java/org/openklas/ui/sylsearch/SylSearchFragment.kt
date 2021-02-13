@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,30 +65,23 @@ class SylSearchFragment: BaseFragment() {
 
 		binding.spinnerTerm.adapter = ArrayAdapter.createFromResource(requireContext(), R.array.term_names, android.R.layout.simple_spinner_dropdown_item)
 
-		val motionRoot = binding.motionRoot
-		val backdropTransition = motionRoot.getTransition(R.id.transition_backdrop)
+		val contentRoot = binding.contentRoot
 
-		setAppbarOnClickSearchListener { _, cancel ->
-			motionRoot.transitionToState(if(cancel) R.id.set_backdrop_open else R.id.set_backdrop_closed)
+		contentRoot.setOnCollapsedListener {
+			setAppbarSearchState(false)
 		}
 
-		motionRoot.setTransitionListener(object: MotionLayout.TransitionListener {
-			override fun onTransitionStarted(v: MotionLayout, begin: Int, end: Int) {}
+		contentRoot.setOnExpandedListener {
+			setAppbarSearchState(true)
+		}
 
-			override fun onTransitionChange(v: MotionLayout, begin: Int, end: Int, progress: Float) {}
-
-			override fun onTransitionCompleted(v: MotionLayout, state: Int) {
-				if(state == R.id.set_backdrop_open) {
-					backdropTransition.setEnable(true)
-					setAppbarSearchState(false)
-				}else if(state == R.id.set_backdrop_closed) {
-					backdropTransition.setEnable(false)
-					setAppbarSearchState(true)
-				}
+		setAppbarOnClickSearchListener { _, cancel ->
+			if(cancel) {
+				contentRoot.collapseBottomSheet()
+			}else{
+				contentRoot.expandBottomSheet()
 			}
-
-			override fun onTransitionTrigger(v: MotionLayout, triggerId: Int, positive: Boolean, progress: Float) {}
-		})
+		}
 
 		return binding.root
 	}
@@ -100,8 +92,9 @@ class SylSearchFragment: BaseFragment() {
 		val keyword = binding.etKeyword.text.toString()
 		val professor = binding.etProfessor.text.toString()
 
-		binding.motionRoot.transitionToState(R.id.set_backdrop_closed)
 		viewModel.setFilter(year, term, keyword, professor)
+
+		binding.contentRoot.expandBottomSheet()
 	}
 
 	private companion object {

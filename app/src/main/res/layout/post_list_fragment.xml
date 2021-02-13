@@ -37,34 +37,31 @@
 	</data>
 
 	<org.openklas.widget.BackdropContainerView
-		android:id="@+id/motion_root"
+		android:id="@+id/content_root"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		app:layoutDescription="@xml/backdrop_motion"
-		android:background="@color/copper">
+		android:background="@color/copper"
+		app:expandInitially="true">
 
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:id="@+id/layout_layer_back"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:padding="8dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="8dp">
 
 			<EditText
 				android:id="@+id/et_keyword"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
+				android:layout_marginEnd="6dp"
 				android:layout_marginBottom="8dp"
 				android:background="@drawable/bg_white_alpha03"
 				android:drawableStart="@drawable/ic_search"
 				android:drawablePadding="4dp"
 				android:hint="@string/post_list_search_keyword"
-				android:inputType="text"
 				android:imeOptions="actionSend"
+				android:inputType="text"
 				android:padding="8dp"
-				android:layout_marginEnd="6dp"
 				android:singleLine="true"
 				app:drawableTint="?android:textColorHint"
 				app:layout_constraintLeft_toLeftOf="parent"
@@ -75,25 +72,25 @@
 				android:id="@+id/img_filter_submit"
 				android:layout_width="wrap_content"
 				android:layout_height="0dp"
-				app:layout_constraintRight_toRightOf="parent"
-				app:layout_constraintTop_toTopOf="@id/et_keyword"
-				app:layout_constraintBottom_toBottomOf="@id/et_keyword"
-				app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24"
 				android:alpha="0.8"
 				android:contentDescription="@string/post_list_filter_submit"
+				android:onClick="@{() -> v.onClickFilterSubmit(etKeyword.getText().toString())}"
 				app:elevation="16dp"
-				android:onClick="@{() -> v.onClickFilterSubmit(etKeyword.getText().toString())}"/>
+				app:layout_constraintBottom_toBottomOf="@id/et_keyword"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintTop_toTopOf="@id/et_keyword"
+				app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<org.openklas.widget.BackdropFrontView
 			android:id="@+id/layout_layer_front"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintTop_toBottomOf="@id/layout_layer_back"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent">
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:clickable="true"
+			android:focusable="true"
+			app:layout_behavior=".widget.BackdropContainerView$LockableBottomSheetBehavior"
+			tools:layout_editor_absoluteY="243dp">
 
 			<androidx.constraintlayout.widget.ConstraintLayout
 				android:layout_width="match_parent"
@@ -103,63 +100,63 @@
 					android:id="@+id/tv_subject_name"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					app:layout_constraintTop_toTopOf="parent"
-					app:layout_constraintLeft_toLeftOf="parent"
-					android:layout_marginTop="18dp"
 					android:layout_marginLeft="8dp"
+					android:layout_marginTop="18dp"
 					android:layout_marginRight="8dp"
 					android:layout_marginBottom="8dp"
 					android:text="@{viewModel.subject.name}"
 					android:textColor="@color/copper"
+					android:textSize="24sp"
 					android:textStyle="bold"
-					android:textSize="24sp" />
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
 
 				<TextView
 					android:id="@+id/tv_post_count"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_margin="8dp"
+					android:text="@{viewModel.postCount != null ? @plurals/post_list_match_count(viewModel.postCount, viewModel.postCount) : `-`}"
 					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
-					android:text="@{viewModel.postCount != null ? @plurals/post_list_match_count(viewModel.postCount, viewModel.postCount) : `-`}" />
+					app:layout_constraintTop_toBottomOf="@id/tv_subject_name" />
 
 				<Space
 					android:id="@+id/backdrop_content_divider"
 					android:layout_width="0dp"
 					android:layout_height="0dp"
+					android:layout_marginTop="8dp"
 					app:layout_constraintLeft_toLeftOf="parent"
 					app:layout_constraintRight_toRightOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/tv_post_count"
-					android:layout_marginTop="8dp" />
+					app:layout_constraintTop_toBottomOf="@id/tv_post_count" />
 
 				<View
 					android:id="@+id/v_divider"
 					android:layout_width="match_parent"
 					android:layout_height="8dp"
+					android:background="@color/super_light_gray"
 					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/backdrop_content_divider"
-					android:background="@color/super_light_gray" />
+					app:layout_constraintTop_toBottomOf="@id/backdrop_content_divider" />
 
 				<androidx.recyclerview.widget.RecyclerView
 					android:id="@+id/rv_posts"
 					android:layout_width="0dp"
 					android:layout_height="0dp"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:layout_constraintBottom_toBottomOf="parent"
 					app:layout_constraintLeft_toLeftOf="parent"
 					app:layout_constraintRight_toRightOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/v_divider"
-					app:layout_constraintBottom_toBottomOf="parent"
-					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+					app:layout_constraintTop_toBottomOf="@id/v_divider" />
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					app:layout_constraintTop_toTopOf="@id/rv_posts"
+					android:text="@string/post_list_none"
+					android:textColor="@color/gray"
+					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
 					app:layout_constraintBottom_toBottomOf="@id/rv_posts"
 					app:layout_constraintLeft_toLeftOf="@id/rv_posts"
 					app:layout_constraintRight_toRightOf="@id/rv_posts"
-					android:text="@string/post_list_none"
-					android:textColor="@color/gray"
-					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}" />
+					app:layout_constraintTop_toTopOf="@id/rv_posts" />
 
 			</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -35,6 +35,10 @@
         <attr name="minPeriods" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="BackdropContainerView">
+        <attr name="expandInitially" format="boolean" />
+    </declare-styleable>
+
     <attr name="icon_state_back" format="boolean" />
     <attr name="icon_state_cancel" format="boolean" />
     <attr name="icon_state_hidden" format="boolean" />

@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,40 +79,24 @@ class PostListFragment: BaseFragment() {
 			}
 		}
 
-		binding.etKeyword.isEnabled = false
-
-		val motionRoot = binding.motionRoot
-		val backdropTransition = motionRoot.getTransition(R.id.transition_backdrop)
-		backdropTransition.setEnable(false)
-
+		val contentRoot = binding.contentRoot
 		setAppbarOnClickSearchListener { _, cancel ->
-			motionRoot.apply {
-				transitionToState(
-					if(cancel) R.id.set_backdrop_open
-					else R.id.set_backdrop_closed
-				)
+			if(cancel) {
+				contentRoot.collapseBottomSheet()
+			}else{
+				contentRoot.expandBottomSheet()
 			}
 		}
 
-		motionRoot.setTransitionListener(object: MotionLayout.TransitionListener {
-			override fun onTransitionStarted(v: MotionLayout, begin: Int, end: Int) {}
+		contentRoot.setOnCollapsedListener {
+			binding.etKeyword.isEnabled = true
+			setAppbarSearchState(false)
+		}
 
-			override fun onTransitionChange(v: MotionLayout, begin: Int, end: Int, progress: Float) {}
-
-			override fun onTransitionCompleted(v: MotionLayout, state: Int) {
-				if(state == R.id.set_backdrop_open) {
-					binding.etKeyword.isEnabled = true
-					backdropTransition.setEnable(true)
-					setAppbarSearchState(false)
-				}else if(state == R.id.set_backdrop_closed) {
-					binding.etKeyword.isEnabled = false
-					backdropTransition.setEnable(false)
-					setAppbarSearchState(true)
-				}
-			}
-
-			override fun onTransitionTrigger(v: MotionLayout, triggerId: Int, positive: Boolean, progress: Float) {}
-		})
+		contentRoot.setOnExpandedListener {
+			binding.etKeyword.isEnabled = false
+			setAppbarSearchState(true)
+		}
 
 		return binding.root
 	}
@@ -122,6 +105,6 @@ class PostListFragment: BaseFragment() {
 		// TODO implement changing search criteria
 		viewModel.setFilter(BoardSearchCriteria.ALL, keyword)
 
-		binding.motionRoot.transitionToState(R.id.set_backdrop_closed)
+		binding.contentRoot.expandBottomSheet()
 	}
 }

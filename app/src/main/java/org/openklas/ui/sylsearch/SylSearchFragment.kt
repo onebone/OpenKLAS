@@ -91,6 +91,11 @@ class SylSearchFragment: BaseFragment() {
 	fun onClickQuerySubmit() {
 		val year = currentYear - binding.spinnerYear.selectedItemPosition
 		val term = binding.spinnerTerm.selectedItemPosition + 1
+		val keyword = binding.etKeyword.text.toString()
+		val professor = binding.etProfessor.text.toString()
+
+		binding.motionRoot.transitionToState(R.id.set_backdrop_closed)
+		viewModel.setFilter(year, term, keyword, professor)
 	}
 
 	private companion object {

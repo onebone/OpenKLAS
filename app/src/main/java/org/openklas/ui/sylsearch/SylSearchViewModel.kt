@@ -35,19 +35,21 @@ class SylSearchViewModel @Inject constructor(
 ) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
-	val keyword = MutableLiveData<String>()
-
-	private val _syllabusList = MediatorLiveData<Array<SyllabusSummary>>().apply {
-		addSource(keyword) {
-			fetchSyllabus(it)
-		}
-	}
+	private val _syllabusList = MutableLiveData<Array<SyllabusSummary>>()
 	val syllabusList: LiveData<Array<SyllabusSummary>> = _syllabusList
 
-	private fun fetchSyllabus(keyword: String) {
-		// TODO configure semester
+	private val _filter = MutableLiveData<Filter>()
+	val filter: LiveData<Filter> = _filter
+
+	fun setFilter(year: Int, term: Int, keyword: String, professor: String) {
+		_filter.value = Filter(year, term, keyword, professor)
+
+		fetchSyllabus(year, term,  keyword, professor)
+	}
+
+	private fun fetchSyllabus(year: Int, term: Int, keyword: String, professor: String) {
 		addDisposable(requestWithSession {
-			klasRepository.getSyllabusList(2020, 2, keyword, "")
+			klasRepository.getSyllabusList(year, term, keyword, professor)
 		}.subscribe { v, err ->
 			if (err == null) {
 				_syllabusList.value = v
@@ -56,4 +58,11 @@ class SylSearchViewModel @Inject constructor(
 			}
 		})
 	}
+
+	data class Filter(
+		val year: Int,
+		val term: Int,
+		val keyword: String,
+		val professor: String
+	)
 }

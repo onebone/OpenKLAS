@@ -126,7 +126,20 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Single.fromCallable {
 			Thread.sleep(NETWORK_DELAY)
 
-			arrayOf()
+			arrayOf(
+				SyllabusSummary(
+					"01", "전선", "5개기본호흡", 2021, 1, "히키가야 하치만",
+					2, "1234", "0000", 3, 4,
+					"호흡법의 기본 계파 화염, 물, 번개, 바위, 바람의 형에 대해 학습한다",
+					"+818000000000", null
+				),
+				SyllabusSummary(
+					"01", "전필", "일반상대성이론실험", 2021, 1, "아인슈타인",
+					2, "1234", "0000", 3, 4,
+					"일반상대성이론과 관련된 실험을 수행한다",
+					null, null
+				)
+			)
 		}
 	}
 

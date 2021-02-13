@@ -22,65 +22,107 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
+		<import type="org.openklas.utils.Utils" />
 
 		<variable
-			name="bean"
+			name="entry"
 			type="org.openklas.klas.model.SyllabusSummary" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:paddingTop="4dp"
+		android:paddingBottom="4dp">
 
-		<TextView
-			android:id="@+id/text1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@{bean.subjectName}"
-			android:textColor="@color/black"
-			android:textSize="17sp"
-			android:layout_marginTop="22dp"
-			app:layout_constraintStart_toStartOf="parent"
+		<ImageView
+			android:id="@+id/img_tag_course"
+			android:layout_width="6dp"
+			android:layout_height="40dp"
+			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			tools:text="과목과목과목" />
-
-		<TextView
-			android:id="@+id/text2"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@color/brownish_grey"
-			android:text="@{bean.tutor}"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/text1"
-			tools:text="교수명" />
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="16dp"
-			android:text="@{@string/syllabus_search_format_credit(bean.credits,bean.lessonHour)}"
-			app:layout_constraintBottom_toBottomOf="@id/text2"
-			app:layout_constraintStart_toEndOf="@id/text2"
-			tools:text="학점/수업시간"/>
+			app:srcCompat="@drawable/edge_tag_syllabus_list"
+			app:tint="@{Utils.syllabusCourseToColor(context, entry.course)}"
+			tools:tint="@color/purple_200"
+			tools:ignore="ContentDescription" />
 
 		<TextView
+			android:id="@+id/tv_subject_course"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:textColor="@color/black"
-			android:layout_marginStart="16dp"
-			android:text="@{@string/syllabus_search_format_academic_number(bean.departmentCode,bean.targetGrade,bean.openGwamokNo,bean.division)}"
-			app:layout_constraintStart_toEndOf="@id/text1"
-			app:layout_constraintBottom_toBottomOf="@id/text1"
-			tools:text="학정번호" />
+			app:layout_constraintLeft_toRightOf="@id/img_tag_course"
+			app:layout_constraintTop_toTopOf="@id/img_tag_course"
+			app:layout_constraintBottom_toBottomOf="@id/img_tag_course"
+			android:rotation="90"
+			android:text="@{entry.course}"
+			android:textSize="12sp"
+			android:textColor="@{Utils.syllabusCourseToColor(context, entry.course)}"
+			tools:text="전선"
+			tools:textColor="@color/purple_200" />
 
-		<View
-			android:id="@+id/view"
-			android:layout_width="match_parent"
-			android:layout_height="0.5dp"
-			android:background="@color/brownish_grey"
-			android:layout_marginTop="14dp"
+		<TextView
+			android:id="@+id/tv_subject_academic_number"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toRightOf="@id/tv_subject_course"
+			app:layout_constraintTop_toTopOf="parent"
+			android:layout_marginStart="8dp"
+			android:text="@{Utils.syllabusSummaryToAcademicNumber(entry)}"
+			android:textColor="@color/gray"
+			tools:text="0000-0-0000-00" />
+
+		<TextView
+			android:id="@+id/tv_subject_name"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toRightOf="@id/tv_subject_course"
+			app:layout_constraintTop_toBottomOf="@id/tv_subject_academic_number"
+			android:layout_marginStart="8dp"
+			android:text="@{entry.subjectName}"
+			android:textStyle="bold"
+			android:textSize="21sp"
+			tools:text="5개기본호흡" />
+
+		<TextView
+			android:id="@+id/tv_subject_tutor"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toRightOf="@id/tv_subject_course"
+			app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
+			android:layout_marginStart="8dp"
+			android:text="@{entry.tutor}"
+			android:textColor="@color/gray"
+			tools:text="히키가야 하치만" />
+
+		<TextView
+			android:id="@+id/tv_subject_lesson_hour"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/text2" />
+			android:layout_marginEnd="15dp"
+			android:text="@{Integer.toString(entry.lessonHour)}"
+			android:textColor="@color/red"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			tools:text="4" />
+
+		<TextView
+			android:id="@+id/tv_subject_credits"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintRight_toLeftOf="@id/tv_subject_lesson_hour"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:layout_marginEnd="12dp"
+			android:text="@{Integer.toString(entry.credits)}"
+			android:textColor="@color/red"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			tools:text="3" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

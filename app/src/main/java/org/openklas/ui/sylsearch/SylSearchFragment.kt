@@ -24,6 +24,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -52,7 +54,11 @@ class SylSearchFragment: BaseFragment() {
 
 		binding.viewModel = viewModel
 		binding.v = this
-		binding.rvSyllabus.adapter = SylSearchAdapter()
+
+		binding.rvSyllabus.apply {
+			adapter = SylSearchAdapter()
+			addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+		}
 
 		binding.spinnerYear.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, Array(YEARS) {
 			currentYear - it

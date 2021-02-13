@@ -26,7 +26,6 @@ import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.ItemSyllabusSearchBinding
 import org.openklas.klas.model.SyllabusSummary
 
-
 class SylSearchAdapter: ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(ItemSyllabusSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -38,7 +37,7 @@ class SylSearchAdapter: ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder
 
 	class ViewHolder(private val binding: ItemSyllabusSearchBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(item: SyllabusSummary) {
-			binding.bean = item
+			binding.entry = item
 		}
 	}
 }

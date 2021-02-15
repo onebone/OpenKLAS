@@ -1,4 +1,4 @@
-package org.openklas.ui.sylsearch
+package org.openklas.ui.syllabus
 
 /*
  * OpenKLAS
@@ -23,45 +23,30 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
-import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.Syllabus
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class SylSearchViewModel @Inject constructor(
+class SyllabusViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+	private val _syllabus = MutableLiveData<Syllabus>()
+	val syllabus: LiveData<Syllabus> = _syllabus
+
 	private val _error = MutableLiveData<Throwable>()
+	val error: LiveData<Throwable> = _error
 
-	private val _syllabusList = MutableLiveData<Array<SyllabusSummary>>()
-	val syllabusList: LiveData<Array<SyllabusSummary>> = _syllabusList
-
-	private val _filter = MutableLiveData<Filter>()
-	val filter: LiveData<Filter> = _filter
-
-	fun setFilter(year: Int, term: Int, keyword: String, professor: String) {
-		_filter.value = Filter(year, term, keyword, professor)
-
-		fetchSyllabus(year, term,  keyword, professor)
-	}
-
-	private fun fetchSyllabus(year: Int, term: Int, keyword: String, professor: String) {
+	fun fetchSyllabus(subjectId: String) {
 		addDisposable(requestWithSession {
-			klasRepository.getSyllabusList(year, term, keyword, professor)
+			klasRepository.getSyllabus(subjectId)
 		}.subscribe { v, err ->
-			if (err == null) {
-				_syllabusList.value = v
-			} else {
+			if(err != null) {
 				_error.value = err
+			}else{
+				_syllabus.value = v
 			}
 		})
 	}
-
-	data class Filter(
-		val year: Int,
-		val term: Int,
-		val keyword: String,
-		val professor: String
-	)
 }

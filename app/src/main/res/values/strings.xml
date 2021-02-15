@@ -93,4 +93,6 @@
 	<string name="syllabus_search_format_credit">%d/%d</string>
 	<string name="syllabus_search_format_time">"%d교시"</string>
 
+	<string name="syllabus">강의계획서</string>
+
 </resources>

@@ -26,7 +26,9 @@ import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.ItemSyllabusSearchBinding
 import org.openklas.klas.model.SyllabusSummary
 
-class SylSearchAdapter: ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder>(SimpleDiffUtil()) {
+class SylSearchAdapter(
+	private val onClickSyllabus: (String) -> Unit
+): ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(ItemSyllabusSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
@@ -35,9 +37,12 @@ class SylSearchAdapter: ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder
 		holder.bind(getItem(position))
 	}
 
-	class ViewHolder(private val binding: ItemSyllabusSearchBinding): RecyclerView.ViewHolder(binding.root) {
+	inner class ViewHolder(private val binding: ItemSyllabusSearchBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(item: SyllabusSummary) {
 			binding.entry = item
+			binding.root.setOnClickListener {
+				onClickSyllabus("U${item.year}${item.term}${item.openGwamokNo}${item.departmentCode}${item.division}${item.targetGrade}")
+			}
 		}
 	}
 }

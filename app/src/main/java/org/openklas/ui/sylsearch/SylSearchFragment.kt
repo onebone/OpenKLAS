@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +56,10 @@ class SylSearchFragment: BaseFragment() {
 		binding.v = this
 
 		binding.rvSyllabus.apply {
-			adapter = SylSearchAdapter()
+			adapter = SylSearchAdapter {
+				findNavController().navigate(SylSearchFragmentDirections.actionSylsearchSyllabus(it))
+			}
+
 			addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
 		}
 

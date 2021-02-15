@@ -112,6 +112,35 @@
 	<fragment
 		android:id="@+id/fragment_syllabus_search"
 		android:name="org.openklas.ui.sylsearch.SylSearchFragment"
-		tools:layout="@layout/syllabus_search_fragment"/>
+		tools:layout="@layout/syllabus_search_fragment">
+
+		<action
+			android:id="@+id/action_sylsearch_syllabus"
+			app:destination="@id/fragment_syllabus"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
+
+			<argument
+				android:name="subject"
+				app:nullable="false"
+				app:argType="string" />
+
+		</action>
+
+	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_syllabus"
+		android:name="org.openklas.ui.syllabus.SyllabusFragment"
+		tools:layout="@layout/syllabus_fragment">
+
+		<argument
+			android:name="subject"
+			app:nullable="false"
+			app:argType="string" />
+
+	</fragment>
 
 </navigation>

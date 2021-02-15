@@ -28,6 +28,7 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
+import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import java.nio.charset.Charset
 import java.util.Random
@@ -63,7 +64,8 @@ fun randomWidthLength(parent: ViewGroup, fromFactor: Float, toFactor: Float): In
 	return (factor * width).toInt()
 }
 
-fun syllabusCourseToColor(context: Context, course: String): Int {
+fun syllabusCourseToColor(context: Context, course: String?): Int {
+	if(course == null) return Color.WHITE
 	if(course.length != 2) return Color.WHITE
 
 	return ResourcesCompat.getColor(context.resources, when(course) {
@@ -76,5 +78,11 @@ fun syllabusCourseToColor(context: Context, course: String): Int {
 }
 
 fun syllabusSummaryToAcademicNumber(entry: SyllabusSummary): String {
+	return "${entry.departmentCode}-${entry.targetGrade}-${entry.openGwamokNo}-${entry.division}"
+}
+
+fun syllabusToAcademicNumber(entry: Syllabus?): String {
+	if(entry == null) return ""
+
 	return "${entry.departmentCode}-${entry.targetGrade}-${entry.openGwamokNo}-${entry.division}"
 }

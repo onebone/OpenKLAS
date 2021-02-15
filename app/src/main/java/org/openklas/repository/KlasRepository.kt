@@ -23,6 +23,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.BoardSearchCriteria
 
@@ -39,6 +40,8 @@ interface KlasRepository {
 		keyword: String,
 		professor: String
 	): Single<Array<SyllabusSummary>>
+
+	fun getSyllabus(subjectId: String): Single<Syllabus>
 
 	fun getOnlineContentList(
 		semester: String,

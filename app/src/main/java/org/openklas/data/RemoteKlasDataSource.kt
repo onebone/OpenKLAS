@@ -24,6 +24,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.BoardSearchCriteria
 import javax.inject.Inject
@@ -58,6 +59,10 @@ class RemoteKlasDataSource @Inject constructor(
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)
 		: Single<Array<SyllabusSummary>> {
 		return klas.getSyllabusList(year, term, keyword, professor)
+	}
+
+	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+		return klas.getSyllabus(subjectId)
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String)

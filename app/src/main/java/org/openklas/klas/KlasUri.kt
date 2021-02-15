@@ -30,6 +30,7 @@ object KlasUri {
 	const val STD_QNA_LIST = "$ROOT_URI/std/lis/sport/573f918c23984ae8a88c398051bb1263/BoardStdList.do"
 
 	const val STD_SYLLABUS_LIST = "$ROOT_URI/std/cps/atnlc/LectrePlanStdList.do"
+	const val STD_SYLLABUS = "$ROOT_URI/std/cps/atnlc/LectrePlanData.do"
 
 	const val STD_ONLINE_CONTENT_LIST = "$ROOT_URI/std/lis/evltn/SelectOnlineCntntsStdList.do"
 }

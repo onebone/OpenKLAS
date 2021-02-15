@@ -28,6 +28,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Professor
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Subject
+import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.Timetable
 import org.openklas.klas.request.BoardSearchCriteria
@@ -141,6 +142,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				)
 			)
 		}
+	}
+
+	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+		TODO("Too long...")
 	}
 
 	override fun getOnlineContentList(

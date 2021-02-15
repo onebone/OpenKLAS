@@ -25,6 +25,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.net.transformer.AsyncTransformer
@@ -68,6 +69,10 @@ class DefaultKlasRepository @Inject constructor(
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
 		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
+	}
+
+	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+		return klasDataSource.getSyllabus(subjectId).compose(AsyncTransformer())
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String)

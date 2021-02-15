@@ -1,4 +1,4 @@
-package org.openklas.klas.deserializer
+package org.openklas.klas.request
 
 /*
  * OpenKLAS
@@ -18,15 +18,9 @@ package org.openklas.klas.deserializer
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonNull
+import com.google.gson.annotations.SerializedName
 
-val JsonElement.asStringOrNull: String?
-	get() =
-		if(this is JsonNull) null
-		else this.asString
-
-val JsonElement.asIntOrNull: Int?
-	get() =
-		if(this is JsonNull) null
-		else this.asInt
+data class RequestSyllabus(
+	@SerializedName("selectSubj")
+	val subjectId: String,
+)

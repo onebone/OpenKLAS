@@ -1,20 +1,5 @@
 package org.openklas.klas.deserializer
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import org.openklas.klas.model.Book
-import org.openklas.klas.model.Credits
-import org.openklas.klas.model.Expectation
-import org.openklas.klas.model.LectureMethod
-import org.openklas.klas.model.LectureType
-import org.openklas.klas.model.ScoreWeights
-import org.openklas.klas.model.Syllabus
-import org.openklas.klas.model.Tutor
-import org.openklas.klas.model.VL
-import org.openklas.klas.model.Week
-import java.lang.reflect.Type
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -32,6 +17,21 @@ import java.lang.reflect.Type
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import org.openklas.klas.model.Book
+import org.openklas.klas.model.Credits
+import org.openklas.klas.model.Expectation
+import org.openklas.klas.model.LectureMethod
+import org.openklas.klas.model.LectureType
+import org.openklas.klas.model.ScoreWeights
+import org.openklas.klas.model.Syllabus
+import org.openklas.klas.model.Tutor
+import org.openklas.klas.model.VL
+import org.openklas.klas.model.Week
+import java.lang.reflect.Type
 
 class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 	override fun getType(): Type {

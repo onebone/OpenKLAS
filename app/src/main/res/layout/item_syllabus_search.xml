@@ -33,7 +33,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="4dp"
-		android:paddingBottom="4dp">
+		android:paddingBottom="4dp"
+		android:background="?android:selectableItemBackground">
 
 		<ImageView
 			android:id="@+id/img_tag_course"

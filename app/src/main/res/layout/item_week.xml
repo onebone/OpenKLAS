@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="android.view.View" />
+
+		<variable
+			name="entry"
+			type="org.openklas.klas.model.Week" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<View
+			android:id="@+id/v_circle"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/circle_green_30" />
+
+		<TextView
+			android:id="@+id/label_week"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			app:layout_constraintStart_toStartOf="@id/v_circle"
+			app:layout_constraintEnd_toEndOf="@id/v_circle"
+			app:layout_constraintTop_toTopOf="@id/v_circle"
+			app:layout_constraintBottom_toBottomOf="@id/v_circle"
+			android:gravity="center"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			android:textColor="@color/green"
+			android:text="@{Integer.toString(entry.week)}"
+			tools:text="1" />
+
+		<TextView
+			android:id="@+id/tv_week_content"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/v_circle"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="@id/label_week"
+			android:layout_marginTop="4dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginEnd="8dp"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			android:text="@{entry.content}"
+			tools:text="과목 소개 (OT)" />
+
+		<TextView
+			android:id="@+id/tv_week_note"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="@id/tv_week_content"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tv_week_content"
+			android:layout_marginTop="4dp"
+			android:layout_marginEnd="8dp"
+			android:visibility="@{entry.note == null ? View.GONE : View.VISIBLE}"
+			android:text="@{entry.note}"
+			tools:text="전집중 호흡법에 대한 최소한의 지식을 알아오십시오" />
+
+		<TextView
+			android:id="@+id/tv_week_supplementary"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="@id/tv_week_note"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tv_week_note"
+			android:layout_marginTop="4dp"
+			android:layout_marginEnd="8dp"
+			android:visibility="@{entry.supplementary == null ? View.GONE : View.VISIBLE}"
+			android:textColor="@color/text_accent"
+			android:textStyle="italic"
+			android:text="@{entry.supplementary}"
+			tools:text="보강 수업은 없습니다" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

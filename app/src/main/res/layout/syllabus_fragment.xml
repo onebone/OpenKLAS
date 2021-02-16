@@ -105,10 +105,9 @@
 			android:id="@+id/pager"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_marginTop="4dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/shadow"
+			app:layout_constraintTop_toTopOf="@id/shadow"
 			app:layout_constraintBottom_toBottomOf="parent" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

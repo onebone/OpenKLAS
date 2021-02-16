@@ -41,6 +41,10 @@ class SummaryFragment: Fragment() {
 		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_graph)
 		binding.viewModel = viewModel
 
+		viewModel.syllabus.observe(viewLifecycleOwner) {
+			binding.entry = it
+		}
+
 		return binding.root
 	}
 }

@@ -94,5 +94,8 @@
 	<string name="syllabus_search_format_time">"%d교시"</string>
 
 	<string name="syllabus">강의계획서</string>
+	<string name="syllabus_summary">개요</string>
+	<string name="syllabus_purpose">교육 목적</string>
+	<string name="syllabus_book">교재</string>
 
 </resources>

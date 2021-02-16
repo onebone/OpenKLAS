@@ -51,6 +51,8 @@ class SyllabusFragment: BaseFragment() {
 		binding.viewModel = viewModel
 		prepareViewModel(viewModel)
 
+		binding.pager.adapter = SyllabusPageAdapter(this)
+
 		viewModel.fetchSyllabus(args.subject)
 
 		viewModel.syllabus.observe(viewLifecycleOwner) {

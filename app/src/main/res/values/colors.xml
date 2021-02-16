@@ -43,6 +43,7 @@
 	<color name="blue">#42A5F5</color>
 	<color name="light_blue">#BBDEFB</color>
 
+	<color name="primary">@color/copper</color>
 	<color name="default_background">@color/white</color>
 	<color name="default_shadow">@color/light_gray</color>
 </resources>

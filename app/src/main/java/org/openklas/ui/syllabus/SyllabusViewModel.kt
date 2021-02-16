@@ -24,6 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.repository.KlasRepository
@@ -41,6 +42,12 @@ class SyllabusViewModel @Inject constructor(
 	val syllabus: LiveData<Syllabus> = _syllabus
 
 	private val _teachingAssistants = MutableLiveData<Array<TeachingAssistant>>()
+
+	private val _schedules = MutableLiveData<Array<LectureSchedule>>()
+	val schedules: LiveData<Array<LectureSchedule>> = _schedules
+
+	private val _studentsNumber = MutableLiveData<Int>()
+	val studentsNumber: LiveData<Int> = _studentsNumber
 
 	val tutors: LiveData<Array<TutorEntry>> = MediatorLiveData<Array<TutorEntry>>().apply {
 		fun combine() {
@@ -84,6 +91,9 @@ class SyllabusViewModel @Inject constructor(
 				_syllabus.value = v
 			}
 		})
+
+		fetchLectureSchedules(subjectId)
+		fetchLectureStudentsNumber(subjectId)
 	}
 
 	private fun fetchTeachingAssistants(subjectId: String) {
@@ -94,6 +104,30 @@ class SyllabusViewModel @Inject constructor(
 				_error.value = err
 			}else{
 				_teachingAssistants.value = v
+			}
+		})
+	}
+
+	private fun fetchLectureSchedules(subjectId: String) {
+		addDisposable(requestWithSession {
+			klasRepository.getLectureSchedules(subjectId)
+		}.subscribe { v, err ->
+			if(err != null) {
+				_error.value = err
+			}else{
+				_schedules.value = v
+			}
+		})
+	}
+
+	private fun fetchLectureStudentsNumber(subjectId: String) {
+		addDisposable(requestWithSession {
+			klasRepository.getLectureStudentsNumber(subjectId)
+		}.subscribe { v, err ->
+			if(err != null) {
+				_error.value = err
+			}else{
+				_studentsNumber.value = v
 			}
 		})
 	}

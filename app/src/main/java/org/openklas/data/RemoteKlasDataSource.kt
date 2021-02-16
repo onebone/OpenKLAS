@@ -22,6 +22,7 @@ import io.reactivex.Single
 import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
@@ -68,6 +69,14 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
 		return klas.getTeachingAssistants(subjectId)
+	}
+
+	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
+		return klas.getLectureSchedules(subjectId)
+	}
+
+	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+		return klas.getLectureStudentsNumber(subjectId)
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String)

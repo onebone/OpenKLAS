@@ -24,6 +24,7 @@ import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
@@ -31,6 +32,8 @@ import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestLectureSchedules
+import org.openklas.klas.request.RequestLectureStudents
 import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
@@ -41,6 +44,7 @@ import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.inject.Inject
+import kotlin.random.Random
 
 class DefaultKlasClient @Inject constructor(
 	private val service: KlasService,
@@ -117,6 +121,20 @@ class DefaultKlasClient @Inject constructor(
 
 	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
 		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId))
+	}
+
+	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
+		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId))
+	}
+
+	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+		val number = Random.nextInt(1000, 10000)
+
+		return service.lectureStudentsNumber(RequestLectureStudents(
+			subjectId = subjectId, randomNum = number, numText = number
+		)).map {
+			it.students
+		}
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {

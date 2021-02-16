@@ -51,7 +51,13 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toStartOf="@id/tv_student_count"
 				app:drawableTint="@color/primary"
-				app:drawableStartCompat="@drawable/ic_schedule" />
+				app:drawableStartCompat="@drawable/ic_sharp_schedule_24"
+				android:drawablePadding="4dp"
+				android:gravity="center"
+				android:textColor="@color/primary"
+				android:textSize="15sp"
+				app:scheduleText="@{viewModel.schedules}"
+				tools:text="월 2,3,4,5교시 (미지정)" />
 
 			<TextView
 				android:id="@+id/tv_student_count"
@@ -62,7 +68,13 @@
 				app:layout_constraintTop_toTopOf="@id/tv_schedule"
 				app:layout_constraintBottom_toBottomOf="@id/tv_schedule"
 				app:drawableStartCompat="@drawable/ic_sharp_person_24"
-				app:drawableTint="@color/primary" />
+				app:drawableTint="@color/primary"
+				android:drawablePadding="4dp"
+				android:gravity="center"
+				android:textColor="@color/primary"
+				android:textSize="15sp"
+				android:text="@{viewModel.studentsNumber == null ? `` : Integer.toString(viewModel.studentsNumber)}"
+				tools:text="5"/>
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/rv_tutors"

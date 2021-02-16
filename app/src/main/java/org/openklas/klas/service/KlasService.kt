@@ -22,17 +22,21 @@ import io.reactivex.Single
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestLectureSchedules
+import org.openklas.klas.request.RequestLectureStudents
 import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.request.RequestTeachingAssistant
+import org.openklas.klas.response.ResponseLectureStudents
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
 import retrofit2.http.Body
@@ -68,6 +72,12 @@ interface KlasService {
 
 	@POST(KlasUri.STD_TEACHING_ASSISTANT)
 	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Array<TeachingAssistant>>
+
+	@POST(KlasUri.STD_LECTURE_SCHEDULE)
+	fun lectureSchedules(@Body payload: RequestLectureSchedules): Single<Array<LectureSchedule>>
+
+	@POST(KlasUri.STD_LECTURE_STUDENTS)
+	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<ResponseLectureStudents>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Array<OnlineContentEntry>>

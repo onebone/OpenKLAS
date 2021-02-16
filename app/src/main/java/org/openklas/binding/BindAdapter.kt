@@ -27,9 +27,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.R
+import org.openklas.klas.model.LectureSchedule
 import java.util.Date
 import java.util.concurrent.TimeUnit
-
 
 object BindAdapter {
 	@JvmStatic
@@ -94,5 +94,19 @@ object BindAdapter {
 
 			textView.setCompoundDrawablesRelative(clone, drawables[1], drawables[2], drawables[3])
 		}
+	}
+
+	@JvmStatic
+	@BindingAdapter("scheduleText")
+	fun setTextViewScheduleText(textView: TextView, schedules: Array<LectureSchedule>?) {
+		if(schedules == null) return
+
+		val resources = textView.context.resources
+		val nullClassroom = resources.getString(R.string.classroom_undefined)
+
+		textView.text = schedules.joinToString(" / ", transform = {
+			resources.getString(R.string.lecture_schedule_format)
+				.format(it.dayLabel, it.periods.joinToString(","), it.classroom ?: nullClassroom)
+		})
 	}
 }

@@ -96,6 +96,10 @@
 	<string name="syllabus_book">교재</string>
 	<string name="syllabus_book_meta">%1$s (%2$s)</string>
 
+	<!-- day, periods, classroom -->
+	<string name="lecture_schedule_format">%1$s %2$s교시 (%3$s)</string>
+	<string name="classroom_undefined">미지정</string>
+
 	<string name="professor">교수</string>
 	<string name="secondary_professor">조교수</string>
 	<string name="teaching_assistant">조교</string>

@@ -21,6 +21,7 @@ package org.openklas.repository
 import io.reactivex.Single
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
@@ -44,6 +45,9 @@ interface KlasRepository {
 
 	fun getSyllabus(subjectId: String): Single<Syllabus>
 	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>
+
+	fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>>
+	fun getLectureStudentsNumber(subjectId: String): Single<Int>
 
 	fun getOnlineContentList(
 		semester: String,

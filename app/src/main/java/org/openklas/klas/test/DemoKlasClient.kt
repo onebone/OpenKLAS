@@ -28,6 +28,7 @@ import org.openklas.klas.model.Credits
 import org.openklas.klas.model.Expectation
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureMethod
+import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.LectureType
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Professor
@@ -179,6 +180,20 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
 			assistants.filter { it.subject == subjectId }.toTypedArray()
+		}
+	}
+
+	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
+		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+			arrayOf(
+				LectureSchedule(1, "월", null, intArrayOf(2, 3, 4, 5))
+			)
+		}
+	}
+
+	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+			5
 		}
 	}
 

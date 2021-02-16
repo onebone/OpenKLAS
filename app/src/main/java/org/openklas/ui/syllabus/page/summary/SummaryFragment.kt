@@ -1,4 +1,4 @@
-package org.openklas.ui.syllabus.page
+package org.openklas.ui.syllabus.page.summary
 
 /*
  * OpenKLAS
@@ -43,6 +43,7 @@ class SummaryFragment: Fragment() {
 		binding.viewModel = viewModel
 
 		binding.rvTutors.adapter = TutorAdapter()
+		binding.rvBooks.adapter = BookAdapter()
 
 		viewModel.syllabus.observe(viewLifecycleOwner) {
 			binding.entry = it

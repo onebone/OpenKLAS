@@ -20,7 +20,7 @@ package org.openklas.ui.syllabus
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import org.openklas.ui.syllabus.page.SummaryFragment
+import org.openklas.ui.syllabus.page.summary.SummaryFragment
 
 class SyllabusPageAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
 	override fun getItemCount(): Int {

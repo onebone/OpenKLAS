@@ -89,14 +89,12 @@
 	<string name="syllabus_search_result">강의 계획서 검색 결과</string>
 
 	<string name="syllabus_search_result_count">해당되는 강의계획서가 %d개 있어요</string>
-	<string name="syllabus_search_format_academic_number">%s-%s-%s-%s</string>
-	<string name="syllabus_search_format_credit">%d/%d</string>
-	<string name="syllabus_search_format_time">"%d교시"</string>
 
 	<string name="syllabus">강의계획서</string>
 	<string name="syllabus_summary">개요</string>
 	<string name="syllabus_purpose">교육 목적</string>
 	<string name="syllabus_book">교재</string>
+	<string name="syllabus_book_meta">%1$s (%2$s)</string>
 
 	<string name="professor">교수</string>
 	<string name="secondary_professor">조교수</string>

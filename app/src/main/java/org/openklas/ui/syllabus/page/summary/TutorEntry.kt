@@ -1,4 +1,4 @@
-package org.openklas.ui.syllabus.page
+package org.openklas.ui.syllabus.page.summary
 
 /*
  * OpenKLAS

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="entry"
+			type="org.openklas.klas.model.Book" />
+
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="4dp"
+		android:paddingBottom="4dp">
+
+		<TextView
+			android:id="@+id/tv_book_name"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toStartOf="@id/tv_book_publisher"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintHorizontal_bias="0.0"
+			android:layout_marginTop="4dp"
+			android:layout_marginStart="12dp"
+			android:layout_marginEnd="4dp"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			android:text="@{entry.name}"
+			tools:text="자민당, 폭발해라" />
+
+		<TextView
+			android:id="@+id/tv_book_meta"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tv_book_name"
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="12dp"
+			android:textColor="@color/text_sub"
+			android:text="@{@string/syllabus_book_meta(entry.author, entry.publicationYear)}"
+			tools:text="히키가야 하치만 (2016)" />
+
+		<TextView
+			android:id="@+id/tv_book_publisher"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:layout_marginEnd="12dp"
+			android:text="@{entry.publisher}"
+			tools:text="쇼가쿠칸" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

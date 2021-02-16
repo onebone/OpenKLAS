@@ -1,4 +1,4 @@
-package org.openklas.ui.syllabus.page
+package org.openklas.ui.syllabus.page.summary
 
 /*
  * OpenKLAS
@@ -23,19 +23,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.openklas.base.list.SimpleDiffUtil
-import org.openklas.databinding.ItemTutorBinding
+import org.openklas.databinding.ItemBookBinding
+import org.openklas.klas.model.Book
 
-class TutorAdapter: ListAdapter<TutorEntry, TutorAdapter.ViewHolder>(SimpleDiffUtil { it }) {
+class BookAdapter: ListAdapter<Book, BookAdapter.ViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		return ViewHolder(ItemTutorBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+		return ViewHolder(ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		holder.bind(getItem(position))
 	}
 
-	class ViewHolder(val binding: ItemTutorBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(entry: TutorEntry) {
+	class ViewHolder(val binding: ItemBookBinding): RecyclerView.ViewHolder(binding.root) {
+		fun bind(entry: Book) {
 			binding.entry = entry
 		}
 	}

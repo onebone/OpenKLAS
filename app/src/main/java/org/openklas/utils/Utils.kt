@@ -30,9 +30,9 @@ import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
-import org.openklas.ui.syllabus.page.TUTOR_PROFESSOR
-import org.openklas.ui.syllabus.page.TUTOR_SECONDARY_PROFESSOR
-import org.openklas.ui.syllabus.page.TUTOR_TEACHING_ASSISTANT
+import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
+import org.openklas.ui.syllabus.page.summary.TUTOR_SECONDARY_PROFESSOR
+import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import java.nio.charset.Charset
 import java.util.Random
 

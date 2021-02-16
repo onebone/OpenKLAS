@@ -27,7 +27,7 @@
 
 		<variable
 			name="entry"
-			type="org.openklas.ui.syllabus.page.TutorEntry" />
+			type="org.openklas.ui.syllabus.page.summary.TutorEntry" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

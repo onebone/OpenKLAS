@@ -44,6 +44,7 @@
 	<color name="light_blue">#BBDEFB</color>
 
 	<color name="primary">@color/copper</color>
+	<color name="text_sub">@color/gray</color>
 	<color name="text_with_background">@color/white</color>
 	<color name="default_background">@color/white</color>
 	<color name="default_shadow">@color/light_gray</color>

@@ -27,9 +27,9 @@ import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.repository.KlasRepository
-import org.openklas.ui.syllabus.page.TUTOR_PROFESSOR
-import org.openklas.ui.syllabus.page.TUTOR_TEACHING_ASSISTANT
-import org.openklas.ui.syllabus.page.TutorEntry
+import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
+import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
+import org.openklas.ui.syllabus.page.summary.TutorEntry
 import javax.inject.Inject
 
 @HiltViewModel

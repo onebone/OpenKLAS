@@ -19,6 +19,7 @@ package org.openklas.ui.syllabus
  */
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
@@ -26,6 +27,9 @@ import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.repository.KlasRepository
+import org.openklas.ui.syllabus.page.TUTOR_PROFESSOR
+import org.openklas.ui.syllabus.page.TUTOR_TEACHING_ASSISTANT
+import org.openklas.ui.syllabus.page.TutorEntry
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +41,34 @@ class SyllabusViewModel @Inject constructor(
 	val syllabus: LiveData<Syllabus> = _syllabus
 
 	private val _teachingAssistants = MutableLiveData<Array<TeachingAssistant>>()
-	val teachingAssistants: LiveData<Array<TeachingAssistant>> = _teachingAssistants
+
+	val tutors: LiveData<Array<TutorEntry>> = MediatorLiveData<Array<TutorEntry>>().apply {
+		fun combine() {
+			val tutors = mutableListOf<TutorEntry>()
+
+			val tutor = syllabus.value?.tutor
+			if(tutor != null) {
+				tutors += TutorEntry(tutor.name, TUTOR_PROFESSOR, tutor.email, tutor.contact, tutor.telephoneContact)
+			}
+
+			val teachingAssistants = _teachingAssistants.value
+			if(teachingAssistants != null) {
+				tutors += teachingAssistants.map {
+					TutorEntry(it.name, TUTOR_TEACHING_ASSISTANT, it.email, null, null)
+				}
+			}
+
+			value = tutors.toTypedArray()
+		}
+
+		addSource(_teachingAssistants) {
+			combine()
+		}
+
+		addSource(syllabus) {
+			combine()
+		}
+	}
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error

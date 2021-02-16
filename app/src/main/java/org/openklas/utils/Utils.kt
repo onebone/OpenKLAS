@@ -30,6 +30,9 @@ import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.ui.syllabus.page.TUTOR_PROFESSOR
+import org.openklas.ui.syllabus.page.TUTOR_SECONDARY_PROFESSOR
+import org.openklas.ui.syllabus.page.TUTOR_TEACHING_ASSISTANT
 import java.nio.charset.Charset
 import java.util.Random
 
@@ -85,4 +88,13 @@ fun syllabusToAcademicNumber(entry: Syllabus?): String {
 	if(entry == null) return ""
 
 	return "${entry.departmentCode}-${entry.targetGrade}-${entry.openGwamokNo}-${entry.division}"
+}
+
+fun tutorTypeToColor(context: Context, type: Int?): Int {
+	return ResourcesCompat.getColor(context.resources, when(type) {
+		TUTOR_PROFESSOR -> R.color.professor
+		TUTOR_SECONDARY_PROFESSOR -> R.color.secondary_professor
+		TUTOR_TEACHING_ASSISTANT -> R.color.teaching_assistant
+		else -> R.color.unknown_tutor_type
+	}, null)
 }

@@ -22,6 +22,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -78,6 +79,20 @@ object BindAdapter {
 					)
 				}
 			}
+		}
+	}
+
+	@JvmStatic
+	@BindingAdapter("drawableStartTint")
+	fun setTextViewDrawableStartTint(textView: TextView, color: Int) {
+		val drawables = textView.compoundDrawablesRelative
+		val startDrawable = drawables[0]
+		if(startDrawable != null) {
+			val clone = startDrawable.mutate().apply {
+				DrawableCompat.setTint(this, color)
+			}
+
+			textView.setCompoundDrawablesRelative(clone, drawables[1], drawables[2], drawables[3])
 		}
 	}
 }

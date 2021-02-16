@@ -44,6 +44,12 @@
 	<color name="light_blue">#BBDEFB</color>
 
 	<color name="primary">@color/copper</color>
+	<color name="text_with_background">@color/white</color>
 	<color name="default_background">@color/white</color>
 	<color name="default_shadow">@color/light_gray</color>
+
+	<color name="professor">@color/green</color>
+	<color name="secondary_professor">@color/purple_500</color>
+	<color name="teaching_assistant">@color/blue</color>
+	<color name="unknown_tutor_type">@color/gray</color>
 </resources>

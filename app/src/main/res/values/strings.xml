@@ -98,4 +98,8 @@
 	<string name="syllabus_purpose">교육 목적</string>
 	<string name="syllabus_book">교재</string>
 
+	<string name="professor">교수</string>
+	<string name="secondary_professor">조교수</string>
+	<string name="teaching_assistant">조교</string>
+
 </resources>

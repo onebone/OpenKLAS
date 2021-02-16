@@ -44,7 +44,7 @@ class SyllabusFragment: BaseFragment() {
 			lifecycleOwner = viewLifecycleOwner
 		}
 
-		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_graph) {
+		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_syllabus_graph) {
 			defaultViewModelProviderFactory
 		}
 

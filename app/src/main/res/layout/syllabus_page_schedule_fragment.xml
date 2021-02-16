@@ -33,26 +33,14 @@
 
 	</data>
 
-	<ScrollView
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rv_weeks"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/rv_weeks"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:items="@{entry.schedule}" />
-
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
-	</ScrollView>
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+		app:items="@{entry.schedule}" />
 
 </layout>

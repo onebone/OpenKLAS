@@ -24,18 +24,18 @@ data class Tutor(
 	// jikgeubName
 	val type: String,
 	// telNo
-	val telephoneContact: String,
+	val telephoneContact: String?,
 	// hpNo
-	val contact: String,
+	val contact: String?,
 	// email
-	val email: String,
+	val email: String?,
 )
 
 data class Expectation(
 	// studyResultShort{d}
 	val short: String,
 	// result{d}
-	val detail: String
+	val detail: String?
 )
 
 data class Credits(
@@ -141,7 +141,7 @@ data class Week(
 	// week[1-15]Lecture
 	val content: String,
 	// week[1-15]Bigo
-	val note: String,
+	val note: String?,
 	// week[1-15]Subs
 	val supplementary: String?
 )
@@ -155,7 +155,7 @@ data class Syllabus(
 	// gwamokKname
 	val subjectName: String,
 	// gwamokEname
-	val subjectNameEnglish: String,
+	val subjectNameEnglish: String?,
 	// openMajorCode
 	val departmentCode: String,
 	// openGrade
@@ -185,7 +185,7 @@ data class Syllabus(
 	// summary
 	val summary: String,
 	// purpose
-	val purpose: String,
+	val purpose: String?,
 	// reflectPer, studyResultShort, result (1~20)
 	val expectations: Array<Expectation>,
 	// getScore[1-3]

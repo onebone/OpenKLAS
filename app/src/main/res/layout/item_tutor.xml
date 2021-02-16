@@ -93,6 +93,7 @@
 			android:drawablePadding="4dp"
 			android:padding="4dp"
 			android:gravity="center"
+			android:visibility="@{entry.email == null ? View.GONE : View.VISIBLE}"
 			android:text="@{entry.email}"
 			tools:text="whatsthat@shipduck.net" />
 

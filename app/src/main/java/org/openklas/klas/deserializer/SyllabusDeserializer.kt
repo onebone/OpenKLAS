@@ -48,7 +48,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 
 		return Syllabus(
 			subjectName = obj["gwamokKname"].asString,
-			subjectNameEnglish = obj["gwamokEname"].asString,
+			subjectNameEnglish = obj["gwamokEname"].asStringOrNull,
 			departmentCode = obj["openMajorCode"].asString,
 			targetGrade = obj["openGrade"].asInt,
 			openGwamokNo = obj["openGwamokNo"].asString,
@@ -63,7 +63,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 			containsSecondaryLanguage = obj["frnOpt"].asStringOrNull == "1",
 			secondaryLanguagePercentage = obj["frnBiyul"].asIntOrNull,
 			summary = obj["summary"].asString,
-			purpose = obj["purpose"].asString,
+			purpose = obj["purpose"].asStringOrNull,
 			expectations = deserializeExpectations(obj),
 			creditDetails = deserializeCreditDetails(obj),
 			recommendedPrerequisiteSubject = obj["preGwamok"].asStringOrNull,
@@ -82,9 +82,9 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 		return Tutor(
 			json["memberName"].asString,
 			json["jikgeubName"].asString,
-			json["telNo"].asString,
-			json["hpNo"].asString,
-			json["email"].asString
+			json["telNo"].asStringOrNull,
+			json["hpNo"].asStringOrNull,
+			json["email"].asStringOrNull
 		)
 	}
 
@@ -95,7 +95,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 			if(!json["reflectPer$i"].isJsonNull) {
 				expectations += Expectation(
 					json["studyResultShort$i"].asString,
-					json["result$i"].asString
+					json["result$i"].asStringOrNull
 				)
 			}
 		}
@@ -200,12 +200,14 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 		val weeks = mutableListOf<Week>()
 
 		for(i in 1..15) {
-			weeks += Week(
-				i,
-				json["week${i}Lecture"].asString,
-				json["week${i}Bigo"].asString,
-				json["week${i}Subs"].asStringOrNull
-			)
+			if(!json["week${i}Lecture"].isJsonNull) {
+				weeks += Week(
+					i,
+					json["week${i}Lecture"].asString,
+					json["week${i}Bigo"].asStringOrNull,
+					json["week${i}Subs"].asStringOrNull
+				)
+			}
 		}
 
 		return weeks.toTypedArray()

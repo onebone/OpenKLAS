@@ -32,7 +32,7 @@ annotation class TutorType
 data class TutorEntry(
 	val name: String,
 	@TutorType val type: Int,
-	val email: String,
+	val email: String?,
 	val contact: String?,
 	val telephoneContact: String?
 )

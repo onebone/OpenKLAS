@@ -27,6 +27,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.net.transformer.AsyncTransformer
 import javax.inject.Inject
@@ -73,6 +74,10 @@ class DefaultKlasRepository @Inject constructor(
 
 	override fun getSyllabus(subjectId: String): Single<Syllabus> {
 		return klasDataSource.getSyllabus(subjectId).compose(AsyncTransformer())
+	}
+
+	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+		return klasDataSource.getTeachingAssistants(subjectId).compose(AsyncTransformer())
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String)

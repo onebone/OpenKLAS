@@ -7,6 +7,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
 
 interface KlasClient {
@@ -25,6 +26,8 @@ interface KlasClient {
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 
 	fun getSyllabus(subjectId: String): Single<Syllabus>
+
+	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>
 
 	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>>
 }

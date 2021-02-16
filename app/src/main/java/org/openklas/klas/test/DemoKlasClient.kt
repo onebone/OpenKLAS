@@ -36,6 +36,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Subject
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.model.Timetable
 import org.openklas.klas.model.Tutor
 import org.openklas.klas.model.VL
@@ -126,13 +127,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
 			arrayOf(
 				SyllabusSummary(
-					"01", "전선", "5개기본호흡", 2021, 1, "히키가야 하치만",
-					2, "1234", "0000", 3, 4,
+					"01", "전선", "5개기본호흡", 1, 2021, "히키가야 하치만",
+					5, "1234", "W000", 3, 4,
 					"호흡법의 기본 계파 화염, 물, 번개, 바위, 바람의 형에 대해 학습한다",
 					"+818000000000", null
 				),
 				SyllabusSummary(
-					"01", "전필", "일반상대성이론실험", 2021, 1, "아인슈타인",
+					"01", "전필", "일반상대성이론실험", 1, 2021, "아인슈타인",
 					2, "1234", "0000", 3, 4,
 					"일반상대성이론과 관련된 실험을 수행한다",
 					null, null
@@ -145,7 +146,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
 			Syllabus(
 				"5개기본호흡", "5 Fundamental Breathing", "W000", 5,
-				"0000", "01", "전선", null, 3, 4,
+				"1234", "01", "전선", null, 3, 4,
 				Tutor("히키가야 하치만", "박사", "", "", "whatsthat@shipduck.net"),
 				false, 0, false, 0,
 				"호흡법 중 기본 계파인 물, 번개, 바람, 화염, 바위의 호흡에 대해서 학습한다. 또한 전집중 호흡의 경지에 올라섬으로써 오니의 급습에 항시 대비할 수 있도록 한다.",
@@ -168,6 +169,16 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					Week(8, "바람의 호흡 2", "", null)
 				)
 			)
+		}
+	}
+
+	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+		val assistants = arrayOf(
+			TeachingAssistant("유키노시타 유키노", "ooook@shipduck.net", "U202111234W000015")
+		)
+
+		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+			assistants.filter { it.subject == subjectId }.toTypedArray()
 		}
 	}
 

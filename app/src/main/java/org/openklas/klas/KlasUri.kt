@@ -31,6 +31,7 @@ object KlasUri {
 
 	const val STD_SYLLABUS_LIST = "$ROOT_URI/std/cps/atnlc/LectrePlanStdList.do"
 	const val STD_SYLLABUS = "$ROOT_URI/std/cps/atnlc/LectrePlanData.do"
+	const val STD_TEACHING_ASSISTANT = "$ROOT_URI/std/cps/atnlc/LectreAstnt.do"
 
 	const val STD_ONLINE_CONTENT_LIST = "$ROOT_URI/std/lis/evltn/SelectOnlineCntntsStdList.do"
 }

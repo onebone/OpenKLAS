@@ -26,11 +26,13 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
+import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
 import retrofit2.http.Body
@@ -63,6 +65,9 @@ interface KlasService {
 
 	@POST(KlasUri.STD_SYLLABUS)
 	fun syllabus(@Body payload: RequestSyllabus): Single<Syllabus>
+
+	@POST(KlasUri.STD_TEACHING_ASSISTANT)
+	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Array<TeachingAssistant>>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Array<OnlineContentEntry>>

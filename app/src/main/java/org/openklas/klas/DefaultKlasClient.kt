@@ -28,12 +28,14 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestOnlineContents
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
+import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.service.KlasService
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -111,6 +113,10 @@ class DefaultKlasClient @Inject constructor(
 		return service.syllabus(RequestSyllabus(
 			subjectId = subjectId
 		))
+	}
+
+	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId))
 	}
 
 	override fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {

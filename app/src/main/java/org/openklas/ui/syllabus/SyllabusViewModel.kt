@@ -24,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Syllabus
+import org.openklas.klas.model.TeachingAssistant
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
 
@@ -35,6 +36,9 @@ class SyllabusViewModel @Inject constructor(
 	private val _syllabus = MutableLiveData<Syllabus>()
 	val syllabus: LiveData<Syllabus> = _syllabus
 
+	private val _teachingAssistants = MutableLiveData<Array<TeachingAssistant>>()
+	val teachingAssistants: LiveData<Array<TeachingAssistant>> = _teachingAssistants
+
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
@@ -45,7 +49,20 @@ class SyllabusViewModel @Inject constructor(
 			if(err != null) {
 				_error.value = err
 			}else{
+				fetchTeachingAssistants(subjectId)
 				_syllabus.value = v
+			}
+		})
+	}
+
+	private fun fetchTeachingAssistants(subjectId: String) {
+		addDisposable(requestWithSession {
+			klasRepository.getTeachingAssistants(subjectId)
+		}.subscribe { v, err ->
+			if(err != null) {
+				_error.value = err
+			}else{
+				_teachingAssistants.value = v
 			}
 		})
 	}

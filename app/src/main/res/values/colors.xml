@@ -37,6 +37,7 @@
 	<color name="gray">#999999</color>
 	<color name="light_gray">#AAAAAA</color>
 	<color name="super_light_gray">#EDEDED</color>
+	<color name="ultra_light_gray">#F7F7F7</color>
 
 	<drawable name="placeholder">@color/gray</drawable>
 
@@ -51,6 +52,7 @@
 	<color name="text_accent">@color/purple_500</color>
 	<color name="text_with_background">@color/white</color>
 	<color name="default_background">@color/white</color>
+	<color name="item_background">@color/ultra_light_gray</color>
 	<color name="default_shadow">@color/light_gray</color>
 	<color name="default_divider">@color/super_light_gray</color>
 

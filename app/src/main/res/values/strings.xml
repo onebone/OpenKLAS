@@ -82,7 +82,7 @@
 	<string name="post_hits">조회수: %d</string>
 	<string name="post_author">작성자: %s</string>
 
-	<string name="syllabus_search">강의 계획서</string>
+	<string name="syllabus_search">강의계획서</string>
 	<string name="syllabus_search_keyword_hint">과목</string>
 	<string name="syllabus_search_professor_hint">교수</string>
 	<string name="syllabus_search_submit">검색</string>
@@ -91,6 +91,8 @@
 	<string name="syllabus_search_result_count">해당되는 강의계획서가 %d개 있어요</string>
 
 	<string name="syllabus">강의계획서</string>
+	<string name="syllabus_schedule">시간</string>
+	<string name="syllabus_student_count">수강생</string>
 	<string name="syllabus_summary">개요</string>
 	<string name="syllabus_purpose">교육 목적</string>
 	<string name="syllabus_book">교재</string>
@@ -118,6 +120,7 @@
 	<string name="lecture_schedule_format">%1$s %2$s교시 (%3$s)</string>
 	<string name="classroom_undefined">미지정</string>
 
+	<string name="tutor">강사진</string>
 	<string name="professor">교수</string>
 	<string name="secondary_professor">조교수</string>
 	<string name="teaching_assistant">조교</string>

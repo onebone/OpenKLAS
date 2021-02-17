@@ -53,7 +53,7 @@ class WeekItemDecoration(
 				c.drawLine(x, child.top.toFloat() + circle.bottom, x, bottom.toFloat(), paint)
 			}
 
-			if(childIndex > 0) {
+			if(position > 0) {
 				val top = child.top + childParams.topMargin
 				c.drawLine(x, top.toFloat(), x, child.top.toFloat() + circle.top, paint)
 			}

@@ -43,12 +43,32 @@
 	<color name="blue">#42A5F5</color>
 	<color name="light_blue">#BBDEFB</color>
 
+	<color name="orange">#FF9800</color>
+	<color name="indigo">#3F51B5</color>
+
 	<color name="primary">@color/copper</color>
 	<color name="text_sub">@color/gray</color>
 	<color name="text_accent">@color/purple_500</color>
 	<color name="text_with_background">@color/white</color>
 	<color name="default_background">@color/white</color>
 	<color name="default_shadow">@color/light_gray</color>
+	<color name="default_divider">@color/super_light_gray</color>
+
+	<color name="score_weight_attendance">@color/red</color>
+	<color name="score_weight_midterm">@color/orange</color>
+	<color name="score_weight_final_term">@color/green</color>
+	<color name="score_weight_report">@color/blue</color>
+	<color name="score_weight_attitude">@color/indigo</color>
+	<color name="score_weight_quiz">@color/purple_500</color>
+	<color name="score_weight_others">@color/gray</color>
+
+	<color name="vl_profession">@color/red</color>
+	<color name="vl_convergence_thinking">@color/orange</color>
+	<color name="vl_global_competence">@color/green</color>
+	<color name="vl_social_competence">@color/blue</color>
+	<color name="vl_future_oriented">@color/indigo</color>
+	<color name="vl_challenger_minded">@color/purple_500</color>
+	<color name="vl_sympathy">@color/teal_700</color>
 
 	<color name="professor">@color/green</color>
 	<color name="secondary_professor">@color/purple_500</color>

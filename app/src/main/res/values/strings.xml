@@ -95,6 +95,24 @@
 	<string name="syllabus_purpose">교육 목적</string>
 	<string name="syllabus_book">교재</string>
 	<string name="syllabus_book_meta">%1$s (%2$s)</string>
+	<string name="syllabus_score_weights">반영 비율</string>
+	<string name="syllabus_vl_competence">VL 역량</string>
+
+	<string name="syllabus_score_attendance">출석</string>
+	<string name="syllabus_score_midterm">중간고사</string>
+	<string name="syllabus_score_final_term">기말고사</string>
+	<string name="syllabus_score_report">과제</string>
+	<string name="syllabus_score_attitude">태도</string>
+	<string name="syllabus_score_quiz">퀴즈</string>
+	<string name="syllabus_score_others">기타</string>
+
+	<string name="syllabus_vl_profession">전문성</string>
+	<string name="syllabus_vl_convergence_thinking">융합적사고</string>
+	<string name="syllabus_vl_global_competence">글로벌역량</string>
+	<string name="syllabus_vl_social_competence">사회관계역량</string>
+	<string name="syllabus_vl_future_oriented">미래가치지향</string>
+	<string name="syllabus_vl_challenger_minded">도전정신</string>
+	<string name="syllabus_vl_sympathy">공존/공감의식</string>
 
 	<!-- day, periods, classroom -->
 	<string name="lecture_schedule_format">%1$s %2$s교시 (%3$s)</string>

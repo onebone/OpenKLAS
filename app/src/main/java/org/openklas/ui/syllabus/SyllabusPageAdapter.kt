@@ -20,17 +20,19 @@ package org.openklas.ui.syllabus
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import org.openklas.ui.syllabus.page.achievement.AchievementFragment
 import org.openklas.ui.syllabus.page.schedule.ScheduleFragment
 import org.openklas.ui.syllabus.page.summary.SummaryFragment
 
 class SyllabusPageAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
 	override fun getItemCount(): Int {
-		return 2
+		return 3
 	}
 
 	override fun createFragment(position: Int): Fragment = when(position) {
 		0 -> SummaryFragment()
-		1 -> ScheduleFragment()
+		1 -> AchievementFragment()
+		2 -> ScheduleFragment()
 		else -> throw IllegalStateException("Invalid position $position given")
 	}
 }

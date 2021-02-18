@@ -40,7 +40,8 @@
 	<color name="super_light_gray">#EDEDED</color>
 	<color name="ultra_light_gray">#F7F7F7</color>
 
-	<drawable name="placeholder">@color/gray</drawable>
+	<drawable name="placeholder">@color/super_light_gray</drawable>
+	<color name="placeholder">@color/light_gray</color>
 
 	<color name="blue">#42A5F5</color>
 	<color name="light_blue">#BBDEFB</color>

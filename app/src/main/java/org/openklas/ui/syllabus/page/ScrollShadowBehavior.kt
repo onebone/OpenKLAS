@@ -64,15 +64,10 @@ class ScrollShadowBehavior: CoordinatorLayout.Behavior<View> {
 	) {
 		val shadow = getFirstShadow(coordinatorLayout.getDependencies(child)) ?: return
 
-		val currentVisibility = shadow.visibility
 		if(child.canScrollVertically(-1) || child.scrollY > 0) {
-			if(currentVisibility == View.GONE) {
-				shadow.visibility = View.VISIBLE
-			}
+			shadow.visibility = View.VISIBLE
 		}else{
-			if(currentVisibility == View.VISIBLE) {
-				shadow.visibility = View.GONE
-			}
+			shadow.visibility = View.GONE
 		}
 	}
 

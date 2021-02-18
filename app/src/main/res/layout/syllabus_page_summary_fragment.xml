@@ -33,214 +33,228 @@
 			type="org.openklas.klas.model.Syllabus" />
 	</data>
 
-	<ScrollView
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<androidx.core.widget.NestedScrollView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="12dp">
+			android:layout_height="match_parent"
+			app:layout_behavior=".ui.syllabus.page.ScrollShadowBehavior">
 
-			<TextView
-				android:id="@+id/label_schedule"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				android:layout_marginStart="24dp"
-				app:drawableTint="@color/primary"
-				app:drawableStartCompat="@drawable/ic_sharp_schedule_24"
-				android:drawablePadding="4dp"
-				android:gravity="center"
-				android:textColor="@color/primary"
-				android:text="@string/syllabus_schedule" />
-
-			<TextView
-				android:id="@+id/label_student_count"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="@id/label_schedule"
-				app:layout_constraintTop_toBottomOf="@id/label_schedule"
-				android:layout_marginTop="8dp"
-				app:drawableStartCompat="@drawable/ic_sharp_person_24"
-				app:drawableTint="@color/primary"
-				android:drawablePadding="4dp"
-				android:gravity="center"
-				android:textColor="@color/primary"
-				android:text="@string/syllabus_student_count" />
-
-			<androidx.constraintlayout.widget.Barrier
-				android:id="@+id/barrier_meta"
-				android:layout_width="0dp"
-				android:layout_height="0dp"
-				app:barrierDirection="end"
-				app:constraint_referenced_ids="label_schedule,label_student_count" />
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toEndOf="@id/barrier_meta"
-				app:layout_constraintTop_toTopOf="@id/label_schedule"
-				app:layout_constraintBottom_toBottomOf="@id/label_schedule"
-				android:layout_marginStart="8dp"
-				app:scheduleText="@{viewModel.schedules}"
-				tools:text="월 2,3,4,5교시 (미지정)" />
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toEndOf="@id/barrier_meta"
-				app:layout_constraintTop_toTopOf="@id/label_student_count"
-				app:layout_constraintBottom_toBottomOf="@id/label_student_count"
-				android:layout_marginStart="8dp"
-				android:textSize="15sp"
-				android:text="@{viewModel.studentsNumber == null ? `` : Integer.toString(viewModel.studentsNumber)}"
-				tools:text="5" />
-
-			<TextView
-				android:id="@+id/label_tutor"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/label_student_count"
-				android:layout_marginStart="12dp"
-				android:layout_marginTop="16dp"
-				android:textColor="@color/primary"
-				android:textSize="21sp"
-				android:textStyle="bold"
-				android:text="@string/tutor" />
-
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/rv_tutors"
+			<androidx.constraintlayout.widget.ConstraintLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/label_tutor"
-				android:layout_marginTop="8dp"
-				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:items="@{viewModel.tutors}" />
+				android:paddingTop="12dp">
 
-			<View
-				android:id="@+id/v_tutor_divider"
-				android:layout_width="0dp"
-				android:layout_height="4dp"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/rv_tutors"
-				android:layout_marginTop="16dp"
-				android:background="@color/default_divider" />
+				<TextView
+					android:id="@+id/label_schedule"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					android:layout_marginStart="24dp"
+					app:drawableTint="@color/primary"
+					app:drawableStartCompat="@drawable/ic_sharp_schedule_24"
+					android:drawablePadding="4dp"
+					android:gravity="center"
+					android:textColor="@color/primary"
+					android:text="@string/syllabus_schedule" />
 
-			<TextView
-				android:id="@+id/label_summary"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/v_tutor_divider"
-				android:layout_marginTop="16dp"
-				android:layout_marginStart="12dp"
-				android:textColor="@color/primary"
-				android:textSize="21sp"
-				android:textStyle="bold"
-				android:text="@string/syllabus_summary" />
+				<TextView
+					android:id="@+id/label_student_count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/label_schedule"
+					app:layout_constraintTop_toBottomOf="@id/label_schedule"
+					android:layout_marginTop="8dp"
+					app:drawableStartCompat="@drawable/ic_sharp_person_24"
+					app:drawableTint="@color/primary"
+					android:drawablePadding="4dp"
+					android:gravity="center"
+					android:textColor="@color/primary"
+					android:text="@string/syllabus_student_count" />
 
-			<TextView
-				android:id="@+id/tv_summary"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:layout_constraintTop_toBottomOf="@id/label_summary"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				android:layout_marginTop="8dp"
-				android:paddingStart="12dp"
-				android:paddingEnd="12dp"
-				android:text="@{entry.summary}" />
+				<androidx.constraintlayout.widget.Barrier
+					android:id="@+id/barrier_meta"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					app:barrierDirection="end"
+					app:constraint_referenced_ids="label_schedule,label_student_count" />
 
-			<View
-				android:id="@+id/v_summary_divider"
-				android:layout_width="0dp"
-				android:layout_height="4dp"
-				app:layout_constraintTop_toBottomOf="@id/tv_summary"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				android:layout_marginTop="16dp"
-				android:background="@color/default_divider" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toEndOf="@id/barrier_meta"
+					app:layout_constraintTop_toTopOf="@id/label_schedule"
+					app:layout_constraintBottom_toBottomOf="@id/label_schedule"
+					android:layout_marginStart="8dp"
+					app:scheduleText="@{viewModel.schedules}"
+					tools:text="월 2,3,4,5교시 (미지정)" />
 
-			<TextView
-				android:id="@+id/label_purpose"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/v_summary_divider"
-				android:layout_marginTop="16dp"
-				android:layout_marginStart="12dp"
-				android:textColor="@color/primary"
-				android:textSize="21sp"
-				android:textStyle="bold"
-				android:text="@string/syllabus_purpose" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toEndOf="@id/barrier_meta"
+					app:layout_constraintTop_toTopOf="@id/label_student_count"
+					app:layout_constraintBottom_toBottomOf="@id/label_student_count"
+					android:layout_marginStart="8dp"
+					android:textSize="15sp"
+					android:text="@{viewModel.studentsNumber == null ? `` : Integer.toString(viewModel.studentsNumber)}"
+					tools:text="5" />
 
-			<TextView
-				android:id="@+id/tv_purpose"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/label_purpose"
-				android:layout_marginTop="8dp"
-				android:paddingStart="12dp"
-				android:paddingEnd="12dp"
-				android:text="@{entry.purpose}" />
+				<TextView
+					android:id="@+id/label_tutor"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/label_student_count"
+					android:layout_marginStart="12dp"
+					android:layout_marginTop="16dp"
+					android:textColor="@color/primary"
+					android:textSize="21sp"
+					android:textStyle="bold"
+					android:text="@string/tutor" />
 
-			<View
-				android:id="@+id/v_purpose_divider"
-				android:layout_width="0dp"
-				android:layout_height="4dp"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/tv_purpose"
-				android:layout_marginTop="16dp"
-				android:background="@color/default_divider" />
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rv_tutors"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/label_tutor"
+					android:layout_marginTop="8dp"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:items="@{viewModel.tutors}" />
 
-			<TextView
-				android:id="@+id/label_book"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintTop_toBottomOf="@id/v_purpose_divider"
-				app:layout_constraintStart_toStartOf="parent"
-				android:layout_marginStart="12dp"
-				android:layout_marginTop="16dp"
-				android:textColor="@color/primary"
-				android:textSize="21sp"
-				android:textStyle="bold"
-				android:text="@string/syllabus_book" />
+				<View
+					android:id="@+id/v_tutor_divider"
+					android:layout_width="0dp"
+					android:layout_height="4dp"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/rv_tutors"
+					android:layout_marginTop="16dp"
+					android:background="@color/default_divider" />
 
-			<TextView
-				android:id="@+id/tv_book_comment"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/label_book"
-				android:layout_marginTop="8dp"
-				android:paddingStart="12dp"
-				android:paddingEnd="12dp"
-				android:visibility="@{entry.bookComment == null ? View.GONE : View.VISIBLE}"
-				android:text="@{entry.bookComment}" />
+				<TextView
+					android:id="@+id/label_summary"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/v_tutor_divider"
+					android:layout_marginTop="16dp"
+					android:layout_marginStart="12dp"
+					android:textColor="@color/primary"
+					android:textSize="21sp"
+					android:textStyle="bold"
+					android:text="@string/syllabus_summary" />
 
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/rv_books"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/tv_book_comment"
-				android:layout_marginTop="8dp"
-				android:layout_marginStart="8dp"
-				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:items="@{entry.books}" />
+				<TextView
+					android:id="@+id/tv_summary"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintTop_toBottomOf="@id/label_summary"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:layout_marginTop="8dp"
+					android:paddingStart="12dp"
+					android:paddingEnd="12dp"
+					android:text="@{entry.summary}" />
 
-		</androidx.constraintlayout.widget.ConstraintLayout>
+				<View
+					android:id="@+id/v_summary_divider"
+					android:layout_width="0dp"
+					android:layout_height="4dp"
+					app:layout_constraintTop_toBottomOf="@id/tv_summary"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:layout_marginTop="16dp"
+					android:background="@color/default_divider" />
 
-	</ScrollView>
+				<TextView
+					android:id="@+id/label_purpose"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/v_summary_divider"
+					android:layout_marginTop="16dp"
+					android:layout_marginStart="12dp"
+					android:textColor="@color/primary"
+					android:textSize="21sp"
+					android:textStyle="bold"
+					android:text="@string/syllabus_purpose" />
+
+				<TextView
+					android:id="@+id/tv_purpose"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/label_purpose"
+					android:layout_marginTop="8dp"
+					android:paddingStart="12dp"
+					android:paddingEnd="12dp"
+					android:text="@{entry.purpose}" />
+
+				<View
+					android:id="@+id/v_purpose_divider"
+					android:layout_width="0dp"
+					android:layout_height="4dp"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/tv_purpose"
+					android:layout_marginTop="16dp"
+					android:background="@color/default_divider" />
+
+				<TextView
+					android:id="@+id/label_book"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:layout_constraintTop_toBottomOf="@id/v_purpose_divider"
+					app:layout_constraintStart_toStartOf="parent"
+					android:layout_marginStart="12dp"
+					android:layout_marginTop="16dp"
+					android:textColor="@color/primary"
+					android:textSize="21sp"
+					android:textStyle="bold"
+					android:text="@string/syllabus_book" />
+
+				<TextView
+					android:id="@+id/tv_book_comment"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/label_book"
+					android:layout_marginTop="8dp"
+					android:paddingStart="12dp"
+					android:paddingEnd="12dp"
+					android:visibility="@{entry.bookComment == null ? View.GONE : View.VISIBLE}"
+					android:text="@{entry.bookComment}" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/rv_books"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/tv_book_comment"
+					android:layout_marginTop="8dp"
+					android:layout_marginStart="8dp"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:items="@{entry.books}" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</androidx.core.widget.NestedScrollView>
+
+		<View
+			android:id="@+id/shadow"
+			android:layout_width="match_parent"
+			android:layout_height="6dp"
+			android:background="@drawable/shadowed_background"
+			android:visibility="gone" />
+
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

@@ -49,7 +49,7 @@ import javax.inject.Inject
 
 class DemoKlasClient @Inject constructor(): KlasClient {
 	override fun login(username: String, password: String): Single<String> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+		return Single.timer(0, TimeUnit.MILLISECONDS).map {
 			"2019203999ZZ"
 		}
 	}

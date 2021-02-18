@@ -1,4 +1,4 @@
-package org.openklas.base
+package org.openklas.utils
 
 /*
  * OpenKLAS
@@ -18,12 +18,30 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Single
-import org.openklas.utils.Event
+import androidx.lifecycle.Observer
 
-interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Event<Unit>>
+class Event<T: Any>(
+	private val value: T
+) {
+	private var isHandled = false
 
-	fun <T> requestWithSession(f: () -> Single<T>): Single<T>
+	fun getIfNotHandled(): T? {
+		if(!isHandled) {
+			isHandled = true
+			return value
+		}
+
+		return null
+	}
 }
+
+class EventObserver<T: Any>(
+	private val onChangedListener: (T) -> Unit
+): Observer<Event<T>> {
+	override fun onChanged(t: Event<T>?) {
+		t?.getIfNotHandled()?.let {
+			onChangedListener(it)
+		}
+	}
+}
+

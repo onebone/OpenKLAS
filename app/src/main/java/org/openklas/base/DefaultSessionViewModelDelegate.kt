@@ -21,8 +21,8 @@ package org.openklas.base
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Single
-import org.openklas.net.transformer.AsyncTransformer
 import org.openklas.repository.SessionRepository
+import org.openklas.utils.Event
 import javax.inject.Inject
 
 class DefaultSessionViewModelDelegate @Inject constructor(
@@ -32,7 +32,7 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 		const val TAG = "SessionViewModel"
 	}
 
-	override val mustAuthenticate = MutableLiveData<Boolean>()
+	override val mustAuthenticate = MutableLiveData<Event<Unit>>()
 
 	override fun <T> requestWithSession(f: () -> Single<T>): Single<T> {
 		return f()
@@ -40,12 +40,11 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 				Log.e(TAG, "requestWithSession:", err)
 				// TODO check if [err] is session-related error
 				sessionRepository.tryLogin()
-					.compose(AsyncTransformer())
 					.flatMap {
 						if(it) {
 							f()
 						}else{
-							mustAuthenticate.value = true
+							mustAuthenticate.value = Event(Unit)
 							Single.error<T>(err)
 						}
 					}

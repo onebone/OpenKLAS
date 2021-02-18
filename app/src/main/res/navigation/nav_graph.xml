@@ -25,7 +25,11 @@
 
 	<action
 		android:id="@+id/action_global_login"
-		app:destination="@id/fragment_login" />
+		app:destination="@id/fragment_login"
+		app:enterAnim="@anim/slide_right"
+		app:exitAnim="@anim/slightly_scale_down_left"
+		app:popUpTo="@id/nav_graph"
+		app:popUpToInclusive="true" />
 
 	<fragment
 		android:id="@+id/fragment_login"

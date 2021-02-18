@@ -24,6 +24,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
 import org.openklas.ui.common.AppbarHolder
+import org.openklas.utils.EventObserver
 import org.openklas.widget.AppbarView
 
 abstract class BaseFragment: Fragment() {
@@ -103,9 +104,9 @@ abstract class BaseFragment: Fragment() {
 
 	private fun setupSessionViewModel(viewModel: BaseViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
-			viewModel.mustAuthenticate.observe(viewLifecycleOwner) {
+			viewModel.mustAuthenticate.observe(viewLifecycleOwner, EventObserver {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())
-			}
+			})
 		}
 	}
 

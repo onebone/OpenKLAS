@@ -1,6 +1,5 @@
 {
   "Timeout": 20000,
   "ConnectTimeout": 10000,
-  "ProvideDetailLog": false,
-  "DisableRxAdapter": false
+  "ProvideDetailLog": false
 }

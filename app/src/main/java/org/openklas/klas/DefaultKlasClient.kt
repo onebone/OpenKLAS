@@ -40,6 +40,7 @@ import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.service.KlasService
+import org.openklas.net.transformer.SessionValidateTransformer
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -70,7 +71,7 @@ class DefaultKlasClient @Inject constructor(
 				"loginToken" to Base64.encodeToString(cipherText, Base64.NO_WRAP),
 				"redirectUrl" to "",
 				"redirectTabUrl" to ""
-			))
+			)).compose(SessionValidateTransformer())
 
 			confirmResponse.flatMap { confirm ->
 				if(confirm.errorCount > 0) {
@@ -83,48 +84,48 @@ class DefaultKlasClient @Inject constructor(
 	}
 
 	override fun getHome(semester: String): Single<Home> {
-		return service.home(RequestHome(semester))
+		return service.home(RequestHome(semester)).compose(SessionValidateTransformer())
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
-		return service.semesters()
+		return service.semesters().compose(SessionValidateTransformer())
 	}
 
 	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.notices(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		))
+		)).compose(SessionValidateTransformer())
 	}
 
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.materials(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		))
+		)).compose(SessionValidateTransformer())
 	}
 
 	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		))
+		)).compose(SessionValidateTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
-			year = year, term = term, keyword = keyword, professor = professor))
+			year = year, term = term, keyword = keyword, professor = professor)).compose(SessionValidateTransformer())
 	}
 
 	override fun getSyllabus(subjectId: String): Single<Syllabus> {
 		return service.syllabus(RequestSyllabus(
 			subjectId = subjectId
-		))
+		)).compose(SessionValidateTransformer())
 	}
 
 	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
-		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId))
+		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).compose(SessionValidateTransformer())
 	}
 
 	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId))
+		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).compose(SessionValidateTransformer())
 	}
 
 	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
@@ -132,7 +133,7 @@ class DefaultKlasClient @Inject constructor(
 
 		return service.lectureStudentsNumber(RequestLectureStudents(
 			subjectId = subjectId, randomNum = number, numText = number
-		)).map {
+		)).compose(SessionValidateTransformer()).map {
 			it.students
 		}
 	}
@@ -140,6 +141,6 @@ class DefaultKlasClient @Inject constructor(
 	override fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
-		))
+		)).compose(SessionValidateTransformer())
 	}
 }

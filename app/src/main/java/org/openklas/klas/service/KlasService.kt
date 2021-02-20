@@ -39,6 +39,7 @@ import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.response.ResponseLectureStudents
 import org.openklas.klas.response.ResponseLoginConfirm
 import org.openklas.klas.response.ResponseLoginSecurity
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -47,38 +48,38 @@ interface KlasService {
 	fun loginSecurity(): Single<ResponseLoginSecurity>
 
 	@POST(KlasUri.LOGIN_CONFIRM)
-	fun loginConfirm(@Body payload: Map<String, String>): Single<ResponseLoginConfirm>
+	fun loginConfirm(@Body payload: Map<String, String>): Single<Response<ResponseLoginConfirm>>
 
 	@POST(KlasUri.STD_HOME)
-	fun home(@Body payload: RequestHome): Single<Home>
+	fun home(@Body payload: RequestHome): Single<Response<Home>>
 
 	@POST(KlasUri.STD_SEMESTERS)
-	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Array<Semester>>
+	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Response<Array<Semester>>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
-	fun notices(@Body payload: RequestPostList): Single<Board>
+	fun notices(@Body payload: RequestPostList): Single<Response<Board>>
 
 	@POST(KlasUri.STD_MATERIAL_LIST)
-	fun materials(@Body payload: RequestPostList): Single<Board>
+	fun materials(@Body payload: RequestPostList): Single<Response<Board>>
 
 	@POST(KlasUri.STD_QNA_LIST)
-	fun qnas(@Body payload: RequestPostList): Single<Board>
+	fun qnas(@Body payload: RequestPostList): Single<Response<Board>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
-	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Array<SyllabusSummary>>
+	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>
 
 	@POST(KlasUri.STD_SYLLABUS)
-	fun syllabus(@Body payload: RequestSyllabus): Single<Syllabus>
+	fun syllabus(@Body payload: RequestSyllabus): Single<Response<Syllabus>>
 
 	@POST(KlasUri.STD_TEACHING_ASSISTANT)
-	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Array<TeachingAssistant>>
+	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Response<Array<TeachingAssistant>>>
 
 	@POST(KlasUri.STD_LECTURE_SCHEDULE)
-	fun lectureSchedules(@Body payload: RequestLectureSchedules): Single<Array<LectureSchedule>>
+	fun lectureSchedules(@Body payload: RequestLectureSchedules): Single<Response<Array<LectureSchedule>>>
 
 	@POST(KlasUri.STD_LECTURE_STUDENTS)
-	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<ResponseLectureStudents>
+	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<Response<ResponseLectureStudents>>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
-	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Array<OnlineContentEntry>>
+	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Response<Array<OnlineContentEntry>>>
 }

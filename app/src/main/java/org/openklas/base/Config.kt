@@ -62,12 +62,6 @@ object Config {
 		val timeout = 20000
 
 		/**
-		 * Set flags of enable RxJava-Adapter in Retrofit
-		 */
-		@SerializedName("DisableRxAdapter")
-		val disableRxAdapter = false
-
-		/**
 		 * Set flags on enable retryOnConnectionFailure in OKHttp
 		 * default is true
 		 */

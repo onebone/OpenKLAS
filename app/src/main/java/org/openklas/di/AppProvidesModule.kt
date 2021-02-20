@@ -72,10 +72,7 @@ class AppProvidesModule {
 			.client(okHttpClient)
 
 		builder.addConverterFactory(GsonConverterFactory.create(gson))
-
-		if (!Config.config.disableRxAdapter) {
-			builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-		}
+		builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
 		return builder.build()
 	}

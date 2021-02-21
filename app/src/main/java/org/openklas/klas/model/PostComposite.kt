@@ -128,3 +128,7 @@ data class PostComposite(
 		return result
 	}
 }
+
+enum class PostType {
+	NOTICE, LECTURE_MATERIAL, QNA
+}

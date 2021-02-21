@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.databinding.MainActivityBinding
 import org.openklas.ui.home.HomeFragmentDirections
-import org.openklas.ui.postlist.PostType
+import org.openklas.klas.model.PostType
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint

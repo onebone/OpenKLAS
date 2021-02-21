@@ -30,6 +30,7 @@ import org.openklas.R
 import org.openklas.klas.model.LectureSchedule
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 object BindAdapter {
 	@JvmStatic
@@ -56,28 +57,39 @@ object BindAdapter {
 	}
 
 	@JvmStatic
-	@BindingAdapter("endDate")
-	fun bindEndDate(textView: TextView, endDate: Date?) {
-		endDate?.let {
-			val time = it.time - Date().time
+	@BindingAdapter("dateShort")
+	fun bindDateShort(textView: TextView, date: Date?) {
+		if(date == null) return
 
-			val context = textView.context
+		val context = textView.context
 
-			val hoursLeft = time / TimeUnit.HOURS.toMillis(1)
-			textView.text = if(hoursLeft > 0) {
-				context.resources.getQuantityString(R.plurals.home_left_time_hour, hoursLeft.toInt(), hoursLeft)
+		val time = date.time - Date().time
+		val days = abs(time / TimeUnit.DAYS.toMillis(1))
+		val hours = abs(time / TimeUnit.HOURS.toMillis(1))
+		val minutes = abs(time / TimeUnit.MINUTES.toMillis(1))
+
+		val isBefore = time < 0
+
+		textView.text = if(days > 0 && isBefore) {
+			context.resources.getQuantityString(R.plurals.common_time_day_ago, days.toInt(), days)
+		}else if(hours > 0) {
+			context.resources.getQuantityString(
+				if(isBefore) R.plurals.common_time_hours_ago
+				else R.plurals.common_left_time_hour,
+				hours.toInt(), hours
+			)
+		}else{
+			if(minutes < 10) {
+				context.resources.getString(
+					if(isBefore) R.string.common_time_moment_ago
+					else R.string.common_left_time_soon
+				)
 			}else{
-				val minutesLeft = time / TimeUnit.MINUTES.toMillis(1)
-
-				if(minutesLeft < 10) {
-					context.resources.getString(R.string.home_left_time_soon)
-				}else{
-					context.resources.getQuantityString(
-						R.plurals.home_left_time_minute,
-						minutesLeft.toInt(),
-						minutesLeft
-					)
-				}
+				context.resources.getQuantityString(
+					if(isBefore) R.plurals.common_time_minutes_ago
+					else R.plurals.common_left_time_minute,
+					minutes.toInt(), minutes
+				)
 			}
 		}
 	}

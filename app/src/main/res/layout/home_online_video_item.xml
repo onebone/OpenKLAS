@@ -51,7 +51,7 @@
 			android:background="@color/red"
 			android:textSize="13sp"
 			android:textColor="@android:color/white"
-			app:endDate="@{entry.endDate}"
+			app:dateShort="@{entry.endDate}"
 			tools:text="곧" />
 
 		<TextView

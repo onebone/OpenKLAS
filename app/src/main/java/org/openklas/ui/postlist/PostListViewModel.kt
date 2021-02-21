@@ -31,6 +31,7 @@ import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.BriefSubject
+import org.openklas.klas.model.PostType
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.helper.PostListQueryCallback

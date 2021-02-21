@@ -81,7 +81,7 @@
 
 			<argument
 				android:name="type"
-				app:argType=".ui.postlist.PostType"
+				app:argType=".klas.model.PostType"
 				app:nullable="false" />
 
 		</action>
@@ -108,8 +108,43 @@
 
 		<argument
 			android:name="type"
-			app:argType=".ui.postlist.PostType"
+			app:argType=".klas.model.PostType"
 			app:nullable="false" />
+
+		<action
+			android:id="@+id/action_postls_post"
+			app:destination="@id/fragment_post"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
+
+			<argument
+				android:name="postType"
+				app:nullable="false"
+				app:argType=".klas.model.PostType" />
+
+			<argument
+				android:name="boardNo"
+				app:nullable="false"
+				app:argType="integer" />
+
+			<argument
+				android:name="masterNo"
+				app:nullable="false"
+				app:argType="integer" />
+
+			<argument
+				android:name="semester"
+				app:nullable="false"
+				app:argType="string" />
+
+			<argument
+				android:name="subject"
+				app:nullable="false"
+				app:argType="string" />
+
+		</action>
 
 	</fragment>
 
@@ -152,5 +187,36 @@
 		</fragment>
 
 	</navigation>
+
+	<fragment android:id="@+id/fragment_post"
+		android:name="org.openklas.ui.post.PostFragment"
+		tools:layout="@layout/post_fragment">
+
+		<argument
+			android:name="postType"
+			app:nullable="false"
+			app:argType=".klas.model.PostType" />
+
+		<argument
+			android:name="boardNo"
+			app:nullable="false"
+			app:argType="integer" />
+
+		<argument
+			android:name="masterNo"
+			app:nullable="false"
+			app:argType="integer" />
+
+		<argument
+			android:name="semester"
+			app:nullable="false"
+			app:argType="string" />
+
+		<argument
+			android:name="subject"
+			app:nullable="false"
+			app:argType="string" />
+
+	</fragment>
 
 </navigation>

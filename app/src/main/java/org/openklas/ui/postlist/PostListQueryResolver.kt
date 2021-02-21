@@ -19,6 +19,7 @@ package org.openklas.ui.postlist
  */
 
 import org.openklas.klas.model.BriefSubject
+import org.openklas.klas.model.PostType
 import org.openklas.klas.model.Semester
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.helper.PostListQuery

@@ -1,10 +1,5 @@
 package org.openklas.utils.helper
 
-import org.openklas.klas.model.BriefSubject
-import org.openklas.klas.model.Semester
-import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.ui.postlist.PostType
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -22,6 +17,11 @@ import org.openklas.ui.postlist.PostType
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+import org.openklas.klas.model.BriefSubject
+import org.openklas.klas.model.Semester
+import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.klas.model.PostType
 
 data class PostListQuery(
 	val semester: Semester,

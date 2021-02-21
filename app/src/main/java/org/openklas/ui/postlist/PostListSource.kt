@@ -22,6 +22,7 @@ import androidx.paging.PageKeyedDataSource
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.openklas.klas.model.Board
+import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.helper.PostListQuery
 import org.openklas.utils.helper.PostListQueryCallback

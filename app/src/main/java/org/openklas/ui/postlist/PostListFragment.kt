@@ -24,17 +24,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
+import org.openklas.klas.model.PostType
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class PostListFragment: BaseFragment() {
-	private val postListArgs by navArgs<PostListFragmentArgs>()
+	private val args by navArgs<PostListFragmentArgs>()
 	private val viewModel: PostListViewModel by viewModels()
 
 	private lateinit var binding: PostListFragmentBinding
@@ -43,7 +45,7 @@ class PostListFragment: BaseFragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		configureTitle(resources.getString(when(postListArgs.type) {
+		configureTitle(resources.getString(when(args.type) {
 			PostType.NOTICE -> R.string.course_notice
 			PostType.LECTURE_MATERIAL -> R.string.course_material
 			PostType.QNA -> R.string.course_qna
@@ -59,11 +61,17 @@ class PostListFragment: BaseFragment() {
 		prepareViewModel(viewModel)
 		if(!viewModel.hasQuery()) {
 			// empty semester and subject delegates decision to view model
-			viewModel.setQuery("", "", postListArgs.type)
+			viewModel.setQuery("", "", args.type)
 		}
 
 		val adapter = PostListAdapter {
-			// TODO navigate to post content fragment
+			// semester and subject must be resolved at this time
+			val semester = viewModel.currentSemester.value ?: return@PostListAdapter
+			val subject = viewModel.subject.value ?: return@PostListAdapter
+
+			findNavController().navigate(PostListFragmentDirections.actionPostlsPost(
+				args.type, it.boardNo, it.masterNo, semester.id, subject.id
+			))
 		}
 
 		binding.rvPosts.adapter = adapter

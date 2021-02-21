@@ -28,6 +28,28 @@
 	<string name="common_home_homework_icon">숙제의 눈물 아이콘</string>
 	<string name="common_home_online_video_icon">온라인 콘텐츠 아이콘</string>
 
+	<string name="common_left_time_soon">곧</string>
+	<plurals name="common_left_time_minute">
+		<item quantity="one">1분</item>
+		<item quantity="other">%1$d분</item>
+	</plurals>
+	<plurals name="common_left_time_hour">
+		<item quantity="one">1시간</item>
+		<item quantity="other">%1$d시간</item>
+	</plurals>
+	<string name="common_time_moment_ago">방금 전</string>
+	<plurals name="common_time_minutes_ago">
+		<item quantity="other">%1$d분 전</item>
+	</plurals>
+	<plurals name="common_time_hours_ago">
+		<item quantity="other">%1$d시간 전</item>
+	</plurals>
+	<plurals name="common_time_day_ago">
+		<item quantity="one">하루 전</item>
+		<item quantity="two">이틀 전</item>
+		<item quantity="other">%1$s일 전</item>
+	</plurals>
+
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
 	<string name="notification">Notifications</string>
@@ -61,15 +83,6 @@
 	<string name="home_no_video">표시할 강의가 없어요</string>
 	<string name="home_homework_show_more">남은 과제 %d</string>
 	<string name="home_online_video_show_more">남은 강의 %d</string>
-	<string name="home_left_time_soon">곧</string>
-	<plurals name="home_left_time_minute">
-		<item quantity="one">1분</item>
-		<item quantity="other">%1$d분</item>
-	</plurals>
-	<plurals name="home_left_time_hour">
-		<item quantity="one">1시간</item>
-		<item quantity="other">%1$d시간</item>
-	</plurals>
 
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>

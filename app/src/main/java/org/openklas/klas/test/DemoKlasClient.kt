@@ -31,6 +31,7 @@ import org.openklas.klas.model.LectureMethod
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.LectureType
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Professor
 import org.openklas.klas.model.ScoreWeights
 import org.openklas.klas.model.Semester
@@ -99,6 +100,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
+	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		TODO("Not yet implemented")
+	}
+
 	override fun getLectureMaterials(
 		semester: String,
 		subjectId: String,
@@ -111,12 +116,20 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
+	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		TODO("Not yet implemented")
+	}
+
 	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
 			Thread.sleep(NETWORK_DELAY)
 
 			Board(arrayOf(), Board.PageInfo(1, 0, 0, 1))
 		}
+	}
+
+	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		TODO("Not yet implemented")
 	}
 
 	override fun getSyllabusList(

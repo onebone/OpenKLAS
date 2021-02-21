@@ -24,6 +24,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -50,12 +51,24 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
+	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klas.getNotice(boardNo, masterNo)
+	}
+
 	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return klas.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
+	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klas.getQna(boardNo, masterNo)
+	}
+
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return klas.getLectureMaterials(semester, subjectId, page, criteria, keyword)
+	}
+
+	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klas.getLectureMaterial(boardNo, masterNo)
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)

@@ -25,6 +25,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -61,12 +62,24 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
 	}
 
+	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klasDataSource.getNotice(boardNo, masterNo).compose(AsyncTransformer())
+	}
+
 	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
 	}
 
+	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klasDataSource.getQna(boardNo, masterNo).compose(AsyncTransformer())
+	}
+
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	}
+
+	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return klasDataSource.getLectureMaterial(boardNo, masterNo).compose(AsyncTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

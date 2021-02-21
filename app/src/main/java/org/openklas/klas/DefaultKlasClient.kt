@@ -26,6 +26,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -35,6 +36,7 @@ import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestLectureSchedules
 import org.openklas.klas.request.RequestLectureStudents
 import org.openklas.klas.request.RequestOnlineContents
+import org.openklas.klas.request.RequestPostContent
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
@@ -97,16 +99,28 @@ class DefaultKlasClient @Inject constructor(
 		)).compose(SessionValidateTransformer())
 	}
 
+	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	}
+
 	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.materials(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		)).compose(SessionValidateTransformer())
 	}
 
+	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	}
+
 	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		)).compose(SessionValidateTransformer())
+	}
+
+	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

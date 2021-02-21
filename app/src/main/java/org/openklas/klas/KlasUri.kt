@@ -29,6 +29,10 @@ object KlasUri {
 	const val STD_MATERIAL_LIST = "$ROOT_URI/std/lis/sport/6972896bfe72408eb72926780e85d041/BoardStdList.do"
 	const val STD_QNA_LIST = "$ROOT_URI/std/lis/sport/573f918c23984ae8a88c398051bb1263/BoardStdList.do"
 
+	const val STD_NOTICE_CONTENT = "$ROOT_URI/std/lis/sport/d052b8f845784c639f036b102fdc3023/BoardStdView.do"
+	const val STD_MATERIAL_CONTENT = "$ROOT_URI/std/lis/sport/6972896bfe72408eb72926780e85d041/BoardStdView.do"
+	const val STD_QNA_CONTENT = "$ROOT_URI/std/lis/sport/573f918c23984ae8a88c398051bb1263/BoardQnaStdView.do"
+
 	const val STD_SYLLABUS_LIST = "$ROOT_URI/std/cps/atnlc/LectrePlanStdList.do"
 	const val STD_SYLLABUS = "$ROOT_URI/std/cps/atnlc/LectrePlanData.do"
 	const val STD_TEACHING_ASSISTANT = "$ROOT_URI/std/cps/atnlc/LectreAstnt.do"

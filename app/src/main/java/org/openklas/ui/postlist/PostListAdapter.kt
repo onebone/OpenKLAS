@@ -26,7 +26,9 @@ import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.PostItemBinding
 import org.openklas.klas.model.Board
 
-class PostListAdapter: PagedListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
+class PostListAdapter(
+	private val onClickEntryListener: (Board.Entry) -> Unit
+): PagedListAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 	}
@@ -35,12 +37,14 @@ class PostListAdapter: PagedListAdapter<Board.Entry, PostListAdapter.ViewHolder>
 		holder.bind(getItem(position))
 	}
 
-	class ViewHolder(val binding: PostItemBinding): RecyclerView.ViewHolder(binding.root) {
+	inner class ViewHolder(val binding: PostItemBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(entry: Board.Entry?) {
 			binding.post = entry
 
 			binding.root.setOnClickListener {
-				// TODO navigate to post content
+				if(entry != null) {
+					onClickEntryListener(entry)
+				}
 			}
 		}
 	}

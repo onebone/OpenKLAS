@@ -23,6 +23,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -34,8 +35,11 @@ interface KlasDataSource {
 	fun getHome(semester: String): Single<Home>
 	fun getSemesters(): Single<Array<Semester>>
 	fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite>
 	fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
 	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite>
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 	fun getSyllabus(subjectId: String): Single<Syllabus>
 	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>

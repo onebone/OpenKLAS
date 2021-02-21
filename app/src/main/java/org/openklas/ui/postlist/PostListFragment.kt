@@ -62,7 +62,10 @@ class PostListFragment: BaseFragment() {
 			viewModel.setQuery("", "", postListArgs.type)
 		}
 
-		val adapter = PostListAdapter()
+		val adapter = PostListAdapter {
+			// TODO navigate to post content fragment
+		}
+
 		binding.rvPosts.adapter = adapter
 
 		viewModel.posts.observe(viewLifecycleOwner) {

@@ -24,6 +24,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
+import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -32,6 +33,7 @@ import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestLectureSchedules
 import org.openklas.klas.request.RequestLectureStudents
 import org.openklas.klas.request.RequestOnlineContents
+import org.openklas.klas.request.RequestPostContent
 import org.openklas.klas.request.RequestPostList
 import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
@@ -59,11 +61,20 @@ interface KlasService {
 	@POST(KlasUri.STD_NOTICE_LIST)
 	fun notices(@Body payload: RequestPostList): Single<Response<Board>>
 
+	@POST(KlasUri.STD_NOTICE_CONTENT)
+	fun notice(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+
 	@POST(KlasUri.STD_MATERIAL_LIST)
 	fun materials(@Body payload: RequestPostList): Single<Response<Board>>
 
+	@POST(KlasUri.STD_MATERIAL_CONTENT)
+	fun material(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+
 	@POST(KlasUri.STD_QNA_LIST)
 	fun qnas(@Body payload: RequestPostList): Single<Response<Board>>
+
+	@POST(KlasUri.STD_QNA_CONTENT)
+	fun qna(@Body payload: RequestPostContent): Single<Response<PostComposite>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
 	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>

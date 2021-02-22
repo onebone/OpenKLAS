@@ -20,6 +20,7 @@ package org.openklas.klas.service
 
 import io.reactivex.Single
 import org.openklas.klas.KlasUri
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
@@ -29,6 +30,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
+import org.openklas.klas.request.RequestAttachments
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestLectureSchedules
 import org.openklas.klas.request.RequestLectureStudents
@@ -75,6 +77,9 @@ interface KlasService {
 
 	@POST(KlasUri.STD_QNA_CONTENT)
 	fun qna(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+
+	@POST(KlasUri.STD_ATTACHMENTS)
+	fun attachments(@Body payload: RequestAttachments): Single<Response<Array<Attachment>>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
 	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>

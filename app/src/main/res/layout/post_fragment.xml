@@ -68,7 +68,10 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
+				app:layout_constrainedWidth="true"
+				app:layout_constraintHorizontal_bias="0.0"
 				android:layout_marginTop="8dp"
 				android:layout_marginStart="12dp"
 				android:textSize="21sp"
@@ -109,7 +112,9 @@
 				app:layout_constraintTop_toBottomOf="@id/tv_post_author"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
-				android:layout_marginTop="8dp" />
+				android:layout_marginTop="8dp"
+				app:items="@{viewModel.attachments}"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 			<View
 				android:id="@+id/v_divider"

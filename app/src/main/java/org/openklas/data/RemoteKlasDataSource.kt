@@ -20,6 +20,7 @@ package org.openklas.data
 
 import io.reactivex.Single
 import org.openklas.klas.KlasClient
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
@@ -69,6 +70,13 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
 		return klas.getLectureMaterial(boardNo, masterNo)
+	}
+
+	override fun getAttachments(
+		storageId: String,
+		attachmentId: String
+	): Single<Array<Attachment>> {
+		return klas.getAttachments(storageId, attachmentId)
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)

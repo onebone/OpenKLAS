@@ -22,6 +22,7 @@ import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
@@ -32,6 +33,7 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.klas.request.RequestAttachments
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestLectureSchedules
 import org.openklas.klas.request.RequestLectureStudents
@@ -121,6 +123,14 @@ class DefaultKlasClient @Inject constructor(
 
 	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
 		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	}
+
+	override fun getAttachments(
+		storageId: String,
+		attachmentId: String
+	): Single<Array<Attachment>> {
+		return service.attachments(RequestAttachments(storageId = storageId, attachmentId = attachmentId))
+			.compose(SessionValidateTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

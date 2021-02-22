@@ -20,6 +20,7 @@ package org.openklas.klas.test
 
 import io.reactivex.Single
 import org.openklas.klas.KlasClient
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Book
 import org.openklas.klas.model.BriefNotice
@@ -129,6 +130,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	}
 
 	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+		TODO("Not yet implemented")
+	}
+
+	override fun getAttachments(
+		storageId: String,
+		attachmentId: String
+	): Single<Array<Attachment>> {
 		TODO("Not yet implemented")
 	}
 

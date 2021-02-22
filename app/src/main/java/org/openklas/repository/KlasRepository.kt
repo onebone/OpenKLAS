@@ -19,6 +19,7 @@ package org.openklas.repository
  */
 
 import io.reactivex.Single
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
@@ -40,6 +41,7 @@ interface KlasRepository {
 	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
 	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 	fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite>
+	fun getAttachments(storageId: String, attachmentId: String): Single<Array<Attachment>>
 	fun getSyllabusList(
 		year: Int,
 		term: Int,

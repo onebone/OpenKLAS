@@ -21,6 +21,7 @@ package org.openklas.repository
 import io.reactivex.Single
 import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
@@ -80,6 +81,13 @@ class DefaultKlasRepository @Inject constructor(
 
 	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
 		return klasDataSource.getLectureMaterial(boardNo, masterNo).compose(AsyncTransformer())
+	}
+
+	override fun getAttachments(
+		storageId: String,
+		attachmentId: String
+	): Single<Array<Attachment>> {
+		return klasDataSource.getAttachments(storageId, attachmentId).compose(AsyncTransformer())
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

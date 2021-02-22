@@ -26,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.PostType
@@ -41,10 +42,33 @@ class PostViewModel @Inject constructor(
 	SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 
+	private companion object {
+		const val STORAGE_ID = "CLS_BOARD"
+	}
+
 	private val postComposite = MutableLiveData<PostComposite>()
 
 	val post = Transformations.map(postComposite) {
 		it.post
+	}
+
+	val attachments = Transformations.switchMap(post) {
+		MutableLiveData<Array<Attachment>>().apply {
+			if(it.attachmentId == null) {
+				value = arrayOf()
+				return@apply
+			}
+
+			addDisposable(requestWithSession {
+				klasRepository.getAttachments(STORAGE_ID, it.attachmentId)
+			}.subscribe { v, err ->
+				if(err == null) {
+					value = v
+				}else{
+					_error.value = err
+				}
+			})
+		}
 	}
 
 	private val currentSubjectId = MutableLiveData<String>()

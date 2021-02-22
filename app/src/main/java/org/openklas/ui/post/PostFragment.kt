@@ -28,6 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostFragmentBinding
+import org.openklas.klas.model.PostType
+import org.openklas.ui.shared.AttachmentAdapter
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -39,7 +41,13 @@ class PostFragment: BaseFragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		configureTitle(resources.getString(R.string.course_notice), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
+		configureTitle(resources.getString(
+			when(args.postType) {
+				PostType.NOTICE -> R.string.course_notice
+				PostType.LECTURE_MATERIAL -> R.string.course_material
+				PostType.QNA -> R.string.course_qna
+			}
+		), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
 
 		val binding = PostFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = viewLifecycleOwner
@@ -51,6 +59,8 @@ class PostFragment: BaseFragment() {
 		viewModel.setSubjectId(args.subject)
 		viewModel.setCurrentSemester(args.semester)
 		viewModel.fetchPost(args.postType, args.boardNo, args.masterNo)
+
+		binding.rvAttachments.adapter = AttachmentAdapter()
 
 		return binding.root
 	}

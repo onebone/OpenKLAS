@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="android.text.format.Formatter" />
+
+		<variable
+			name="entry"
+			type="org.openklas.klas.model.Attachment" />
+
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?android:selectableItemBackground">
+
+		<ImageView
+			android:id="@+id/icon_file"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="12dp"
+			app:srcCompat="@drawable/ic_sharp_attach_file_24"
+			app:tint="@color/primary"
+			android:rotation="30"
+			tools:ignore="ContentDescription" />
+
+		<TextView
+			android:id="@+id/tv_file_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toEndOf="@id/icon_file"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constrainedWidth="true"
+			app:layout_constraintHorizontal_bias="0.0"
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="8dp"
+			android:text="@{entry.fileName}"
+			tools:text="[후생성] 에어리어 스트레스 대응 공문.pdf" />
+
+		<TextView
+			android:id="@+id/tv_file_size"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/tv_file_name"
+			app:layout_constraintStart_toEndOf="@id/icon_file"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constrainedWidth="true"
+			app:layout_constraintHorizontal_bias="0.0"
+			android:layout_marginTop="4dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginBottom="4dp"
+			android:textColor="@color/file_size"
+			android:text="@{Formatter.formatFileSize(context, entry.fileSize)}"
+			tools:text="122kB" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

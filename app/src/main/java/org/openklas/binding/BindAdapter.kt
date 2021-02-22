@@ -23,6 +23,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -120,5 +121,13 @@ object BindAdapter {
 			resources.getString(R.string.lecture_schedule_format)
 				.format(it.dayLabel, it.periods.joinToString(","), it.classroom ?: nullClassroom)
 		})
+	}
+
+	@JvmStatic
+	@BindingAdapter("html")
+	fun setTextViewHtml(textView: TextView, html: String?) {
+		if(html == null) return
+
+		textView.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
 	}
 }

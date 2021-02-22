@@ -25,8 +25,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
+import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostFragmentBinding
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class PostFragment: BaseFragment() {
@@ -37,6 +39,8 @@ class PostFragment: BaseFragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(resources.getString(R.string.course_notice), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
+
 		val binding = PostFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = viewLifecycleOwner
 		}

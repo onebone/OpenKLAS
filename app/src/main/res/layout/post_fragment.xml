@@ -23,12 +23,9 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<import type="android.text.Html" />
-
 		<variable
 			name="viewModel"
 			type="org.openklas.ui.post.PostViewModel" />
-
 	</data>
 
 	<ScrollView
@@ -133,6 +130,8 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				android:layout_margin="12dp"
+				android:autoLink="web"
+				app:html="@{viewModel.post.content}"
 				tools:text="내용내용 ㅎ" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>

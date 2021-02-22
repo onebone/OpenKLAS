@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenKLAS">
-        <activity android:name=".ui.common.MainActivity">
+        <activity android:name=".ui.shared.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

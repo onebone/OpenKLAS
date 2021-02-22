@@ -1,4 +1,4 @@
-package org.openklas.ui.common
+package org.openklas.ui.shared
 
 /*
  * OpenKLAS

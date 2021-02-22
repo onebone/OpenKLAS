@@ -20,13 +20,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	tools:context=".ui.common.MainActivity">
+	tools:context=".ui.shared.MainActivity">
 
 	<data>
 
 		<variable
 			name="view"
-			type="org.openklas.ui.common.MainActivity" />
+			type="org.openklas.ui.shared.MainActivity" />
 
 	</data>
 

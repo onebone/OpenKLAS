@@ -1,4 +1,4 @@
-package org.openklas.ui.common
+package org.openklas.ui.shared
 
 import androidx.hilt.lifecycle.ViewModelInject
 import org.openklas.base.BaseViewModel

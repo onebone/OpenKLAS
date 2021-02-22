@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
-import org.openklas.ui.common.AppbarHolder
+import org.openklas.ui.shared.AppbarHolder
 import org.openklas.utils.EventObserver
 import org.openklas.widget.AppbarView
 

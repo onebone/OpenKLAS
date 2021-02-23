@@ -60,7 +60,7 @@ class PostFragment: BaseFragment() {
 		viewModel.setCurrentSemester(args.semester)
 		viewModel.fetchPost(args.postType, args.boardNo, args.masterNo)
 
-		binding.rvAttachments.adapter = AttachmentAdapter()
+		binding.rvAttachments.adapter = AttachmentAdapter(permissionHolder!!)
 
 		return binding.root
 	}

@@ -6,6 +6,7 @@
     <uses-sdk tools:overrideLibrary="com.microsoft.identity.msal" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MainApplication"
@@ -14,7 +15,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OpenKLAS">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.OpenKLAS"
+        tools:targetApi="m">
         <activity android:name=".ui.shared.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,28 +18,35 @@ package org.openklas.ui.shared
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
+import org.openklas.base.PermissionExecutor
+import org.openklas.base.PermissionHolder
 import org.openklas.databinding.MainActivityBinding
 import org.openklas.ui.home.HomeFragmentDirections
 import org.openklas.klas.model.PostType
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
-class MainActivity: AppCompatActivity(), AppbarHolder {
+class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 	private lateinit var binding: MainActivityBinding
 	private val viewModel by viewModels<ActivityViewModel>()
 	private lateinit var navController: NavController
+
+	private var permissionRequestCode = 0
+	private val permissionExecutors = mutableMapOf<Int, Pair<PermissionExecutor, PermissionExecutor>>()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -114,5 +121,45 @@ class MainActivity: AppCompatActivity(), AppbarHolder {
 
 			return true
 		}
+	}
+
+	override fun askPermissionAndDo(
+		permissions: Array<String>,
+		executor: PermissionExecutor,
+		deniedExecutor: PermissionExecutor
+	) {
+		if(permissions.all { hasPermission(it) }) {
+			executor(this)
+			return
+		}
+
+		val requestCode = permissionRequestCode++
+		ActivityCompat.requestPermissions(this, permissions, requestCode)
+		permissionExecutors[requestCode] = Pair(executor, deniedExecutor)
+	}
+
+	override fun hasPermission(permission: String): Boolean {
+		return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+	}
+
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
+		val executors = permissionExecutors[requestCode]
+		if(executors != null) {
+			if(grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+				executors.first(this)
+			}else{
+				executors.second(this)
+			}
+
+			permissionExecutors.remove(requestCode)
+
+			return
+		}
+
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 	}
 }

@@ -31,11 +31,18 @@ abstract class BaseFragment: Fragment() {
 	private var appbarHolder: AppbarHolder? = null
 	private var appbarConfiguration: AppbarConfiguration? = null
 
+	protected var permissionHolder: PermissionHolder? = null
+		private set
+
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
 
 		if(context is AppbarHolder) {
 			appbarHolder = context
+		}
+
+		if(context is PermissionHolder) {
+			permissionHolder = context
 		}
 	}
 

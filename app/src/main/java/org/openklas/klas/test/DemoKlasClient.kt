@@ -91,47 +91,47 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
-			Board(Array(15) {
-				Board.Entry(
-					null, -1, "01", 0, 0, "01", 1, 5,
-					isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
-					"사건의 지평선 접근시 주의사항 ${15 * page + it}", isPinned = false, "아인슈타인", 2020
-				)
-			}, Board.PageInfo(page, 15, 75, 5))
-		}
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(Board(Array(15) {
+			Board.Entry(
+				null, -1, "01", 0, 0, "01", 1, 5,
+				isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
+				"사건의 지평선 접근시 주의사항 ${15 * page + it}", isPinned = false, "아인슈타인", 2020
+			)
+		}, Board.PageInfo(page, 15, 75, 5)))
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		TODO("Not yet implemented")
 	}
 
-	override fun getLectureMaterials(
+	override suspend fun getLectureMaterials(
 		semester: String,
 		subjectId: String,
 		page: Int,
 		criteria: BoardSearchCriteria,
 		keyword: String?
-	): Single<Board> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	): Result<Board> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			Board(arrayOf(), Board.PageInfo(1, 0, 0, 1))
-		}
+		)
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		TODO("Not yet implemented")
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
-			Thread.sleep(NETWORK_DELAY)
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		delay(NETWORK_DELAY)
 
-			Board(arrayOf(), Board.PageInfo(1, 0, 0, 1))
-		}
+		return Result.Success(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		TODO("Not yet implemented")
 	}
 
@@ -144,13 +144,15 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Result.Success(arrayOf())
 	}
 
-	override fun getSyllabusList(
+	override suspend fun getSyllabusList(
 		year: Int,
 		term: Int,
 		keyword: String,
 		professor: String
-	): Single<Array<SyllabusSummary>> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	): Result<Array<SyllabusSummary>> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			arrayOf(
 				SyllabusSummary(
 					"01", "전선", "5개기본호흡", 1, 2021, "히키가야 하치만",
@@ -165,7 +167,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					null, null
 				)
 			)
-		}
+		)
 	}
 
 	override fun getSyllabus(subjectId: String): Single<Syllabus> {

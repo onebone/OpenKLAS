@@ -97,34 +97,34 @@ class DefaultKlasClient @Inject constructor(
 		return service.semesters().compose(SessionValidateTransformer())
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.notices(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.materials(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
 	override suspend fun getAttachments(
@@ -135,9 +135,9 @@ class DefaultKlasClient @Inject constructor(
 			.validateSession()
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
-			year = year, term = term, keyword = keyword, professor = professor)).compose(SessionValidateTransformer())
+			year = year, term = term, keyword = keyword, professor = professor)).validateSession()
 	}
 
 	override fun getSyllabus(subjectId: String): Single<Syllabus> {

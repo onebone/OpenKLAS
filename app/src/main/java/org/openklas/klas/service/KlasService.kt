@@ -61,28 +61,28 @@ interface KlasService {
 	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Response<Array<Semester>>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
-	fun notices(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun notices(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_NOTICE_CONTENT)
-	fun notice(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun notice(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_MATERIAL_LIST)
-	fun materials(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun materials(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_MATERIAL_CONTENT)
-	fun material(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun material(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_QNA_LIST)
-	fun qnas(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun qnas(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_QNA_CONTENT)
-	fun qna(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun qna(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_ATTACHMENTS)
 	suspend fun attachments(@Body payload: RequestAttachments): Response<Array<Attachment>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
-	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>
+	suspend fun syllabusList(@Body payload: RequestSyllabusSummary): Response<Array<SyllabusSummary>>
 
 	@POST(KlasUri.STD_SYLLABUS)
 	fun syllabus(@Body payload: RequestSyllabus): Single<Response<Syllabus>>

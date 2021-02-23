@@ -18,6 +18,7 @@ package org.openklas.ui.post
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -67,10 +68,9 @@ class PostViewModel @Inject constructor(
 					klasRepository.getAttachments(STORAGE_ID, it.attachmentId)
 				}
 
-				if(result is Result.Error) {
-					_error.value = result.error
-				}else if(result is Result.Success) {
-					value = result.value
+				when(result) {
+					is Result.Success -> value = result.value
+					is Result.Error -> _error.value = result.error
 				}
 			}
 		}
@@ -101,19 +101,21 @@ class PostViewModel @Inject constructor(
 	val error: LiveData<Throwable> = _error
 
 	fun fetchPost(type: PostType, boardNo: Int, masterNo: Int) {
-		addDisposable(requestWithSessionRx {
-			when(type) {
-				PostType.NOTICE -> klasRepository.getNotice(boardNo, masterNo)
-				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(boardNo, masterNo)
-				PostType.QNA -> klasRepository.getQna(boardNo, masterNo)
+		viewModelScope.launch {
+			val result = requestWithSession {
+				when(type) {
+					PostType.NOTICE -> klasRepository.getNotice(boardNo, masterNo)
+					PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(boardNo, masterNo)
+					PostType.QNA -> klasRepository.getQna(boardNo, masterNo)
+				}
 			}
-		}.subscribe { v, err ->
-			if(err == null) {
-				postComposite.value = v
-			}else{
-				_error.value = err
+
+			@SuppressLint("NullSafeMutableLiveData")
+			when(result) {
+				is Result.Success -> postComposite.value = result.value
+				is Result.Error -> _error.value = result.error
 			}
-		})
+		}
 	}
 
 	fun setSubjectId(id: String) {

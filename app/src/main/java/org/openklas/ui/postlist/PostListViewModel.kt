@@ -22,6 +22,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -62,7 +63,7 @@ class PostListViewModel @Inject constructor(
 	val posts = Transformations.switchMap(subject) {
 		LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
 			override fun create(): DataSource<Int, Board.Entry> =
-				PostListSource(klasRepository, compositeDisposable, queryResolver) {
+				PostListSource(klasRepository, viewModelScope, queryResolver) {
 					pageInfo.value = it
 				}
 		}, PagedList.Config.Builder().setPageSize(15).build()).build()

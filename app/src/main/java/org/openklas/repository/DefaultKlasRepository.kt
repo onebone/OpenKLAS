@@ -60,28 +60,28 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getSemesters().compose(AsyncTransformer())
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getNotice(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getNotice(boardNo, masterNo)
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getQna(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getQna(boardNo, masterNo)
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getLectureMaterial(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getLectureMaterial(boardNo, masterNo)
 	}
 
 	override suspend fun getAttachments(
@@ -91,8 +91,8 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getAttachments(storageId, attachmentId)
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
-		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
+		return klasDataSource.getSyllabusList(year, term, keyword, professor)
 	}
 
 	override fun getSyllabus(subjectId: String): Single<Syllabus> {

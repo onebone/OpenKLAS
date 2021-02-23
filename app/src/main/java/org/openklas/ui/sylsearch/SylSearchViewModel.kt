@@ -47,7 +47,7 @@ class SylSearchViewModel @Inject constructor(
 	}
 
 	private fun fetchSyllabus(year: Int, term: Int, keyword: String, professor: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getSyllabusList(year, term, keyword, professor)
 		}.subscribe { v, err ->
 			if (err == null) {

@@ -45,6 +45,8 @@ import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.service.KlasService
 import org.openklas.net.transformer.SessionValidateTransformer
+import org.openklas.utils.Result
+import org.openklas.utils.validateSession
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -125,12 +127,12 @@ class DefaultKlasClient @Inject constructor(
 		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
+	): Result<Array<Attachment>> {
 		return service.attachments(RequestAttachments(storageId = storageId, attachmentId = attachmentId))
-			.compose(SessionValidateTransformer())
+			.validateSession()
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

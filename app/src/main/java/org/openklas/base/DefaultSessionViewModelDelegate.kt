@@ -24,6 +24,7 @@ import io.reactivex.Single
 import org.openklas.klas.error.KlasSessionInvalidError
 import org.openklas.repository.SessionRepository
 import org.openklas.utils.Event
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultSessionViewModelDelegate @Inject constructor(
@@ -35,14 +36,14 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 
 	override val mustAuthenticate = MutableLiveData<Event<Unit>>()
 
-	override fun <T> requestWithSession(f: () -> Single<T>): Single<T> {
+	override fun <T> requestWithSessionRx(f: () -> Single<T>): Single<T> {
 		return f().onErrorResumeNext { err ->
 			Log.e(TAG, "requestWithSession:", err)
 
 			if(err is KlasSessionInvalidError) {
 				// try logging in automatically if session is invalid
 				// and send original request one more time
-				sessionRepository.tryLogin().flatMap {
+				sessionRepository.tryLoginRx().flatMap {
 					if(it) {
 						f()
 					}else{
@@ -54,5 +55,26 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 				Single.error(err)
 			}
 		}
+	}
+
+	override suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T> {
+		val result = f()
+		if(result is Result.Error) {
+			val error = result.error
+			if(error is KlasSessionInvalidError) {
+				// try logging in automatically if session is invalid
+				// and send original request one more time
+				return if(sessionRepository.tryLogin()) {
+					f()
+				}else{
+					mustAuthenticate.value = Event(Unit)
+					Result.Error(KlasSessionInvalidError())
+				}
+			}
+
+			// if an error is other than invalid session, just return the original one
+		}
+
+		return result
 	}
 }

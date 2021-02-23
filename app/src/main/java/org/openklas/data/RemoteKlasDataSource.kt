@@ -31,6 +31,7 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class RemoteKlasDataSource @Inject constructor(
@@ -72,10 +73,10 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getLectureMaterial(boardNo, masterNo)
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
+	): Result<Array<Attachment>> {
 		return klas.getAttachments(storageId, attachmentId)
 	}
 

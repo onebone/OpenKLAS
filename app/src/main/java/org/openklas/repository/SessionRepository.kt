@@ -21,5 +21,6 @@ package org.openklas.repository
 import io.reactivex.Single
 
 interface SessionRepository {
-	fun tryLogin(): Single<Boolean>
+	fun tryLoginRx(): Single<Boolean>
+	suspend fun tryLogin(): Boolean
 }

@@ -123,7 +123,7 @@ class HomeViewModel @Inject constructor(
 	val error: LiveData<Throwable> = _error
 
 	private fun fetchHome(semester: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getHome(semester)
 		}.subscribe { v, err ->
 			if(err == null) {
@@ -136,7 +136,7 @@ class HomeViewModel @Inject constructor(
 
 	private fun fetchOnlineContents(currentSemester: Semester) {
 		addDisposable(Single.zip(currentSemester.subjects.map { subject ->
-			requestWithSession {
+			requestWithSessionRx {
 				klasRepository.getOnlineContentList(currentSemester.id, subject.id).map { entries ->
 					entries.map { Pair(subject, it) }
 				}

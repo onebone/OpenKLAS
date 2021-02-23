@@ -33,6 +33,7 @@ import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.net.transformer.AsyncTransformer
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
@@ -83,11 +84,11 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getLectureMaterial(boardNo, masterNo).compose(AsyncTransformer())
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
-		return klasDataSource.getAttachments(storageId, attachmentId).compose(AsyncTransformer())
+	): Result<Array<Attachment>> {
+		return klasDataSource.getAttachments(storageId, attachmentId)
 	}
 
 	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {

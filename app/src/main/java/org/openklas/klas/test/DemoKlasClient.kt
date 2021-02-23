@@ -19,6 +19,7 @@ package org.openklas.klas.test
  */
 
 import io.reactivex.Single
+import kotlinx.coroutines.delay
 import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -45,6 +46,7 @@ import org.openklas.klas.model.Tutor
 import org.openklas.klas.model.VL
 import org.openklas.klas.model.Week
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -133,11 +135,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		TODO("Not yet implemented")
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
-		TODO("Not yet implemented")
+	): Result<Array<Attachment>> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(arrayOf())
 	}
 
 	override fun getSyllabusList(

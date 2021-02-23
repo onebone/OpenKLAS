@@ -28,11 +28,17 @@ class DefaultSessionRepository @Inject constructor(
 	private val sessionDataSource: SessionDataSource,
 	private val accountDataSource: AccountDataSource
 ): SessionRepository {
-	override fun tryLogin(): Single<Boolean> {
+	override fun tryLoginRx(): Single<Boolean> {
 		val account = accountDataSource.getAccount() ?: return Single.just(false)
 
 		return sessionDataSource.tryLogin(account.username, account.password).compose(
 			AsyncTransformer()
 		)
+	}
+
+	override suspend fun tryLogin(): Boolean {
+		val account = accountDataSource.getAccount() ?: return false
+
+		return sessionDataSource.tryLogin(account.username, account.password).blockingGet()
 	}
 }

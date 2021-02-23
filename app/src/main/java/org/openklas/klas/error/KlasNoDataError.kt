@@ -1,4 +1,4 @@
-package org.openklas.base
+package org.openklas.klas.error
 
 /*
  * OpenKLAS
@@ -18,15 +18,5 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Single
-import org.openklas.utils.Event
-import org.openklas.utils.Result
-
-interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Event<Unit>>
-
-	@Deprecated("We are dropping RxJava in favor of Kotlin coroutine")
-	fun <T> requestWithSessionRx(f: () -> Single<T>): Single<T>
-	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
-}
+// error indicating that no body is returned from the server
+class KlasNoDataError: Throwable()

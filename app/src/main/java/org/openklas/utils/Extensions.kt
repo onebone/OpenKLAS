@@ -1,4 +1,4 @@
-package org.openklas.base
+package org.openklas.utils
 
 /*
  * OpenKLAS
@@ -18,15 +18,16 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Single
-import org.openklas.utils.Event
-import org.openklas.utils.Result
+import org.openklas.klas.error.KlasNoDataError
+import org.openklas.klas.error.KlasSessionInvalidError
+import retrofit2.Response
 
-interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Event<Unit>>
+fun <T> Response<T>.validateSession(): Result<T> {
+	if(raw().isRedirect) {
+		return Result.Error(KlasSessionInvalidError())
+	}
 
-	@Deprecated("We are dropping RxJava in favor of Kotlin coroutine")
-	fun <T> requestWithSessionRx(f: () -> Single<T>): Single<T>
-	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
+	val body = body() ?: return Result.Error(KlasNoDataError())
+
+	return Result.Success(body)
 }

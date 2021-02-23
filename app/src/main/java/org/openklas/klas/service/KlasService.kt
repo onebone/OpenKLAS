@@ -79,7 +79,7 @@ interface KlasService {
 	fun qna(@Body payload: RequestPostContent): Single<Response<PostComposite>>
 
 	@POST(KlasUri.STD_ATTACHMENTS)
-	fun attachments(@Body payload: RequestAttachments): Single<Response<Array<Attachment>>>
+	suspend fun attachments(@Body payload: RequestAttachments): Response<Array<Attachment>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
 	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>

@@ -12,6 +12,7 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 
 interface KlasClient {
 	fun login(username: String, password: String): Single<String>
@@ -32,7 +33,7 @@ interface KlasClient {
 
 	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
 
-	fun getAttachments(storageId: String, attachmentId: String): Single<Array<Attachment>>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
 
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 

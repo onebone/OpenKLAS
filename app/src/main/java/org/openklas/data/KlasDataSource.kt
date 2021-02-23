@@ -30,6 +30,7 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 
 interface KlasDataSource {
 	fun performLogin(username: String, password: String): Single<String>
@@ -41,7 +42,7 @@ interface KlasDataSource {
 	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
 	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
 	fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite>
-	fun getAttachments(storageId: String, attachmentId: String): Single<Array<Attachment>>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
 	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
 	fun getSyllabus(subjectId: String): Single<Syllabus>
 	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>

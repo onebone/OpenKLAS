@@ -81,7 +81,7 @@ class SyllabusViewModel @Inject constructor(
 	val error: LiveData<Throwable> = _error
 
 	fun fetchSyllabus(subjectId: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getSyllabus(subjectId)
 		}.subscribe { v, err ->
 			if(err != null) {
@@ -97,7 +97,7 @@ class SyllabusViewModel @Inject constructor(
 	}
 
 	private fun fetchTeachingAssistants(subjectId: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getTeachingAssistants(subjectId)
 		}.subscribe { v, err ->
 			if(err != null) {
@@ -109,7 +109,7 @@ class SyllabusViewModel @Inject constructor(
 	}
 
 	private fun fetchLectureSchedules(subjectId: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getLectureSchedules(subjectId)
 		}.subscribe { v, err ->
 			if(err != null) {
@@ -121,7 +121,7 @@ class SyllabusViewModel @Inject constructor(
 	}
 
 	private fun fetchLectureStudentsNumber(subjectId: String) {
-		addDisposable(requestWithSession {
+		addDisposable(requestWithSessionRx {
 			klasRepository.getLectureStudentsNumber(subjectId)
 		}.subscribe { v, err ->
 			if(err != null) {

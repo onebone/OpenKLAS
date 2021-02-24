@@ -37,13 +37,13 @@ interface KlasClient {
 
 	suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>>
 
-	fun getSyllabus(subjectId: String): Single<Syllabus>
+	suspend fun getSyllabus(subjectId: String): Result<Syllabus>
 
-	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>
+	suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>>
 
-	fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>>
+	suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>>
 
-	fun getLectureStudentsNumber(subjectId: String): Single<Int>
+	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
 
 	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
 }

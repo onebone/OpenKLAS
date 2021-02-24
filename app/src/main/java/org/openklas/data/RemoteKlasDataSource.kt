@@ -84,19 +84,19 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getSyllabusList(year, term, keyword, professor)
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
 		return klas.getSyllabus(subjectId)
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
 		return klas.getTeachingAssistants(subjectId)
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
 		return klas.getLectureSchedules(subjectId)
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		return klas.getLectureStudentsNumber(subjectId)
 	}
 

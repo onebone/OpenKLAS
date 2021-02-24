@@ -18,10 +18,13 @@ package org.openklas.ui.syllabus
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.LectureSchedule
@@ -31,6 +34,7 @@ import org.openklas.repository.KlasRepository
 import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import org.openklas.ui.syllabus.page.summary.TutorEntry
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 @HiltViewModel
@@ -80,55 +84,65 @@ class SyllabusViewModel @Inject constructor(
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	fun fetchSyllabus(subjectId: String) {
-		addDisposable(requestWithSessionRx {
-			klasRepository.getSyllabus(subjectId)
-		}.subscribe { v, err ->
-			if(err != null) {
-				_error.value = err
-			}else{
-				fetchTeachingAssistants(subjectId)
-				_syllabus.value = v
-			}
-		})
-
-		fetchLectureSchedules(subjectId)
-		fetchLectureStudentsNumber(subjectId)
-	}
-
-	private fun fetchTeachingAssistants(subjectId: String) {
-		addDisposable(requestWithSessionRx {
+	private suspend fun fetchTeachingAssistants(subjectId: String) {
+		val result = requestWithSession {
 			klasRepository.getTeachingAssistants(subjectId)
-		}.subscribe { v, err ->
-			if(err != null) {
-				_error.value = err
-			}else{
-				_teachingAssistants.value = v
-			}
-		})
+		}
+
+		@SuppressLint("NullSafeMutableLiveData")
+		when(result) {
+			is Result.Success -> _teachingAssistants.postValue(result.value)
+			is Result.Error -> _error.postValue(result.error)
+		}
 	}
 
-	private fun fetchLectureSchedules(subjectId: String) {
-		addDisposable(requestWithSessionRx {
+	fun fetchSyllabus(subjectId: String) {
+		viewModelScope.launch {
+			launch {
+				fetchTeachingAssistants(subjectId)
+			}
+
+			launch {
+				fetchLectureSchedules(subjectId)
+			}
+
+			launch {
+				fetchLectureStudentsNumber(subjectId)
+			}
+
+			val result = requestWithSession {
+				klasRepository.getSyllabus(subjectId)
+			}
+
+			@SuppressLint("NullSafeMutableLiveData")
+			when(result) {
+				is Result.Success -> _syllabus.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
+			}
+		}
+	}
+
+	private suspend fun fetchLectureSchedules(subjectId: String) {
+		val result = requestWithSession {
 			klasRepository.getLectureSchedules(subjectId)
-		}.subscribe { v, err ->
-			if(err != null) {
-				_error.value = err
-			}else{
-				_schedules.value = v
-			}
-		})
+		}
+
+		@SuppressLint("NullSafeMutableLiveData")
+		when(result) {
+			is Result.Success -> _schedules.postValue(result.value)
+			is Result.Error -> _error.value = result.error
+		}
 	}
 
-	private fun fetchLectureStudentsNumber(subjectId: String) {
-		addDisposable(requestWithSessionRx {
+	private suspend fun fetchLectureStudentsNumber(subjectId: String) {
+		val result = requestWithSession {
 			klasRepository.getLectureStudentsNumber(subjectId)
-		}.subscribe { v, err ->
-			if(err != null) {
-				_error.value = err
-			}else{
-				_studentsNumber.value = v
-			}
-		})
+		}
+
+		@SuppressLint("NullSafeMutableLiveData")
+		when(result) {
+			is Result.Success -> _studentsNumber.postValue(result.value)
+			is Result.Error -> _error.postValue(result.error)
+		}
 	}
 }

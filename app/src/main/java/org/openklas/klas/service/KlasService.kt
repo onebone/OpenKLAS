@@ -85,16 +85,16 @@ interface KlasService {
 	suspend fun syllabusList(@Body payload: RequestSyllabusSummary): Response<Array<SyllabusSummary>>
 
 	@POST(KlasUri.STD_SYLLABUS)
-	fun syllabus(@Body payload: RequestSyllabus): Single<Response<Syllabus>>
+	suspend fun syllabus(@Body payload: RequestSyllabus): Response<Syllabus>
 
 	@POST(KlasUri.STD_TEACHING_ASSISTANT)
-	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Response<Array<TeachingAssistant>>>
+	suspend fun teachingAssistants(@Body payload: RequestTeachingAssistant): Response<Array<TeachingAssistant>>
 
 	@POST(KlasUri.STD_LECTURE_SCHEDULE)
-	fun lectureSchedules(@Body payload: RequestLectureSchedules): Single<Response<Array<LectureSchedule>>>
+	suspend fun lectureSchedules(@Body payload: RequestLectureSchedules): Response<Array<LectureSchedule>>
 
 	@POST(KlasUri.STD_LECTURE_STUDENTS)
-	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<Response<ResponseLectureStudents>>
+	suspend fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Response<ResponseLectureStudents>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>

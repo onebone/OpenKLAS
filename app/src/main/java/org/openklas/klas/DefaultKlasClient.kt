@@ -140,27 +140,28 @@ class DefaultKlasClient @Inject constructor(
 			year = year, term = term, keyword = keyword, professor = professor)).validateSession()
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
 		return service.syllabus(RequestSyllabus(
 			subjectId = subjectId
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
-		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).compose(SessionValidateTransformer())
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).validateSession()
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).compose(SessionValidateTransformer())
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).validateSession()
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		val number = Random.nextInt(1000, 10000)
 
-		return service.lectureStudentsNumber(RequestLectureStudents(
+		return when(val result = service.lectureStudentsNumber(RequestLectureStudents(
 			subjectId = subjectId, randomNum = number, numText = number
-		)).compose(SessionValidateTransformer()).map {
-			it.students
+		)).validateSession()) {
+			is Result.Success -> Result.Success(result.value.students)
+			is Result.Error -> Result.Error(result.error)
 		}
 	}
 

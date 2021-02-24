@@ -95,20 +95,20 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getSyllabusList(year, term, keyword, professor)
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
-		return klasDataSource.getSyllabus(subjectId).compose(AsyncTransformer())
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+		return klasDataSource.getSyllabus(subjectId)
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
-		return klasDataSource.getTeachingAssistants(subjectId).compose(AsyncTransformer())
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+		return klasDataSource.getTeachingAssistants(subjectId)
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return klasDataSource.getLectureSchedules(subjectId).compose(AsyncTransformer())
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+		return klasDataSource.getLectureSchedules(subjectId)
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
-		return klasDataSource.getLectureStudentsNumber(subjectId).compose(AsyncTransformer())
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+		return klasDataSource.getLectureStudentsNumber(subjectId)
 	}
 
 	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {

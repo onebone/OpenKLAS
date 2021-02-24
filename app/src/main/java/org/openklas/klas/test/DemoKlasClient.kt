@@ -172,8 +172,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			Syllabus(
 				"5개기본호흡", "5 Fundamental Breathing", "W000", 5,
 				"1234", "01", "전선", null, 3, 4,
@@ -199,31 +201,35 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					Week(8, "바람의 호흡 2", "", null)
 				)
 			)
-		}
+		)
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+		delay(NETWORK_DELAY)
+
 		val assistants = arrayOf(
 			TeachingAssistant("유키노시타 유키노", "ooook@shipduck.net", "U202111234W000015")
 		)
 
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+		return Result.Success(
 			assistants.filter { it.subject == subjectId }.toTypedArray()
-		}
+		)
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			arrayOf(
 				LectureSchedule(1, "월", null, intArrayOf(2, 3, 4, 5))
 			)
-		}
+		)
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
-			5
-		}
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(5)
 	}
 
 	override suspend fun getOnlineContentList(

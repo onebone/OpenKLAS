@@ -64,7 +64,7 @@ class PostListViewModel @Inject constructor(
 		LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
 			override fun create(): DataSource<Int, Board.Entry> =
 				PostListSource(klasRepository, viewModelScope, queryResolver) {
-					pageInfo.value = it
+					pageInfo.postValue(it)
 				}
 		}, PagedList.Config.Builder().setPageSize(15).build()).build()
 	}

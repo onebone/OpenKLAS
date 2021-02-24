@@ -21,6 +21,8 @@ package org.openklas.base
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.openklas.klas.error.KlasSessionInvalidError
 import org.openklas.repository.SessionRepository
 import org.openklas.utils.Event
@@ -57,24 +59,28 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 		}
 	}
 
-	override suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T> {
-		val result = f()
-		if(result is Result.Error) {
-			val error = result.error
-			if(error is KlasSessionInvalidError) {
-				// try logging in automatically if session is invalid
-				// and send original request one more time
-				return if(sessionRepository.tryLogin()) {
-					f()
-				}else{
-					mustAuthenticate.value = Event(Unit)
-					Result.Error(KlasSessionInvalidError())
+	override suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T> = withContext(Dispatchers.IO) {
+		try {
+			val result = f()
+			if(result is Result.Error) {
+				val error = result.error
+				if(error is KlasSessionInvalidError) {
+					// try logging in automatically if session is invalid
+					// and send original request one more time
+					return@withContext if(sessionRepository.tryLogin()) {
+						f()
+					}else{
+						mustAuthenticate.postValue(Event(Unit))
+						Result.Error(KlasSessionInvalidError())
+					}
 				}
+
+				// if an error is other than invalid session, just return the original one
 			}
 
-			// if an error is other than invalid session, just return the original one
+			return@withContext result
+		}catch(e: Throwable) {
+			return@withContext Result.Error(e)
 		}
-
-		return result
 	}
 }

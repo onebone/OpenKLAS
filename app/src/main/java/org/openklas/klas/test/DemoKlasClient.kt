@@ -58,8 +58,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
-	override fun getHome(semester: String): Single<Home> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	override suspend fun getHome(semester: String): Result<Home> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			Home(
 				subjects = arrayOf(
 					Subject("U202012345678", "01", "0000-1-4567-01",
@@ -78,7 +80,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 						"일반상대성이론실험", "U202012345678", "2020,2", 1)
 				))
 			)
-		}
+		)
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
@@ -224,13 +226,14 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		}
 	}
 
-	override fun getOnlineContentList(
+	override suspend fun getOnlineContentList(
 		semester: String,
 		subjectId: String
-	): Single<Array<OnlineContentEntry>> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
-			val now = Date()
+	): Result<Array<OnlineContentEntry>> {
+		delay(NETWORK_DELAY)
 
+		val now = Date()
+		return Result.Success(
 			arrayOf(
 				OnlineContentEntry.Homework(
 					"proj", null, now, Date(now.time + TimeUnit.HOURS.toMillis(2)),
@@ -245,7 +248,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					0, 40, 0, "https://example.com/video1.mp4"
 				)
 			)
-		}
+		)
 	}
 
 	companion object {

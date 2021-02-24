@@ -34,7 +34,7 @@ import org.openklas.utils.Result
 
 interface KlasRepository {
 	fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String>
-	fun getHome(semester: String): Single<Home>
+	suspend fun getHome(semester: String): Result<Home>
 	fun getSemesters(): Single<Array<Semester>>
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 	suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite>
@@ -56,8 +56,8 @@ interface KlasRepository {
 	fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>>
 	fun getLectureStudentsNumber(subjectId: String): Single<Int>
 
-	fun getOnlineContentList(
+	suspend fun getOnlineContentList(
 		semester: String,
 		subjectId: String
-	): Single<Array<OnlineContentEntry>>
+	): Result<Array<OnlineContentEntry>>
 }

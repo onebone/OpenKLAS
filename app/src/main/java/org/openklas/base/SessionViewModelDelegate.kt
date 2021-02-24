@@ -28,5 +28,15 @@ interface SessionViewModelDelegate {
 
 	@Deprecated("We are dropping RxJava in favor of Kotlin coroutine")
 	fun <T> requestWithSessionRx(f: () -> Single<T>): Single<T>
+
+	/**
+	 * Performs an request that requires a session. When the request has once failed
+	 * due to session invalidation, it will try to login with a saved credentials and
+	 * try requesting again.
+	 *
+	 * @param f Request procedure.
+	 *
+	 * @return The result of the request.
+	 */
 	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
 }

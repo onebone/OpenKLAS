@@ -89,8 +89,8 @@ class DefaultKlasClient @Inject constructor(
 		}
 	}
 
-	override fun getHome(semester: String): Single<Home> {
-		return service.home(RequestHome(semester)).compose(SessionValidateTransformer())
+	override suspend fun getHome(semester: String): Result<Home> {
+		return service.home(RequestHome(semester)).validateSession()
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
@@ -164,9 +164,9 @@ class DefaultKlasClient @Inject constructor(
 		}
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 }

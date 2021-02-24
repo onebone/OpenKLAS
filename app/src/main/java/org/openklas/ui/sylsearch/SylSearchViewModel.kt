@@ -58,8 +58,8 @@ class SylSearchViewModel @Inject constructor(
 
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
-				is Result.Success -> _syllabusList.value = result.value
-				is Result.Error -> _error.value = result.error
+				is Result.Success -> _syllabusList.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
 			}
 		}
 	}

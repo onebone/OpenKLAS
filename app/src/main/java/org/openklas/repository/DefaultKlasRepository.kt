@@ -52,8 +52,8 @@ class DefaultKlasRepository @Inject constructor(
 			}.compose(AsyncTransformer())
 	}
 
-	override fun getHome(semester: String): Single<Home> {
-		return klasDataSource.getHome(semester).compose(AsyncTransformer())
+	override suspend fun getHome(semester: String): Result<Home> {
+		return klasDataSource.getHome(semester)
 	}
 
 	override fun getSemesters(): Single<Array<Semester>> {
@@ -111,8 +111,7 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getLectureStudentsNumber(subjectId).compose(AsyncTransformer())
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String)
-		: Single<Array<OnlineContentEntry>> {
-		return klasDataSource.getOnlineContentList(semester, subjectId).compose(AsyncTransformer())
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
+		return klasDataSource.getOnlineContentList(semester, subjectId)
 	}
 }

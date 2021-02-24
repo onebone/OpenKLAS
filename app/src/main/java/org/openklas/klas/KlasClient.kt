@@ -17,7 +17,7 @@ import org.openklas.utils.Result
 interface KlasClient {
 	fun login(username: String, password: String): Single<String>
 
-	fun getHome(semester: String): Single<Home>
+	suspend fun getHome(semester: String): Result<Home>
 
 	fun getSemesters(): Single<Array<Semester>>
 
@@ -45,5 +45,5 @@ interface KlasClient {
 
 	fun getLectureStudentsNumber(subjectId: String): Single<Int>
 
-	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>>
+	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
 }

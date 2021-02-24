@@ -55,7 +55,7 @@ interface KlasService {
 	fun loginConfirm(@Body payload: Map<String, String>): Single<Response<ResponseLoginConfirm>>
 
 	@POST(KlasUri.STD_HOME)
-	fun home(@Body payload: RequestHome): Single<Response<Home>>
+	suspend fun home(@Body payload: RequestHome): Response<Home>
 
 	@POST(KlasUri.STD_SEMESTERS)
 	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Response<Array<Semester>>>
@@ -97,5 +97,5 @@ interface KlasService {
 	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<Response<ResponseLectureStudents>>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
-	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Response<Array<OnlineContentEntry>>>
+	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>
 }

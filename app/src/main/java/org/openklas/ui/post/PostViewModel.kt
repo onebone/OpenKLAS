@@ -69,8 +69,8 @@ class PostViewModel @Inject constructor(
 				}
 
 				when(result) {
-					is Result.Success -> value = result.value
-					is Result.Error -> _error.value = result.error
+					is Result.Success -> postValue(result.value)
+					is Result.Error -> _error.postValue(result.error)
 				}
 			}
 		}
@@ -112,8 +112,8 @@ class PostViewModel @Inject constructor(
 
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
-				is Result.Success -> postComposite.value = result.value
-				is Result.Error -> _error.value = result.error
+				is Result.Success -> postComposite.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
 			}
 		}
 	}

@@ -22,8 +22,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.Single
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
@@ -33,6 +36,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.Result
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -123,35 +127,45 @@ class HomeViewModel @Inject constructor(
 	val error: LiveData<Throwable> = _error
 
 	private fun fetchHome(semester: String) {
-		addDisposable(requestWithSessionRx {
-			klasRepository.getHome(semester)
-		}.subscribe { v, err ->
-			if(err == null) {
-				home.value = v
-			}else{
-				_error.value = err
+		viewModelScope.launch {
+			val result = requestWithSession {
+				klasRepository.getHome(semester)
 			}
-		})
+
+			when (result) {
+				is Result.Success -> home.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
+			}
+		}
 	}
 
 	private fun fetchOnlineContents(currentSemester: Semester) {
-		addDisposable(Single.zip(currentSemester.subjects.map { subject ->
-			requestWithSessionRx {
-				klasRepository.getOnlineContentList(currentSemester.id, subject.id).map { entries ->
-					entries.map { Pair(subject, it) }
+		viewModelScope.launch {
+			try {
+				coroutineScope {
+					val contents = currentSemester.subjects.map { subject ->
+						async {
+							val result = requestWithSession {
+								klasRepository.getOnlineContentList(currentSemester.id, subject.id)
+							}
+
+							if(result is Result.Error) {
+								throw result.error
+							}
+
+							(result as Result.Success).value.map {
+								Pair(subject, it)
+							}
+						}
+					}.flatMap {
+						it.await()
+					}.toTypedArray()
+
+					onlineContents.postValue(contents)
 				}
+			}catch(e: Throwable) {
+				_error.postValue(e)
 			}
-		}) {
-			it.flatMap { entry ->
-				@Suppress("UNCHECKED_CAST")
-				entry as List<Pair<BriefSubject, OnlineContentEntry>>
-			}.toTypedArray()
-		}.subscribe { v, err ->
-			if(err == null) {
-				onlineContents.value = v
-			}else{
-				_error.value = err
-			}
-		})
+		}
 	}
 }

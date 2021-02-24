@@ -41,7 +41,7 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.login(username, password)
 	}
 
-	override fun getHome(semester: String): Single<Home> {
+	override suspend fun getHome(semester: String): Result<Home> {
 		return klas.getHome(semester)
 	}
 
@@ -100,8 +100,7 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getLectureStudentsNumber(subjectId)
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String)
-		: Single<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
 		return klas.getOnlineContentList(semester, subjectId)
 	}
 }

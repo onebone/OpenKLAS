@@ -1,6 +1,5 @@
 package org.openklas.klas
 
-import io.reactivex.Single
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -15,11 +14,11 @@ import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.Result
 
 interface KlasClient {
-	fun login(username: String, password: String): Single<String>
+	suspend fun login(username: String, password: String): Result<String>
 
 	suspend fun getHome(semester: String): Result<Home>
 
-	fun getSemesters(): Single<Array<Semester>>
+	suspend fun getSemesters(): Result<Array<Semester>>
 
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 

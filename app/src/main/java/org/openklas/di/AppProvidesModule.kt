@@ -40,7 +40,6 @@ import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
 import org.openklas.klas.test.DemoKlasClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -72,7 +71,6 @@ class AppProvidesModule {
 			.client(okHttpClient)
 
 		builder.addConverterFactory(GsonConverterFactory.create(gson))
-		builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
 		return builder.build()
 	}

@@ -22,12 +22,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.BriefSubject
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate
-): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
+): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 
 	private val home = MediatorLiveData<Home>().apply {
@@ -104,14 +104,6 @@ class HomeViewModel @Inject constructor(
 	}
 	val impendingHomeworkCount: LiveData<Int> = Transformations.map(impendingHomework) {
 		it.size
-	}
-
-	val semesterLabel: LiveData<String> = Transformations.map(home) {
-		it.semesterLabel
-	}
-
-	val subjectCount: LiveData<Int> = Transformations.map(home) {
-		it.subjects.size
 	}
 
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {

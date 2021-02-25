@@ -18,27 +18,18 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.data.AccountDataSource
 import org.openklas.data.SessionDataSource
-import org.openklas.net.transformer.AsyncTransformer
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultSessionRepository @Inject constructor(
 	private val sessionDataSource: SessionDataSource,
 	private val accountDataSource: AccountDataSource
 ): SessionRepository {
-	override fun tryLoginRx(): Single<Boolean> {
-		val account = accountDataSource.getAccount() ?: return Single.just(false)
-
-		return sessionDataSource.tryLogin(account.username, account.password).compose(
-			AsyncTransformer()
-		)
-	}
-
 	override suspend fun tryLogin(): Boolean {
 		val account = accountDataSource.getAccount() ?: return false
 
-		return sessionDataSource.tryLogin(account.username, account.password).blockingGet()
+		return sessionDataSource.tryLogin(account.username, account.password) is Result.Success
 	}
 }

@@ -18,7 +18,6 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
 import org.openklas.klas.model.Attachment
@@ -32,7 +31,6 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.net.transformer.AsyncTransformer
 import org.openklas.utils.Result
 import javax.inject.Inject
 
@@ -40,24 +38,25 @@ class DefaultKlasRepository @Inject constructor(
 	private val klasDataSource: KlasDataSource,
 	private val preferenceDataSource: PreferenceDataSource
 ): KlasRepository {
-	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
-		return klasDataSource.performLogin(username, password).run {
-				if(rememberMe)
-					doOnSuccess {
-						preferenceDataSource.userID = username
-						preferenceDataSource.password = password
-					}
-				else
-					this
-			}.compose(AsyncTransformer())
+	override suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Result<String> {
+		val result = klasDataSource.performLogin(username, password)
+
+		if(rememberMe) {
+			if(result is Result.Success) {
+				preferenceDataSource.userID = username
+				preferenceDataSource.password = password
+			}
+		}
+
+		return result
 	}
 
 	override suspend fun getHome(semester: String): Result<Home> {
 		return klasDataSource.getHome(semester)
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
-		return klasDataSource.getSemesters().compose(AsyncTransformer())
+	override suspend fun getSemesters(): Result<Array<Semester>> {
+		return klasDataSource.getSemesters()
 	}
 
 	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {

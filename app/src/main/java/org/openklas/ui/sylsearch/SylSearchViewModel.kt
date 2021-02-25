@@ -21,10 +21,10 @@ package org.openklas.ui.sylsearch
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class SylSearchViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+) : ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
 	private val _syllabusList = MutableLiveData<Array<SyllabusSummary>>()

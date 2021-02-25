@@ -18,16 +18,12 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Single
+import androidx.lifecycle.LiveData
 import org.openklas.utils.Event
 import org.openklas.utils.Result
 
 interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Event<Unit>>
-
-	@Deprecated("We are dropping RxJava in favor of Kotlin coroutine")
-	fun <T> requestWithSessionRx(f: () -> Single<T>): Single<T>
+	val mustAuthenticate: LiveData<Event<Unit>>
 
 	/**
 	 * Performs an request that requires a session. When the request has once failed

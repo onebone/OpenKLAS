@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
@@ -43,7 +44,8 @@ class HomeFragment: BaseFragment() {
 			lifecycleOwner = this@HomeFragment
 		}
 
-		val viewModel = getViewModel<HomeViewModel>()
+		val viewModel by viewModels<HomeViewModel>()
+		prepareViewModel(viewModel)
 
 		binding.listMain.apply {
 			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))

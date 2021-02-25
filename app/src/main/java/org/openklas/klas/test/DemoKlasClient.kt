@@ -18,7 +18,6 @@ package org.openklas.klas.test
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import kotlinx.coroutines.delay
 import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Attachment
@@ -52,10 +51,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DemoKlasClient @Inject constructor(): KlasClient {
-	override fun login(username: String, password: String): Single<String> {
-		return Single.timer(0, TimeUnit.MILLISECONDS).map {
-			"2019203999ZZ"
-		}
+	override suspend fun login(username: String, password: String): Result<String> {
+		return Result.Success("2019203999ZZ")
 	}
 
 	override suspend fun getHome(semester: String): Result<Home> {
@@ -83,14 +80,16 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
-		return Single.timer(NETWORK_DELAY, TimeUnit.MILLISECONDS).map {
+	override suspend fun getSemesters(): Result<Array<Semester>> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(
 			arrayOf(
 				Semester("2020,2", "2020년도 2학기", arrayOf(
 					BriefSubject("U202012345678", "일반상대성이론실험 - 아인슈타인", "일반상대성이론실험")
 				))
 			)
-		}
+		)
 	}
 
 	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {

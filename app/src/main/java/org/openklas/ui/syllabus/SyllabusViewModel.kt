@@ -22,10 +22,10 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.openklas.base.BaseViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.Syllabus
@@ -41,7 +41,7 @@ import javax.inject.Inject
 class SyllabusViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _syllabus = MutableLiveData<Syllabus>()
 	val syllabus: LiveData<Syllabus> = _syllabus
 
@@ -130,7 +130,7 @@ class SyllabusViewModel @Inject constructor(
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
 			is Result.Success -> _schedules.postValue(result.value)
-			is Result.Error -> _error.value = result.error
+			is Result.Error -> _error.postValue(result.error)
 		}
 	}
 

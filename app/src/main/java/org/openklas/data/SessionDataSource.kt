@@ -18,8 +18,8 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
+import org.openklas.utils.Result
 
 interface SessionDataSource {
-	fun tryLogin(username: String, password: String): Single<Boolean>
+	suspend fun tryLogin(username: String, password: String): Result<Unit>
 }

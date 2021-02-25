@@ -18,9 +18,6 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
-
 interface SessionRepository {
-	fun tryLoginRx(): Single<Boolean>
 	suspend fun tryLogin(): Boolean
 }

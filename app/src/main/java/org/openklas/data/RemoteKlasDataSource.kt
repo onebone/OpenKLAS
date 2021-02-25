@@ -18,7 +18,6 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -37,7 +36,7 @@ import javax.inject.Inject
 class RemoteKlasDataSource @Inject constructor(
 	private val klas: KlasClient
 ): KlasDataSource {
-	override fun performLogin(username: String, password: String): Single<String> {
+	override suspend fun performLogin(username: String, password: String): Result<String> {
 		return klas.login(username, password)
 	}
 
@@ -45,7 +44,7 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getHome(semester)
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
+	override suspend fun getSemesters(): Result<Array<Semester>> {
 		return klas.getSemesters()
 	}
 

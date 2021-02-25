@@ -23,10 +23,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Attachment
@@ -42,7 +42,7 @@ class PostViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate
-): BaseViewModel(),
+): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 

@@ -20,7 +20,7 @@ package org.openklas.base
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import org.openklas.NavGraphDirections
 import org.openklas.ui.shared.AppbarHolder
@@ -109,23 +109,12 @@ abstract class BaseFragment: Fragment() {
 		}
 	}
 
-	private fun setupSessionViewModel(viewModel: BaseViewModel) {
+	protected fun prepareViewModel(viewModel: ViewModel) {
 		if(viewModel is SessionViewModelDelegate) {
 			viewModel.mustAuthenticate.observe(viewLifecycleOwner, EventObserver {
 				findNavController().navigate(NavGraphDirections.actionGlobalLogin())
 			})
 		}
-	}
-
-	protected fun prepareViewModel(viewModel: BaseViewModel) {
-		setupSessionViewModel(viewModel)
-	}
-
-	protected inline fun <reified T : BaseViewModel> getViewModel(): T {
-		val viewModel by viewModels<T>()
-		prepareViewModel(viewModel)
-
-		return viewModel
 	}
 
 	private data class AppbarConfiguration(

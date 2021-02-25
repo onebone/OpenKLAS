@@ -22,12 +22,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.BaseViewModel
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
@@ -43,7 +43,7 @@ class PostListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate
-): BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
+): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 
 	private val queryResolvedListener = PostListQueryCallback {

@@ -18,7 +18,6 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -33,9 +32,9 @@ import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.Result
 
 interface KlasRepository {
-	fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String>
+	suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Result<String>
 	suspend fun getHome(semester: String): Result<Home>
-	fun getSemesters(): Single<Array<Semester>>
+	suspend fun getSemesters(): Result<Array<Semester>>
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 	suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite>
 	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>

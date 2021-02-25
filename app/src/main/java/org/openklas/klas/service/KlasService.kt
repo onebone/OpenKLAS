@@ -18,7 +18,6 @@ package org.openklas.klas.service
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -49,16 +48,16 @@ import retrofit2.http.POST
 
 interface KlasService {
 	@POST(KlasUri.LOGIN_SECURITY)
-	fun loginSecurity(): Single<ResponseLoginSecurity>
+	suspend fun loginSecurity(): ResponseLoginSecurity
 
 	@POST(KlasUri.LOGIN_CONFIRM)
-	fun loginConfirm(@Body payload: Map<String, String>): Single<Response<ResponseLoginConfirm>>
+	suspend fun loginConfirm(@Body payload: Map<String, String>): Response<ResponseLoginConfirm>
 
 	@POST(KlasUri.STD_HOME)
 	suspend fun home(@Body payload: RequestHome): Response<Home>
 
 	@POST(KlasUri.STD_SEMESTERS)
-	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Response<Array<Semester>>>
+	suspend fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<Array<Semester>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
 	suspend fun notices(@Body payload: RequestPostList): Response<Board>

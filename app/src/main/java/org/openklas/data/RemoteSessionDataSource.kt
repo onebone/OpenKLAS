@@ -18,18 +18,17 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.KlasClient
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class RemoteSessionDataSource @Inject constructor(
 	private val klas: KlasClient
 ): SessionDataSource {
-	override fun tryLogin(username: String, password: String): Single<Boolean> {
-		return klas.login(username, password)
-			.flatMap {
-				Single.just(true)
-			}
-			.onErrorResumeNext(Single.just(false))
+	override suspend fun tryLogin(username: String, password: String): Result<Unit> {
+		return when(val result = klas.login(username, password)) {
+			is Result.Success -> Result.Success(Unit)
+			is Result.Error -> Result.Error(result.error)
+		}
 	}
 }

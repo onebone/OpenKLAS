@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
@@ -43,7 +44,9 @@ class LoginFragment: BaseFragment() {
 			lifecycleOwner = this@LoginFragment
 		}
 
-		val viewModel = getViewModel<LoginViewModel>()
+		val viewModel by viewModels<LoginViewModel>()
+		prepareViewModel(viewModel)
+
 		binding.viewModel = viewModel
 
 		viewModel.result.observe(viewLifecycleOwner) {

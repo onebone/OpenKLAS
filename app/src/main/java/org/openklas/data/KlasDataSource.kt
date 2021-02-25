@@ -18,7 +18,6 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -30,22 +29,23 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 
 interface KlasDataSource {
-	fun performLogin(username: String, password: String): Single<String>
-	fun getHome(semester: String): Single<Home>
-	fun getSemesters(): Single<Array<Semester>>
-	fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
-	fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite>
-	fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
-	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
-	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
-	fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite>
-	fun getAttachments(storageId: String, attachmentId: String): Single<Array<Attachment>>
-	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
-	fun getSyllabus(subjectId: String): Single<Syllabus>
-	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>
-	fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>>
-	fun getLectureStudentsNumber(subjectId: String): Single<Int>
-	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>>
+	suspend fun performLogin(username: String, password: String): Result<String>
+	suspend fun getHome(semester: String): Result<Home>
+	suspend fun getSemesters(): Result<Array<Semester>>
+	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
+	suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>>
+	suspend fun getSyllabus(subjectId: String): Result<Syllabus>
+	suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>>
+	suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>>
+	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
+	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
 }

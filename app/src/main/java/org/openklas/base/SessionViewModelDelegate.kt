@@ -18,12 +18,21 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Single
+import androidx.lifecycle.LiveData
 import org.openklas.utils.Event
+import org.openklas.utils.Result
 
 interface SessionViewModelDelegate {
-	val mustAuthenticate: MutableLiveData<Event<Unit>>
+	val mustAuthenticate: LiveData<Event<Unit>>
 
-	fun <T> requestWithSession(f: () -> Single<T>): Single<T>
+	/**
+	 * Performs an request that requires a session. When the request has once failed
+	 * due to session invalidation, it will try to login with a saved credentials and
+	 * try requesting again.
+	 *
+	 * @param f Request procedure.
+	 *
+	 * @return The result of the request.
+	 */
+	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
 }

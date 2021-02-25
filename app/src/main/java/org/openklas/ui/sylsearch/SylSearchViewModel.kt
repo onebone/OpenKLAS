@@ -18,20 +18,24 @@ package org.openklas.ui.sylsearch
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.BaseViewModel
+import kotlinx.coroutines.launch
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 @HiltViewModel
 class SylSearchViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
-) : BaseViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+) : ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
 	private val _syllabusList = MutableLiveData<Array<SyllabusSummary>>()
@@ -47,15 +51,17 @@ class SylSearchViewModel @Inject constructor(
 	}
 
 	private fun fetchSyllabus(year: Int, term: Int, keyword: String, professor: String) {
-		addDisposable(requestWithSession {
-			klasRepository.getSyllabusList(year, term, keyword, professor)
-		}.subscribe { v, err ->
-			if (err == null) {
-				_syllabusList.value = v
-			} else {
-				_error.value = err
+		viewModelScope.launch {
+			val result = requestWithSession {
+				klasRepository.getSyllabusList(year, term, keyword, professor)
 			}
-		})
+
+			@SuppressLint("NullSafeMutableLiveData")
+			when(result) {
+				is Result.Success -> _syllabusList.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
+			}
+		}
 	}
 
 	data class Filter(

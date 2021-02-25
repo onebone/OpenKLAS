@@ -1,6 +1,5 @@
 package org.openklas.klas
 
-import io.reactivex.Single
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -12,37 +11,38 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 
 interface KlasClient {
-	fun login(username: String, password: String): Single<String>
+	suspend fun login(username: String, password: String): Result<String>
 
-	fun getHome(semester: String): Single<Home>
+	suspend fun getHome(semester: String): Result<Home>
 
-	fun getSemesters(): Single<Array<Semester>>
+	suspend fun getSemesters(): Result<Array<Semester>>
 
-	fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite>
+	suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite>
 
-	fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite>
+	suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite>
 
-	fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board>
+	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite>
+	suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite>
 
-	fun getAttachments(storageId: String, attachmentId: String): Single<Array<Attachment>>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
 
-	fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>>
+	suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>>
 
-	fun getSyllabus(subjectId: String): Single<Syllabus>
+	suspend fun getSyllabus(subjectId: String): Result<Syllabus>
 
-	fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>>
+	suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>>
 
-	fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>>
+	suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>>
 
-	fun getLectureStudentsNumber(subjectId: String): Single<Int>
+	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
 
-	fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>>
+	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
 }

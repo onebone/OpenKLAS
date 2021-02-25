@@ -18,7 +18,6 @@ package org.openklas.klas.service
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -49,53 +48,53 @@ import retrofit2.http.POST
 
 interface KlasService {
 	@POST(KlasUri.LOGIN_SECURITY)
-	fun loginSecurity(): Single<ResponseLoginSecurity>
+	suspend fun loginSecurity(): ResponseLoginSecurity
 
 	@POST(KlasUri.LOGIN_CONFIRM)
-	fun loginConfirm(@Body payload: Map<String, String>): Single<Response<ResponseLoginConfirm>>
+	suspend fun loginConfirm(@Body payload: Map<String, String>): Response<ResponseLoginConfirm>
 
 	@POST(KlasUri.STD_HOME)
-	fun home(@Body payload: RequestHome): Single<Response<Home>>
+	suspend fun home(@Body payload: RequestHome): Response<Home>
 
 	@POST(KlasUri.STD_SEMESTERS)
-	fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Single<Response<Array<Semester>>>
+	suspend fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<Array<Semester>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
-	fun notices(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun notices(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_NOTICE_CONTENT)
-	fun notice(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun notice(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_MATERIAL_LIST)
-	fun materials(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun materials(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_MATERIAL_CONTENT)
-	fun material(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun material(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_QNA_LIST)
-	fun qnas(@Body payload: RequestPostList): Single<Response<Board>>
+	suspend fun qnas(@Body payload: RequestPostList): Response<Board>
 
 	@POST(KlasUri.STD_QNA_CONTENT)
-	fun qna(@Body payload: RequestPostContent): Single<Response<PostComposite>>
+	suspend fun qna(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_ATTACHMENTS)
-	fun attachments(@Body payload: RequestAttachments): Single<Response<Array<Attachment>>>
+	suspend fun attachments(@Body payload: RequestAttachments): Response<Array<Attachment>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
-	fun syllabusList(@Body payload: RequestSyllabusSummary): Single<Response<Array<SyllabusSummary>>>
+	suspend fun syllabusList(@Body payload: RequestSyllabusSummary): Response<Array<SyllabusSummary>>
 
 	@POST(KlasUri.STD_SYLLABUS)
-	fun syllabus(@Body payload: RequestSyllabus): Single<Response<Syllabus>>
+	suspend fun syllabus(@Body payload: RequestSyllabus): Response<Syllabus>
 
 	@POST(KlasUri.STD_TEACHING_ASSISTANT)
-	fun teachingAssistants(@Body payload: RequestTeachingAssistant): Single<Response<Array<TeachingAssistant>>>
+	suspend fun teachingAssistants(@Body payload: RequestTeachingAssistant): Response<Array<TeachingAssistant>>
 
 	@POST(KlasUri.STD_LECTURE_SCHEDULE)
-	fun lectureSchedules(@Body payload: RequestLectureSchedules): Single<Response<Array<LectureSchedule>>>
+	suspend fun lectureSchedules(@Body payload: RequestLectureSchedules): Response<Array<LectureSchedule>>
 
 	@POST(KlasUri.STD_LECTURE_STUDENTS)
-	fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Single<Response<ResponseLectureStudents>>
+	suspend fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Response<ResponseLectureStudents>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
-	fun onlineContentList(@Body payload: RequestOnlineContents): Single<Response<Array<OnlineContentEntry>>>
+	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>
 }

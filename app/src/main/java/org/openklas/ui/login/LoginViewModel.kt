@@ -21,15 +21,18 @@ package org.openklas.ui.login
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.BaseViewModel
+import kotlinx.coroutines.launch
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
 	private val klasRepository: KlasRepository
-): BaseViewModel() {
+): ViewModel() {
 	val userId = MutableLiveData<String>()
 	val password = MutableLiveData<String>()
 	val rememberMe = ObservableBoolean(true)
@@ -48,10 +51,10 @@ class LoginViewModel @Inject constructor(
 			return
 		}
 
-		addDisposable(klasRepository.performLogin(userId, password, rememberMe.get())
-			.subscribe { _, err ->
-				_result.value = err
-			})
+		viewModelScope.launch {
+			val result = klasRepository.performLogin(userId, password, rememberMe.get())
+			_result.value = (result as? Result.Error)?.error
+		}
 	}
 
 	class AuthFieldEmptyException: Throwable()

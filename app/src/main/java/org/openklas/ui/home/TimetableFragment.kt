@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -40,7 +41,10 @@ class TimetableFragment: BaseFragment() {
 			lifecycleOwner = this@TimetableFragment
 		}
 
-		binding.viewModel = getViewModel()
+		val viewModel by viewModels<HomeViewModel>()
+		prepareViewModel(viewModel)
+
+		binding.viewModel = viewModel
 
 		return binding.root
 	}

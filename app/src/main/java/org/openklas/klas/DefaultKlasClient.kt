@@ -20,7 +20,6 @@ package org.openklas.klas
 
 import android.util.Base64
 import com.google.gson.Gson
-import io.reactivex.Single
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -44,7 +43,8 @@ import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.service.KlasService
-import org.openklas.net.transformer.SessionValidateTransformer
+import org.openklas.utils.Result
+import org.openklas.utils.validateSession
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -55,116 +55,118 @@ class DefaultKlasClient @Inject constructor(
 	private val service: KlasService,
 	private val gson: Gson
 ): KlasClient {
-	override fun login(username: String, password: String): Single<String> {
-		val securityResponse = service.loginSecurity()
-		return securityResponse.flatMap { security ->
-			val keyFactory = KeyFactory.getInstance("RSA")
-			val keySpec = X509EncodedKeySpec(Base64.decode(security.publicKey, Base64.DEFAULT))
-			val publicKey = keyFactory.generatePublic(keySpec)
+	override suspend fun login(username: String, password: String): Result<String> {
+		val security = service.loginSecurity()
 
-			val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
-			cipher.init(Cipher.ENCRYPT_MODE, publicKey)
+		val keyFactory = KeyFactory.getInstance("RSA")
+		val keySpec = X509EncodedKeySpec(Base64.decode(security.publicKey, Base64.DEFAULT))
+		val publicKey = keyFactory.generatePublic(keySpec)
 
-			val cipherText = cipher.doFinal(gson.toJson(mapOf(
-				"loginId" to username,
-				"loginPwd" to password,
-				"storeIdYn" to "N"
-			)).toByteArray())
+		val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+		cipher.init(Cipher.ENCRYPT_MODE, publicKey)
 
-			val confirmResponse = service.loginConfirm(mapOf(
-				"loginToken" to Base64.encodeToString(cipherText, Base64.NO_WRAP),
-				"redirectUrl" to "",
-				"redirectTabUrl" to ""
-			)).compose(SessionValidateTransformer())
+		val cipherText = cipher.doFinal(gson.toJson(mapOf(
+			"loginId" to username,
+			"loginPwd" to password,
+			"storeIdYn" to "N"
+		)).toByteArray())
 
-			confirmResponse.flatMap { confirm ->
-				if(confirm.errorCount > 0) {
-					Single.error(KlasSigninFailError("failed login attempt"))
-				}else{
-					Single.just(confirm.response.userId)
-				}
+		return when(val result = service.loginConfirm(mapOf(
+			"loginToken" to Base64.encodeToString(cipherText, Base64.NO_WRAP),
+			"redirectUrl" to "",
+			"redirectTabUrl" to ""
+		)).validateSession()) {
+			is Result.Success -> {
+				val value = result.value
+
+				if(value.errorCount > 0)
+					Result.Error(KlasSigninFailError("failed login attempt"))
+				else
+					Result.Success(value.response.userId)
 			}
+			is Result.Error -> Result.Error(result.error)
 		}
 	}
 
-	override fun getHome(semester: String): Single<Home> {
-		return service.home(RequestHome(semester)).compose(SessionValidateTransformer())
+	override suspend fun getHome(semester: String): Result<Home> {
+		return service.home(RequestHome(semester)).validateSession()
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
-		return service.semesters().compose(SessionValidateTransformer())
+	override suspend fun getSemesters(): Result<Array<Semester>> {
+		return service.semesters().validateSession()
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.notices(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.materials(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).compose(SessionValidateTransformer())
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
+	): Result<Array<Attachment>> {
 		return service.attachments(RequestAttachments(storageId = storageId, attachmentId = attachmentId))
-			.compose(SessionValidateTransformer())
+			.validateSession()
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
-			year = year, term = term, keyword = keyword, professor = professor)).compose(SessionValidateTransformer())
+			year = year, term = term, keyword = keyword, professor = professor)).validateSession()
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
 		return service.syllabus(RequestSyllabus(
 			subjectId = subjectId
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
-		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).compose(SessionValidateTransformer())
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).validateSession()
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).compose(SessionValidateTransformer())
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).validateSession()
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		val number = Random.nextInt(1000, 10000)
 
-		return service.lectureStudentsNumber(RequestLectureStudents(
+		return when(val result = service.lectureStudentsNumber(RequestLectureStudents(
 			subjectId = subjectId, randomNum = number, numText = number
-		)).compose(SessionValidateTransformer()).map {
-			it.students
+		)).validateSession()) {
+			is Result.Success -> Result.Success(result.value.students)
+			is Result.Error -> Result.Error(result.error)
 		}
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String): Single<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
-		)).compose(SessionValidateTransformer())
+		)).validateSession()
 	}
 }

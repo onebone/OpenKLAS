@@ -18,12 +18,15 @@ package org.openklas.ui.post
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.BaseViewModel
+import kotlinx.coroutines.launch
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Attachment
@@ -31,6 +34,7 @@ import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +42,7 @@ class PostViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate
-): BaseViewModel(),
+): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
 
@@ -59,15 +63,16 @@ class PostViewModel @Inject constructor(
 				return@apply
 			}
 
-			addDisposable(requestWithSession {
-				klasRepository.getAttachments(STORAGE_ID, it.attachmentId)
-			}.subscribe { v, err ->
-				if(err == null) {
-					value = v
-				}else{
-					_error.value = err
+			viewModelScope.launch {
+				val result = requestWithSession {
+					klasRepository.getAttachments(STORAGE_ID, it.attachmentId)
 				}
-			})
+
+				when(result) {
+					is Result.Success -> postValue(result.value)
+					is Result.Error -> _error.postValue(result.error)
+				}
+			}
 		}
 	}
 
@@ -96,19 +101,21 @@ class PostViewModel @Inject constructor(
 	val error: LiveData<Throwable> = _error
 
 	fun fetchPost(type: PostType, boardNo: Int, masterNo: Int) {
-		addDisposable(requestWithSession {
-			when(type) {
-				PostType.NOTICE -> klasRepository.getNotice(boardNo, masterNo)
-				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(boardNo, masterNo)
-				PostType.QNA -> klasRepository.getQna(boardNo, masterNo)
+		viewModelScope.launch {
+			val result = requestWithSession {
+				when(type) {
+					PostType.NOTICE -> klasRepository.getNotice(boardNo, masterNo)
+					PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(boardNo, masterNo)
+					PostType.QNA -> klasRepository.getQna(boardNo, masterNo)
+				}
 			}
-		}.subscribe { v, err ->
-			if(err == null) {
-				postComposite.value = v
-			}else{
-				_error.value = err
+
+			@SuppressLint("NullSafeMutableLiveData")
+			when(result) {
+				is Result.Success -> postComposite.postValue(result.value)
+				is Result.Error -> _error.postValue(result.error)
 			}
-		})
+		}
 	}
 
 	fun setSubjectId(id: String) {

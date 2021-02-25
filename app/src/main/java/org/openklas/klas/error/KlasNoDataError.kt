@@ -1,4 +1,4 @@
-package org.openklas.ui.setting
+package org.openklas.klas.error
 
 /*
  * OpenKLAS
@@ -18,10 +18,5 @@ package org.openklas.ui.setting
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.BaseViewModel
-import javax.inject.Inject
-
-@HiltViewModel
-class SettingViewModel @Inject constructor(): BaseViewModel() {
-}
+// error indicating that no body is returned from the server
+class KlasNoDataError: Throwable()

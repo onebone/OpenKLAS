@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +36,7 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class SylSearchFragment: BaseFragment() {
-	private lateinit var viewModel: SylSearchViewModel
+	private val viewModel by viewModels<SylSearchViewModel>()
 	private lateinit var binding: SyllabusSearchFragmentBinding
 
 	private val currentYear: Int = Calendar.getInstance().get(Calendar.YEAR)
@@ -50,7 +51,7 @@ class SylSearchFragment: BaseFragment() {
 			lifecycleOwner = this@SylSearchFragment
 		}
 
-		viewModel = getViewModel()
+		prepareViewModel(viewModel)
 
 		binding.viewModel = viewModel
 		binding.v = this

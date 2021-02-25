@@ -1,4 +1,4 @@
-package org.openklas.ui.notification
+package org.openklas.utils
 
 /*
  * OpenKLAS
@@ -18,25 +18,12 @@ package org.openklas.ui.notification
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import dagger.hilt.android.AndroidEntryPoint
-import org.openklas.base.BaseFragment
-import org.openklas.databinding.NotificationFragmentBinding
+sealed class Result<T> {
+	data class Success<T>(
+		val value: T
+	): Result<T>()
 
-@AndroidEntryPoint
-class NotificationFragment: BaseFragment() {
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		val binding = NotificationFragmentBinding.inflate(inflater, container, false).apply {
-			lifecycleOwner = this@NotificationFragment
-		}
-
-		binding.viewModel = getViewModel()
-		return binding.root
-	}
+	data class Error<T>(
+		val error: Throwable
+	): Result<T>()
 }

@@ -18,7 +18,6 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.data.KlasDataSource
 import org.openklas.data.PreferenceDataSource
 import org.openklas.klas.model.Attachment
@@ -32,86 +31,86 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.net.transformer.AsyncTransformer
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
 	private val klasDataSource: KlasDataSource,
 	private val preferenceDataSource: PreferenceDataSource
 ): KlasRepository {
-	override fun performLogin(username: String, password: String, rememberMe: Boolean): Single<String> {
-		return klasDataSource.performLogin(username, password).run {
-				if(rememberMe)
-					doOnSuccess {
-						preferenceDataSource.userID = username
-						preferenceDataSource.password = password
-					}
-				else
-					this
-			}.compose(AsyncTransformer())
+	override suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Result<String> {
+		val result = klasDataSource.performLogin(username, password)
+
+		if(rememberMe) {
+			if(result is Result.Success) {
+				preferenceDataSource.userID = username
+				preferenceDataSource.password = password
+			}
+		}
+
+		return result
 	}
 
-	override fun getHome(semester: String): Single<Home> {
-		return klasDataSource.getHome(semester).compose(AsyncTransformer())
+	override suspend fun getHome(semester: String): Result<Home> {
+		return klasDataSource.getHome(semester)
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
-		return klasDataSource.getSemesters().compose(AsyncTransformer())
+	override suspend fun getSemesters(): Result<Array<Semester>> {
+		return klasDataSource.getSemesters()
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getNotice(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getNotice(boardNo, masterNo)
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getQna(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getQna(boardNo, masterNo)
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
-		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword).compose(AsyncTransformer())
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
-		return klasDataSource.getLectureMaterial(boardNo, masterNo).compose(AsyncTransformer())
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klasDataSource.getLectureMaterial(boardNo, masterNo)
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
-		return klasDataSource.getAttachments(storageId, attachmentId).compose(AsyncTransformer())
+	): Result<Array<Attachment>> {
+		return klasDataSource.getAttachments(storageId, attachmentId)
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Single<Array<SyllabusSummary>> {
-		return klasDataSource.getSyllabusList(year, term, keyword, professor).compose(AsyncTransformer())
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
+		return klasDataSource.getSyllabusList(year, term, keyword, professor)
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
-		return klasDataSource.getSyllabus(subjectId).compose(AsyncTransformer())
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+		return klasDataSource.getSyllabus(subjectId)
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
-		return klasDataSource.getTeachingAssistants(subjectId).compose(AsyncTransformer())
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+		return klasDataSource.getTeachingAssistants(subjectId)
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
-		return klasDataSource.getLectureSchedules(subjectId).compose(AsyncTransformer())
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+		return klasDataSource.getLectureSchedules(subjectId)
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
-		return klasDataSource.getLectureStudentsNumber(subjectId).compose(AsyncTransformer())
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+		return klasDataSource.getLectureStudentsNumber(subjectId)
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String)
-		: Single<Array<OnlineContentEntry>> {
-		return klasDataSource.getOnlineContentList(semester, subjectId).compose(AsyncTransformer())
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
+		return klasDataSource.getOnlineContentList(semester, subjectId)
 	}
 }

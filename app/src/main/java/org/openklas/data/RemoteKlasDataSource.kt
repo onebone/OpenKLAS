@@ -18,7 +18,6 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
 import org.openklas.klas.KlasClient
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -31,77 +30,76 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class RemoteKlasDataSource @Inject constructor(
 	private val klas: KlasClient
 ): KlasDataSource {
-	override fun performLogin(username: String, password: String): Single<String> {
+	override suspend fun performLogin(username: String, password: String): Result<String> {
 		return klas.login(username, password)
 	}
 
-	override fun getHome(semester: String): Single<Home> {
+	override suspend fun getHome(semester: String): Result<Home> {
 		return klas.getHome(semester)
 	}
 
-	override fun getSemesters(): Single<Array<Semester>> {
+	override suspend fun getSemesters(): Result<Array<Semester>> {
 		return klas.getSemesters()
 	}
 
-	override fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return klas.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getNotice(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return klas.getNotice(boardNo, masterNo)
 	}
 
-	override fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return klas.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getQna(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return klas.getQna(boardNo, masterNo)
 	}
 
-	override fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Single<Board> {
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return klas.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
-	override fun getLectureMaterial(boardNo: Int, masterNo: Int): Single<PostComposite> {
+	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return klas.getLectureMaterial(boardNo, masterNo)
 	}
 
-	override fun getAttachments(
+	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Single<Array<Attachment>> {
+	): Result<Array<Attachment>> {
 		return klas.getAttachments(storageId, attachmentId)
 	}
 
-	override fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String)
-		: Single<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
 		return klas.getSyllabusList(year, term, keyword, professor)
 	}
 
-	override fun getSyllabus(subjectId: String): Single<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
 		return klas.getSyllabus(subjectId)
 	}
 
-	override fun getTeachingAssistants(subjectId: String): Single<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
 		return klas.getTeachingAssistants(subjectId)
 	}
 
-	override fun getLectureSchedules(subjectId: String): Single<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
 		return klas.getLectureSchedules(subjectId)
 	}
 
-	override fun getLectureStudentsNumber(subjectId: String): Single<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		return klas.getLectureStudentsNumber(subjectId)
 	}
 
-	override fun getOnlineContentList(semester: String, subjectId: String)
-		: Single<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
 		return klas.getOnlineContentList(semester, subjectId)
 	}
 }

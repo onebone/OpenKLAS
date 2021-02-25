@@ -1,4 +1,4 @@
-package org.openklas.net.transformer
+package org.openklas.utils
 
 /*
  * OpenKLAS
@@ -18,21 +18,16 @@ package org.openklas.net.transformer
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.reactivex.Single
-import io.reactivex.SingleSource
-import io.reactivex.SingleTransformer
+import org.openklas.klas.error.KlasNoDataError
 import org.openklas.klas.error.KlasSessionInvalidError
 import retrofit2.Response
 
-class SessionValidateTransformer<T>: SingleTransformer<Response<T>, T> {
-	override fun apply(upstream: Single<Response<T>>): SingleSource<T> {
-		return upstream.flatMap {
-			// we assume that redirection implies invalid session
-			if(it.raw().isRedirect) {
-				Single.error(KlasSessionInvalidError())
-			}else{
-				Single.just(it.body())
-			}
-		}
+fun <T> Response<T>.validateSession(): Result<T> {
+	if(raw().isRedirect) {
+		return Result.Error(KlasSessionInvalidError())
 	}
+
+	val body = body() ?: return Result.Error(KlasNoDataError())
+
+	return Result.Success(body)
 }

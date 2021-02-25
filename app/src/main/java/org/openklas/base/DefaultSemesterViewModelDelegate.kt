@@ -18,68 +18,46 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import io.reactivex.disposables.Disposable
-import org.openklas.klas.model.BriefSubject
+import androidx.lifecycle.liveData
 import org.openklas.klas.model.Semester
 import org.openklas.repository.KlasRepository
+import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultSemesterViewModelDelegate @Inject constructor(
 	private val klasRepository: KlasRepository
 ): SemesterViewModelDelegate {
-	private val _semesters = MutableLiveData<Array<Semester>>()
-	override val semesters: LiveData<Array<Semester>> by lazy {
-		fetchSemesters()
-		_semesters
+	override val semesters = liveData {
+		val result = klasRepository.getSemesters()
+
+		if(result is Result.Success) {
+			emit(result.value)
+		}
+		// TODO forward error
 	}
 
 	private val _currentSemester = MutableLiveData<Semester>()
-	override val currentSemester: LiveData<Semester> by lazy {
-		// TODO set default semester according to current date
-		semesters.value?.firstOrNull()?.let {
-			_currentSemester.value = it
+	override val currentSemester = Transformations.switchMap(semesters) {
+		// TODO set default semester according to current time
+		// if the user has enrolled in winter or summer session,
+		// default semester will be set to it even if a fall or
+		// spring session is not finished.
+
+		it.firstOrNull()?.let { first ->
+			_currentSemester.value = first
 		}
 		_currentSemester
 	}
 
-	private var fetchDisposable: Disposable? = null
-
-	override val subjects: LiveData<Array<BriefSubject>> by lazy {
-		Transformations.map(currentSemester) {
-			it.subjects
-		}
+	override val subjects = Transformations.map(currentSemester) {
+		it.subjects
 	}
 
 	override fun setCurrentSemester(semester: String) {
 		semesters.value?.find { it.id == semester }?.let {
 			_currentSemester.value = it
 		}
-	}
-
-	private fun fetchSemesters() {
-		fetchDisposable?.dispose()
-
-		fetchDisposable = klasRepository.getSemesters()
-			.subscribe { v, err ->
-				if(err == null) {
-					_semesters.value = v
-
-					if(_currentSemester.value == null) {
-						// TODO set default semester according to current time
-						// if the user has enrolled in winter or summer session,
-						// default semester will be set to it even if a fall or
-						// spring session is not finished.
-
-						if(v.isNotEmpty()) {
-							_currentSemester.value = v[0]
-						}
-					}
-				}else{
-					// TODO forward error
-				}
-			}
 	}
 }

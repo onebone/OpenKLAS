@@ -18,7 +18,7 @@ package org.openklas.data
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface PreferenceDataSource {
+interface CredentialDataSource {
 	var userID: String?
 	var password: String?
 }

@@ -28,9 +28,9 @@ import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.data.AccountDataSource
 import org.openklas.data.DefaultAccountDataSource
-import org.openklas.data.DefaultPreferenceDataSource
+import org.openklas.data.PreferenceCredentialDataSource
 import org.openklas.data.KlasDataSource
-import org.openklas.data.PreferenceDataSource
+import org.openklas.data.CredentialDataSource
 import org.openklas.data.RemoteKlasDataSource
 import org.openklas.data.RemoteSessionDataSource
 import org.openklas.data.SessionDataSource
@@ -61,7 +61,7 @@ abstract class AppBindsModule {
 
 	@Binds
 	@Singleton
-	abstract fun bindPreferenceDataSource(impl: DefaultPreferenceDataSource): PreferenceDataSource
+	abstract fun bindCredentialDataSource(impl: PreferenceCredentialDataSource): CredentialDataSource
 
 	@Binds
 	@Singleton

@@ -25,10 +25,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultPreferenceDataSource @Inject constructor(
+class PreferenceCredentialDataSource @Inject constructor(
 	@ApplicationContext context: Context
-): PreferenceDataSource {
-	private val preference = context.getSharedPreferences("org.openklas.data.DefaultPreferenceDataSource", Context.MODE_PRIVATE)
+): CredentialDataSource {
+	private val preference = context.getSharedPreferences("org.openklas.data.PreferenceCredentialDataSource", Context.MODE_PRIVATE)
 
 	override var userID: String?
 		get() = preference.getString(USER_ID_KEY, null)
@@ -46,8 +46,8 @@ class DefaultPreferenceDataSource @Inject constructor(
 			}
 		}
 
-	companion object {
-		private const val USER_ID_KEY = "USER_ID"
-		private const val PASSWORD_KEY = "PASSWORD"
+	private companion object {
+		const val USER_ID_KEY = "USER_ID"
+		const val PASSWORD_KEY = "PASSWORD"
 	}
 }

@@ -21,13 +21,12 @@ package org.openklas.data
 import javax.inject.Inject
 
 class DefaultAccountDataSource @Inject constructor(
-	private val preferenceRepository: PreferenceDataSource
+	private val credentialRepository: CredentialDataSource
 ): AccountDataSource {
 	override fun getAccount(): AccountDataSource.Account? {
-		val userId = preferenceRepository.userID
-		val password = preferenceRepository.password
+		val userId = credentialRepository.userID ?: return null
+		val password = credentialRepository.password ?: return null
 
-		return if(userId != null && password != null) AccountDataSource.Account(userId, password)
-			else null
+		return AccountDataSource.Account(userId, password)
 	}
 }

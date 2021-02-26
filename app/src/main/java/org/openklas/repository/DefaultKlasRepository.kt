@@ -19,7 +19,7 @@ package org.openklas.repository
  */
 
 import org.openklas.data.KlasDataSource
-import org.openklas.data.PreferenceDataSource
+import org.openklas.data.CredentialDataSource
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -36,15 +36,15 @@ import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
 	private val klasDataSource: KlasDataSource,
-	private val preferenceDataSource: PreferenceDataSource
+	private val credentialDataSource: CredentialDataSource
 ): KlasRepository {
 	override suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Result<String> {
 		val result = klasDataSource.performLogin(username, password)
 
 		if(rememberMe) {
 			if(result is Result.Success) {
-				preferenceDataSource.userID = username
-				preferenceDataSource.password = password
+				credentialDataSource.userID = username
+				credentialDataSource.password = password
 			}
 		}
 

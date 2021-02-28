@@ -49,33 +49,43 @@ import org.openklas.utils.Result
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.ceil
+import kotlin.math.roundToInt
+import kotlin.random.Random
 
 class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun login(username: String, password: String): Result<String> {
-		return Result.Success("2019203999ZZ")
+		return Result.Success(USER_ID)
 	}
 
 	override suspend fun getHome(semester: String): Result<Home> {
 		delay(NETWORK_DELAY)
 
+		val printSeqs = (1..11).toMutableList()
+		//var index = 0
 		return Result.Success(
 			Home(
-				subjects = arrayOf(
-					Subject("U202012345678", "01", "0000-1-4567-01",
-						"아인슈타인", "일반상대성이론실험", 2020, 2, "2020,2", "학부", false)
-				),
+				subjects = SUBJECTS,
 				professor = Professor("010-1234-5678", "", "", "", null),
-				notices = arrayOf(
-					BriefNotice("U202012345678", "01", "-", 2020, 2,
-						Date(1598918400L), "일반상대성이론실험", "사건의 지평선 실험1 유의사항",
-						61, "강의 공지사항", "2020,2"
-					)
-				),
-				semesterLabel = "2020년도 2학기",
-				timetable = Timetable(arrayOf(
-					Timetable.Entry(5 ,4, "M87", "아인슈타인", 3,
-						"일반상대성이론실험", "U202012345678", "2020,2", 1)
-				))
+				notices = NOTICES.values.flatMap { it.toList() }.toTypedArray(),
+				semesterLabel = CURRENT_SEMESTER.label,
+				timetable = Timetable(
+					LECTURE_SCHEDULES.flatMap { (subjectId, schedules) ->
+						val subject = findSubject(subjectId) ?: return@flatMap listOf()
+
+						// FIXME using `index` variable here causes 'java.lang.IncompatibleClassChangeError'
+						// should figure out if this is a bug of coroutine or just my mistake
+						// val printSeq = index++
+						val printSeq = printSeqs.random()
+						printSeqs -= printSeq
+						schedules.map {
+							Timetable.Entry(it.day, it.periods.first(), it.classroom ?: CLASSROOM_UNDEFINED,
+								subject.professor, it.periods.last() - it.periods.first() + 1, subject.name,
+								subjectId, subject.semester, printSeq
+							)
+						}
+					}.toTypedArray()
+				)
 			)
 		)
 	}
@@ -83,29 +93,30 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getSemesters(): Result<Array<Semester>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(
-			arrayOf(
-				Semester("2020,2", "2020년도 2학기", arrayOf(
-					BriefSubject("U202012345678", "일반상대성이론실험 - 아인슈타인", "일반상대성이론실험")
-				))
-			)
-		)
+		return Result.Success(SEMESTERS)
 	}
 
 	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(Board(Array(15) {
-			Board.Entry(
-				null, -1, "01", 0, 0, "01", 1, 5,
-				isMine = false, isPublic = true, 10, 0, Date(), "-", 0, "U202012345678",
-				"사건의 지평선 접근시 주의사항 ${15 * page + it}", isPinned = false, "아인슈타인", 2020
+		val entries = NOTICES.entries.find { it.key == subjectId }?.value?.map {
+			Board.Entry(null, -1, it.division, 0, 0, "01", it.term, 5,
+				isMine = false, isPublic = true, Random.nextInt(0, 100), 0, Date(), "---", 0, it.subjectId,
+				it.title, isPinned = false, "작성자", it.year
 			)
-		}, Board.PageInfo(page, 15, 75, 5)))
+		} ?: listOf()
+
+		val pages = entries.chunked(15)
+		val entriesInPage = if(pages.lastIndex <= page) pages[page] else listOf()
+
+		return Result.Success(Board(
+			entriesInPage.toTypedArray(),
+			Board.PageInfo(page,15, entries.size, ceil(entries.size / 15f).roundToInt())
+		))
 	}
 
 	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		TODO("Not yet implemented")
+		return Result.Error(NotImplementedError())
 	}
 
 	override suspend fun getLectureMaterials(
@@ -123,7 +134,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	}
 
 	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		TODO("Not yet implemented")
+		return Result.Error(NotImplementedError())
 	}
 
 	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
@@ -133,7 +144,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	}
 
 	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		TODO("Not yet implemented")
+		return Result.Error(NotImplementedError())
 	}
 
 	override suspend fun getAttachments(
@@ -157,13 +168,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			arrayOf(
 				SyllabusSummary(
 					"01", "전선", "5개기본호흡", 1, 2021, "히키가야 하치만",
-					5, "1234", "W000", 3, 4,
+					5, "0000", "W000", 3, 4,
 					"호흡법의 기본 계파 화염, 물, 번개, 바위, 바람의 형에 대해 학습한다",
 					"+818000000000", null
 				),
 				SyllabusSummary(
 					"01", "전필", "일반상대성이론실험", 1, 2021, "아인슈타인",
-					2, "1234", "0000", 3, 4,
+					2, "0000", "0000", 3, 4,
 					"일반상대성이론과 관련된 실험을 수행한다",
 					null, null
 				)
@@ -206,12 +217,8 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
 		delay(NETWORK_DELAY)
 
-		val assistants = arrayOf(
-			TeachingAssistant("유키노시타 유키노", "ooook@shipduck.net", "U202111234W000015")
-		)
-
 		return Result.Success(
-			assistants.filter { it.subject == subjectId }.toTypedArray()
+			TEACHING_ASSISTANTS[subjectId] ?: emptyArray()
 		)
 	}
 
@@ -219,9 +226,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		delay(NETWORK_DELAY)
 
 		return Result.Success(
-			arrayOf(
-				LectureSchedule(1, "월", null, intArrayOf(2, 3, 4, 5))
-			)
+			LECTURE_SCHEDULES[subjectId] ?: arrayOf()
 		)
 	}
 
@@ -237,9 +242,56 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	): Result<Array<OnlineContentEntry>> {
 		delay(NETWORK_DELAY)
 
+		return Result.Success(ONLINE_CONTENTS[subjectId] ?: arrayOf())
+	}
+
+	private companion object {
+		const val NETWORK_DELAY = 1000L
+
+		const val CLASSROOM_UNDEFINED = "미지정"
+
+		const val USER_ID = "2019203999ZZ"
+
 		val now = Date()
-		return Result.Success(
-			arrayOf(
+
+		val SUBJECTS = arrayOf(
+			Subject("U2021100000000015", "01", "0000-5-0000-01", "아인슈타인", "일반상대성이론실험",
+				2021, 1, "2021,1", "학부", false),
+			Subject("U202110000W000015", "01", "W000-5-0000-01", "히키가야 하치만", "5개기본호흡",
+				2021, 1, "2021,1", "학부", false),
+			Subject("U202110000Z000016", "01", "Z000-6-0000-01", "사이가 조지", "심리학과프로파일링",
+				2021, 1, "2021,1", "학부", false),
+			Subject("U202110000Y000015", "01", "Y000-5-0000-01", "로이드 아스프룬드", "로봇공학1",
+				2021, 1, "2021,1", "학부", false),
+			Subject("U202110000H000015", "01", "H000-5-0000-01", "카야바 아키히코", "가상현실",
+				2021, 1, "2021,1", "학부", false)
+		)
+
+		val SEMESTERS = arrayOf(
+			Semester("2021,1", "2021년도 1학기", SUBJECTS.map {
+				BriefSubject(it.id, "${it.name} - ${it.professor}", it.name)
+			}.toTypedArray())
+		)
+
+		val CURRENT_SEMESTER = SEMESTERS[0]
+
+		val NOTICES = mapOf(
+			"U2021100000000015" to arrayOf(
+				BriefNotice("U2021100000000015", "01", "-", 2021, 1,
+					Date(1598918400L), "일반상대성이론실험", "사건의 지평선 실험1 유의사항",
+					61, "강의 공지사항", "2021,1"
+				)
+			)
+		)
+
+		val TEACHING_ASSISTANTS = mapOf(
+			"U202110000W000015" to arrayOf(
+				TeachingAssistant("유키노시타 유키노", "ooook@shipduck.net", "U202110000W000015")
+			)
+		)
+
+		val ONLINE_CONTENTS = mapOf(
+			"U2021100000000015" to arrayOf(
 				OnlineContentEntry.Homework(
 					"proj", null, now, Date(now.time + TimeUnit.HOURS.toMillis(2)),
 					"사건의 지평선 실험1", 40, 0
@@ -254,9 +306,37 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				)
 			)
 		)
-	}
 
-	companion object {
-		const val NETWORK_DELAY = 1000L
+		const val DAY_MONDAY = 1
+		const val DAY_TUESDAY = 2
+		const val DAY_WEDNESDAY = 3
+		const val DAY_THURSDAY = 4
+		const val DAY_FRIDAY = 5
+
+		val LECTURE_SCHEDULES = mapOf(
+			"U2021100000000015" to arrayOf(
+				LectureSchedule(DAY_FRIDAY, "금", "M87", intArrayOf(1, 2))
+			),
+			"U202110000W000015" to arrayOf(
+				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(1, 2, 3, 4)),
+				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(1, 2, 3, 4))
+			),
+			"U202110000Z000016" to arrayOf(
+				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(4)),
+				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(3))
+			),
+			"U202110000Y000015" to arrayOf(
+				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(2)),
+				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(1))
+			),
+			"U202110000H000015" to arrayOf(
+				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(5)),
+				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(6))
+			)
+		)
+
+		fun findSubject(subjectId: String): Subject? {
+			return SUBJECTS.find { it.id == subjectId }
+		}
 	}
 }

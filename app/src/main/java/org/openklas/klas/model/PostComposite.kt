@@ -63,11 +63,11 @@ data class PostComposite(
 		@SerializedName("updtDt")
 		val updateDate: Date,
 		@SerializedName("updusrId")
-		val updateAuthorId: String,
+		val updateAuthorId: String?,
 		@SerializedName("updusrInfo")
-		val updateAuthorInfo: String,
+		val updateAuthorInfo: String?,
 		@SerializedName("updusrIp")
-		val updateAuthorIp: String,
+		val updateAuthorIp: String?,
 		// upperNo??
 		@SerializedName("userNm")
 		val author: String

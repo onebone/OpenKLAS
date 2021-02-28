@@ -115,10 +115,18 @@ class HomeViewModel @Inject constructor(
 	}
 	val todayScheduleEmpty: LiveData<Boolean> = Transformations.map(todaySchedule) { it.isEmpty() }
 
+	private val _isHomeFetched = MutableLiveData(false)
+	val isHomeFetched: LiveData<Boolean> = _isHomeFetched
+
+	private val _isOnlineContentsFetched = MutableLiveData(false)
+	val isOnlineContentsFetched: LiveData<Boolean> = _isOnlineContentsFetched
+
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
 	private fun fetchHome(semester: String) {
+		_isHomeFetched.value = false
+
 		viewModelScope.launch {
 			val result = requestWithSession {
 				klasRepository.getHome(semester)
@@ -128,10 +136,14 @@ class HomeViewModel @Inject constructor(
 				is Result.Success -> home.postValue(result.value)
 				is Result.Error -> _error.postValue(result.error)
 			}
+
+			_isHomeFetched.postValue(true)
 		}
 	}
 
 	private fun fetchOnlineContents(currentSemester: Semester) {
+		_isOnlineContentsFetched.value = false
+
 		viewModelScope.launch {
 			try {
 				coroutineScope {
@@ -157,6 +169,8 @@ class HomeViewModel @Inject constructor(
 				}
 			}catch(e: Throwable) {
 				_error.postValue(e)
+			}finally{
+				_isOnlineContentsFetched.postValue(true)
 			}
 		}
 	}

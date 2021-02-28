@@ -18,7 +18,8 @@
  -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 		<import type="android.view.View" />
@@ -109,8 +110,20 @@
 			app:layout_constraintTop_toBottomOf="@id/barrier"
 			android:layout_marginTop="8dp"
 			android:text="@string/home_no_class_today"
-			android:visibility="@{viewModel.todayScheduleEmpty ? View.VISIBLE : View.GONE}"
+			android:visibility="@{viewModel.isHomeFetched &amp;&amp; viewModel.todayScheduleEmpty ? View.VISIBLE : View.GONE}"
 			android:textColor="@color/gray" />
+
+		<ProgressBar
+			android:id="@+id/progress"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:minHeight="60dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/barrier"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:visibility="@{!viewModel.isHomeFetched ? View.VISIBLE : View.GONE}"
+			tools:visibility="gone" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

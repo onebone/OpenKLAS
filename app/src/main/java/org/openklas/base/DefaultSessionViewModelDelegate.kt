@@ -61,6 +61,7 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 
 			result
 		}catch(e: Throwable) {
+			Log.e(TAG, "requestWithSession", e)
 			Result.Error(e)
 		}
 	}

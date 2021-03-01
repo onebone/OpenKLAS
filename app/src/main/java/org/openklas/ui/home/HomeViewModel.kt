@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Video && entry.progress < 100 && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.endDate.time - now.time)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
 		.sortedBy { (_, entry) -> entry.endDate.time }
 		.toTypedArray()
@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Homework && entry.submitDate == null && now.time - entry.endDate.time < TimeUnit.HOURS.toMillis(24)
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.endDate.time - now.time)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
 		.sortedBy { (_, entry: OnlineContentEntry.Homework) -> entry.endDate.time }
 		.toTypedArray()
@@ -123,6 +123,10 @@ class HomeViewModel @Inject constructor(
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
+
+	private fun isImpending(time: Long): Boolean {
+		return 0 < time && time < TimeUnit.HOURS.toMillis(24)
+	}
 
 	private fun fetchHome(semester: String) {
 		_isHomeFetched.value = false

@@ -29,7 +29,8 @@
 	<ViewSwitcher
 		android:id="@+id/option_switcher"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:measureAllChildren="false">
 
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"

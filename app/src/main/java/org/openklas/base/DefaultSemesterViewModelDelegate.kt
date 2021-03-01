@@ -57,7 +57,8 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 
 	override fun setCurrentSemester(semester: String) {
 		semesters.value?.find { it.id == semester }?.let {
-			_currentSemester.value = it
+			if(_currentSemester.value != it)
+				_currentSemester.value = it
 		}
 	}
 }

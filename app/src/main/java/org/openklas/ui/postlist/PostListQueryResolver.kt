@@ -47,14 +47,16 @@ class PostListQueryResolver(
 	var resolvedQuery: PostListQuery? = null
 		private set
 
-	private val listeners = mutableListOf<PostListQueryCallback>()
+	private var listeners = listOf<PostListQueryCallback>()
 
 	fun addListener(listener: PostListQueryCallback) {
-		listeners += listener
+		listeners = listeners + listener
 	}
 
 	fun removeListener(listener: PostListQueryCallback) {
-		listeners -= listener
+		listeners = listeners.filter {
+			it != listener
+		}.toMutableList()
 	}
 
 	fun setSemester(semester: Semester) {

@@ -98,6 +98,10 @@ class PostListViewModel @Inject constructor(
 		queryResolver.setFilter(criteria, keyword)
 	}
 
+	fun setSubject(subjectId: String) {
+		queryResolver.setSubject(subjectId)
+	}
+
 	override fun onCleared() {
 		super.onCleared()
 

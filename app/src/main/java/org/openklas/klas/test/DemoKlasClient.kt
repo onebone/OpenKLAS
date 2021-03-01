@@ -20,6 +20,7 @@ package org.openklas.klas.test
 
 import kotlinx.coroutines.delay
 import org.openklas.klas.KlasClient
+import org.openklas.klas.error.KlasNoDataError
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Book
@@ -164,54 +165,21 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	): Result<Array<SyllabusSummary>> {
 		delay(NETWORK_DELAY)
 
+		val syllabuses = SYLLABUS.values.filter { it.subjectName.contains(keyword) }
 		return Result.Success(
-			arrayOf(
-				SyllabusSummary(
-					"01", "전선", "5개기본호흡", 1, 2021, "히키가야 하치만",
-					5, "0000", "W000", 3, 4,
-					"호흡법의 기본 계파 화염, 물, 번개, 바위, 바람의 형에 대해 학습한다",
-					"+818000000000", null
-				),
-				SyllabusSummary(
-					"01", "전필", "일반상대성이론실험", 1, 2021, "아인슈타인",
-					2, "0000", "0000", 3, 4,
-					"일반상대성이론과 관련된 실험을 수행한다",
-					null, null
-				)
-			)
+			syllabuses.map {
+				SyllabusSummary(it.division, it.course, it.subjectName, term, year, it.tutor.name, it.targetGrade,
+				it.openGwamokNo, it.departmentCode, it.credits, it.lessonHours, it.summary, it.tutor.telephoneContact, it.introductionVideoUrl)
+			}.toTypedArray()
 		)
 	}
 
 	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(
-			Syllabus(
-				"5개기본호흡", "5 Fundamental Breathing", "W000", 5,
-				"1234", "01", "전선", null, 3, 4,
-				Tutor("히키가야 하치만", "박사", "", "", "whatsthat@shipduck.net"),
-				false, 0, false, 0,
-				"호흡법 중 기본 계파인 물, 번개, 바람, 화염, 바위의 호흡에 대해서 학습한다. 또한 전집중 호흡의 경지에 올라섬으로써 오니의 급습에 항시 대비할 수 있도록 한다.",
-				"전집중 호흡법을 체득하여 기본적인 체력을 증진시킴과 동시에 오니의 공격에 불시에 대항할 수 있도록 하는 것이 본 강의의 목표이다.",
-				arrayOf(Expectation("전집중 호흡", "전집중 호흡을 습득한다."), Expectation("기본 호흡", "5가지의 기본 호흡에 대한 개요를 학습한다.")),
-				Credits(1, 2, 0), null, "엑스칼리버",
-				LectureType.TEAM_TEACHING or LectureType.APPRENTICESHIP or LectureType.SMALL,
-				LectureMethod.FACE_TO_FACE_100, VL(30, 0, 0, 0, 30, 30, 10),
-				ScoreWeights(10, 30, 30, 20, 10, 0, 0),
-				arrayOf(Book("자민당, 폭발해라", "히키가야 하치만", "쇼가쿠칸", 2016), Book("역시 내 나라인 일본의 정치는 잘못되어 있다.", "히키가야 하치만", "쇼가쿠칸", 2016)),
-				"교재를 구매하지 않으면 강의를 진행할 수 없음.",
-				arrayOf(
-					Week(1, "과목 소개 (OT)", "", null),
-					Week(2, "물의 호흡 1", "", null),
-					Week(3, "물의 호흡 2", "", null),
-					Week(4, "화염의 호흡 1", "", null),
-					Week(5, "화염의 호흡 2", "", null),
-					Week(6, "바람의 호흡 1", "", null),
-					Week(7, "중간고사", "", null),
-					Week(8, "바람의 호흡 2", "", null)
-				)
-			)
-		)
+		val syllabus = SYLLABUS[subjectId]
+		return if(syllabus == null) Result.Error(KlasNoDataError())
+			else Result.Success(syllabus)
 	}
 
 	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
@@ -332,6 +300,49 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			"U202110000H000015" to arrayOf(
 				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(5)),
 				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(6))
+			)
+		)
+
+		val SYLLABUS = mapOf(
+			"U202110000W000015" to Syllabus(
+				"5개기본호흡", "5 Fundamental Breathing", "W000", 5,
+				"0000", "01", "전선", null, 3, 4,
+				Tutor("히키가야 하치만", "박사", "", "", "whatsthat@shipduck.net"),
+				false, 0, false, 0,
+				"호흡법 중 기본 계파인 물, 번개, 바람, 화염, 바위의 호흡에 대해서 학습한다. 또한 전집중 호흡의 경지에 올라섬으로써 오니의 급습에 항시 대비할 수 있도록 한다.",
+				"전집중 호흡법을 체득하여 기본적인 체력을 증진시킴과 동시에 오니의 공격에 불시에 대항할 수 있도록 하는 것이 본 강의의 목표이다.",
+				arrayOf(Expectation("전집중 호흡", "전집중 호흡을 습득한다."), Expectation("기본 호흡", "5가지의 기본 호흡에 대한 개요를 학습한다.")),
+				Credits(1, 2, 0), null, "엑스칼리버",
+				LectureType.TEAM_TEACHING or LectureType.APPRENTICESHIP or LectureType.SMALL,
+				LectureMethod.FACE_TO_FACE_100, VL(30, 0, 0, 0, 30, 30, 10),
+				ScoreWeights(10, 30, 30, 20, 10, 0, 0),
+				arrayOf(Book("자민당, 폭발해라", "히키가야 하치만", "쇼가쿠칸", 2016), Book("역시 내 나라인 일본의 정치는 잘못되어 있다.", "히키가야 하치만", "쇼가쿠칸", 2016)),
+				"교재를 구매하지 않으면 강의를 진행할 수 없음.",
+				arrayOf(
+					Week(1, "과목 소개 (OT)", "", null),
+					Week(2, "물의 호흡 1", "", null),
+					Week(3, "물의 호흡 2", "", null),
+					Week(4, "화염의 호흡 1", "", null),
+					Week(5, "화염의 호흡 2", "", null),
+					Week(6, "바람의 호흡 1", "", null),
+					Week(7, "중간고사", "", null),
+					Week(8, "바람의 호흡 2", "", null)
+				)
+			),
+			"U2021100000000015" to Syllabus(
+				"일반상대성이론실험", "Theory of General Relativity Lab", "0000", 5,
+				"0000", "01", "전선", null, 3, 4,
+				Tutor("아인슈타인", "교수", null, null, ""),
+				false, 0, false, 0,
+				"일반상대성이론 실험", "",
+				arrayOf(Expectation("이론", "일반상대성이론의 이론적 배경에 대한 이해")),
+				Credits(1, 2, 0), null, null,
+				LectureType.EXPERIMENT, LectureMethod.FACE_TO_FACE_100, VL(40, 40, 10, 0, 0, 10, 0),
+				ScoreWeights(10, 20, 20, 40, 5, 5, 0),
+				arrayOf(Book("프린트 제공", null, null, null)), null,
+				arrayOf(
+					Week(1, "과목 소개 (OT)", "", null)
+				)
 			)
 		)
 

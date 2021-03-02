@@ -58,6 +58,10 @@ class PostListFragment: BaseFragment() {
 		binding.viewModel = viewModel
 		binding.v = this
 
+		binding.tvChangeSubject.setOnClickListener {
+			PostListSubjectSelectionDialog().show(childFragmentManager, null)
+		}
+
 		prepareViewModel(viewModel)
 		if(!viewModel.hasQuery()) {
 			// empty semester and subject delegates decision to view model

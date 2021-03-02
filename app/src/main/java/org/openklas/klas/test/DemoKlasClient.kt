@@ -108,7 +108,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		} ?: listOf()
 
 		val pages = entries.chunked(15)
-		val entriesInPage = if(pages.lastIndex <= page) pages[page] else listOf()
+		val entriesInPage = if(page <= pages.lastIndex) pages[page] else listOf()
 
 		return Result.Success(Board(
 			entriesInPage.toTypedArray(),

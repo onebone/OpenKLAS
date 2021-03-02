@@ -54,6 +54,9 @@
 		<item quantity="other">%1$s일 전</item>
 	</plurals>
 
+	<string name="common_semester_dialog_title">학기 선택</string>
+	<string name="common_subject_dialog_title">과목 선택</string>
+
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
 	<string name="notification">Notifications</string>
@@ -96,6 +99,7 @@
 		<item quantity="other">총 %d개의 게시글이 있어요</item>
 	</plurals>
 	<string name="post_list_filter_submit">게시글 검색 필터 설정</string>
+	<string name="post_list_change_subject">변경</string>
 	<string name="post_hits">조회수: %d</string>
 	<string name="post_author">작성자: %s</string>
 

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ OpenKLAS
+ ~ Copyright (C) 2020-2021 OpenKLAS Team
+ ~
+ ~ This program is free software: you can redistribute it and/or modify
+ ~ it under the terms of the GNU General Public License as published by
+ ~ the Free Software Foundation, either version 3 of the License, or
+ ~ (at your option) any later version.
+ ~
+ ~ This program is distributed in the hope that it will be useful,
+ ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ~ GNU General Public License for more details.
+ ~
+ ~ You should have received a copy of the GNU General Public License
+ ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+		<variable
+			name="viewModel"
+			type="org.openklas.base.SemesterViewModelDelegate" />
+
+		<variable
+			name="v"
+			type="org.openklas.ui.shared.SemesterSubjectDialog" />
+	</data>
+
+	<ViewSwitcher
+		android:id="@+id/option_switcher"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:measureAllChildren="false">
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/label_semester_selection"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:layout_margin="12dp"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:text="@string/common_semester_dialog_title" />
+
+			<TextView
+				android:id="@+id/tv_next"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="8dp"
+				app:layout_constraintTop_toTopOf="@id/label_semester_selection"
+				app:layout_constraintBottom_toBottomOf="@id/label_semester_selection"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:padding="8dp"
+				android:textColor="@color/primary"
+				android:text="@string/common_subject_dialog_title"
+				android:drawablePadding="8dp"
+				android:enabled="false"
+				app:drawableEndCompat="@drawable/ic_arrow"
+				app:drawableTint="@color/primary"
+				android:onClick="@{_ -> v.navigateToSubjectSelection()}" />
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/rv_semesters"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/label_semester_selection"
+				android:layout_marginTop="12dp"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:items="@{viewModel.semesters}" />
+
+			<ProgressBar
+				android:id="@+id/prg_semester"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/label_semester_selection" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/label_subject_selection"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:layout_margin="12dp"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:text="@string/common_subject_dialog_title" />
+
+			<TextView
+				android:id="@+id/tv_previous"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="@id/label_subject_selection"
+				app:layout_constraintBottom_toBottomOf="@id/label_subject_selection"
+				app:layout_constraintStart_toStartOf="parent"
+				android:layout_marginStart="8dp"
+				android:padding="8dp"
+				android:textColor="@color/primary"
+				android:text="@string/common_semester_dialog_title"
+				android:drawablePadding="8dp"
+				app:drawableStartCompat="@drawable/ic_arrow_back"
+				app:drawableTint="@color/primary"
+				android:onClick="@{_ -> v.navigateToSemesterSelection()}" />
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/rv_subjects"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/label_subject_selection"
+				android:layout_marginTop="12dp"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</ViewSwitcher>
+
+</layout>

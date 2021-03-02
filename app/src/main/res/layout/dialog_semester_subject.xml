@@ -47,7 +47,8 @@
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
-				android:textSize="21sp"
+				android:layout_margin="12dp"
+				android:textSize="18sp"
 				android:textStyle="bold"
 				android:text="@string/common_semester_dialog_title" />
 
@@ -55,16 +56,17 @@
 				android:id="@+id/tv_next"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="12dp"
+				android:layout_marginEnd="8dp"
 				app:layout_constraintTop_toTopOf="@id/label_semester_selection"
 				app:layout_constraintBottom_toBottomOf="@id/label_semester_selection"
 				app:layout_constraintEnd_toEndOf="parent"
-				android:textColor="@color/navigate"
+				android:padding="8dp"
+				android:textColor="@color/primary"
 				android:text="@string/common_subject_dialog_title"
 				android:drawablePadding="8dp"
 				android:enabled="false"
 				app:drawableEndCompat="@drawable/ic_arrow"
-				app:drawableTint="@color/navigate"
+				app:drawableTint="@color/primary"
 				android:onClick="@{_ -> v.navigateToSubjectSelection()}" />
 
 			<androidx.recyclerview.widget.RecyclerView
@@ -74,6 +76,7 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/label_semester_selection"
+				android:layout_marginTop="12dp"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				app:items="@{viewModel.semesters}" />
 
@@ -81,6 +84,7 @@
 				android:id="@+id/prg_semester"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/label_semester_selection" />
@@ -98,7 +102,8 @@
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
-				android:textSize="21sp"
+				android:layout_margin="12dp"
+				android:textSize="18sp"
 				android:textStyle="bold"
 				android:text="@string/common_subject_dialog_title" />
 
@@ -106,15 +111,16 @@
 				android:id="@+id/tv_previous"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="12dp"
 				app:layout_constraintTop_toTopOf="@id/label_subject_selection"
 				app:layout_constraintBottom_toBottomOf="@id/label_subject_selection"
 				app:layout_constraintStart_toStartOf="parent"
-				android:textColor="@color/navigate"
+				android:layout_marginStart="8dp"
+				android:padding="8dp"
+				android:textColor="@color/primary"
 				android:text="@string/common_semester_dialog_title"
 				android:drawablePadding="8dp"
 				app:drawableStartCompat="@drawable/ic_arrow_back"
-				app:drawableTint="@color/navigate"
+				app:drawableTint="@color/primary"
 				android:onClick="@{_ -> v.navigateToSemesterSelection()}" />
 
 			<androidx.recyclerview.widget.RecyclerView
@@ -124,6 +130,7 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/label_subject_selection"
+				android:layout_marginTop="12dp"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,10 @@
 		<variable
 			name="viewModel"
 			type="org.openklas.base.SemesterViewModelDelegate" />
+
+		<variable
+			name="v"
+			type="org.openklas.ui.shared.SemesterSubjectDialog" />
 	</data>
 
 	<ViewSwitcher
@@ -58,8 +62,10 @@
 				android:textColor="@color/navigate"
 				android:text="@string/common_subject_dialog_title"
 				android:drawablePadding="8dp"
+				android:enabled="false"
 				app:drawableEndCompat="@drawable/ic_arrow"
-				app:drawableTint="@color/navigate" />
+				app:drawableTint="@color/navigate"
+				android:onClick="@{_ -> v.navigateToSubjectSelection()}" />
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/rv_semesters"
@@ -70,6 +76,14 @@
 				app:layout_constraintTop_toBottomOf="@id/label_semester_selection"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				app:items="@{viewModel.semesters}" />
+
+			<ProgressBar
+				android:id="@+id/prg_semester"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/label_semester_selection" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -97,10 +111,11 @@
 				app:layout_constraintBottom_toBottomOf="@id/label_subject_selection"
 				app:layout_constraintStart_toStartOf="parent"
 				android:textColor="@color/navigate"
-				android:text="@string/common_subject_dialog_title"
+				android:text="@string/common_semester_dialog_title"
 				android:drawablePadding="8dp"
 				app:drawableStartCompat="@drawable/ic_arrow_back"
-				app:drawableTint="@color/navigate" />
+				app:drawableTint="@color/navigate"
+				android:onClick="@{_ -> v.navigateToSemesterSelection()}" />
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/rv_subjects"

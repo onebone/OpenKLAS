@@ -34,6 +34,11 @@ abstract class SemesterSubjectDialog<T: SemesterViewModelDelegate>: DialogFragme
 	protected abstract val viewModel: T
 	private lateinit var binding: DialogSemesterSubjectBinding
 
+	private companion object {
+		const val SEMESTER_PAGE = 0
+		const val SUBJECT_PAGE = 1
+	}
+
 	private val subjectAdapter = SubjectAdapter {
 		finalize(it)
 	}
@@ -66,21 +71,29 @@ abstract class SemesterSubjectDialog<T: SemesterViewModelDelegate>: DialogFragme
 			lifecycleOwner = viewLifecycleOwner
 		}
 
+		binding.v = this
 		binding.viewModel = viewModel
+		viewModel.currentSemester.observe(viewLifecycleOwner) {
+			if(semesterAdapter.selectedSemester == null) {
+				semesterAdapter.selectedSemester = it
+				binding.tvNext.isEnabled = true
+				binding.prgSemester.visibility = View.GONE
+			}
+		}
 
 		binding.rvSemesters.adapter = semesterAdapter
 		binding.rvSubjects.adapter = subjectAdapter
 
-		binding.tvNext.setOnClickListener {
-			binding.optionSwitcher.showNext()
-		}
-
-		binding.tvPrevious.setOnClickListener {
-			binding.optionSwitcher.showPrevious()
-		}
-
 		(requireDialog() as AlertDialog).setView(binding.root)
 
 		return binding.root
+	}
+
+	fun navigateToSubjectSelection() {
+		binding.optionSwitcher.displayedChild = SUBJECT_PAGE
+	}
+
+	fun navigateToSemesterSelection() {
+		binding.optionSwitcher.displayedChild = SEMESTER_PAGE
 	}
 }

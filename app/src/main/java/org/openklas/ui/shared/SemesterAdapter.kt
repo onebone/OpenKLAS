@@ -35,16 +35,18 @@ class SemesterAdapter(
 
 			field = value
 
-			val currentList = currentList
-			if(oldItem != null) {
-				val oldItemIndex = currentList.indexOf(oldItem)
-				if(oldItemIndex != -1)
-					notifyItemChanged(oldItemIndex)
-			}
+			if(oldItem != value) {
+				val currentList = currentList
+				if(oldItem != null) {
+					val oldItemIndex = currentList.indexOf(oldItem)
+					if(oldItemIndex != -1)
+						notifyItemChanged(oldItemIndex)
+				}
 
-			val newItemIndex = currentList.indexOf(value)
-			if(newItemIndex != -1)
-				notifyItemChanged(newItemIndex)
+				val newItemIndex = currentList.indexOf(value)
+				if(newItemIndex != -1)
+					notifyItemChanged(newItemIndex)
+			}
 
 			if(value != null) {
 				onChangeSelectedSemesterListener(value)

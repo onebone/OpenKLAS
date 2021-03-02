@@ -1,4 +1,4 @@
-package org.openklas.utils.helper
+package org.openklas.ui.postlist
 
 /*
  * OpenKLAS

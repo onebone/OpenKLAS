@@ -63,10 +63,7 @@ class PostListFragment: BaseFragment() {
 		}
 
 		prepareViewModel(viewModel)
-		if(!viewModel.hasQuery()) {
-			// empty semester and subject delegates decision to view model
-			viewModel.setQuery("", "", args.type)
-		}
+		viewModel.setPostType(args.type)
 
 		val adapter = PostListAdapter {
 			// semester and subject must be resolved at this time

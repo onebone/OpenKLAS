@@ -25,39 +25,25 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.Result
-import org.openklas.utils.helper.PostListQuery
-import org.openklas.utils.helper.PostListQueryCallback
 
 class PostListSource(
 	private val klasRepository: KlasRepository,
 	private val coroutineScope: CoroutineScope,
-	private val queryResolver: PostListQueryResolver,
+	private val query: PostListQuery?,
+	private val errorHandler: (Throwable) -> Unit,
 	private val pageInfoCallback: (Board.PageInfo) -> Unit
-): PageKeyedDataSource<Int, Board.Entry>(), PostListQueryCallback {
-	init {
-		queryResolver.addListener(this)
-
-		addInvalidatedCallback {
-			queryResolver.removeListener(this)
-		}
-	}
-
-	override fun onQueryReady(query: PostListQuery) {
-		// invalidate this data source when query is resolved or changed
-		invalidate()
-	}
-
+): PageKeyedDataSource<Int, Board.Entry>() {
 	override fun loadInitial(
 		params: LoadInitialParams<Int>,
 		callback: LoadInitialCallback<Int, Board.Entry>
 	) {
 		// there is nothing to show when query is not set
-		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), 0, 0, null, null)
+		val query = query ?: return callback.onResult(listOf(), 0, 0, null, null)
 
 		coroutineScope.launch {
 			val result = request(query, 0)
 			if(result is Result.Error) {
-				// TODO handle error
+				errorHandler(result.error)
 			}else if(result is Result.Success) {
 				val board = result.value
 				val page = board.pageInfo
@@ -72,13 +58,13 @@ class PostListSource(
 	}
 
 	override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
+		val query = query ?: return callback.onResult(listOf(), null)
 
 		coroutineScope.launch {
 			val result = request(query, params.key)
 
 			if(result is Result.Error) {
-				// TODO handle error
+				errorHandler(result.error)
 			}else if(result is Result.Success) {
 				val board = result.value
 				val page = board.pageInfo
@@ -90,13 +76,13 @@ class PostListSource(
 	}
 
 	override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = queryResolver.resolvedQuery ?: return callback.onResult(listOf(), null)
+		val query = query ?: return callback.onResult(listOf(), null)
 
 		coroutineScope.launch {
 			val result = request(query, params.key)
 
 			if(result is Result.Error) {
-				// TODO handle error
+				errorHandler(result.error)
 			}else if(result is Result.Success) {
 				val board = result.value
 				val page = board.pageInfo

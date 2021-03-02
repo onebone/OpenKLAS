@@ -18,6 +18,7 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,7 +36,6 @@ import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostType
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.helper.PostListQueryCallback
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,25 +45,29 @@ class PostListViewModel @Inject constructor(
 	semesterViewModelDelegate: SemesterViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate {
+	private var postType: PostType? = null
+	private var filter: Filter? = null
 
-	private val queryResolvedListener = PostListQueryCallback {
-		// subject object is resolved as soon as query is resolved
-		_subject.value = it.subject
+	private var subjectSelector: (Array<BriefSubject>) -> BriefSubject? = {
+		it.firstOrNull()
 	}
-	private val queryResolver = PostListQueryResolver()
 
-	private val _subject = MediatorLiveData<BriefSubject>().apply {
-		addSource(currentSemester) {
-			// providing semester to resolver will make subject to be resolved
-			queryResolver.setSemester(it)
+	private val _subject = MutableLiveData<BriefSubject>()
+	val subject: LiveData<BriefSubject> = MediatorLiveData<BriefSubject>().apply {
+		addSource(subjects) {
+			// do NOT use switchMap as [subject] always depends on [subjects] live data
+			invokeSelector(it)
+		}
+
+		addSource(_subject) {
+			value = it
 		}
 	}
-	val subject: LiveData<BriefSubject> = _subject
 
 	val posts = Transformations.switchMap(subject) {
-		LivePagedListBuilder(object: DataSource.Factory<Int, Board.Entry>() {
+		LivePagedListBuilder(object : DataSource.Factory<Int, Board.Entry>() {
 			override fun create(): DataSource<Int, Board.Entry> =
-				PostListSource(klasRepository, viewModelScope, queryResolver) {
+				PostListSource(klasRepository, viewModelScope, buildQuery(), { _error.value = it }) {
 					pageInfo.postValue(it)
 				}
 		}, PagedList.Config.Builder().setPageSize(15).build()).build()
@@ -77,34 +81,60 @@ class PostListViewModel @Inject constructor(
 		it.totalPosts
 	}
 
-	init {
-		queryResolver.addListener(queryResolvedListener)
+	private fun hasQuery(): Boolean {
+		return postType != null && subject.value != null && currentSemester.value != null
 	}
 
-	fun hasQuery(): Boolean {
-		return queryResolver.resolvedQuery != null
-	}
+	fun setPostType(type: PostType) {
+		if(postType != type) {
+			postType = type
 
-	fun setQuery(semester: String, subject: String, type: PostType) {
-		setCurrentSemester(semester)
-
-		with(queryResolver) {
-			setSubject(subject)
-			setType(type)
+			posts.value?.dataSource?.invalidate()
 		}
 	}
 
 	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
-		queryResolver.setFilter(criteria, keyword)
+		filter = Filter(criteria, keyword)
+
+		posts.value?.dataSource?.invalidate()
 	}
 
 	fun setSubject(subjectId: String) {
-		queryResolver.setSubject(subjectId)
+		subjectSelector = { subjects ->
+			subjects.find { it.id == subjectId }
+		}
+
+		subjects.value?.let {
+			invokeSelector(it)
+		}
 	}
 
-	override fun onCleared() {
-		super.onCleared()
-
-		queryResolver.removeListener(queryResolvedListener)
+	fun buildQuery(): PostListQuery? {
+		return if(hasQuery())
+			PostListQuery(
+				currentSemester.value!!,
+				subject.value!!,
+				postType!!,
+				filter?.criteria ?: BoardSearchCriteria.ALL,
+				filter?.keyword
+			)
+		else null
 	}
+
+	private fun invokeSelector(subjects: Array<BriefSubject>) {
+		val subject = subjectSelector(subjects)
+		if(subject == null && subjects.isNotEmpty()) return
+
+		@SuppressLint("NullSafeMutableLiveData")
+		if(_subject.value != subject && subject != null) {
+			_subject.value = subject
+
+			posts.value?.dataSource?.invalidate()
+		}
+	}
+
+	internal data class Filter(
+		val criteria: BoardSearchCriteria,
+		val keyword: String
+	)
 }

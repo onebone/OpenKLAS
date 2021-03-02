@@ -18,6 +18,8 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.annotation.SuppressLint
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
@@ -29,6 +31,15 @@ import javax.inject.Inject
 class DefaultSemesterViewModelDelegate @Inject constructor(
 	private val klasRepository: KlasRepository
 ): SemesterViewModelDelegate {
+	private var semesterSelector: (Array<Semester>) -> Semester? = {
+		// TODO set default semester according to current time
+		// if the user has enrolled in winter or summer session,
+		// default semester will be set to it even if a fall or
+		// spring session is not finished.
+
+		it.firstOrNull()
+	}
+
 	override val semesters = liveData {
 		val result = klasRepository.getSemesters()
 
@@ -39,16 +50,15 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	}
 
 	private val _currentSemester = MutableLiveData<Semester>()
-	override val currentSemester = Transformations.switchMap(semesters) {
-		// TODO set default semester according to current time
-		// if the user has enrolled in winter or summer session,
-		// default semester will be set to it even if a fall or
-		// spring session is not finished.
-
-		it.firstOrNull()?.let { first ->
-			_currentSemester.value = first
+	override val currentSemester = MediatorLiveData<Semester>().apply {
+		addSource(semesters) {
+			// do NOT use Transformations.switchMap as [currentSemester] always depends on [semesters]
+			invokeSelector(it)
 		}
-		_currentSemester
+
+		addSource(_currentSemester) {
+			value = it
+		}
 	}
 
 	override val subjects = Transformations.map(currentSemester) {
@@ -56,9 +66,21 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	}
 
 	override fun setCurrentSemester(semester: String) {
-		semesters.value?.find { it.id == semester }?.let {
-			if(_currentSemester.value != it)
-				_currentSemester.value = it
+		semesterSelector = { semesters ->
+			semesters.find { it.id == semester }
 		}
+
+		semesters.value?.let {
+			invokeSelector(it)
+		}
+	}
+
+	private fun invokeSelector(semesters: Array<Semester>) {
+		val semester = semesterSelector(semesters)
+		if(semester == null && semesters.isNotEmpty()) return
+
+		@SuppressLint("NullSafeMutableLiveData")
+		if(_currentSemester.value != semester && semester != null)
+			_currentSemester.value = semester
 	}
 }

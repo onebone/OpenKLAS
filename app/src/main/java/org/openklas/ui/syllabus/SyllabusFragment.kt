@@ -22,8 +22,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -44,9 +44,7 @@ class SyllabusFragment: BaseFragment() {
 			lifecycleOwner = viewLifecycleOwner
 		}
 
-		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_syllabus_graph) {
-			defaultViewModelProviderFactory
-		}
+		val viewModel by viewModels<SyllabusViewModel>()
 
 		binding.viewModel = viewModel
 		prepareViewModel(viewModel)

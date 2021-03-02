@@ -23,8 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.navGraphViewModels
-import org.openklas.R
+import androidx.fragment.app.viewModels
 import org.openklas.databinding.SyllabusPageSummaryFragmentBinding
 import org.openklas.ui.syllabus.SyllabusViewModel
 
@@ -38,7 +37,7 @@ class SummaryFragment: Fragment() {
 			lifecycleOwner = viewLifecycleOwner
 		}
 
-		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_syllabus_graph)
+		val viewModel by viewModels<SyllabusViewModel>(ownerProducer = { requireParentFragment() })
 
 		binding.viewModel = viewModel
 

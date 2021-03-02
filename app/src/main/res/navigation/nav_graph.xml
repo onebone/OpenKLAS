@@ -155,7 +155,7 @@
 
 		<action
 			android:id="@+id/action_sylsearch_syllabus"
-			app:destination="@id/nav_syllabus_graph"
+			app:destination="@id/fragment_syllabus"
 			app:enterAnim="@anim/slide_right"
 			app:exitAnim="@anim/slightly_scale_down_left"
 			app:popEnterAnim="@anim/slightly_scale_up_left"
@@ -170,23 +170,17 @@
 
 	</fragment>
 
-	<navigation
-		android:id="@+id/nav_syllabus_graph"
-		app:startDestination="@id/fragment_syllabus">
+	<fragment
+		android:id="@+id/fragment_syllabus"
+		android:name="org.openklas.ui.syllabus.SyllabusFragment"
+		tools:layout="@layout/syllabus_fragment">
 
-		<fragment
-			android:id="@+id/fragment_syllabus"
-			android:name="org.openklas.ui.syllabus.SyllabusFragment"
-			tools:layout="@layout/syllabus_fragment">
+		<argument
+			android:name="subject"
+			app:nullable="false"
+			app:argType="string" />
 
-			<argument
-				android:name="subject"
-				app:nullable="false"
-				app:argType="string" />
-
-		</fragment>
-
-	</navigation>
+	</fragment>
 
 	<fragment android:id="@+id/fragment_post"
 		android:name="org.openklas.ui.post.PostFragment"

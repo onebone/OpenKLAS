@@ -25,7 +25,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.viewModels
 import org.openklas.R
 import org.openklas.databinding.SyllabusPageAchievementFragmentBinding
 import org.openklas.ui.syllabus.SyllabusViewModel
@@ -39,7 +39,7 @@ class AchievementFragment: Fragment() {
 	): View {
 		val binding = SyllabusPageAchievementFragmentBinding.inflate(inflater, container, false)
 
-		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_syllabus_graph)
+		val viewModel by viewModels<SyllabusViewModel>(ownerProducer = { requireParentFragment() })
 		viewModel.syllabus.observe(viewLifecycleOwner) {
 			val weights = it.scoreWeights
 			binding.pieScoreWeights.entries = arrayOf(

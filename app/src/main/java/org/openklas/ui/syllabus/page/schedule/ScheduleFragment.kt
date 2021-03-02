@@ -24,7 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.viewModels
 import org.openklas.R
 import org.openklas.databinding.SyllabusPageScheduleFragmentBinding
 import org.openklas.ui.syllabus.SyllabusViewModel
@@ -37,7 +37,7 @@ class ScheduleFragment: Fragment() {
 	): View {
 		val binding = SyllabusPageScheduleFragmentBinding.inflate(inflater, container, false)
 
-		val viewModel by navGraphViewModels<SyllabusViewModel>(R.id.nav_syllabus_graph)
+		val viewModel by viewModels<SyllabusViewModel>(ownerProducer = { requireParentFragment() })
 		binding.viewModel = viewModel
 
 		viewModel.syllabus.observe(viewLifecycleOwner) {

@@ -63,6 +63,38 @@ sealed class OnlineContentEntry {
 		val acquiredTime: Int
 	): OnlineContentEntry()
 
+	data class Quiz(
+		override val evltnSe: String, // quiz
+		@SerializedName("endDate")
+		val endDate: Date,
+		@SerializedName("achivTime")
+		val acquiredTime: Int,
+		@SerializedName("lrnPd")
+		val takenFromTo: String,
+		@SerializedName("module")
+		val chapter: String, // 01, 02, ...
+		@SerializedName("moduletitle")
+		val chapterTitle: String,
+		@SerializedName("sbjt")
+		val title: String,
+		@SerializedName("rcognTime")
+		// Note that [lectureTime] is different from the actual
+		// length of the lecture
+		val lectureTime: Int,
+		@SerializedName("startDate")
+		val startDate: Date,
+		@SerializedName("started")
+		val takenAt: Date?,
+		@SerializedName("userId")
+		val userId: String,
+		@SerializedName("weekNo")
+		val week: Int,
+		@SerializedName("papernum")
+		val id: Int,
+		@SerializedName("papernm")
+		val name: String
+	): OnlineContentEntry()
+
 	data class Dummy(
 		override val evltnSe: String
 	): OnlineContentEntry()

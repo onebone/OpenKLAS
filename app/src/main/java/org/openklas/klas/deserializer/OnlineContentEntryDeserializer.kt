@@ -34,6 +34,7 @@ class OnlineContentEntryDeserializer: TypeResolvableJsonDeserializer<OnlineConte
 		return when(obj["evltnSe"].asString) {
 			"proj" -> context.deserialize<OnlineContentEntry.Homework>(obj, OnlineContentEntry.Homework::class.java)
 			"lesson" -> context.deserialize<OnlineContentEntry.Video>(obj, OnlineContentEntry.Video::class.java)
+			"quiz" -> context.deserialize<OnlineContentEntry.Quiz>(obj, OnlineContentEntry.Quiz::class.java)
 			else -> context.deserialize<OnlineContentEntry.Dummy>(obj, OnlineContentEntry.Dummy::class.java)
 		}
 	}

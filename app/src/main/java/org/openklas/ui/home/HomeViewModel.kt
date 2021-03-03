@@ -106,6 +106,13 @@ class HomeViewModel @Inject constructor(
 		it.size
 	}
 
+	val quiz: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Quiz>>> = Transformations.map(onlineContents) {
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Quiz
+		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Quiz>>
+	}
+
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
 	}

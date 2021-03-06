@@ -18,6 +18,7 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,9 +30,10 @@ import org.openklas.utils.Result
 class PostListSource(
 	private val klasRepository: KlasRepository,
 	private val coroutineScope: CoroutineScope,
+	private val isInitialLoading: MutableLiveData<Boolean>,
 	private val query: PostListQuery?,
 	private val errorHandler: (Throwable) -> Unit,
-	private val pageInfoCallback: (Board.PageInfo) -> Unit
+	private val pageInfoCallback: (Board.PageInfo) -> Unit,
 ): PageKeyedDataSource<Int, Board.Entry>() {
 	override fun loadInitial(
 		params: LoadInitialParams<Int>,
@@ -40,11 +42,15 @@ class PostListSource(
 		// there is nothing to show when query is not set
 		val query = query ?: return callback.onResult(listOf(), 0, 0, null, null)
 
+		isInitialLoading.postValue(true)
+
 		coroutineScope.launch {
 			val result = request(query, 0)
 			if(result is Result.Error) {
 				errorHandler(result.error)
 			}else if(result is Result.Success) {
+				isInitialLoading.postValue(false)
+
 				val board = result.value
 				val page = board.pageInfo
 

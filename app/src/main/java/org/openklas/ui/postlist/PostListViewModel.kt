@@ -64,10 +64,13 @@ class PostListViewModel @Inject constructor(
 		}
 	}
 
+	private val _isInitialLoading = MutableLiveData(true)
+	val isInitialLoading: LiveData<Boolean> = _isInitialLoading
+
 	val posts = Transformations.switchMap(subject) {
 		LivePagedListBuilder(object : DataSource.Factory<Int, Board.Entry>() {
 			override fun create(): DataSource<Int, Board.Entry> =
-				PostListSource(klasRepository, viewModelScope, buildQuery(), { _error.value = it }) {
+				PostListSource(klasRepository, viewModelScope, _isInitialLoading, buildQuery(), { _error.value = it }) {
 					pageInfo.postValue(it)
 				}
 		}, PagedList.Config.Builder().setPageSize(15).build()).build()

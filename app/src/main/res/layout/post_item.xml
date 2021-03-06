@@ -23,53 +23,66 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<import type="org.openklas.utils.Utils" />
-		<import type="android.view.ViewGroup.LayoutParams" />
+		<import type="android.view.View" />
 
 		<variable
 			name="post"
 			type="org.openklas.klas.model.Board.Entry" />
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:id="@+id/post_root"
+	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:padding="12dp"
-		android:background="?android:attr/selectableItemBackground">
+		android:layout_height="wrap_content">
 
-		<TextView
-			android:id="@+id/tv_post_title"
-			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.3f, 0.7f), default=wrap_content}"
+		<com.facebook.shimmer.ShimmerFrameLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			android:background="@{post == null ? @drawable/placeholder : null}"
-			android:text="@{post != null ? post.title : ``}"
-			android:textSize="18sp"
-			tools:text="Lorem ipsum" />
+			android:visibility="@{post == null ? View.VISIBLE : View.GONE}">
 
-		<TextView
-			android:id="@+id/tv_post_hits"
-			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.15f, 0.2f), default=wrap_content}"
+			<include layout="@layout/skeleton_post_item" />
+
+		</com.facebook.shimmer.ShimmerFrameLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/post_root"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/tv_post_title"
-			android:layout_marginTop="2dp"
-			android:background="@{post == null ? @drawable/placeholder : null}"
-			android:text="@{post != null ? String.format(@string/post_hits, post.hits) : ``}"
-			tools:text="Hits: 12" />
+			android:padding="12dp"
+			android:visibility="@{post == null ? View.GONE : View.VISIBLE}"
+			android:background="?android:attr/selectableItemBackground">
 
-		<TextView
-			android:id="@+id/tv_post_author"
-			android:layout_width="@{post != null ? LayoutParams.WRAP_CONTENT : Utils.randomWidthLength(postRoot, 0.15f, 0.3f), default=wrap_content}"
-			android:layout_height="wrap_content"
-			app:layout_constraintLeft_toRightOf="@id/tv_post_hits"
-			app:layout_constraintTop_toTopOf="@id/tv_post_hits"
-			android:layout_marginStart="8dp"
-			android:background="@{post == null ? @drawable/placeholder : null}"
-			android:text="@{post != null ? String.format(@string/post_author, post.author) : ``}"
-			tools:text="Author: dolor sit" />
+			<TextView
+				android:id="@+id/tv_post_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				android:text="@{post.title}"
+				android:textSize="18sp"
+				tools:text="Lorem ipsum" />
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+			<TextView
+				android:id="@+id/tv_post_hits"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+				android:layout_marginTop="2dp"
+				android:text="@{@string/post_hits(post.hits)}"
+				tools:text="Hits: 12" />
+
+			<TextView
+				android:id="@+id/tv_post_author"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toRightOf="@id/tv_post_hits"
+				app:layout_constraintTop_toTopOf="@id/tv_post_hits"
+				android:layout_marginStart="8dp"
+				android:text="@{@string/post_author(post.author)}"
+				tools:text="Author: dolor sit" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</FrameLayout>
+
 </layout>

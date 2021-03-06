@@ -149,6 +149,20 @@
 					app:layout_constraintLeft_toLeftOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/backdrop_content_divider" />
 
+				<com.facebook.shimmer.ShimmerFrameLayout
+					android:id="@+id/shimmer_back_layer"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/v_divider"
+					app:layout_constraintBottom_toBottomOf="parent"
+					android:visibility="@{viewModel.isInitialLoading ? View.VISIBLE : View.GONE}">
+
+					<include layout="@layout/skeleton_post_list_fragment_front" />
+
+				</com.facebook.shimmer.ShimmerFrameLayout>
+
 				<androidx.recyclerview.widget.RecyclerView
 					android:id="@+id/rv_posts"
 					android:layout_width="0dp"
@@ -164,7 +178,7 @@
 					android:layout_height="wrap_content"
 					android:text="@string/post_list_none"
 					android:textColor="@color/gray"
-					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
+					android:visibility="@{viewModel.isInitialLoading || viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
 					app:layout_constraintBottom_toBottomOf="@id/rv_posts"
 					app:layout_constraintLeft_toLeftOf="@id/rv_posts"
 					app:layout_constraintRight_toRightOf="@id/rv_posts"

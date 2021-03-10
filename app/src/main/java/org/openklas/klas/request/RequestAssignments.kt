@@ -1,4 +1,4 @@
-package org.openklas.base
+package org.openklas.klas.request
 
 /*
  * OpenKLAS
@@ -18,21 +18,12 @@ package org.openklas.base
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.lifecycle.LiveData
-import org.openklas.utils.Event
-import org.openklas.utils.Result
+import com.google.gson.annotations.SerializedName
 
-interface SessionViewModelDelegate {
-	val mustAuthenticate: LiveData<Event<Unit>>
-
-	/**
-	 * Performs a request that requires a session. When the request has once failed
-	 * due to session invalidation, it will try to login with a saved credentials and
-	 * try requesting again.
-	 *
-	 * @param f Request procedure.
-	 *
-	 * @return The result of the request.
-	 */
-	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
-}
+data class RequestAssignments(
+	@SerializedName("selectYearhakgi")
+	val semester: String,
+	@SerializedName("selectSubj")
+	val subjectId: String,
+	val selectChangeYn: String = "Y"
+)

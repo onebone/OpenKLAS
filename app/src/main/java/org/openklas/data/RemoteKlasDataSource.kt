@@ -19,6 +19,7 @@ package org.openklas.data
  */
 
 import org.openklas.klas.KlasClient
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -97,6 +98,13 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		return klas.getLectureStudentsNumber(subjectId)
+	}
+
+	override suspend fun getAssignments(
+		semester: String,
+		subjectId: String
+	): Result<Array<AssignmentEntry>> {
+		return klas.getAssignments(semester, subjectId)
 	}
 
 	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {

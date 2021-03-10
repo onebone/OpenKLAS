@@ -21,6 +21,7 @@ package org.openklas.klas.test
 import kotlinx.coroutines.delay
 import org.openklas.klas.KlasClient
 import org.openklas.klas.error.KlasNoDataError
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Book
@@ -202,6 +203,15 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		delay(NETWORK_DELAY)
 
 		return Result.Success(5)
+	}
+
+	override suspend fun getAssignments(
+		semester: String,
+		subjectId: String
+	): Result<Array<AssignmentEntry>> {
+		delay(NETWORK_DELAY)
+
+		return Result.Success(arrayOf())
 	}
 
 	override suspend fun getOnlineContentList(

@@ -21,6 +21,7 @@ package org.openklas.klas
 import android.util.Base64
 import com.google.gson.Gson
 import org.openklas.klas.error.KlasSigninFailError
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -32,6 +33,7 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
+import org.openklas.klas.request.RequestAssignments
 import org.openklas.klas.request.RequestAttachments
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestLectureSchedules
@@ -162,6 +164,13 @@ class DefaultKlasClient @Inject constructor(
 			is Result.Success -> Result.Success(result.value.students)
 			is Result.Error -> Result.Error(result.error)
 		}
+	}
+
+	override suspend fun getAssignments(
+		semester: String,
+		subjectId: String
+	): Result<Array<AssignmentEntry>> {
+		return service.assignments(RequestAssignments(semester = semester, subjectId = subjectId)).validateSession()
 	}
 
 	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {

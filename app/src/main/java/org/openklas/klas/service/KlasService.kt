@@ -22,6 +22,7 @@ import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
@@ -31,6 +32,7 @@ import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.RequestAttachments
 import org.openklas.klas.request.RequestHome
+import org.openklas.klas.request.RequestAssignments
 import org.openklas.klas.request.RequestLectureSchedules
 import org.openklas.klas.request.RequestLectureStudents
 import org.openklas.klas.request.RequestOnlineContents
@@ -94,6 +96,9 @@ interface KlasService {
 
 	@POST(KlasUri.STD_LECTURE_STUDENTS)
 	suspend fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Response<ResponseLectureStudents>
+
+	@POST(KlasUri.STD_ASSIGNMENTS)
+	suspend fun assignments(@Body payload: RequestAssignments): Response<Array<AssignmentEntry>>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>

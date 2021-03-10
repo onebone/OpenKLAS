@@ -20,6 +20,7 @@ package org.openklas.repository
 
 import org.openklas.data.KlasDataSource
 import org.openklas.data.CredentialDataSource
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -108,6 +109,13 @@ class DefaultKlasRepository @Inject constructor(
 
 	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
 		return klasDataSource.getLectureStudentsNumber(subjectId)
+	}
+
+	override suspend fun getAssignments(
+		semester: String,
+		subjectId: String
+	): Result<Array<AssignmentEntry>> {
+		return klasDataSource.getAssignments(semester, subjectId)
 	}
 
 	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {

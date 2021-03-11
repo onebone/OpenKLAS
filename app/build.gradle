@@ -93,7 +93,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:2.3.0"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation 'org.apache.commons:commons-lang3:3.3.1'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
@@ -112,7 +112,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-beta01'
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
 
 

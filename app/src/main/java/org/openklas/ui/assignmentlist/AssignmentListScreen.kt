@@ -43,8 +43,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
+import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 @Composable
 fun AssignmentListScreen() {
@@ -94,10 +96,10 @@ fun AssignmentItem(entry: AssignmentEntry) {
 
 			val dday = "D" +
 				(if(now.after(entry.due)) '+' else '-') +
-				((now.time - entry.due.time) / TimeUnit.DAYS.toMillis(1))
+				(abs(now.time - entry.due.time) / TimeUnit.DAYS.toMillis(1))
 
-			val color = if(now.after(entry.due)) R.color.assignment_undone
-				else R.color.assignment_done
+			val color = if(entry.isSubmitted) R.color.assignment_done
+				else R.color.assignment_undone
 
 			Text(dday,
 				modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -159,6 +161,24 @@ fun Header(name: String) {
 @Composable
 fun AssignmentListScreenPreview() {
 	MaterialTheme {
-		AssignmentListMainLayout("심리학과프로파일링", arrayOf())
+		AssignmentListMainLayout("심리학과프로파일링", arrayOf(
+			AssignmentEntry(
+				isExtendedPeriod = false,
+				due = Calendar.getInstance().apply {
+					add(Calendar.DAY_OF_MONTH, 10)
+				}.time,
+				isSubmitPeriod = true,
+				order = 0,
+				extendedDue = null,
+				extendedStartDate = null,
+				score = null,
+				startDate = Date(),
+				isSubmitted = false,
+				taskNumber = 0,
+				title = "사이코패스 측정 후 제출",
+				week = 3,
+				nthOfWeek = 1
+			)
+		))
 	}
 }

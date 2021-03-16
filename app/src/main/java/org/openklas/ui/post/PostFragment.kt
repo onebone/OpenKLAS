@@ -56,7 +56,7 @@ class PostFragment: BaseFragment() {
 		val viewModel by viewModels<PostViewModel>()
 		binding.viewModel = viewModel
 
-		viewModel.setSubjectId(args.subject)
+		viewModel.setSubject(args.subject)
 		viewModel.setCurrentSemester(args.semester)
 		viewModel.fetchPost(args.postType, args.boardNo, args.masterNo)
 

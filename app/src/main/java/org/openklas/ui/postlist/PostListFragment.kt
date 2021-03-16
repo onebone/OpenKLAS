@@ -68,7 +68,7 @@ class PostListFragment: BaseFragment() {
 		val adapter = PostListAdapter {
 			// semester and subject must be resolved at this time
 			val semester = viewModel.currentSemester.value ?: return@PostListAdapter
-			val subject = viewModel.subject.value ?: return@PostListAdapter
+			val subject = viewModel.currentSubject.value ?: return@PostListAdapter
 
 			findNavController().navigate(PostListFragmentDirections.actionPostlsPost(
 				args.type, it.boardNo, it.masterNo, semester.id, subject.id

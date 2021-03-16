@@ -104,7 +104,7 @@
 					android:layout_marginTop="18dp"
 					android:layout_marginRight="8dp"
 					android:layout_marginBottom="8dp"
-					android:text="@{viewModel.subject.name}"
+					android:text="@{viewModel.currentSubject.name}"
 					android:textColor="@color/copper"
 					android:textSize="24sp"
 					android:textStyle="bold"

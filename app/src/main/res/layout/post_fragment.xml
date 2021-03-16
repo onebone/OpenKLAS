@@ -48,7 +48,7 @@
 				android:layout_marginTop="12dp"
 				android:layout_marginStart="12dp"
 				android:textColor="@color/primary"
-				android:text="@{viewModel.subject.name}"
+				android:text="@{viewModel.currentSubject.name}"
 				tools:text="심리학과프로파일링" />
 
 			<TextView

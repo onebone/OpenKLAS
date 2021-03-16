@@ -29,6 +29,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostComposite
@@ -41,10 +42,10 @@ import javax.inject.Inject
 class PostViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	semesterViewModelDelegate: SemesterViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate
 ): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
-	SemesterViewModelDelegate by semesterViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate {
 
 	private companion object {
 		const val STORAGE_ID = "CLS_BOARD"
@@ -76,27 +77,6 @@ class PostViewModel @Inject constructor(
 		}
 	}
 
-	private val currentSubjectId = MutableLiveData<String>()
-
-	val subject: LiveData<BriefSubject> = MediatorLiveData<BriefSubject>().apply {
-		fun combine() {
-			val id = currentSubjectId.value ?: return
-			val subjects = subjects.value ?: return
-
-			subjects.find { it.id == id }?.let {
-				value = it
-			}
-		}
-
-		addSource(currentSubjectId) {
-			combine()
-		}
-
-		addSource(subjects) {
-			combine()
-		}
-	}
-
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
@@ -116,9 +96,5 @@ class PostViewModel @Inject constructor(
 				is Result.Error -> _error.postValue(result.error)
 			}
 		}
-	}
-
-	fun setSubjectId(id: String) {
-		currentSubjectId.value = id
 	}
 }

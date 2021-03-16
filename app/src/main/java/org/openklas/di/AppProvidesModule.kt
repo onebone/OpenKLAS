@@ -33,6 +33,9 @@ import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import org.openklas.BuildConfig
 import org.openklas.base.Config
+import org.openklas.base.DefaultSubjectViewModelDelegate
+import org.openklas.base.SemesterViewModelDelegate
+import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.DefaultKlasClient
 import org.openklas.klas.KlasClient
 import org.openklas.klas.KlasUri
@@ -106,5 +109,11 @@ class AppProvidesModule {
 	fun provideKlasClient(service: KlasService, gson: Gson): KlasClient {
 		return if(BuildConfig.FETCH_ONLINE) DefaultKlasClient(service, gson)
 			else DemoKlasClient()
+	}
+
+	@Provides
+	@Singleton
+	fun provideSubjectViewModelDelegate(semesterViewModelDelegate: SemesterViewModelDelegate): SubjectViewModelDelegate {
+		return DefaultSubjectViewModelDelegate(semesterViewModelDelegate)
 	}
 }

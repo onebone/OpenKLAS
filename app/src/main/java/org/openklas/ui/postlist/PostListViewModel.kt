@@ -18,9 +18,7 @@ package org.openklas.ui.postlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -29,10 +27,9 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.Board
-import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostType
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
@@ -42,32 +39,16 @@ import javax.inject.Inject
 class PostListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	semesterViewModelDelegate: SemesterViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
-	SemesterViewModelDelegate by semesterViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate {
 	private var postType: PostType? = null
 	private var filter: Filter? = null
-
-	private var subjectSelector: (Array<BriefSubject>) -> BriefSubject? = {
-		it.firstOrNull()
-	}
-
-	private val _subject = MutableLiveData<BriefSubject>()
-	val subject: LiveData<BriefSubject> = MediatorLiveData<BriefSubject>().apply {
-		addSource(subjects) {
-			// do NOT use switchMap as [subject] always depends on [subjects] live data
-			invokeSelector(it)
-		}
-
-		addSource(_subject) {
-			value = it
-		}
-	}
 
 	private val _isInitialLoading = MutableLiveData(true)
 	val isInitialLoading: LiveData<Boolean> = _isInitialLoading
 
-	val posts = Transformations.switchMap(subject) {
+	val posts = Transformations.switchMap(currentSubject) {
 		LivePagedListBuilder(object : DataSource.Factory<Int, Board.Entry>() {
 			override fun create(): DataSource<Int, Board.Entry> =
 				PostListSource(klasRepository, viewModelScope, _isInitialLoading, buildQuery(), { _error.value = it }) {
@@ -85,7 +66,7 @@ class PostListViewModel @Inject constructor(
 	}
 
 	private fun hasQuery(): Boolean {
-		return postType != null && subject.value != null && currentSemester.value != null
+		return postType != null && currentSubject.value != null && currentSemester.value != null
 	}
 
 	fun setPostType(type: PostType) {
@@ -102,38 +83,16 @@ class PostListViewModel @Inject constructor(
 		posts.value?.dataSource?.invalidate()
 	}
 
-	fun setSubject(subjectId: String) {
-		subjectSelector = { subjects ->
-			subjects.find { it.id == subjectId }
-		}
-
-		subjects.value?.let {
-			invokeSelector(it)
-		}
-	}
-
 	fun buildQuery(): PostListQuery? {
 		return if(hasQuery())
 			PostListQuery(
 				currentSemester.value!!,
-				subject.value!!,
+				currentSubject.value!!,
 				postType!!,
 				filter?.criteria ?: BoardSearchCriteria.ALL,
 				filter?.keyword
 			)
 		else null
-	}
-
-	private fun invokeSelector(subjects: Array<BriefSubject>) {
-		val subject = subjectSelector(subjects)
-		if(subject == null && subjects.isNotEmpty()) return
-
-		@SuppressLint("NullSafeMutableLiveData")
-		if(_subject.value != subject && subject != null) {
-			_subject.value = subject
-
-			posts.value?.dataSource?.invalidate()
-		}
 	}
 
 	internal data class Filter(

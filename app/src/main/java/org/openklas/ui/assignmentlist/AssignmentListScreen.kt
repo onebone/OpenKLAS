@@ -20,6 +20,7 @@ package org.openklas.ui.assignmentlist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -31,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -60,7 +60,7 @@ fun AssignmentListMainLayout(name: String, assignments: Array<AssignmentEntry>?)
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(16.dp)
+			.padding(16.dp, 0.dp)
 	) {
 		Header(name)
 
@@ -86,34 +86,46 @@ fun MainFrame(assignments: Array<AssignmentEntry>?) {
 @Composable
 fun AssignmentItem(entry: AssignmentEntry) {
 	Row {
-		Column(modifier = Modifier.weight(1f)) {
-			val dday = remember {
-				val now = Date()
+		Column(modifier = Modifier
+			.wrapContentWidth(Alignment.Start)
+			.defaultMinSize(60.dp)
+		) {
+			val now = Date()
 
-				"D" +
-					(if(now.after(entry.due)) '+' else '-') +
-					((now.time - entry.due.time) / TimeUnit.DAYS.toMillis(1))
-			}
+			val dday = "D" +
+				(if(now.after(entry.due)) '+' else '-') +
+				((now.time - entry.due.time) / TimeUnit.DAYS.toMillis(1))
 
-			val color = remember {
-				val now = Date()
-
-				if(now.after(entry.due)) R.color.assignment_undone
+			val color = if(now.after(entry.due)) R.color.assignment_undone
 				else R.color.assignment_done
-			}
 
 			Text(dday,
 				modifier = Modifier.align(Alignment.CenterHorizontally),
-				fontSize = 18.sp,
-				fontColor = colorResource(color)
+				fontSize = 21.sp,
+				fontWeight = FontWeight.Bold,
+				color = colorResource(color)
 			)
-			
+
 			Text(
 				stringResource(
 					if(entry.isSubmitted) R.string.assignment_done
 					else R.string.assignment_undone
 				),
-				fontColor = colorResource(color)
+				modifier = Modifier.align(Alignment.CenterHorizontally),
+				fontSize = 15.sp,
+				color = colorResource(color)
+			)
+		}
+
+		Column(
+			modifier = Modifier
+				.weight(1f)
+				.padding(12.dp, 0.dp)
+		) {
+			Text(
+				entry.title,
+				fontSize = 16.sp,
+				fontWeight = FontWeight.Bold
 			)
 		}
 	}
@@ -124,6 +136,7 @@ fun Header(name: String) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
+			.padding(0.dp, 12.dp)
 	) {
 		Row {
 			Text(name,
@@ -131,7 +144,7 @@ fun Header(name: String) {
 				fontSize = 24.sp,
 				fontWeight = FontWeight.Bold)
 
-			Text(stringResource(R.string.post_list_change_subject),
+			Text(stringResource(R.string.assignment_list_change_subject),
 				color = colorResource(R.color.navigate),
 				fontSize = 15.sp,
 				modifier = Modifier

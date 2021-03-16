@@ -148,6 +148,8 @@
 	<string name="secondary_professor">조교수</string>
 	<string name="teaching_assistant">조교</string>
 
+	<string name="assignment_list_title">과제</string>
+	<string name="assignment_list_change_subject">변경</string>
 	<string name="assignment_done">제출</string>
 	<string name="assignment_undone">미제출</string>
 </resources>

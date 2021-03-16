@@ -24,7 +24,7 @@ import java.util.Date
 data class AssignmentEntry(
 	@SerializedName("adddate")
 	val isExtendedPeriod: Boolean,
-	@SerializedName("expiredata")
+	@SerializedName("expiredate")
 	val due: Date,
 	// [isSubmitPeriod] is a flag indicating if a user can
 	// submit a homework now. Returns true if current time is
@@ -34,9 +34,9 @@ data class AssignmentEntry(
 	@SerializedName("ordseq")
 	val order: Int,
 	@SerializedName("reexpiredate")
-	val extendedDue: Date,
+	val extendedDue: Date?,
 	@SerializedName("restartdate")
-	val extendedStartDate: Date,
+	val extendedStartDate: Date?,
 	@SerializedName("score")
 	val score: Int?,
 	@SerializedName("startdate")

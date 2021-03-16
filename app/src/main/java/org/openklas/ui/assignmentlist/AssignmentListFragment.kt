@@ -24,13 +24,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
+import org.openklas.R
+import org.openklas.base.BaseFragment
+import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
-class AssignmentListFragment: Fragment() {
+class AssignmentListFragment: BaseFragment() {
 	private val args by navArgs<AssignmentListFragmentArgs>()
 
 	override fun onCreateView(
@@ -38,6 +40,12 @@ class AssignmentListFragment: Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		configureTitle(
+			resources.getString(R.string.assignment_list_title),
+			AppbarView.HeaderType.BACK,
+			AppbarView.SearchType.NONE
+		)
+
 		val viewModel by viewModels<AssignmentListViewModel>()
 
 		args.subject?.let {

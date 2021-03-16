@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -42,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun AssignmentListScreen() {
@@ -82,7 +85,38 @@ fun MainFrame(assignments: Array<AssignmentEntry>?) {
 
 @Composable
 fun AssignmentItem(entry: AssignmentEntry) {
-	Text(entry.title, fontWeight = FontWeight.Bold)
+	Row {
+		Column(modifier = Modifier.weight(1f)) {
+			val dday = remember {
+				val now = Date()
+
+				"D" +
+					(if(now.after(entry.due)) '+' else '-') +
+					((now.time - entry.due.time) / TimeUnit.DAYS.toMillis(1))
+			}
+
+			val color = remember {
+				val now = Date()
+
+				if(now.after(entry.due)) R.color.assignment_undone
+				else R.color.assignment_done
+			}
+
+			Text(dday,
+				modifier = Modifier.align(Alignment.CenterHorizontally),
+				fontSize = 18.sp,
+				fontColor = colorResource(color)
+			)
+			
+			Text(
+				stringResource(
+					if(entry.isSubmitted) R.string.assignment_done
+					else R.string.assignment_undone
+				),
+				fontColor = colorResource(color)
+			)
+		}
+	}
 }
 
 @Composable

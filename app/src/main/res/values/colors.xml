@@ -86,4 +86,7 @@
 	<color name="secondary_professor">@color/purple_500</color>
 	<color name="teaching_assistant">@color/blue</color>
 	<color name="unknown_tutor_type">@color/gray</color>
+
+	<color name="assignment_undone">@color/orange</color>
+	<color name="assignment_done">@color/green</color>
 </resources>

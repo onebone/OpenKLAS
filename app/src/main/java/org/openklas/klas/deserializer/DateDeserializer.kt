@@ -28,8 +28,10 @@ import java.util.Date
 
 class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
 	private val formats = arrayOf(
+		FastDateFormat.getInstance(),
 		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS"),
-		FastDateFormat.getInstance("yyyy-MM-dd HH:mm")
+		FastDateFormat.getInstance("yyyy-MM-dd HH:mm"),
+		FastDateFormat.getInstance("yyyy-MM-dd")
 	)
 
 	override fun deserialize(

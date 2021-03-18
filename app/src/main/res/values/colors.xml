@@ -65,6 +65,7 @@
 	<color name="file_size">@color/blue</color>
 	<color name="selected">@color/copper</color>
 	<color name="navigate">@color/blue</color>
+	<color name="warn">@color/red</color>
 
 	<color name="score_weight_attendance">@color/red</color>
 	<color name="score_weight_midterm">@color/orange</color>

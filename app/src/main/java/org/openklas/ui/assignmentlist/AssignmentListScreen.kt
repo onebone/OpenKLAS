@@ -18,6 +18,7 @@ package org.openklas.ui.assignmentlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
@@ -32,9 +33,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -129,7 +132,39 @@ fun AssignmentItem(entry: AssignmentEntry) {
 				fontSize = 16.sp,
 				fontWeight = FontWeight.Bold
 			)
+
+			val (hour, minute) = remember {
+				val due = Calendar.getInstance().apply {
+					time = entry.due
+				}
+
+				val hour = due.get(Calendar.HOUR_OF_DAY)
+				val minute = due.get(Calendar.MINUTE)
+
+				Pair(hour, minute)
+			}
+
+			if(!(hour == 23 && minute == 59)) {
+				AssignmentDueNot2359Warning(hour, minute)
+			}
 		}
+	}
+}
+
+@Composable
+fun AssignmentDueNot2359Warning(hour: Int, minute: Int) {
+	Row(
+		modifier = Modifier
+			.padding(8.dp)
+	) {
+		Image(painterResource(R.drawable.ic_caution), null)
+
+		Text(
+			stringResource(R.string.assignment_due_not_23_59, hour, minute),
+			modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
+			color = colorResource(R.color.warn),
+			fontSize = 13.sp
+		)
 	}
 }
 

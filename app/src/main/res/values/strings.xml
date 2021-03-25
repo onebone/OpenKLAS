@@ -80,6 +80,8 @@
 	<string name="course_name">강의명</string>
 	<string name="course_time">수업 시간</string>
 	<string name="course_loc">수업 장소</string>
+	<string name="homework_assignments">과제</string>
+
 	<string name="home_schedule_title">오늘의 시간표</string>
 	<string name="home_no_class_today">오늘은 강의가 없어요!</string>
 	<string name="home_schedule_show_more">시간표</string>
@@ -146,4 +148,10 @@
 	<string name="secondary_professor">조교수</string>
 	<string name="teaching_assistant">조교</string>
 
+	<string name="assignment_list_title">과제</string>
+	<string name="assignment_list_change_subject">변경</string>
+	<string name="assignment_done">제출</string>
+	<string name="assignment_undone">미제출</string>
+
+	<string name="assignment_due_not_23_59">마감이 %d시 %d분이에요. 23시 59분에 제출하지 않도록 주의해주세요!</string>
 </resources>

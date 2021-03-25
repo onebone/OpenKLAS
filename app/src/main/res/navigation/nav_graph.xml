@@ -94,6 +94,26 @@
 			app:popEnterAnim="@anim/slightly_scale_up_left"
 			app:popExitAnim="@anim/slide_right_pop" />
 
+		<action
+			android:id="@+id/action_home_assignment_list"
+			app:destination="@id/fragment_assignment_list"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
+
+			<argument
+				android:name="semester"
+				app:argType="string"
+				app:nullable="true" />
+
+			<argument
+				android:name="subject"
+				app:argType="string"
+				app:nullable="true" />
+
+		</action>
+
 	</fragment>
 
 	<fragment
@@ -209,6 +229,22 @@
 		<argument
 			android:name="subject"
 			app:nullable="false"
+			app:argType="string" />
+
+	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_assignment_list"
+		android:name="org.openklas.ui.assignmentlist.AssignmentListFragment">
+
+		<argument
+			android:name="semester"
+			app:nullable="true"
+			app:argType="string" />
+
+		<argument
+			android:name="subject"
+			app:nullable="true"
 			app:argType="string" />
 
 	</fragment>

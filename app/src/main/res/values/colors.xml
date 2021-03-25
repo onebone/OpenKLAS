@@ -65,6 +65,7 @@
 	<color name="file_size">@color/blue</color>
 	<color name="selected">@color/copper</color>
 	<color name="navigate">@color/blue</color>
+	<color name="warn">@color/red</color>
 
 	<color name="score_weight_attendance">@color/red</color>
 	<color name="score_weight_midterm">@color/orange</color>
@@ -86,4 +87,10 @@
 	<color name="secondary_professor">@color/purple_500</color>
 	<color name="teaching_assistant">@color/blue</color>
 	<color name="unknown_tutor_type">@color/gray</color>
+
+	<color name="assignment_undone">@color/orange</color>
+	<color name="assignment_done">@color/green</color>
+	<color name="assignment_due_in_period">@color/black</color>
+	<color name="assignment_due_not_in_period">@color/gray</color>
+	<color name="assignment_due_current">@color/copper</color>
 </resources>

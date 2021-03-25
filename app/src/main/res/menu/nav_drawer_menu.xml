@@ -32,6 +32,13 @@
 
 	</group>
 
+	<group android:id="@+id/nav_group_homework">
+
+		<item android:id="@+id/nav_assignment_list"
+			android:title="@string/homework_assignments" />
+
+	</group>
+
 	<group android:id="@+id/nav_group_course">
 		<item android:id="@+id/nav_syllabus_search"
 			android:title="@string/syllabus_search" />

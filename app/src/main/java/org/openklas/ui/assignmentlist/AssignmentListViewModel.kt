@@ -27,6 +27,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
+import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.BriefSubject
 import org.openklas.repository.KlasRepository
@@ -38,31 +39,14 @@ import javax.inject.Inject
 class AssignmentListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	semesterViewModelDelegate: SemesterViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate
 ): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
-	SemesterViewModelDelegate by semesterViewModelDelegate {
-
-	private var subjectSelector: (Array<BriefSubject>) -> BriefSubject? = {
-		it.firstOrNull()
-	}
-
-	private val _subject = MutableLiveData<BriefSubject>()
-	val subject: LiveData<BriefSubject> = MediatorLiveData<BriefSubject>().apply {
-		addSource(currentSemester) {
-			val selection = subjectSelector(it.subjects)
-			if(selection != null)
-				value = selection
-		}
-
-		addSource(_subject) {
-			value = it
-		}
-	}
+	SubjectViewModelDelegate by subjectViewModelDelegate {
 
 	// though currentSemester should not be null when subject is non-null,
 	// we will make it clear
-	private val semesterSubjectPair = PairCombinedLiveData(currentSemester, subject)
+	private val semesterSubjectPair = PairCombinedLiveData(currentSemester, currentSubject)
 
 	private val _assignments = MediatorLiveData<Array<AssignmentEntry>>().apply {
 		addSource(semesterSubjectPair) {
@@ -73,12 +57,6 @@ class AssignmentListViewModel @Inject constructor(
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
-
-	fun setSubject(subjectId: String) {
-		subjectSelector = { subjects ->
-			subjects.find { it.id == subjectId }
-		}
-	}
 
 	private fun fetchAssignments(semester: String, subjectId: String) {
 		viewModelScope.launch {

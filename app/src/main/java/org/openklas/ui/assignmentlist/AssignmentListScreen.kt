@@ -67,7 +67,7 @@ import kotlin.math.min
 @Composable
 fun AssignmentListScreen() {
 	val viewModel = viewModel<AssignmentListViewModel>()
-	val subject by viewModel.subject.observeAsState()
+	val subject by viewModel.currentSubject.observeAsState()
 	val assignments by viewModel.assignments.observeAsState()
 
 	AssignmentListMainLayout(subject?.name ?: "", assignments)

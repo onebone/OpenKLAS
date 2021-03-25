@@ -225,7 +225,7 @@ fun AssignmentDue(start: Date, end: Date) {
 	val currentColor = colorResource(R.color.assignment_due_current)
 
 	Canvas(modifier = Modifier
-		.padding(0.dp, 4.dp)
+		.padding(0.dp, 8.dp, 0.dp, 12.dp)
 		.assignmentDueSizing(dayPaint, yearPaint, DATE_VERTICAL_MARGIN)
 	) {
 		val dayFontHeight = with(dayPaint.asFrameworkPaint().fontMetrics) {

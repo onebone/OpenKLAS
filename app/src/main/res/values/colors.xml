@@ -90,4 +90,7 @@
 
 	<color name="assignment_undone">@color/orange</color>
 	<color name="assignment_done">@color/green</color>
+	<color name="assignment_due_in_period">@color/black</color>
+	<color name="assignment_due_not_in_period">@color/gray</color>
+	<color name="assignment_due_current">@color/copper</color>
 </resources>

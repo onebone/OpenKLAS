@@ -20,6 +20,7 @@ package org.openklas.ui.assignmentlist
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
@@ -34,7 +35,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -56,10 +59,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.apache.commons.lang3.time.FastDateFormat
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
+import org.openklas.ui.shared.SubjectSelectionDialog
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.min
@@ -67,20 +70,40 @@ import kotlin.math.min
 @Composable
 fun AssignmentListScreen() {
 	val viewModel = viewModel<AssignmentListViewModel>()
-	val subject by viewModel.currentSubject.observeAsState()
+	val semesters by viewModel.semesters.observeAsState()
+	val currentSemester by viewModel.currentSemester.observeAsState()
+	val subjects by viewModel.subjects.observeAsState()
+	val currentSubject by viewModel.currentSubject.observeAsState()
+
 	val assignments by viewModel.assignments.observeAsState()
 
-	AssignmentListMainLayout(subject?.name ?: "", assignments)
+	var showSubjectDialog by remember { mutableStateOf(false) }
+	AssignmentListMainLayout(currentSubject?.name ?: "", assignments) {
+		showSubjectDialog = true
+	}
+
+	if(showSubjectDialog) {
+		SubjectSelectionDialog(semesters, currentSemester, subjects, currentSubject, onChange = { semester, subject ->
+			viewModel.setSubject(subject.id)
+			viewModel.setCurrentSemester(semester.id)
+		}) {
+			showSubjectDialog = false
+		}
+	}
 }
 
 @Composable
-fun AssignmentListMainLayout(name: String, assignments: Array<AssignmentEntry>?) {
+fun AssignmentListMainLayout(
+	name: String,
+	assignments: Array<AssignmentEntry>?,
+	onClickSubjectChange: () -> Unit
+) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(16.dp, 0.dp)
 	) {
-		Header(name)
+		Header(name, onClickSubjectChange)
 
 		MainFrame(assignments)
 	}
@@ -201,9 +224,8 @@ fun AssignmentDue(start: Date, end: Date) {
 		}
 	}
 
-	val seoulTimezone = TimeZone.getTimeZone("Asia/Seoul")
-	val yearFormatter = FastDateFormat.getInstance("yyyy", seoulTimezone, Locale.KOREA)
-	val dayFormatter = FastDateFormat.getInstance("MMM dd", seoulTimezone, Locale.KOREA)
+	val yearFormatter = FastDateFormat.getInstance("yyyy", Locale.KOREA)
+	val dayFormatter = FastDateFormat.getInstance("MMM dd", Locale.KOREA)
 
 	val now = Date()
 
@@ -352,7 +374,7 @@ fun Modifier.assignmentDueSizing(
 }
 
 @Composable
-fun Header(name: String) {
+fun Header(name: String, onClickSubjectChange: () -> Unit) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -364,13 +386,17 @@ fun Header(name: String) {
 				fontSize = 24.sp,
 				fontWeight = FontWeight.Bold)
 
-			Text(stringResource(R.string.assignment_list_change_subject),
+			Text(
+				text = stringResource(R.string.assignment_list_change_subject),
 				color = colorResource(R.color.navigate),
 				fontSize = 15.sp,
 				modifier = Modifier
 					.weight(1f)
 					.wrapContentWidth(Alignment.End)
-					.align(Alignment.CenterVertically))
+					.align(Alignment.CenterVertically)
+					.clickable(onClick = onClickSubjectChange)
+					.padding(4.dp)
+			)
 		}
 	}
 }
@@ -399,6 +425,6 @@ fun AssignmentListScreenPreview() {
 				week = 3,
 				nthOfWeek = 1
 			)
-		))
+		)) { }
 	}
 }

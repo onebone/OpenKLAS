@@ -25,13 +25,20 @@ import org.apache.commons.lang3.time.FastDateFormat
 import java.lang.Exception
 import java.lang.reflect.Type
 import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
+	companion object {
+		// regardless of what timezone the device uses, server gives us
+		// timestamp with Korean timezone. Why don't give us a Unix time...??
+		val TIMEZONE: TimeZone = TimeZone.getTimeZone("Asia/Seoul")
+	}
+
 	private val formats = arrayOf(
-		FastDateFormat.getInstance(),
-		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS"),
-		FastDateFormat.getInstance("yyyy-MM-dd HH:mm"),
-		FastDateFormat.getInstance("yyyy-MM-dd")
+		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", TIMEZONE, Locale.KOREA),
+		FastDateFormat.getInstance("yyyy-MM-dd HH:mm", TIMEZONE, Locale.KOREA),
+		FastDateFormat.getInstance("yyyy-MM-dd", TIMEZONE, Locale.KOREA)
 	)
 
 	override fun deserialize(

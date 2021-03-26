@@ -224,8 +224,8 @@ fun AssignmentDue(start: Date, end: Date) {
 		}
 	}
 
-	val yearFormatter = FastDateFormat.getInstance("yyyy", Locale.KOREA)
-	val dayFormatter = FastDateFormat.getInstance("MMM dd", Locale.KOREA)
+	val yearFormatter = FastDateFormat.getInstance("yyyy", Locale.getDefault())
+	val dayFormatter = FastDateFormat.getInstance("MMM dd", Locale.getDefault())
 
 	val now = Date()
 

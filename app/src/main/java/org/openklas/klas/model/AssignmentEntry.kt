@@ -18,11 +18,14 @@ package org.openklas.klas.model
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import org.openklas.klas.deserializer.YNBoolDeserializer
 import java.util.Date
 
 data class AssignmentEntry(
 	@SerializedName("adddate")
+	@JsonAdapter(YNBoolDeserializer::class)
 	val isExtendedPeriod: Boolean,
 	@SerializedName("expiredate")
 	val due: Date,
@@ -30,6 +33,7 @@ data class AssignmentEntry(
 	// submit a homework now. Returns true if current time is
 	// after [startDate] and before [due].
 	@SerializedName("indate")
+	@JsonAdapter(YNBoolDeserializer::class)
 	val isSubmitPeriod: Boolean,
 	@SerializedName("ordseq")
 	val order: Int,
@@ -42,6 +46,7 @@ data class AssignmentEntry(
 	@SerializedName("startdate")
 	val startDate: Date,
 	@SerializedName("submityn")
+	@JsonAdapter(YNBoolDeserializer::class)
 	val isSubmitted: Boolean,
 	@SerializedName("taskNo")
 	val taskNumber: Int,

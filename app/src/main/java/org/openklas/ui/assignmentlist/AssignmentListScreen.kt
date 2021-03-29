@@ -23,9 +23,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -101,7 +103,6 @@ fun AssignmentListMainLayout(
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(16.dp, 0.dp)
 	) {
 		Header(name, onClickSubjectChange)
 
@@ -114,7 +115,9 @@ fun MainFrame(assignments: Array<AssignmentEntry>?) {
 	if(assignments == null) {
 		// TODO display shimmer effects on data load
 	}else{
-		LazyColumn {
+		LazyColumn(
+			modifier = Modifier.padding(16.dp, 0.dp)
+		) {
 			items(assignments) {
 				key(it.order) {
 					AssignmentItem(it)
@@ -185,6 +188,8 @@ fun AssignmentItem(entry: AssignmentEntry) {
 			}
 
 			AssignmentDue(entry.startDate, entry.due)
+
+			Spacer(modifier = Modifier.size(0.dp, 20.dp))
 		}
 	}
 }
@@ -247,7 +252,6 @@ fun AssignmentDue(start: Date, end: Date) {
 	val currentColor = colorResource(R.color.assignment_due_current)
 
 	Canvas(modifier = Modifier
-		.padding(0.dp, 8.dp, 0.dp, 12.dp)
 		.assignmentDueSizing(dayPaint, yearPaint, DATE_VERTICAL_MARGIN)
 	) {
 		val dayFontHeight = with(dayPaint.asFrameworkPaint().fontMetrics) {
@@ -258,8 +262,8 @@ fun AssignmentDue(start: Date, end: Date) {
 			descent - ascent
 		}.toInt()
 
-		val radius = min(size.width / 24, 50.dp.toPx())
-		val strokeWidth = radius / 2
+		val radius = min(size.width / 30, 15.dp.toPx())
+		val strokeWidth = radius / 4
 
 		val currentX = (radius * 2 + (size.width - 4 * radius) * periodRatio)
 			.coerceIn(radius * 2, size.width - 2 * radius)
@@ -296,7 +300,7 @@ fun AssignmentDue(start: Date, end: Date) {
 			// mark current time
 			drawCircle(
 				color = currentColor,
-				radius = strokeWidth,
+				radius = strokeWidth * 1.5f,
 				center = Offset(currentX, radius)
 			)
 		}
@@ -351,7 +355,7 @@ fun Modifier.assignmentDueSizing(
     verticalMargin: Dp
 ) = this.layout { measurable, constraints ->
 	val width = constraints.maxWidth
-	val radius = min(width / 24f, 50.dp.toPx())
+	val radius = min(width / 30f, 15.dp.toPx())
 
 	val dayFontHeightPixel = with(dayPaint.asFrameworkPaint().fontMetrics) {
 		descent - ascent
@@ -378,7 +382,7 @@ fun Header(name: String, onClickSubjectChange: () -> Unit) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(0.dp, 12.dp)
+			.padding(16.dp, 12.dp),
 	) {
 		Row {
 			Text(name,
@@ -424,6 +428,25 @@ fun AssignmentListScreenPreview() {
 				title = "사이코패스 측정 후 제출",
 				week = 3,
 				nthOfWeek = 1
+			),
+			AssignmentEntry(
+				isExtendedPeriod = false,
+				due = Calendar.getInstance().apply {
+					add(Calendar.DAY_OF_MONTH, 20)
+				}.time,
+				isSubmitPeriod = true,
+				order = 0,
+				extendedDue = null,
+				extendedStartDate = null,
+				score = null,
+				startDate = Calendar.getInstance().apply {
+					add(Calendar.DAY_OF_MONTH, -7)
+				}.time,
+				isSubmitted = false,
+				taskNumber = 0,
+				title = "보고서 제출",
+				week = 3,
+				nthOfWeek = 2
 			)
 		)) { }
 	}

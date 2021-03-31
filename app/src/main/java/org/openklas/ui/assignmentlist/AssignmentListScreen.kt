@@ -30,7 +30,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -62,6 +64,7 @@ import org.apache.commons.lang3.time.FastDateFormat
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.ui.shared.SubjectSelectionDialog
+import org.openklas.ui.shared.bottomShadow
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -104,20 +107,25 @@ fun AssignmentListMainLayout(
 		modifier = Modifier
 			.fillMaxWidth()
 	) {
-		Header(name, onClickSubjectChange)
+		val lazyListState = rememberLazyListState()
 
-		MainFrame(assignments)
+		Header(name, onClickSubjectChange, lazyListState)
+
+		MainFrame(assignments, lazyListState)
 	}
 }
 
 @Composable
-fun MainFrame(assignments: Array<AssignmentEntry>?) {
+fun MainFrame(assignments: Array<AssignmentEntry>?, lazyListState: LazyListState) {
 	if(assignments == null) {
 		// TODO display shimmer effects on data load
 	}else{
 		LazyColumn(
-			modifier = Modifier.padding(16.dp, 0.dp)
+			modifier = Modifier.padding(16.dp, 0.dp),
+			state = lazyListState
 		) {
+			item { Spacer(modifier = Modifier.padding(0.dp, 8.dp)) }
+
 			items(assignments) {
 				key(it.order) {
 					AssignmentItem(it)
@@ -378,10 +386,19 @@ fun Modifier.assignmentDueSizing(
 }
 
 @Composable
-fun Header(name: String, onClickSubjectChange: () -> Unit) {
+fun Header(name: String, onClickSubjectChange: () -> Unit, lazyListState: LazyListState) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
+			.bottomShadow(
+				// show shadow only when scrolled
+				if(lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
+					0.dp
+				else
+					8.dp,
+				colorResource(R.color.shadow_start),
+				colorResource(R.color.shadow_end)
+			)
 			.padding(16.dp, 12.dp),
 	) {
 		Row {

@@ -25,13 +25,14 @@ buildscript {
         hilt_version = '2.31.2-alpha'
         paging_version = '2.1.2'
         coroutine_version = '1.4.2'
-        compose_version = '1.0.0-beta02'
+        compose_version = '1.0.0-beta03'
     }
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0-alpha12'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -46,8 +47,12 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
+
+        // TODO remove this repository when compose.runtime updates
+        // kotlinx-collections-immutable-jvm version to 0.3.4
+        maven { url 'https://dl.bintray.com/kotlin/kotlinx/' }
     }
 }
 

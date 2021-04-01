@@ -285,7 +285,7 @@ fun AssignmentDue(start: Date, end: Date) {
 			descent - ascent
 		}.toInt()
 
-		val radius = min(size.width / 30, 15.dp.toPx())
+		val radius = 8.sp.toPx()
 		val strokeWidth = radius / 4
 
 		val currentX = (radius * 2 + (size.width - 4 * radius) * periodRatio)
@@ -378,7 +378,7 @@ fun Modifier.assignmentDueSizing(
     verticalMargin: Dp
 ) = this.layout { measurable, constraints ->
 	val width = constraints.maxWidth
-	val radius = min(width / 30f, 15.dp.toPx())
+	val radius = 8.sp.toPx()
 
 	val dayFontHeightPixel = with(dayPaint.asFrameworkPaint().fontMetrics) {
 		descent - ascent

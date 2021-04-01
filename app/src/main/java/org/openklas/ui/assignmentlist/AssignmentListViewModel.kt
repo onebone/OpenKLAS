@@ -55,14 +55,21 @@ class AssignmentListViewModel @Inject constructor(
 	}
 	val assignments: LiveData<Array<AssignmentEntry>> = _assignments
 
+	private val _isLoading = MutableLiveData(true)
+	val isLoading: LiveData<Boolean> = _isLoading
+
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
 	private fun fetchAssignments(semester: String, subjectId: String) {
 		viewModelScope.launch {
+			_isLoading.postValue(true)
+
 			val result = requestWithSession {
 				klasRepository.getAssignments(semester, subjectId)
 			}
+
+			_isLoading.postValue(false)
 
 			when(result) {
 				is Result.Success -> _assignments.postValue(result.value)

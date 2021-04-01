@@ -21,18 +21,22 @@ package org.openklas.ui.assignmentlist
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -81,9 +85,10 @@ fun AssignmentListScreen() {
 	val currentSubject by viewModel.currentSubject.observeAsState()
 
 	val assignments by viewModel.assignments.observeAsState()
+	val isLoading by viewModel.isLoading.observeAsState()
 
 	var showSubjectDialog by remember { mutableStateOf(false) }
-	AssignmentListMainLayout(currentSubject?.name ?: "", assignments) {
+	AssignmentListMainLayout(currentSubject?.name ?: "", assignments, isLoading ?: true) {
 		showSubjectDialog = true
 	}
 
@@ -101,6 +106,7 @@ fun AssignmentListScreen() {
 fun AssignmentListMainLayout(
 	name: String,
 	assignments: Array<AssignmentEntry>?,
+	isLoading: Boolean,
 	onClickSubjectChange: () -> Unit
 ) {
 	Column(
@@ -111,7 +117,16 @@ fun AssignmentListMainLayout(
 
 		Header(name, onClickSubjectChange, lazyListState)
 
-		MainFrame(assignments, lazyListState)
+		if(isLoading) {
+			Box(modifier = Modifier
+				.fillMaxSize()
+				.wrapContentSize(Alignment.Center)
+			) {
+				CircularProgressIndicator()
+			}
+		}else{
+			MainFrame(assignments, lazyListState)
+		}
 	}
 }
 
@@ -465,6 +480,6 @@ fun AssignmentListScreenPreview() {
 				week = 3,
 				nthOfWeek = 2
 			)
-		)) { }
+		), false) { }
 	}
 }

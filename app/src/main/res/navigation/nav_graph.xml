@@ -255,7 +255,20 @@
 			app:popEnterAnim="@anim/slightly_scale_up_left"
 			app:popExitAnim="@anim/slide_right_pop">
 
+			<argument
+				android:name="semester"
+				app:nullable="false"
+				app:argType="string" />
 
+			<argument
+				android:name="subject"
+				app:nullable="false"
+				app:argType="string" />
+
+			<argument
+				android:name="order"
+				app:nullable="false"
+				app:argType="integer" />
 
 		</action>
 
@@ -264,6 +277,21 @@
 	<fragment
 		android:id="@+id/fragment_assignment"
 		android:name="org.openklas.ui.assignment.AssignmentFragment">
+
+		<argument
+			android:name="semester"
+			app:nullable="false"
+			app:argType="string" />
+
+		<argument
+			android:name="subject"
+			app:nullable="false"
+			app:argType="string" />
+
+		<argument
+			android:name="order"
+			app:nullable="false"
+			app:argType="integer" />
 
 	</fragment>
 

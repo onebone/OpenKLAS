@@ -30,11 +30,25 @@ import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
+import org.openklas.klas.model.AssignmentEntry
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class AssignmentListFragment: BaseFragment() {
 	private val args by navArgs<AssignmentListFragmentArgs>()
+	private val viewModel by viewModels<AssignmentListViewModel>()
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		args.subject?.let {
+			viewModel.setSubject(it)
+		}
+
+		args.semester?.let {
+			viewModel.setCurrentSemester(it)
+		}
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -47,25 +61,27 @@ class AssignmentListFragment: BaseFragment() {
 			AppbarView.SearchType.NONE
 		)
 
-		val viewModel by viewModels<AssignmentListViewModel>()
+		val onClickEntry = { assignment: AssignmentEntry ->
+			val semester = viewModel.currentSemester.value?.id
+			val subject = viewModel.currentSubject.value?.id
 
-		args.subject?.let {
-			viewModel.setSubject(it)
-		}
+			if(semester != null && subject != null) {
 
-		args.semester?.let {
-			viewModel.setCurrentSemester(it)
+				findNavController().navigate(
+					AssignmentListFragmentDirections.actionAssignmentlistAssignment(
+						semester = semester,
+						subject = subject,
+						order = assignment.order
+					)
+				)
+			}
 		}
 
 		return ComposeView(requireContext()).apply {
 			setContent {
 				MaterialTheme {
 					AssignmentListScreen(
-						onClickEntry = {
-							findNavController().navigate(
-								AssignmentListFragmentDirections.actionAssignmentlistAssignment()
-							)
-						}
+						onClickEntry = onClickEntry
 					)
 				}
 			}

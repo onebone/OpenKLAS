@@ -43,6 +43,7 @@ object KlasUri {
 	const val STD_LECTURE_SCHEDULE = "$ROOT_URI/std/cps/atnlc/LectreTimeInfo.do"
 
 	const val STD_ASSIGNMENTS = "$ROOT_URI/std/lis/evltn/TaskStdList.do"
+	const val STD_ASSIGNMENT = "$ROOT_URI/std/lis/evltn/TaskStdView.do"
 
 	const val STD_ONLINE_CONTENT_LIST = "$ROOT_URI/std/lis/evltn/SelectOnlineCntntsStdList.do"
 }

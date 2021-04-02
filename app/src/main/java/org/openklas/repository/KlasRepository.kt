@@ -18,6 +18,7 @@ package org.openklas.repository
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -57,6 +58,7 @@ interface KlasRepository {
 	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
 
 	suspend fun getAssignments(semester: String, subjectId: String): Result<Array<AssignmentEntry>>
+	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Result<Assignment>
 
 	suspend fun getOnlineContentList(
 		semester: String,

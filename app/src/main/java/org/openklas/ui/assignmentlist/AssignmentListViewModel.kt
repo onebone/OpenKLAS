@@ -25,11 +25,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.AssignmentEntry
-import org.openklas.klas.model.BriefSubject
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.PairCombinedLiveData
 import org.openklas.utils.Result

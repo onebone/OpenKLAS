@@ -19,6 +19,7 @@ package org.openklas.klas.service
  */
 
 import org.openklas.klas.KlasUri
+import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
@@ -30,6 +31,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
+import org.openklas.klas.request.RequestAssignment
 import org.openklas.klas.request.RequestAttachments
 import org.openklas.klas.request.RequestHome
 import org.openklas.klas.request.RequestAssignments
@@ -99,6 +101,9 @@ interface KlasService {
 
 	@POST(KlasUri.STD_ASSIGNMENTS)
 	suspend fun assignments(@Body payload: RequestAssignments): Response<Array<AssignmentEntry>>
+
+	@POST(KlasUri.STD_ASSIGNMENT)
+	suspend fun assignment(@Body payload: RequestAssignment): Response<Assignment>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>

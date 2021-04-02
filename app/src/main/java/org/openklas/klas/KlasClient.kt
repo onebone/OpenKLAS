@@ -1,5 +1,24 @@
 package org.openklas.klas
 
+/*
+ * OpenKLAS
+ * Copyright (C) 2020-2021 OpenKLAS Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
@@ -46,6 +65,8 @@ interface KlasClient {
 	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
 
 	suspend fun getAssignments(semester: String, subjectId: String): Result<Array<AssignmentEntry>>
+
+	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Result<Assignment>
 
 	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
 }

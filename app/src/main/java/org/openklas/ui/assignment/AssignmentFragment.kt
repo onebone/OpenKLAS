@@ -1,4 +1,4 @@
-package org.openklas.ui.assignmentlist
+package org.openklas.ui.assignment
 
 /*
  * OpenKLAS
@@ -24,53 +24,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.openklas.R
 import org.openklas.base.BaseFragment
-import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
-class AssignmentListFragment: BaseFragment() {
-	private val args by navArgs<AssignmentListFragmentArgs>()
-
+class AssignmentFragment: BaseFragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		configureTitle(
-			resources.getString(R.string.assignment_list_title),
-			AppbarView.HeaderType.BACK,
-			AppbarView.SearchType.NONE
-		)
-
-		val viewModel by viewModels<AssignmentListViewModel>()
-
-		args.subject?.let {
-			viewModel.setSubject(it)
-		}
-
-		args.semester?.let {
-			viewModel.setCurrentSemester(it)
-		}
-
 		return ComposeView(requireContext()).apply {
 			setContent {
 				MaterialTheme {
-					AssignmentListScreen(
-						onClickEntry = {
-							findNavController().navigate(
-								AssignmentListFragmentDirections.actionAssignmentlistAssignment()
-							)
-						}
-					)
+					AssignmentScreen()
 				}
 			}
-		}.apply {
-			layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 		}
 	}
 }

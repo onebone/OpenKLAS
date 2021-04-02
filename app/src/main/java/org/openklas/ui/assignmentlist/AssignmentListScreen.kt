@@ -24,12 +24,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,7 +39,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,10 +71,9 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
-import kotlin.math.min
 
 @Composable
-fun AssignmentListScreen() {
+fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
 	val viewModel = viewModel<AssignmentListViewModel>()
 	val semesters by viewModel.semesters.observeAsState()
 	val currentSemester by viewModel.currentSemester.observeAsState()
@@ -85,12 +81,18 @@ fun AssignmentListScreen() {
 	val currentSubject by viewModel.currentSubject.observeAsState()
 
 	val assignments by viewModel.assignments.observeAsState()
-	val isLoading by viewModel.isLoading.observeAsState()
+	val isLoading by viewModel.isLoading.observeAsState(true)
 
 	var showSubjectDialog by remember { mutableStateOf(false) }
-	AssignmentListMainLayout(currentSubject?.name ?: "", assignments, isLoading ?: true) {
-		showSubjectDialog = true
-	}
+	AssignmentListMainLayout(
+		name = currentSubject?.name ?: "",
+		assignments = assignments,
+		isLoading = isLoading,
+		onClickEntry = onClickEntry,
+		onClickSubjectChange = {
+			showSubjectDialog = true
+		}
+	)
 
 	if(showSubjectDialog) {
 		SubjectSelectionDialog(semesters, currentSemester, subjects, currentSubject, onChange = { semester, subject ->
@@ -107,6 +109,7 @@ fun AssignmentListMainLayout(
 	name: String,
 	assignments: Array<AssignmentEntry>?,
 	isLoading: Boolean,
+	onClickEntry: (AssignmentEntry) -> Unit,
 	onClickSubjectChange: () -> Unit
 ) {
 	Column(
@@ -125,34 +128,34 @@ fun AssignmentListMainLayout(
 				CircularProgressIndicator()
 			}
 		}else{
-			MainFrame(assignments, lazyListState)
+			MainFrame(assignments, lazyListState, onClickEntry)
 		}
 	}
 }
 
 @Composable
-fun MainFrame(assignments: Array<AssignmentEntry>?, lazyListState: LazyListState) {
+fun MainFrame(
+	assignments: Array<AssignmentEntry>?,
+	lazyListState: LazyListState,
+    onClickEntry: (AssignmentEntry) -> Unit
+) {
 	if(assignments == null) {
 		// TODO display shimmer effects on data load
 	}else{
-		LazyColumn(
-			modifier = Modifier.padding(16.dp, 0.dp),
-			state = lazyListState
-		) {
-			item { Spacer(modifier = Modifier.padding(0.dp, 8.dp)) }
-
-			items(assignments) {
-				key(it.order) {
-					AssignmentItem(it)
-				}
+		LazyColumn(state = lazyListState) {
+			items(assignments, key = { it.order }) {
+				AssignmentItem(it, onClickEntry)
 			}
 		}
 	}
 }
 
 @Composable
-fun AssignmentItem(entry: AssignmentEntry) {
-	Row {
+fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Unit) {
+	Row(modifier = Modifier
+		.clickable { onClickEntry(entry) }
+		.padding(16.dp, 20.dp)
+	) {
 		Column(modifier = Modifier
 			.wrapContentWidth(Alignment.Start)
 			.defaultMinSize(60.dp)
@@ -211,8 +214,6 @@ fun AssignmentItem(entry: AssignmentEntry) {
 			}
 
 			AssignmentDue(entry.startDate, entry.due)
-
-			Spacer(modifier = Modifier.size(0.dp, 20.dp))
 		}
 	}
 }
@@ -479,7 +480,10 @@ fun AssignmentListScreenPreview() {
 				title = "보고서 제출",
 				week = 3,
 				nthOfWeek = 2
-			)
-		), false) { }
+			)),
+			isLoading = false,
+			onClickEntry = { },
+			onClickSubjectChange = { }
+		)
 	}
 }

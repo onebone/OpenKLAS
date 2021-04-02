@@ -247,6 +247,24 @@
 			app:nullable="true"
 			app:argType="string" />
 
+		<action
+			android:id="@+id/action_assignmentlist_assignment"
+			app:destination="@id/fragment_assignment"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop">
+
+
+
+		</action>
+
+	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_assignment"
+		android:name="org.openklas.ui.assignment.AssignmentFragment">
+
 	</fragment>
 
 </navigation>

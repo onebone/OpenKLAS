@@ -18,7 +18,6 @@ package org.openklas.ui.shared
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -39,19 +38,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import org.openklas.R
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
-import kotlin.math.roundToInt
 
 const val STATE_SEMESTER = 0
 const val STATE_SUBJECT = 1
@@ -76,27 +73,37 @@ fun SubjectSelectionDialog(
 		onDismissRequest = onDismissRequest
 	) {
 		if(semesterSelection == null || state == STATE_SEMESTER)
-			SemesterSelectionDialogContent(semesters = semesters, currentSemester = semesterSelection, onSemesterSelection = {
-				semesterSelection = it
+			SemesterSelectionDialogContent(
+				semesters = semesters,
+				currentSemester = semesterSelection,
+				onSemesterSelection = {
+					semesterSelection = it
 
-				subjectList = it.subjects
-				subjectSelection = null
+					subjectList = it.subjects
+					subjectSelection = null
 
-				state = STATE_SUBJECT
-			}) {
-				state = STATE_SUBJECT
-			}
-		else
-			SubjectSelectionDialogContent(subjects = subjectList, currentSubject = subjectSelection, onSubjectSelection = {
-				subjectSelection = it
-
-				if(semesterSelection != null && subjectSelection != null) {
-					onChange(semesterSelection!!, subjectSelection!!)
-					onDismissRequest()
+					state = STATE_SUBJECT
+				},
+				onClickChangeSubject = {
+					state = STATE_SUBJECT
 				}
-			}) {
-				state = STATE_SEMESTER
-			}
+			)
+		else
+			SubjectSelectionDialogContent(
+				subjects = subjectList,
+				currentSubject = subjectSelection,
+				onSubjectSelection = {
+					subjectSelection = it
+
+					if(semesterSelection != null && subjectSelection != null) {
+						onChange(semesterSelection!!, subjectSelection!!)
+						onDismissRequest()
+					}
+				},
+				onClickChangeSemester = {
+					state = STATE_SEMESTER
+				}
+			)
 	}
 }
 
@@ -114,64 +121,31 @@ fun SemesterSelectionDialogContent(
 		Column(modifier = Modifier
 			.constrainSizeFactor(0.8f, 0.9f, 0f, 0.6f)
 		) {
-			Box(
-				modifier = Modifier
-					.padding(4.dp)
-					.fillMaxWidth()
+			DialogHeader(
+				title = stringResource(R.string.common_semester_dialog_title),
+				buttonAlignment = Alignment.CenterEnd,
+				onClickButton = onClickChangeSubject
 			) {
 				Text(
-					text = stringResource(R.string.common_semester_dialog_title),
-					modifier = Modifier.align(Alignment.Center),
-					fontWeight = Bold,
-					fontSize = 18.sp
+					text = stringResource(R.string.common_subject_dialog_title),
+					color = colorResource(R.color.primary)
 				)
 
-				Row(modifier = Modifier
-					.align(Alignment.CenterEnd)
-					.padding(0.dp, 0.dp, 4.dp, 0.dp)
-					.clickable(onClick = onClickChangeSubject)
-					.padding(6.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = stringResource(R.string.common_subject_dialog_title),
-						color = colorResource(R.color.primary)
-					)
-
-					Icon(
-						painterResource(R.drawable.ic_arrow),
-						contentDescription = null,
-						modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
-						tint = colorResource(R.color.primary)
-					)
-				}
+				Icon(
+					painterResource(R.drawable.ic_arrow),
+					contentDescription = null,
+					modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
+					tint = colorResource(R.color.primary)
+				)
 			}
 
-			semesters?.let { semesters ->
-				LazyColumn {
-					items(semesters) {
-						if(it.id == currentSemester?.id) {
-							Text(
-								text = it.label,
-								modifier = Modifier
-									.fillMaxWidth()
-									.clickable(onClick = onClickChangeSubject)
-									.padding(24.dp, 12.dp),
-								color = colorResource(R.color.selected),
-								fontSize = 15.sp
-							)
-						}else{
-							Text(
-								text = it.label,
-								modifier = Modifier
-									.fillMaxWidth()
-									.clickable { onSemesterSelection(it) }
-									.padding(24.dp, 12.dp),
-								fontSize = 15.sp
-							)
-						}
-					}
-				}
+			if(semesters != null) {
+				SelectionItems(
+					items = semesters,
+					selectedItem = { it.id == currentSemester?.id },
+					displayName = { it.label },
+					onClick = { onSemesterSelection(it) }
+				)
 			}
 		}
 	}
@@ -191,85 +165,86 @@ fun SubjectSelectionDialogContent(
 		Column(modifier = Modifier
 			.constrainSizeFactor(0.8f, 0.9f, 0f, 0.6f)
 		) {
-			Box(
-				modifier = Modifier
-					.padding(4.dp)
-					.fillMaxWidth()
+			DialogHeader(
+				title = stringResource(R.string.common_subject_dialog_title),
+				buttonAlignment = Alignment.CenterStart,
+				onClickButton = onClickChangeSemester
 			) {
-				Text(
-					text = stringResource(R.string.common_subject_dialog_title),
-					modifier = Modifier.align(Alignment.Center),
-					fontWeight = Bold,
-					fontSize = 18.sp
+				Icon(
+					painterResource(R.drawable.ic_arrow_back),
+					contentDescription = null,
+					modifier = Modifier.padding(0.dp, 0.dp, 4.dp, 0.dp),
+					tint = colorResource(R.color.primary)
 				)
 
-				Row(modifier = Modifier
-					.align(Alignment.CenterStart)
-					.padding(0.dp, 0.dp, 4.dp, 0.dp)
-					.clickable(onClick = onClickChangeSemester)
-					.padding(6.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Icon(
-						painterResource(R.drawable.ic_arrow_back),
-						contentDescription = null,
-						modifier = Modifier.padding(0.dp, 0.dp, 4.dp, 0.dp),
-						tint = colorResource(R.color.primary)
-					)
-
-					Text(
-						text = stringResource(R.string.common_semester_dialog_title),
-						color = colorResource(R.color.primary)
-					)
-				}
+				Text(
+					text = stringResource(R.string.common_semester_dialog_title),
+					color = colorResource(R.color.primary)
+				)
 			}
 
-			subjects?.let { subjects ->
-				LazyColumn {
-					items(subjects) {
-						if(it.id == currentSubject?.id) {
-							Text(
-								text = it.name,
-								modifier = Modifier
-									.fillMaxWidth()
-									.clickable(onClick = { onSubjectSelection(it) })
-									.padding(24.dp, 12.dp),
-								color = colorResource(R.color.selected),
-								fontSize = 15.sp
-							)
-						}else{
-							Text(
-								text = it.name,
-								modifier = Modifier
-									.fillMaxWidth()
-									.clickable { onSubjectSelection(it) }
-									.padding(24.dp, 12.dp),
-								fontSize = 15.sp
-							)
-						}
-					}
-				}
+			if(subjects != null) {
+				SelectionItems(
+					items = subjects,
+					selectedItem = { it.id == currentSubject?.id },
+					displayName = { it.name },
+					onClick = { onSubjectSelection(it) }
+				)
 			}
 		}
 	}
 }
 
-fun Modifier.constrainSizeFactor(
-	@FloatRange(from = 0.0, to = 1.0) minWidthFactor: Float,
-	@FloatRange(from = 0.0, to = 1.0) maxWidthFactor: Float,
-	@FloatRange(from = 0.0, to = 1.0) minHeightFactor: Float,
-	@FloatRange(from = 0.0, to = 1.0) maxHeightFactor: Float
-) = this.layout { measurable, constraints ->
-	val placeable = measurable.measure(
-		Constraints(
-			minWidth = (constraints.maxWidth * minWidthFactor).roundToInt(),
-			maxWidth = (constraints.maxWidth * maxWidthFactor).roundToInt(),
-			minHeight = (constraints.maxHeight * minHeightFactor).roundToInt(),
-			maxHeight = (constraints.maxHeight * maxHeightFactor).roundToInt()
+@Composable
+fun DialogHeader(
+	title: String,
+	buttonAlignment: Alignment,
+	onClickButton: () -> Unit,
+	button: @Composable () -> Unit
+) {
+	Box(modifier = Modifier
+		.padding(4.dp)
+		.fillMaxWidth()
+	) {
+		Text(
+			text = title,
+			modifier = Modifier.align(Alignment.Center),
+			fontWeight = Bold,
+			fontSize = 18.sp
 		)
-	)
 
-	layout(placeable.width, placeable.height) {
-		placeable.place(0, 0)
+		Row(modifier = Modifier
+			.align(buttonAlignment)
+			.padding(0.dp, 0.dp, 4.dp, 0.dp)
+			.clickable(onClick = onClickButton)
+			.padding(6.dp),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			button()
+		}
+	}
+}
+
+@Composable
+fun<T> SelectionItems(
+	items: Array<T>,
+	selectedItem: (T) -> Boolean,
+	displayName: (T) -> String,
+	onClick: (T) -> Unit
+) {
+	LazyColumn {
+		items(items) {
+			Text(
+				text = displayName(it),
+				modifier = Modifier
+					.fillMaxWidth()
+					.clickable(onClick = { onClick(it) })
+					.padding(24.dp, 12.dp),
+				color =
+					if(selectedItem(it)) colorResource(R.color.selected)
+					else Color.Unspecified,
+				fontSize = 15.sp
+			)
+		}
 	}
 }

@@ -18,13 +18,17 @@ package org.openklas.ui.shared
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.annotation.FloatRange
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import kotlin.math.roundToInt
 
 fun Modifier.bottomShadow(
 	height: Dp,
@@ -42,4 +46,24 @@ fun Modifier.bottomShadow(
 		topLeft = Offset(0f, size.height),
 		size = Size(size.width, height.toPx()),
 	)
+}
+
+fun Modifier.constrainSizeFactor(
+	@FloatRange(from = 0.0, to = 1.0) minWidthFactor: Float,
+	@FloatRange(from = 0.0, to = 1.0) maxWidthFactor: Float,
+	@FloatRange(from = 0.0, to = 1.0) minHeightFactor: Float,
+	@FloatRange(from = 0.0, to = 1.0) maxHeightFactor: Float
+) = this.layout { measurable, constraints ->
+	val placeable = measurable.measure(
+		Constraints(
+			minWidth = (constraints.maxWidth * minWidthFactor).roundToInt(),
+			maxWidth = (constraints.maxWidth * maxWidthFactor).roundToInt(),
+			minHeight = (constraints.maxHeight * minHeightFactor).roundToInt(),
+			maxHeight = (constraints.maxHeight * maxHeightFactor).roundToInt()
+		)
+	)
+
+	layout(placeable.width, placeable.height) {
+		placeable.place(0, 0)
+	}
 }

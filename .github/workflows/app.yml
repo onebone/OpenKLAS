@@ -24,8 +24,9 @@ jobs:
           path: ~/.gradle/caches
           key: gradle-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/*.gradle*') }}
       - name: Assemble
-        run: ./gradlew assemble --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
       - name: Archive APK
         uses: actions/upload-artifact@v2
         with:
+          name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk

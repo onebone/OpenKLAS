@@ -34,6 +34,8 @@ import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.Result
 
 interface KlasClient {
+	suspend fun testSession(): Boolean
+
 	suspend fun login(username: String, password: String): Result<String>
 
 	suspend fun getHome(semester: String): Result<Home>

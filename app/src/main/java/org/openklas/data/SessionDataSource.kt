@@ -21,5 +21,6 @@ package org.openklas.data
 import org.openklas.utils.Result
 
 interface SessionDataSource {
+	suspend fun testSession(): Boolean
 	suspend fun tryLogin(username: String, password: String): Result<Unit>
 }

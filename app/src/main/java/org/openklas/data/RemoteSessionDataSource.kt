@@ -25,6 +25,10 @@ import javax.inject.Inject
 class RemoteSessionDataSource @Inject constructor(
 	private val klas: KlasClient
 ): SessionDataSource {
+	override suspend fun testSession(): Boolean {
+		return klas.testSession()
+	}
+
 	override suspend fun tryLogin(username: String, password: String): Result<Unit> {
 		return when(val result = klas.login(username, password)) {
 			is Result.Success -> Result.Success(Unit)

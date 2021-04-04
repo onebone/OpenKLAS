@@ -19,5 +19,6 @@ package org.openklas.repository
  */
 
 interface SessionRepository {
+	suspend fun testSession(): Boolean
 	suspend fun tryLogin(): Boolean
 }

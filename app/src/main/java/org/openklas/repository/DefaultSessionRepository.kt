@@ -27,6 +27,10 @@ class DefaultSessionRepository @Inject constructor(
 	private val sessionDataSource: SessionDataSource,
 	private val accountDataSource: AccountDataSource
 ): SessionRepository {
+	override suspend fun testSession(): Boolean {
+		return sessionDataSource.testSession()
+	}
+
 	override suspend fun tryLogin(): Boolean {
 		val account = accountDataSource.getAccount() ?: return false
 

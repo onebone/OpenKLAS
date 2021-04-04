@@ -26,12 +26,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.openklas.repository.KlasRepository
+import org.openklas.repository.SessionRepository
 import org.openklas.utils.Result
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-	private val klasRepository: KlasRepository
+	private val klasRepository: KlasRepository,
+	private val sessionRepository: SessionRepository
 ): ViewModel() {
 	val userId = MutableLiveData<String>()
 	val password = MutableLiveData<String>()
@@ -54,6 +56,14 @@ class LoginViewModel @Inject constructor(
 		viewModelScope.launch {
 			val result = klasRepository.performLogin(userId, password, rememberMe.get())
 			_result.value = (result as? Result.Error)?.error
+		}
+	}
+
+	fun checkSavedSession() {
+		viewModelScope.launch {
+			if(sessionRepository.testSession()) {
+				_result.value = null
+			}
 		}
 	}
 

@@ -59,6 +59,14 @@ class DefaultKlasClient @Inject constructor(
 	private val service: KlasService,
 	private val gson: Gson
 ): KlasClient {
+	override suspend fun testSession(): Boolean {
+		val result = service.testSession()
+		return when(result.validateSession()) {
+			is Result.Success -> true
+			is Result.Error -> false
+		}
+	}
+
 	override suspend fun login(username: String, password: String): Result<String> {
 		val security = service.loginSecurity()
 

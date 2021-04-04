@@ -47,6 +47,8 @@ class LoginFragment: BaseFragment() {
 		val viewModel by viewModels<LoginViewModel>()
 		prepareViewModel(viewModel)
 
+		viewModel.checkSavedSession()
+
 		binding.viewModel = viewModel
 
 		viewModel.result.observe(viewLifecycleOwner) {

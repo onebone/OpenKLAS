@@ -57,6 +57,10 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class DemoKlasClient @Inject constructor(): KlasClient {
+	override suspend fun testSession(): Boolean {
+		return true
+	}
+
 	override suspend fun login(username: String, password: String): Result<String> {
 		return Result.Success(USER_ID)
 	}

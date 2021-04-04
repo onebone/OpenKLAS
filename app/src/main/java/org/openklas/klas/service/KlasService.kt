@@ -51,6 +51,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface KlasService {
+	@POST(KlasUri.STD_TEST_SESSION)
+	suspend fun testSession(): Response<Unit>
+
 	@POST(KlasUri.LOGIN_SECURITY)
 	suspend fun loginSecurity(): ResponseLoginSecurity
 

@@ -46,6 +46,8 @@ class PostFragment: BaseFragment() {
 				PostType.NOTICE -> R.string.course_notice
 				PostType.LECTURE_MATERIAL -> R.string.course_material
 				PostType.QNA -> R.string.course_qna
+				// I don't know why Android Studio is linting absence of else branch though it is already exhaustive
+				else -> throw AssertionError("this should not happen")
 			}
 		), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
 

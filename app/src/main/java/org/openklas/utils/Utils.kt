@@ -21,20 +21,24 @@ package org.openklas.utils
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Color
+import android.net.Uri
+import android.os.Environment
 import android.util.TypedValue
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
+import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_SECONDARY_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
+import java.net.URL
 import java.nio.charset.Charset
-import java.util.Random
 
 fun AssetManager.fileAsString(filename: String): String {
 	return open(filename).use {
@@ -59,13 +63,6 @@ fun periodToTime(period: Int): String {
 
 fun dp2px(context: Context, dp: Float) =
 	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)
-
-fun randomWidthLength(parent: ViewGroup, fromFactor: Float, toFactor: Float): Int {
-	val width = parent.width
-
-	val factor = fromFactor + Random().nextFloat() * (toFactor - fromFactor)
-	return (factor * width).toInt()
-}
 
 fun syllabusCourseToColor(context: Context, course: String?): Int {
 	if(course == null) return Color.WHITE
@@ -97,4 +94,20 @@ fun tutorTypeToColor(context: Context, type: Int?): Int {
 		TUTOR_TEACHING_ASSISTANT -> R.color.teaching_assistant
 		else -> R.color.unknown_tutor_type
 	}, null)
+}
+
+fun downloadFile(context: Context, url: String, fileName: String) {
+	val targetUrl = URL(URL(KlasUri.ROOT_URI), url).toString()
+
+	val request = DownloadManager.Request(Uri.parse(targetUrl)).apply {
+		setTitle(fileName)
+		setDescription(context.resources.getString(R.string.download_description))
+		setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+		setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+	}
+
+	val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+	if(manager.enqueue(request) == 0L) {
+		Toast.makeText(context, R.string.download_unavailable, Toast.LENGTH_LONG).show()
+	}
 }

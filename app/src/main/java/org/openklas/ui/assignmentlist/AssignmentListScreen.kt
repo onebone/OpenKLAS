@@ -23,7 +23,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,13 +54,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
+import org.openklas.ui.shared.AssignmentDdayIndicator
 import org.openklas.ui.shared.DueIndicator
 import org.openklas.ui.shared.SubjectSelectionDialog
 import org.openklas.ui.shared.bottomShadow
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
-import kotlin.math.abs
 
 @Composable
 fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
@@ -152,33 +151,10 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 		.alpha(if(timeAfterDue > 0) 0.5f else 1f)
 		.padding(16.dp, 20.dp)
 	) {
-		Column(modifier = Modifier
-			.wrapContentWidth(Alignment.Start)
-			.defaultMinSize(60.dp)
-		) {
-			val dday = "D" +
-				(if(daysAfterDue > 0) '+' else '-') + abs(daysAfterDue)
-
-			val color = if(entry.isSubmitted) R.color.assignment_done
-				else R.color.assignment_undone
-
-			Text(dday,
-				modifier = Modifier.align(Alignment.CenterHorizontally),
-				fontSize = 21.sp,
-				fontWeight = FontWeight.Bold,
-				color = colorResource(color)
-			)
-
-			Text(
-				stringResource(
-					if(entry.isSubmitted) R.string.assignment_done
-					else R.string.assignment_undone
-				),
-				modifier = Modifier.align(Alignment.CenterHorizontally),
-				fontSize = 15.sp,
-				color = colorResource(color)
-			)
-		}
+		AssignmentDdayIndicator(
+			isSubmitted = entry.isSubmitted,
+			daysAfterDue = daysAfterDue
+		)
 
 		Column(
 			modifier = Modifier
@@ -241,7 +217,7 @@ fun Header(name: String, onClickSubjectChange: () -> Unit, lazyListState: LazyLi
 			.fillMaxWidth()
 			.bottomShadow(
 				// show shadow only when scrolled
-				if(lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
+				if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
 					0.dp
 				else
 					8.dp,

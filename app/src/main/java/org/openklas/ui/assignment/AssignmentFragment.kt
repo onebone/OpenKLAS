@@ -18,26 +18,48 @@ package org.openklas.ui.assignment
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.base.BaseFragment
+import org.openklas.klas.model.Attachment
+import org.openklas.utils.downloadFile
 
 @AndroidEntryPoint
 class AssignmentFragment: BaseFragment() {
+	private val args by navArgs<AssignmentFragmentArgs>()
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		val viewModel by viewModels<AssignmentViewModel>()
+
+		viewModel.fetchAssignment(args.semester, args.subject, args.order)
+
+		val onDownloadAttachment: (Attachment) -> Unit = { attachment ->
+			permissionHolder!!.askPermissionAndDo(
+				permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+				executor = {
+					downloadFile(requireContext(), attachment.url, attachment.fileName)
+				}
+			)
+		}
+
 		return ComposeView(requireContext()).apply {
 			setContent {
 				MaterialTheme {
-					AssignmentScreen()
+					AssignmentScreen(
+						onDownloadAttachment = onDownloadAttachment
+					)
 				}
 			}
 		}

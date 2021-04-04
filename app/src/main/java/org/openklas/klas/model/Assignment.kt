@@ -29,7 +29,9 @@ data class Assignment(
 ) {
 	data class Description(
 		@SerializedName("atchFileId")
-		val attachmentId: String,
+		val attachmentId: String?,
+		@SerializedName("contents") // why plural??
+		val content: String,
 		@SerializedName("expiredate")
 		val due: Date,
 		@SerializedName("filelimit")

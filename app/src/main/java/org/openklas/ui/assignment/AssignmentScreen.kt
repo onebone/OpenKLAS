@@ -18,9 +18,120 @@ package org.openklas.ui.assignment
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.openklas.R
+import org.openklas.klas.model.Assignment
+import org.openklas.klas.model.Attachment
+import org.openklas.klas.model.BriefSubject
+import org.openklas.ui.shared.AssignmentDdayIndicator
+import org.openklas.ui.shared.AttachmentList
+import org.openklas.ui.shared.DueIndicator
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @Composable
-fun AssignmentScreen() {
+fun AssignmentScreen(onDownloadAttachment: (Attachment) -> Unit) {
+	val viewModel = viewModel<AssignmentViewModel>()
 
+	val subject by viewModel.currentSubject.observeAsState()
+	val assignment by viewModel.assignment.observeAsState()
+	val attachments by viewModel.attachments.observeAsState()
+
+	Column {
+		Header(subject = subject, title = assignment?.description?.title)
+		
+		DueFrame(assignment = assignment?.description)
+
+		attachments?.let {
+			AttachmentList(
+				attachments = it,
+				onClickEntry = { attachment ->
+					onDownloadAttachment(attachment)
+				}
+			)
+		}
+		
+		AssignmentDescriptionBody(assignment = assignment?.description)
+	}
+}
+
+@Composable
+fun Header(subject: BriefSubject?, title: String?) {
+	Column(modifier = Modifier
+		.padding(12.dp)
+	) {
+		Text(
+			text = subject?.name ?: "",
+			color = colorResource(R.color.primary),
+			fontSize = 15.sp
+		)
+
+		Text(
+			text = title ?: "",
+			fontWeight = FontWeight.Bold,
+			fontSize = 21.sp
+		)
+	}
+}
+
+@Composable
+fun DueFrame(assignment: Assignment.Description?) {
+	if(assignment == null) {
+		// TODO show load indicator such as shimmer
+		return
+	}
+
+	val now = Date()
+	val daysAfterDue = (now.time - assignment.due.time) / TimeUnit.DAYS.toMillis(1)
+
+	Row(modifier = Modifier
+		.padding(12.dp),
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		AssignmentDdayIndicator(
+			modifier = Modifier.padding(8.dp, 0.dp),
+			isSubmitted = assignment.isSubmitted,
+			daysAfterDue = daysAfterDue
+		)
+
+		DueIndicator(
+			modifier = Modifier
+				.weight(1f)
+				.padding(8.dp, 0.dp),
+			start = assignment.startDate,
+			end = assignment.due,
+			dayFontSize = 18.sp,
+			yearFontSize = 15.sp,
+			dateVerticalMargin = 5.dp
+		)
+	}
+}
+
+@Composable
+fun AssignmentDescriptionBody(assignment: Assignment.Description?) {
+	if(assignment == null) {
+		// TODO loading indicator such as shimmer
+		return
+	}
+
+	SelectionContainer {
+		Text(
+			text = assignment.content, // TODO handle html elements
+			modifier = Modifier.padding(12.dp)
+		)
+	}
 }

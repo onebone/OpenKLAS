@@ -19,6 +19,11 @@ package org.openklas.ui.shared
  */
 
 import android.text.format.Formatter
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -33,8 +38,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -55,6 +63,7 @@ import org.openklas.klas.model.Attachment
 import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
+import kotlin.math.round
 
 @Composable
 fun DueIndicator(
@@ -198,9 +207,29 @@ fun DueIndicator(
 }
 
 @Composable
-fun AssignmentDdayIndicator(modifier: Modifier = Modifier, isSubmitted: Boolean, daysAfterDue: Long) {
+fun AssignmentDdayIndicator(
+	modifier: Modifier = Modifier,
+	isSubmitted: Boolean,
+	daysAfterDue: Long,
+	blinkIfImpending: Boolean = true
+) {
+	var alpha: State<Float> = mutableStateOf(1f)
+
+	if(blinkIfImpending && -1L <= daysAfterDue && daysAfterDue <= 0L) {
+		val transition = rememberInfiniteTransition()
+		alpha = transition.animateFloat(
+			initialValue = 0.3f,
+			targetValue = 1f,
+			animationSpec = infiniteRepeatable(
+				animation = tween(500, easing = { value -> round(value) }), // effectively infinite snap
+				repeatMode = RepeatMode.Reverse
+			)
+		)
+	}
+
 	Column(modifier = modifier
 		.defaultMinSize(50.dp)
+		.alpha(alpha.value)
 	) {
 		val dday = "D" +
 				(if(daysAfterDue > 0) '+' else '-') + abs(daysAfterDue)

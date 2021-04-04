@@ -235,7 +235,7 @@ fun AssignmentDdayIndicator(
 		.alpha(alpha.value)
 	) {
 		val dday = "D" +
-				(if(daysAfterDue > 0) '+' else '-') + abs(daysAfterDue)
+				(if(millisAfterDue > 0) '+' else '-') + abs(daysAfterDue)
 
 		val color = if(isSubmitted) R.color.assignment_done
 		else R.color.assignment_undone

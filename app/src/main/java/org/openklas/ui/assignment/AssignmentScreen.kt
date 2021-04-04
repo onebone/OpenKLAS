@@ -18,10 +18,13 @@ package org.openklas.ui.assignment
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,21 +57,40 @@ fun AssignmentScreen(onDownloadAttachment: (Attachment) -> Unit) {
 	val assignment by viewModel.assignment.observeAsState()
 	val attachments by viewModel.attachments.observeAsState()
 
-	Column {
-		Header(subject = subject, title = assignment?.description?.title)
-		
-		DueFrame(assignment = assignment?.description)
+	MainFrame(
+		subject = subject,
+		assignment = assignment,
+		attachments = attachments,
+		onDownloadAttachment = onDownloadAttachment
+	)
+}
 
-		attachments?.let {
-			AttachmentList(
-				attachments = it,
-				onClickEntry = { attachment ->
-					onDownloadAttachment(attachment)
-				}
-			)
+@Composable
+fun MainFrame(
+	subject: BriefSubject?,
+	assignment: Assignment?,
+	attachments: Array<Attachment>?,
+	onDownloadAttachment: (Attachment) -> Unit
+) {
+	Surface(modifier = Modifier
+		.background(MaterialTheme.colors.background)
+	) {
+		Column {
+			Header(subject = subject, title = assignment?.description?.title)
+
+			DueFrame(assignment = assignment?.description)
+
+			attachments?.let {
+				AttachmentList(
+					attachments = it,
+					onClickEntry = { attachment ->
+						onDownloadAttachment(attachment)
+					}
+				)
+			}
+
+			AssignmentDescriptionBody(assignment = assignment?.description)
 		}
-		
-		AssignmentDescriptionBody(assignment = assignment?.description)
 	}
 }
 

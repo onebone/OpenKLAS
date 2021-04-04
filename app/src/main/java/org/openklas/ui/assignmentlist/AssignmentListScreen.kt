@@ -18,6 +18,7 @@ package org.openklas.ui.assignmentlist
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -101,23 +103,27 @@ fun AssignmentListMainLayout(
 	onClickEntry: (AssignmentEntry) -> Unit,
 	onClickSubjectChange: () -> Unit
 ) {
-	Column(
-		modifier = Modifier
-			.fillMaxWidth()
+	Surface(modifier = Modifier
+		.background(MaterialTheme.colors.background)
 	) {
-		val lazyListState = rememberLazyListState()
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+		) {
+			val lazyListState = rememberLazyListState()
 
-		Header(name, onClickSubjectChange, lazyListState)
+			Header(name, onClickSubjectChange, lazyListState)
 
-		if(isLoading) {
-			Box(modifier = Modifier
-				.fillMaxSize()
-				.wrapContentSize(Alignment.Center)
-			) {
-				CircularProgressIndicator()
+			if(isLoading) {
+				Box(modifier = Modifier
+					.fillMaxSize()
+					.wrapContentSize(Alignment.Center)
+				) {
+					CircularProgressIndicator()
+				}
+			}else{
+				MainFrame(assignments, lazyListState, onClickEntry)
 			}
-		}else{
-			MainFrame(assignments, lazyListState, onClickEntry)
 		}
 	}
 }
@@ -147,7 +153,7 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 
 	Row(modifier = Modifier
 		.clickable { onClickEntry(entry) }
-		.alpha(if(timeAfterDue > 0) 0.5f else 1f)
+		.alpha(if (timeAfterDue > 0) 0.5f else 1f)
 		.padding(16.dp, 20.dp)
 	) {
 		AssignmentDdayIndicator(

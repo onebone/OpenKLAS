@@ -36,4 +36,10 @@ class DefaultSessionRepository @Inject constructor(
 
 		return sessionDataSource.tryLogin(account.username, account.password) is Result.Success
 	}
+
+	override fun getSavedCredential(): Credential? {
+		val account = accountDataSource.getAccount() ?: return null
+
+		return Credential(account.username, account.password)
+	}
 }

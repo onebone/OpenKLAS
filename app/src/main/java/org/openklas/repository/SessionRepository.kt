@@ -21,4 +21,10 @@ package org.openklas.repository
 interface SessionRepository {
 	suspend fun testSession(): Boolean
 	suspend fun tryLogin(): Boolean
+	fun getSavedCredential(): Credential?
 }
+
+data class Credential(
+	val username: String,
+	val password: String
+)

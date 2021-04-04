@@ -44,6 +44,13 @@ class LoginViewModel @Inject constructor(
 	// The value is null if succeed, or Throwable instance otherwise.
 	val result: LiveData<Throwable?> = _result
 
+	init {
+		sessionRepository.getSavedCredential()?.let { credential ->
+			userId.value = credential.username
+			password.value = credential.password
+		}
+	}
+
 	fun handleLogin() {
 		val userId = userId.value?.trim() ?: ""
 		val password = password.value?.trim() ?: ""

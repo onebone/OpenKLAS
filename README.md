@@ -9,7 +9,7 @@ OpenKLAS는 KLAS 웹사이트에서 지원하는 모든 기능을 지원하는 �
 ## 빌드
 > sh\> git clone https://github.com/onebone/OpenKLAS
 
-OpenKLAS를 빌드하기 위해서는 `gradlew build` 명령어를 이용하거나 안드로이드 스튜디오의 **Import Project**를 통해서 프로젝트를 불러와야 합니다. 안드로이드 스튜디오는 4.0 이상의 버전을 요구합니다
+OpenKLAS를 빌드하기 위해서는 `gradlew build` 명령어를 이용하거나 안드로이드 스튜디오의 **Import Project**를 통해서 프로젝트를 불러와야 합니다. Android Studio Arctic Fox 2020.3.1 Canary 12 이상의 버전을 요구합니다
 
 
 ## 라이선스

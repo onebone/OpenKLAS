@@ -38,8 +38,8 @@ class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
 	private val formats = arrayOf(
 		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", TIMEZONE, Locale.KOREA),
 		FastDateFormat.getInstance("yyyy-MM-dd HH:mm", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd HH시mm분", TIMEZONE, Locale.KOREA)
+		FastDateFormat.getInstance("yyyy-MM-dd HH시mm분", TIMEZONE, Locale.KOREA),
+		FastDateFormat.getInstance("yyyy-MM-dd", TIMEZONE, Locale.KOREA)
 	)
 
 	override fun deserialize(

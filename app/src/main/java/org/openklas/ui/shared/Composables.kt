@@ -25,6 +25,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -293,5 +294,21 @@ fun AttachmentEntry(attachment: Attachment, onClick: (Attachment) -> Unit) {
 				color = colorResource(R.color.file_size)
 			)
 		}
+	}
+}
+
+@Composable
+fun DueNot2359Warning(hour: Int, minute: Int) {
+	Row(
+		modifier = Modifier
+			.padding(8.dp)
+	) {
+		Image(painterResource(R.drawable.ic_caution), null)
+
+		Text(
+			stringResource(R.string.assignment_due_not_23_59, hour, minute),
+			color = colorResource(R.color.warn),
+			fontSize = 13.sp
+		)
 	}
 }

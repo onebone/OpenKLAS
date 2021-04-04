@@ -26,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -40,6 +41,8 @@ import org.openklas.klas.model.BriefSubject
 import org.openklas.ui.shared.AssignmentDdayIndicator
 import org.openklas.ui.shared.AttachmentList
 import org.openklas.ui.shared.DueIndicator
+import org.openklas.ui.shared.DueNot2359Warning
+import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
@@ -108,16 +111,30 @@ fun DueFrame(assignment: Assignment.Description?) {
 			daysAfterDue = daysAfterDue
 		)
 
-		DueIndicator(
-			modifier = Modifier
-				.weight(1f)
-				.padding(8.dp, 0.dp),
-			start = assignment.startDate,
-			end = assignment.due,
-			dayFontSize = 18.sp,
-			yearFontSize = 15.sp,
-			dateVerticalMargin = 5.dp
-		)
+		Column(modifier = Modifier
+			.weight(1f)
+			.padding(8.dp, 0.dp)
+		) {
+			DueIndicator(
+				start = assignment.startDate,
+				end = assignment.due,
+				dayFontSize = 18.sp,
+				yearFontSize = 15.sp,
+				dateVerticalMargin = 5.dp
+			)
+
+			val (hour, minute) = remember {
+				val calendar = Calendar.getInstance().apply {
+					time = assignment.due
+				}
+
+				Pair(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
+			}
+
+			if(!(hour == 23 && minute == 59)) {
+				DueNot2359Warning(hour = hour, minute = minute)
+			}
+		}
 	}
 }
 

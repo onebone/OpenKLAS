@@ -63,6 +63,7 @@ import org.openklas.R
 import org.openklas.klas.model.Attachment
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -211,12 +212,13 @@ fun DueIndicator(
 fun AssignmentDdayIndicator(
 	modifier: Modifier = Modifier,
 	isSubmitted: Boolean,
-	daysAfterDue: Long,
+	millisAfterDue: Long,
 	blinkIfImpending: Boolean = true
 ) {
 	var alpha: State<Float> = mutableStateOf(1f)
 
-	if(blinkIfImpending && -1L <= daysAfterDue && daysAfterDue <= 0L) {
+	val daysAfterDue = millisAfterDue / TimeUnit.DAYS.toMillis(1)
+	if(blinkIfImpending && -1L <= daysAfterDue && millisAfterDue < 0) {
 		val transition = rememberInfiniteTransition()
 		alpha = transition.animateFloat(
 			initialValue = 0.3f,

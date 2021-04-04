@@ -47,7 +47,6 @@ import org.openklas.ui.shared.DueIndicator
 import org.openklas.ui.shared.DueNot2359Warning
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun AssignmentScreen(onDownloadAttachment: (Attachment) -> Unit) {
@@ -120,17 +119,16 @@ fun DueFrame(assignment: Assignment.Description?) {
 		return
 	}
 
-	val now = Date()
-	val daysAfterDue = (now.time - assignment.due.time) / TimeUnit.DAYS.toMillis(1)
-
 	Row(modifier = Modifier
 		.padding(12.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
+		val now = Date()
+
 		AssignmentDdayIndicator(
 			modifier = Modifier.padding(8.dp, 0.dp),
 			isSubmitted = assignment.isSubmitted,
-			daysAfterDue = daysAfterDue
+			millisAfterDue = now.time - assignment.due.time
 		)
 
 		Column(modifier = Modifier

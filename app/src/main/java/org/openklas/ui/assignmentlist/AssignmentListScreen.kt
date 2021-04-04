@@ -61,7 +61,6 @@ import org.openklas.ui.shared.SubjectSelectionDialog
 import org.openklas.ui.shared.bottomShadow
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
@@ -149,7 +148,6 @@ fun MainFrame(
 fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Unit) {
 	val now = Date()
 	val timeAfterDue = now.time - entry.due.time
-	val daysAfterDue = timeAfterDue / TimeUnit.DAYS.toMillis(1)
 
 	Row(modifier = Modifier
 		.clickable { onClickEntry(entry) }
@@ -158,7 +156,7 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 	) {
 		AssignmentDdayIndicator(
 			isSubmitted = entry.isSubmitted,
-			daysAfterDue = daysAfterDue
+			millisAfterDue = now.time - entry.due.time
 		)
 
 		Column(

@@ -20,6 +20,8 @@ package org.openklas.data
 
 import android.content.Context
 import androidx.core.content.edit
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,21 +30,32 @@ import javax.inject.Singleton
 class PreferenceCredentialDataSource @Inject constructor(
 	@ApplicationContext context: Context
 ): CredentialDataSource {
-	private val preference = context.getSharedPreferences("org.openklas.data.PreferenceCredentialDataSource", Context.MODE_PRIVATE)
+	private val preference = EncryptedSharedPreferences.create(
+		context, "org.openklas.data.PreferenceCredentialDataSource",
+		MasterKey.Builder(context)
+			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			.build(),
+		EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+		EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+	)
 
 	override var userID: String?
 		get() = preference.getString(USER_ID_KEY, null)
 		set(value) {
-			preference.edit {
-				putString(USER_ID_KEY, value)
+			synchronized(preference) {
+				preference.edit {
+					putString(USER_ID_KEY, value)
+				}
 			}
 		}
 
 	override var password: String?
 		get() = preference.getString(PASSWORD_KEY, null)
 		set(value) {
-			preference.edit {
-				putString(PASSWORD_KEY, value)
+			synchronized(preference) {
+				preference.edit {
+					putString(PASSWORD_KEY, value)
+				}
 			}
 		}
 

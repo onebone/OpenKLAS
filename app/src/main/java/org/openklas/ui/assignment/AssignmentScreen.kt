@@ -22,7 +22,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -168,7 +170,9 @@ fun AssignmentDescriptionBody(assignment: Assignment.Description?) {
 	SelectionContainer {
 		Text(
 			text = assignment.content, // TODO handle html elements
-			modifier = Modifier.padding(12.dp)
+			modifier = Modifier
+				.verticalScroll(rememberScrollState())
+				.padding(12.dp)
 		)
 	}
 }

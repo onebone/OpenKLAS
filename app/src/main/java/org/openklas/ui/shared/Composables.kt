@@ -262,7 +262,7 @@ fun AssignmentDdayIndicator(
 @Composable
 fun AttachmentList(attachments: Array<Attachment>, onClickEntry: (Attachment) -> Unit) {
 	LazyColumn(modifier = Modifier.fillMaxWidth()) {
-		items(attachments, key = { it.id }) {
+		items(attachments, key = { it.order }) {
 			AttachmentEntry(it, onClick = onClickEntry)
 		}
 	}

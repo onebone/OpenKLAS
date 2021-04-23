@@ -22,10 +22,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
 import org.openklas.klas.KlasUri
 import org.openklas.utils.HtmlUtils
@@ -46,19 +49,20 @@ fun SimpleHtml(html: String) {
 @Composable
 fun SimpleHtml(html: Document) {
 	Column {
-		SingleElement(html.body())
+		BlockElement(html.body())
 	}
 }
 
 @Composable
-fun SingleElement(element: Element) {
+private fun BlockElement(element: Element) {
 	for(node in element.childNodes()) {
 		when(node) {
 			is TextNode -> Text(text = node.text())
-			is Element -> when (node.tagName()) {
+			is Element -> when(node.tagName()) {
+				"pre", "div" -> BlockElement(element = node)
+				"a" -> InlineElement(content = node)
 				"p" -> Paragraph(content = node)
 				"br" -> LineBreak(content = node)
-				"pre", "div" -> SingleElement(element = node)
 				else -> Text(text = node.text())
 			}
 		}
@@ -66,19 +70,51 @@ fun SingleElement(element: Element) {
 }
 
 @Composable
-fun Paragraph(content: Element) {
+private fun Paragraph(content: Element) {
 	Box(modifier = Modifier
 		.fillMaxWidth()
 		.wrapContentHeight()
 	) {
-		Text(text = buildAnnotatedString {
-			appendHtmlInlineElement(content)
-		})
+		InlineChildrenElement(content)
 	}
 }
 
 @Composable
-fun LineBreak(content: Element) {
+private fun InlineElement(content: Element) {
+	val text = buildAnnotatedString {
+		appendHtmlInlineElement(content)
+	}
+
+	val uriHandler = LocalUriHandler.current
+	ClickableText(
+		text = text,
+		onClick = {
+			text.getStringAnnotations(TAG_URL, it, it).firstOrNull()?.let { annotation ->
+				uriHandler.openUri(annotation.item)
+			}
+		}
+	)
+}
+
+@Composable
+private fun InlineChildrenElement(element: Element) {
+	val text = buildAnnotatedString {
+		appendHtmlInlineElementChildren(element)
+	}
+
+	val uriHandler = LocalUriHandler.current
+	ClickableText(
+		text = text,
+		onClick = {
+			text.getStringAnnotations(TAG_URL, it, it).firstOrNull()?.let { annotation ->
+				uriHandler.openUri(annotation.item)
+			}
+		}
+	)
+}
+
+@Composable
+private fun LineBreak(content: Element) {
 	Box(modifier = Modifier
 		.fillMaxWidth()
 		.wrapContentHeight()
@@ -91,45 +127,51 @@ fun LineBreak(content: Element) {
 
 private const val TAG_URL = "URL"
 
-fun AnnotatedString.Builder.appendHtmlInlineElement(element: Element) {
-	for(node in element.childNodes()) {
-		when(node) {
-			is TextNode -> append(node.text())
-			is Element -> {
-				val appliedStyles = applyCss(node.attr("style"))
+private fun AnnotatedString.Builder.appendHtmlInlineElement(node: Node) {
+	when(node) {
+		is TextNode -> append(node.text())
+		is Element -> {
+			val appliedStyles = applyCss(node.attr("style"))
 
-				when(node.tagName()) {
-					"a" -> {
-						pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-						pushStringAnnotation(TAG_URL, node.attr("href"))
-						appendHtmlInlineElement(node)
-						pop()
-						pop()
-					}
-					"u" -> {
-						pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-						appendHtmlInlineElement(node)
-						pop()
-					}
-					"b" -> {
-						pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-						appendHtmlInlineElement(node)
-						pop()
-					}
-					"font", "span" -> appendHtmlInlineElement(node)
-					"br" -> append("\n")
-					else -> append(node.text())
-				}
-
-				repeat(appliedStyles) {
+			when(node.tagName()) {
+				"a" -> {
+					pushStyle(SpanStyle(
+						textDecoration = TextDecoration.Underline)
+					)
+					pushStringAnnotation(TAG_URL, node.attr("href"))
+					appendHtmlInlineElementChildren(node)
+					pop()
 					pop()
 				}
+				"u" -> {
+					pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+					appendHtmlInlineElementChildren(node)
+					pop()
+				}
+				"b" -> {
+					pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+					appendHtmlInlineElementChildren(node)
+					pop()
+				}
+				"font", "span" -> appendHtmlInlineElementChildren(node)
+				"br" -> append("\n")
+				else -> append(node.text())
+			}
+
+			repeat(appliedStyles) {
+				pop()
 			}
 		}
 	}
 }
 
-fun AnnotatedString.Builder.applyCss(style: String): Int {
+private fun AnnotatedString.Builder.appendHtmlInlineElementChildren(element: Element) {
+	for(node in element.childNodes()) {
+		appendHtmlInlineElement(node)
+	}
+}
+
+private fun AnnotatedString.Builder.applyCss(style: String): Int {
 	var applied = 0
 
 	val backgroundColor = HtmlUtils.extractCssEntry(style, "background(?:-color)?")

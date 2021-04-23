@@ -25,15 +25,18 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.openklas.klas.KlasUri
+import org.openklas.utils.HtmlUtils
 
 @Composable
 fun SimpleHtml(html: String) {
@@ -55,7 +58,7 @@ fun SingleElement(element: Element) {
 			is Element -> when (node.tagName()) {
 				"p" -> Paragraph(content = node)
 				"br" -> LineBreak(content = node)
-				"div" -> SingleElement(element = node)
+				"pre", "div" -> SingleElement(element = node)
 				else -> Text(text = node.text())
 			}
 		}
@@ -92,17 +95,69 @@ fun AnnotatedString.Builder.appendHtmlInlineElement(element: Element) {
 	for(node in element.childNodes()) {
 		when(node) {
 			is TextNode -> append(node.text())
-			is Element -> when (node.tagName()) {
-				"a" -> {
-					pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-					pushStringAnnotation(TAG_URL, node.attr("href"))
-					appendHtmlInlineElement(node)
-					pop()
+			is Element -> {
+				val appliedStyles = applyCss(node.attr("style"))
+
+				when(node.tagName()) {
+					"a" -> {
+						pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+						pushStringAnnotation(TAG_URL, node.attr("href"))
+						appendHtmlInlineElement(node)
+						pop()
+						pop()
+					}
+					"u" -> {
+						pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+						appendHtmlInlineElement(node)
+						pop()
+					}
+					"b" -> {
+						pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+						appendHtmlInlineElement(node)
+						pop()
+					}
+					"font", "span" -> appendHtmlInlineElement(node)
+					"br" -> append("\n")
+					else -> append(node.text())
+				}
+
+				repeat(appliedStyles) {
 					pop()
 				}
-				"br" -> append("\n")
-				else -> append(node.text())
 			}
 		}
 	}
+}
+
+fun AnnotatedString.Builder.applyCss(style: String): Int {
+	var applied = 0
+
+	val backgroundColor = HtmlUtils.extractCssEntry(style, "background(?:-color)?")
+	val color = HtmlUtils.extractCssEntry(style, "color")
+	val decoration = HtmlUtils.extractCssEntry(style, "text-decoration")
+
+	if(backgroundColor != null || color != null || decoration != null) {
+		++applied
+
+		val parsedColor = HtmlUtils.parseColor(color)?.let {
+			Color(it)
+		} ?: Color.Unspecified
+
+		val parsedBackgroundColor = HtmlUtils.parseColor(backgroundColor)?.let {
+			Color(it)
+		} ?: Color.Unspecified
+
+		pushStyle(SpanStyle(
+			color = parsedColor,
+			background = parsedBackgroundColor,
+			textDecoration = when(decoration) {
+				"none" -> TextDecoration.None
+				"line-through" -> TextDecoration.LineThrough
+				"underline" -> TextDecoration.Underline
+				else -> null
+			}
+		))
+	}
+
+	return applied
 }

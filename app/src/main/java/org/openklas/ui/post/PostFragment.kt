@@ -22,6 +22,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +33,7 @@ import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostFragmentBinding
 import org.openklas.klas.model.PostType
 import org.openklas.ui.shared.AttachmentAdapter
+import org.openklas.ui.shared.SimpleHtml
 import org.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -51,18 +55,29 @@ class PostFragment: BaseFragment() {
 			}
 		), AppbarView.HeaderType.BACK, AppbarView.SearchType.NONE)
 
+		val viewModel by viewModels<PostViewModel>()
+
 		val binding = PostFragmentBinding.inflate(inflater, container, false).apply {
 			lifecycleOwner = viewLifecycleOwner
-		}
+		}.apply {
+			cvPostContent.setContent {
+				MaterialTheme {
+					val content = viewModel.post.observeAsState()
+					content.value?.content?.let {
+						SelectionContainer {
+							SimpleHtml(html = it)
+						}
+					}
+				}
+			}
 
-		val viewModel by viewModels<PostViewModel>()
-		binding.viewModel = viewModel
+			this.viewModel = viewModel
+			rvAttachments.adapter = AttachmentAdapter(permissionHolder!!)
+		}
 
 		viewModel.setSubject(args.subject)
 		viewModel.setCurrentSemester(args.semester)
 		viewModel.fetchPost(args.postType, args.boardNo, args.masterNo)
-
-		binding.rvAttachments.adapter = AttachmentAdapter(permissionHolder!!)
 
 		return binding.root
 	}

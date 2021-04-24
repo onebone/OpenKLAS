@@ -1,8 +1,3 @@
-package org.openklas.base.list
-
-import android.annotation.SuppressLint
-import androidx.recyclerview.widget.DiffUtil
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -20,6 +15,11 @@ import androidx.recyclerview.widget.DiffUtil
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+package org.openklas.base.list
+
+import android.annotation.SuppressLint
+import androidx.recyclerview.widget.DiffUtil
 
 class SimpleDiffUtil<T>(
 	private val idCriteria: (T) -> Any? = { it },

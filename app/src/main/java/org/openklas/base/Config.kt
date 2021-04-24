@@ -1,5 +1,3 @@
-package org.openklas.base
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -65,6 +63,8 @@ object Config {
 		 * Set flags on enable retryOnConnectionFailure in OKHttp
 		 * default is true
 		 */
+
+package org.openklas.base
 		@SerializedName("RetryOnConnectionFailure")
 		val retryOnConnectionFailure: Boolean = true
 	}

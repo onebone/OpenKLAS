@@ -1,5 +1,3 @@
-package org.openklas.base
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -45,5 +43,7 @@ interface SubjectViewModelDelegate: SemesterViewModelDelegate {
 	 *
 	 * @param subjectId
 	 */
+
+package org.openklas.base
 	fun setSubject(subjectId: String)
 }

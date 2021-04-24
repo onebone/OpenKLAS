@@ -1,5 +1,3 @@
-package org.openklas.ui.syllabus.page.summary
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -17,6 +15,8 @@ package org.openklas.ui.syllabus.page.summary
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+package org.openklas.ui.syllabus.page.summary
 
 import androidx.annotation.IntDef
 import org.openklas.R

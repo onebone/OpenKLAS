@@ -1,8 +1,6 @@
 @file:JvmName("Utils")
 @file:JvmMultifileClass
 
-package org.openklas.utils
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -20,6 +18,8 @@ package org.openklas.utils
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+package org.openklas.utils
 
 import android.app.DownloadManager
 import android.content.Context

@@ -1,5 +1,3 @@
-package org.openklas.base
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -34,5 +32,7 @@ interface SessionViewModelDelegate {
 	 *
 	 * @return The result of the request.
 	 */
+
+package org.openklas.base
 	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
 }

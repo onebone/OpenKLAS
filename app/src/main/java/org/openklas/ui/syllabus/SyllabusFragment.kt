@@ -1,5 +1,3 @@
-package org.openklas.ui.syllabus
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -17,6 +15,8 @@ package org.openklas.ui.syllabus
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+package org.openklas.ui.syllabus
 
 import android.os.Bundle
 import android.view.LayoutInflater

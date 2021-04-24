@@ -1,5 +1,3 @@
-package org.openklas
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -27,6 +25,8 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
+package org.openklas
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {

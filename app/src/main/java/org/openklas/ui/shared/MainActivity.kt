@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -72,8 +73,17 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 
 		binding.navView.setNavigationItemSelectedListener(DrawerNavigationListener())
 
+		val firebaseAnalytics = Firebase.analytics
+
 		navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!.findNavController()
 		navController.addOnDestinationChangedListener { _, destination, _ ->
+			firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+				param(FirebaseAnalytics.Param.SCREEN_NAME, destination.label.toString())
+				param(
+					FirebaseAnalytics.Param.SCREEN_CLASS,
+					(destination as? FragmentNavigator.Destination)?.className ?: "Not a fragment")
+			}
+
 			binding.drawerRoot.close()
 
 			binding.drawerRoot.setDrawerLockMode(

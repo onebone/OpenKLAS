@@ -39,8 +39,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -215,24 +216,26 @@ fun AssignmentDdayIndicator(
 	millisAfterDue: Long,
 	blinkIfImpending: Boolean = true
 ) {
-	var alpha: State<Float> = mutableStateOf(1f)
-
 	val daysAfterDue = millisAfterDue / TimeUnit.DAYS.toMillis(1)
-	if(blinkIfImpending && -1L <= daysAfterDue && millisAfterDue < 0) {
-		val transition = rememberInfiniteTransition()
-		alpha = transition.animateFloat(
-			initialValue = 0.3f,
-			targetValue = 1f,
-			animationSpec = infiniteRepeatable(
-				animation = tween(500, easing = { value -> round(value) }), // effectively infinite snap
-				repeatMode = RepeatMode.Reverse
+
+	val alpha by
+		if(blinkIfImpending && -1L <= daysAfterDue && millisAfterDue < 0) {
+			val transition = rememberInfiniteTransition()
+			transition.animateFloat(
+				initialValue = 0.3f,
+				targetValue = 1f,
+				animationSpec = infiniteRepeatable(
+					animation = tween(500, easing = { value -> round(value) }), // effectively infinite snap
+					repeatMode = RepeatMode.Reverse
+				)
 			)
-		)
-	}
+		}else{
+			remember { mutableStateOf(1f) }
+		}
 
 	Column(modifier = modifier
 		.defaultMinSize(50.dp)
-		.alpha(alpha.value)
+		.alpha(alpha)
 	) {
 		val dday = "D" +
 				(if(millisAfterDue > 0) '+' else '-') + abs(daysAfterDue)
@@ -262,7 +265,7 @@ fun AssignmentDdayIndicator(
 @Composable
 fun AttachmentList(attachments: Array<Attachment>, onClickEntry: (Attachment) -> Unit) {
 	LazyColumn(modifier = Modifier.fillMaxWidth()) {
-		items(attachments, key = { it.id }) {
+		items(attachments, key = { it.order }) {
 			AttachmentEntry(it, onClick = onClickEntry)
 		}
 	}

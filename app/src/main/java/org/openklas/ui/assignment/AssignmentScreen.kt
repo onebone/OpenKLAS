@@ -19,6 +19,7 @@ package org.openklas.ui.assignment
  */
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -47,6 +48,7 @@ import org.openklas.ui.shared.AssignmentDdayIndicator
 import org.openklas.ui.shared.AttachmentList
 import org.openklas.ui.shared.DueIndicator
 import org.openklas.ui.shared.DueNot2359Warning
+import org.openklas.ui.shared.SimpleHtml
 import java.util.Calendar
 import java.util.Date
 
@@ -167,12 +169,12 @@ fun AssignmentDescriptionBody(assignment: Assignment.Description?) {
 		return
 	}
 
-	SelectionContainer {
-		Text(
-			text = assignment.content, // TODO handle html elements
-			modifier = Modifier
-				.verticalScroll(rememberScrollState())
-				.padding(12.dp)
-		)
+	Box(modifier = Modifier
+		.verticalScroll(rememberScrollState())
+		.padding(12.dp)
+	) {
+		SelectionContainer {
+			SimpleHtml(assignment.content)
+		}
 	}
 }

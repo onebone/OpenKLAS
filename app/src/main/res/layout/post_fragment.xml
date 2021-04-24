@@ -127,17 +127,14 @@
 				android:background="@color/default_divider" />
 
 			<!-- TODO: use custom binder for injecting post content -->
-			<TextView
-				android:id="@+id/tv_post_content"
+			<androidx.compose.ui.platform.ComposeView
+				android:id="@+id/cv_post_content"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:layout_constraintTop_toBottomOf="@id/v_divider"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
-				android:layout_margin="12dp"
-				android:autoLink="web"
-				app:html="@{viewModel.post.content}"
-				tools:text="내용내용 ㅎ" />
+				android:layout_margin="12dp" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

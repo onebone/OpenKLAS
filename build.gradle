@@ -25,7 +25,7 @@ buildscript {
         hilt_version = '2.31.2-alpha'
         paging_version = '2.1.2'
         coroutine_version = '1.4.2'
-        compose_version = '1.0.0-beta04'
+        compose_version = '1.0.0-beta05'
     }
 
     repositories {

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package org.openklas
+
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -25,8 +27,6 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-
-package org.openklas
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {

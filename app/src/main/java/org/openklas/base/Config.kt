@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package org.openklas.base
+
 import android.content.Context
 import android.text.TextUtils
 import com.google.gson.Gson
@@ -64,7 +66,6 @@ object Config {
 		 * default is true
 		 */
 
-package org.openklas.base
 		@SerializedName("RetryOnConnectionFailure")
 		val retryOnConnectionFailure: Boolean = true
 	}

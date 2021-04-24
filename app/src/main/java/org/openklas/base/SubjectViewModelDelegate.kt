@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package org.openklas.base
+
 import androidx.lifecycle.LiveData
 import org.openklas.klas.model.BriefSubject
 
@@ -44,6 +46,5 @@ interface SubjectViewModelDelegate: SemesterViewModelDelegate {
 	 * @param subjectId
 	 */
 
-package org.openklas.base
 	fun setSubject(subjectId: String)
 }

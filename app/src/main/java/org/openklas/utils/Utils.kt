@@ -1,6 +1,3 @@
-@file:JvmName("Utils")
-@file:JvmMultifileClass
-
 /*
  * OpenKLAS
  * Copyright (C) 2020-2021 OpenKLAS Team
@@ -18,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+@file:JvmName("Utils")
+@file:JvmMultifileClass
 
 package org.openklas.utils
 

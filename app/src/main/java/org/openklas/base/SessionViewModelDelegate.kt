@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package org.openklas.base
+
 import androidx.lifecycle.LiveData
 import org.openklas.utils.Event
 import org.openklas.utils.Result
@@ -33,6 +35,5 @@ interface SessionViewModelDelegate {
 	 * @return The result of the request.
 	 */
 
-package org.openklas.base
 	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
 }

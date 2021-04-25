@@ -20,18 +20,15 @@ package org.openklas.ui.post
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.openklas.base.SemesterViewModelDelegate
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.Attachment
-import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository

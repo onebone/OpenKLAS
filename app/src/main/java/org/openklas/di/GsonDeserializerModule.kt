@@ -29,7 +29,6 @@ import org.openklas.klas.deserializer.OnlineContentEntryDeserializer
 import org.openklas.klas.deserializer.SyllabusDeserializer
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.deserializer.TimetableDeserializer
-import org.openklas.klas.deserializer.YNBoolDeserializer
 import javax.inject.Singleton
 
 @Module

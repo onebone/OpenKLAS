@@ -44,15 +44,15 @@ interface KlasClient {
 
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
 
 	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
 
 	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
 
-	suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
 
 	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
 

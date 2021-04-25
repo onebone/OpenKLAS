@@ -122,7 +122,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		))
 	}
 
-	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return Result.Error(NotImplementedError())
 	}
 
@@ -140,7 +140,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return Result.Error(NotImplementedError())
 	}
 
@@ -150,7 +150,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return Result.Success(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
 	}
 
-	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
 		return Result.Error(NotImplementedError())
 	}
 

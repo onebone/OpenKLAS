@@ -54,24 +54,24 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return klas.getNotice(boardNo, masterNo)
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klas.getNotice(semester, subjectId, boardNo, masterNo)
 	}
 
 	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return klas.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return klas.getQna(boardNo, masterNo)
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klas.getQna(semester, subjectId, boardNo, masterNo)
 	}
 
 	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
 		return klas.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return klas.getLectureMaterial(boardNo, masterNo)
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return klas.getLectureMaterial(semester, subjectId, boardNo, masterNo)
 	}
 
 	override suspend fun getAttachments(

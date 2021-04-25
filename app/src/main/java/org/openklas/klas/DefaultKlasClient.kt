@@ -114,8 +114,8 @@ class DefaultKlasClient @Inject constructor(
 		)).validateSession()
 	}
 
-	override suspend fun getNotice(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return service.notice(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.notice(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
 	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
@@ -124,8 +124,8 @@ class DefaultKlasClient @Inject constructor(
 		)).validateSession()
 	}
 
-	override suspend fun getLectureMaterial(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return service.material(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.material(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
 	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
@@ -134,8 +134,8 @@ class DefaultKlasClient @Inject constructor(
 		)).validateSession()
 	}
 
-	override suspend fun getQna(boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return service.qna(RequestPostContent(boardNo = boardNo, masterNo = masterNo)).validateSession()
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+		return service.qna(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
 	override suspend fun getAttachments(

@@ -80,13 +80,13 @@ class PostViewModel @Inject constructor(
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	fun fetchPost(type: PostType, boardNo: Int, masterNo: Int) {
+	fun fetchPost(semester: String, subject: String, type: PostType, boardNo: Int, masterNo: Int) {
 		viewModelScope.launch {
 			val result = requestWithSession {
 				when(type) {
-					PostType.NOTICE -> klasRepository.getNotice(boardNo, masterNo)
-					PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(boardNo, masterNo)
-					PostType.QNA -> klasRepository.getQna(boardNo, masterNo)
+					PostType.NOTICE -> klasRepository.getNotice(semester, subject, boardNo, masterNo)
+					PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterial(semester, subject, boardNo, masterNo)
+					PostType.QNA -> klasRepository.getQna(semester, subject, boardNo, masterNo)
 				}
 			}
 

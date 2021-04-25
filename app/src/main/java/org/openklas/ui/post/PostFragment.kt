@@ -77,7 +77,7 @@ class PostFragment: BaseFragment() {
 
 		viewModel.setSubject(args.subject)
 		viewModel.setCurrentSemester(args.semester)
-		viewModel.fetchPost(args.postType, args.boardNo, args.masterNo)
+		viewModel.fetchPost(args.semester, args.subject, args.postType, args.boardNo, args.masterNo)
 
 		return binding.root
 	}

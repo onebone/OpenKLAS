@@ -21,10 +21,16 @@ package org.openklas.klas.request
 import com.google.gson.annotations.SerializedName
 
 data class RequestPostContent(
+	@SerializedName("selectYearhakgi")
+	val semester: String,
+	@SerializedName("selectSubj")
+	val subject: String,
 	@SerializedName("boardNo")
 	val boardNo: Int,
 	@SerializedName("masterNo")
 	val masterNo: Int,
 	@SerializedName("cmd")
-	val cmd: String = "select"
+	val cmd: String = "select",
+	@SerializedName("selectChangeYn")
+	val selectChangeYn: String = "Y"
 )

@@ -53,7 +53,6 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	private val _currentSemester = MutableLiveData<Semester>()
 	override val currentSemester = MediatorLiveData<Semester>().apply {
 		addSource(semesters) {
-			// do NOT use Transformations.switchMap as [currentSemester] always depends on [semesters]
 			invokeSelector(it)
 		}
 

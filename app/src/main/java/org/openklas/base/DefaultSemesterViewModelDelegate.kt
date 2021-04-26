@@ -29,8 +29,9 @@ import org.openklas.utils.Result
 import javax.inject.Inject
 
 class DefaultSemesterViewModelDelegate @Inject constructor(
-	private val klasRepository: KlasRepository
-): SemesterViewModelDelegate {
+	private val klasRepository: KlasRepository,
+	sessionViewModelDelegate: SessionViewModelDelegate
+): SemesterViewModelDelegate, SessionViewModelDelegate by sessionViewModelDelegate {
 	private var semesterSelector: (Array<Semester>) -> Semester? = {
 		// TODO set default semester according to current time
 		// if the user has enrolled in winter or summer session,
@@ -41,7 +42,7 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	}
 
 	override val semesters = liveData {
-		val result = klasRepository.getSemesters()
+		val result = requestWithSession { klasRepository.getSemesters() }
 
 		if(result is Result.Success) {
 			emit(result.value)

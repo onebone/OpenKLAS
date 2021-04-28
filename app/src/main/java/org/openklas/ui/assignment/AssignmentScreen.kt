@@ -44,10 +44,10 @@ import org.openklas.R
 import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.BriefSubject
-import org.openklas.ui.shared.AssignmentDdayIndicator
-import org.openklas.ui.shared.AttachmentList
-import org.openklas.ui.shared.DueIndicator
-import org.openklas.ui.shared.DueNot2359Warning
+import org.openklas.ui.shared.compose.AssignmentDdayIndicator
+import org.openklas.ui.shared.compose.AttachmentList
+import org.openklas.ui.shared.compose.DueIndicator
+import org.openklas.ui.shared.compose.DueNot2359Warning
 import org.openklas.ui.shared.SimpleHtml
 import java.util.Calendar
 import java.util.Date

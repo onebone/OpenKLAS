@@ -49,9 +49,10 @@ import androidx.compose.ui.window.Dialog
 import org.openklas.R
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
+import org.openklas.ui.shared.compose.constrainSizeFactor
 
-const val STATE_SEMESTER = 0
-const val STATE_SUBJECT = 1
+private const val STATE_SEMESTER = 0
+private const val STATE_SUBJECT = 1
 
 @Composable
 fun SubjectSelectionDialog(

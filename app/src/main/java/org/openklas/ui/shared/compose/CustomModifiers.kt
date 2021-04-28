@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.openklas.ui.shared
+package org.openklas.ui.shared.compose
 
 import androidx.annotation.FloatRange
 import androidx.compose.ui.Modifier
@@ -25,11 +25,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 fun Modifier.bottomShadow(
@@ -63,34 +61,6 @@ fun Modifier.constrainSizeFactor(
 			minHeight = (constraints.maxHeight * minHeightFactor).roundToInt(),
 			maxHeight = (constraints.maxHeight * maxHeightFactor).roundToInt()
 		)
-	)
-
-	layout(placeable.width, placeable.height) {
-		placeable.place(0, 0)
-	}
-}
-
-fun Modifier.dueIndicatorSizing(
-	dayPaint: Paint,
-	yearPaint: Paint,
-	verticalMargin: Dp
-) = this.layout { measurable, constraints ->
-	val width = constraints.maxWidth
-	val radius = 8.dp.toPx()
-
-	val dayFontHeightPixel = with(dayPaint.asFrameworkPaint().fontMetrics) {
-		descent - ascent
-	}.toInt()
-
-	val yearFontHeightPixel = with(yearPaint.asFrameworkPaint().fontMetrics) {
-		descent - ascent
-	}.toInt()
-
-	val height = (radius * 2 + dayFontHeightPixel + yearFontHeightPixel + verticalMargin.roundToPx())
-		.coerceIn(constraints.minHeight.toFloat(), constraints.maxHeight.toFloat()).toInt()
-
-	val placeable = measurable.measure(
-		Constraints(width, width, height, height)
 	)
 
 	layout(placeable.width, placeable.height) {

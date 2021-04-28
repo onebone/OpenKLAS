@@ -54,11 +54,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
-import org.openklas.ui.shared.AssignmentDdayIndicator
-import org.openklas.ui.shared.DueIndicator
-import org.openklas.ui.shared.DueNot2359Warning
+import org.openklas.ui.shared.compose.AssignmentDdayIndicator
+import org.openklas.ui.shared.compose.DueIndicator
+import org.openklas.ui.shared.compose.DueNot2359Warning
 import org.openklas.ui.shared.SubjectSelectionDialog
-import org.openklas.ui.shared.bottomShadow
+import org.openklas.ui.shared.compose.bottomShadow
 import java.util.Calendar
 import java.util.Date
 

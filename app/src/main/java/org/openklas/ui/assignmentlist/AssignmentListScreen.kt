@@ -25,9 +25,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -52,6 +52,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import me.onebone.toolbar.AppbarContainer
+import me.onebone.toolbar.CollapsingToolbar
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarState
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.ui.shared.compose.AssignmentDdayIndicator
@@ -111,17 +115,80 @@ fun AssignmentListMainLayout(
 		) {
 			val lazyListState = rememberLazyListState()
 
-			Header(name, onClickSubjectChange, lazyListState)
+			val collapsingToolbarState = rememberCollapsingToolbarState()
 
-			if(isLoading) {
-				Box(modifier = Modifier
-					.fillMaxSize()
-					.wrapContentSize(Alignment.Center)
+			AppbarContainer(
+				modifier = Modifier
+					.fillMaxWidth(),
+				scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
+				collapsingToolbarState = collapsingToolbarState
+			) {
+				CollapsingToolbar(
+					modifier = Modifier
+						.bottomShadow(
+							// show shadow only when scrolled
+							if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
+								0.dp
+							else
+								8.dp,
+							colorResource(R.color.shadow_start),
+							colorResource(R.color.shadow_end)
+						),
+					collapsingToolbarState = collapsingToolbarState
 				) {
-					CircularProgressIndicator()
+					var progress by remember { mutableStateOf(1f) }
+
+					Row(
+						modifier = Modifier
+							.road(Alignment.CenterStart, Alignment.Center)
+							.progress {
+								progress = it
+							}
+					) {
+						Text(
+							text = name,
+							modifier = Modifier
+								.padding(8.dp)
+								.align(Alignment.CenterVertically),
+							color = colorResource(R.color.primary),
+							fontSize = 24.sp,
+							fontWeight = FontWeight.Bold
+						)
+
+						Text(
+							text = stringResource(R.string.assignment_list_change_subject),
+							modifier = Modifier
+								.align(Alignment.CenterVertically)
+								.alpha(progress)
+								.clickable(onClick = onClickSubjectChange)
+								.padding(4.dp),
+							color = colorResource(R.color.navigate),
+							fontSize = 15.sp
+						)
+					}
+
+					Box(
+						modifier = Modifier
+							.height(150.dp)
+					)
 				}
-			}else{
-				MainFrame(assignments, lazyListState, onClickEntry)
+
+				if(isLoading) {
+					Box(modifier = Modifier
+						.fillMaxSize()
+						.wrapContentSize(Alignment.Center)
+						.appBarBody()
+					) {
+						CircularProgressIndicator()
+					}
+				}else{
+					MainFrame(
+						modifier = Modifier.appBarBody(),
+						assignments = assignments,
+						lazyListState = lazyListState,
+						onClickEntry = onClickEntry
+					)
+				}
 			}
 		}
 	}
@@ -129,6 +196,7 @@ fun AssignmentListMainLayout(
 
 @Composable
 fun MainFrame(
+	modifier: Modifier = Modifier,
 	assignments: Array<AssignmentEntry>?,
 	lazyListState: LazyListState,
     onClickEntry: (AssignmentEntry) -> Unit
@@ -136,7 +204,7 @@ fun MainFrame(
 	if(assignments == null) {
 		// TODO display shimmer effects on data load
 	}else{
-		LazyColumn(state = lazyListState) {
+		LazyColumn(modifier = modifier.fillMaxSize(), state = lazyListState) {
 			items(assignments, key = { it.order }) {
 				AssignmentItem(it, onClickEntry)
 			}
@@ -191,43 +259,6 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 				dayFontSize = 18.sp,
 				yearFontSize = 15.sp,
 				dateVerticalMargin = 5.dp
-			)
-		}
-	}
-}
-
-@Composable
-fun Header(name: String, onClickSubjectChange: () -> Unit, lazyListState: LazyListState) {
-	Column(
-		modifier = Modifier
-			.fillMaxWidth()
-			.bottomShadow(
-				// show shadow only when scrolled
-				if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
-					0.dp
-				else
-					8.dp,
-				colorResource(R.color.shadow_start),
-				colorResource(R.color.shadow_end)
-			)
-			.padding(16.dp, 12.dp),
-	) {
-		Row {
-			Text(name,
-				color = colorResource(R.color.primary),
-				fontSize = 24.sp,
-				fontWeight = FontWeight.Bold)
-
-			Text(
-				text = stringResource(R.string.assignment_list_change_subject),
-				color = colorResource(R.color.navigate),
-				fontSize = 15.sp,
-				modifier = Modifier
-					.weight(1f)
-					.wrapContentWidth(Alignment.End)
-					.align(Alignment.CenterVertically)
-					.clickable(onClick = onClickSubjectChange)
-					.padding(4.dp)
 			)
 		}
 	}

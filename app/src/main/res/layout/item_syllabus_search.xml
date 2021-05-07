@@ -84,7 +84,7 @@
 			android:layout_marginStart="8dp"
 			android:text="@{entry.subjectName}"
 			android:textStyle="bold"
-			android:textSize="21sp"
+			android:textSize="18sp"
 			tools:text="5개기본호흡" />
 
 		<TextView

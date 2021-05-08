@@ -22,14 +22,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
-import org.openklas.databinding.HomeFragmentBinding
-import org.openklas.utils.dp2px
 import org.openklas.widget.AppbarView
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -40,23 +47,37 @@ class HomeFragment: BaseFragment() {
 		configureTitle(resources.getString(R.string.app_name),
 			AppbarView.HeaderType.HAMBURGER, AppbarView.SearchType.NONE)
 
-		val binding = HomeFragmentBinding.inflate(inflater, container, false).apply {
-			lifecycleOwner = this@HomeFragment
-		}
-
 		val viewModel by viewModels<HomeViewModel>()
-		prepareViewModel(viewModel)
 
-		binding.listMain.apply {
-			addItemDecoration(RecyclerMarginDecoration(dp2px(context, 10f).toInt()))
+		return ComposeView(requireContext()).apply {
+			setContent {
+				MaterialTheme {
+					Surface(
+						color = colorResource(R.color.super_light_gray),
+						modifier = Modifier.fillMaxSize()
+					) {
+						val currentSemester by viewModel.currentSemester.observeAsState()
+						val scheduleToday by viewModel.todaySchedule.observeAsState()
 
-			adapter = HomeMainAdapter(viewModel, this@HomeFragment).apply {
-				// TODO make the order it changeable
-				submitList(listOf(HomeViewType.SCHEDULE, HomeViewType.HOMEWORK, HomeViewType.ONLINE_CONTENTS))
+						val assignments by viewModel.homeworks.observeAsState()
+						val impendingAssignments by viewModel.impendingHomework.observeAsState()
+
+						val videos by viewModel.videos.observeAsState()
+						val impendingVideos by viewModel.impendingVideo.observeAsState()
+
+						HomeScreen(
+							currentSemester = currentSemester,
+							schedule = scheduleToday?.toList(),
+							now = Date(),
+							assignments = assignments,
+							impendingAssignments = impendingAssignments,
+							videos = videos,
+							impendingVideos = impendingVideos
+						)
+					}
+				}
 			}
 		}
-
-		return binding.root
 	}
 
 	fun onClickShowMore(v: View) {

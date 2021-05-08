@@ -25,18 +25,22 @@ import java.util.Date
 sealed class OnlineContentEntry {
 	abstract val evltnSe: String
 
+	abstract val title: String
+	abstract val startDate: Date
+	abstract val dueDate: Date
+
 	data class Video(
 		override val evltnSe: String, // lesson
 		@SerializedName("bunban")
 		val division: String,
 		@SerializedName("sbjt")
-		val title: String,
+		override val title: String,
 		@SerializedName("registDt")
 		val registerDate: Date,
 		@SerializedName("startDate")
-		val startDate: Date,
+		override val startDate: Date,
 		@SerializedName("endDate")
-		val endDate: Date,
+		override val dueDate: Date,
 		@SerializedName("prog")
 		val progress: Int,
 		@SerializedName("rcognTime")
@@ -52,11 +56,11 @@ sealed class OnlineContentEntry {
 		@SerializedName("registDt")
 		val submitDate: Date?,
 		@SerializedName("startDate")
-		val startDate: Date,
+		override val startDate: Date,
 		@SerializedName("endDate")
-		val endDate: Date,
-		@SerializedName("title")
-		val title: String,
+		override val dueDate: Date,
+		@SerializedName("sbjt")
+		override val title: String,
 		@SerializedName("rcognTime")
 		val lectureTime: Int,
 		@SerializedName("achivTime")
@@ -66,7 +70,7 @@ sealed class OnlineContentEntry {
 	data class Quiz(
 		override val evltnSe: String, // quiz
 		@SerializedName("endDate")
-		val endDate: Date,
+		override val dueDate: Date,
 		@SerializedName("achivTime")
 		val acquiredTime: Int,
 		@SerializedName("lrnPd")
@@ -76,13 +80,13 @@ sealed class OnlineContentEntry {
 		@SerializedName("moduletitle")
 		val chapterTitle: String,
 		@SerializedName("sbjt")
-		val title: String,
+		override val title: String,
 		@SerializedName("rcognTime")
 		// Note that [lectureTime] is different from the actual
 		// length of the lecture
 		val lectureTime: Int,
 		@SerializedName("startDate")
-		val startDate: Date,
+		override val startDate: Date,
 		@SerializedName("started")
 		val takenAt: Date?,
 		@SerializedName("userId")
@@ -96,7 +100,13 @@ sealed class OnlineContentEntry {
 	): OnlineContentEntry()
 
 	data class Dummy(
-		override val evltnSe: String
+		override val evltnSe: String,
+		@SerializedName("sbjt")
+		override val title: String,
+		@SerializedName("endDate")
+		override val dueDate: Date,
+		@SerializedName("startDate")
+		override val startDate: Date
 	): OnlineContentEntry()
 
 	// TODO add more entry types

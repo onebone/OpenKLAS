@@ -16,15 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.openklas.ui.home
+package org.openklas.ui.shared.compose
 
-import androidx.annotation.LayoutRes
-import org.openklas.R
+import androidx.compose.animation.core.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import kotlin.math.round
 
-enum class HomeViewType(
-	@LayoutRes val layout: Int
-) {
-	SCHEDULE(R.layout.home_schedule_root_item),
-	HOMEWORK(R.layout.home_homework_root_item),
-	ONLINE_CONTENTS(R.layout.home_online_video_root_item)
+@Composable
+fun blinkTransition(
+	fromAlpha: Float = 0f,
+	toAlpha: Float = 1f,
+	durationMillis: Int = 500
+): State<Float> {
+	val transition = rememberInfiniteTransition()
+
+	return transition.animateFloat(
+		initialValue = fromAlpha,
+		targetValue = toAlpha,
+		animationSpec = infiniteRepeatable(
+			animation = tween(durationMillis, easing = { value -> round(value) }),
+			repeatMode = RepeatMode.Reverse
+		)
+	)
 }

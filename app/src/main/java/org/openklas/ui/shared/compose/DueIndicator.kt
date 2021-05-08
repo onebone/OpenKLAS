@@ -18,11 +18,6 @@
 
 package org.openklas.ui.shared.compose
 
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -58,7 +53,6 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
-import kotlin.math.round
 
 @Composable
 fun DueIndicator(
@@ -212,15 +206,7 @@ fun AssignmentDdayIndicator(
 
 	val alpha by
 		if(blinkIfImpending && -1L <= daysAfterDue && millisAfterDue < 0) {
-			val transition = rememberInfiniteTransition()
-			transition.animateFloat(
-				initialValue = 0.3f,
-				targetValue = 1f,
-				animationSpec = infiniteRepeatable(
-					animation = tween(500, easing = { value -> round(value) }), // effectively infinite snap
-					repeatMode = RepeatMode.Reverse
-				)
-			)
+			blinkTransition(fromAlpha = 0.3f)
 		}else{
 			remember { mutableStateOf(1f) }
 		}

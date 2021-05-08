@@ -39,6 +39,9 @@ import org.openklas.ui.syllabus.page.summary.TUTOR_SECONDARY_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import java.net.URL
 import java.nio.charset.Charset
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 fun AssetManager.fileAsString(filename: String): String {
 	return open(filename).use {
@@ -46,20 +49,32 @@ fun AssetManager.fileAsString(filename: String): String {
 	}
 }
 
-fun periodToTime(period: Int): String {
-	val map = mapOf(
-		0 to "8:00",
-		1 to "9:00",
-		2 to "10:30",
-		3 to "12:00",
-		4 to "13:30",
-		5 to "15:00",
-		6 to "16:30",
-		7 to "18:00"
-	)
+class Time(
+	val hour: Int,
+	val minute: Int
+) {
+	init {
+		require(hour in 0..23)
+		require(minute in 0..59)
+	}
 
-	return map[period] ?: "N/A"
+	override fun toString(): String {
+		return "%02d:%02d".format(hour, minute)
+	}
 }
+
+private val PERIOD_MAP = mapOf(
+	0 to Time(8, 0),
+	1 to Time(9, 0),
+	2 to Time(10, 30),
+	3 to Time(12, 0),
+	4 to Time(13, 30),
+	5 to Time(15, 0),
+	6 to Time(16, 30),
+	7 to Time(18, 0)
+)
+
+fun periodToTime(period: Int): Time? = PERIOD_MAP[period]
 
 fun dp2px(context: Context, dp: Float) =
 	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)
@@ -109,5 +124,37 @@ fun downloadFile(context: Context, url: String, fileName: String) {
 	val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 	if(manager.enqueue(request) == 0L) {
 		Toast.makeText(context, R.string.download_unavailable, Toast.LENGTH_LONG).show()
+	}
+}
+
+fun diffToShortString(context: Context, a: Date, b: Date): String {
+	val time = a.time - b.time
+	val days = abs(time / TimeUnit.DAYS.toMillis(1))
+	val hours = abs(time / TimeUnit.HOURS.toMillis(1))
+	val minutes = abs(time / TimeUnit.MINUTES.toMillis(1))
+
+	val isBefore = time < 0
+
+	return if(days > 0 && isBefore) {
+		context.resources.getQuantityString(R.plurals.common_time_day_ago, days.toInt(), days)
+	}else if(hours > 0) {
+		context.resources.getQuantityString(
+			if(isBefore) R.plurals.common_time_hours_ago
+			else R.plurals.common_left_time_hour,
+			hours.toInt(), hours
+		)
+	}else{
+		if(minutes < 10) {
+			context.resources.getString(
+				if(isBefore) R.string.common_time_moment_ago
+				else R.string.common_left_time_soon
+			)
+		}else{
+			context.resources.getQuantityString(
+				if(isBefore) R.plurals.common_time_minutes_ago
+				else R.plurals.common_left_time_minute,
+				minutes.toInt(), minutes
+			)
+		}
 	}
 }

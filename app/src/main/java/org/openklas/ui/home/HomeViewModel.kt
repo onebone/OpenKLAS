@@ -62,65 +62,56 @@ class HomeViewModel @Inject constructor(
 		}
 	}
 
-	val videoCount: LiveData<Int> = Transformations.map(onlineContents) {
+	val videos: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { (_, entry) ->
-			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.endDate
-		}
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.dueDate
+		}.sortedBy { (_, entry) -> entry.dueDate.time } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
-	val impendingVideo: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
+	val impendingVideo: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
 		val now = Date()
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.endDate.time - now.time)
+			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate.time - now.time)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
-		.sortedBy { (_, entry) -> entry.endDate.time }
-		.toTypedArray()
-	}
-	val impendingVideoCount: LiveData<Int> = Transformations.map(impendingVideo) {
-		it.size
 	}
 
-	val homeworkCount: LiveData<Int> = Transformations.map(onlineContents) {
+	val homeworks: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
 		val now = Date()
 
-		it.count { (_, entry) ->
-			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.endDate
-		}
+		@Suppress("UNCHECKED_CAST")
+		it.filter { (_, entry) ->
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.dueDate
+		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate.time } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
-	val impendingHomework: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
+	val impendingHomework: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
 		val now = Date()
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.endDate.time - now.time)
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate.time - now.time)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
-		.sortedBy { (_, entry: OnlineContentEntry.Homework) -> entry.endDate.time }
-		.toTypedArray()
-	}
-	val impendingHomeworkCount: LiveData<Int> = Transformations.map(impendingHomework) {
-		it.size
 	}
 
-	val quiz: LiveData<Array<Pair<BriefSubject, OnlineContentEntry.Quiz>>> = Transformations.map(onlineContents) {
+	val quiz: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Quiz>>> = Transformations.map(onlineContents) {
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Quiz
-		}.toTypedArray() as Array<Pair<BriefSubject, OnlineContentEntry.Quiz>>
+		} as List<Pair<BriefSubject, OnlineContentEntry.Quiz>>
 	}
 
 	val timetable: LiveData<Timetable>  = Transformations.map(home) {
 		it.timetable
 	}
-	val todaySchedule: LiveData<Array<Timetable.Entry>> = Transformations.map(timetable) { timetable ->
+	val todaySchedule: LiveData<List<Timetable.Entry>> = Transformations.map(timetable) { timetable ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		timetable.entries.filter{ it.day == day - 1 }.sortedBy { it.time }.toTypedArray()
+		timetable.entries.filter{ it.day == day - 1 }.sortedBy { it.time }
 	}
-	val todayScheduleEmpty: LiveData<Boolean> = Transformations.map(todaySchedule) { it.isEmpty() }
 
 	private val _isHomeFetched = MutableLiveData(false)
 	val isHomeFetched: LiveData<Boolean> = _isHomeFetched

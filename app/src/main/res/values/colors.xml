@@ -33,6 +33,7 @@
 
 	<color name="light_red">#FFF4F6</color>
 	<color name="red">#F44336</color>
+	<color name="light_green">#ecf7ed</color>
 	<color name="green">#4CAF50</color>
 
 	<color name="gray">#999999</color>

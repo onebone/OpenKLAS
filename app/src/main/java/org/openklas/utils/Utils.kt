@@ -135,8 +135,12 @@ fun diffToShortString(context: Context, a: Date, b: Date): String {
 
 	val isBefore = time < 0
 
-	return if(days > 0 && isBefore) {
-		context.resources.getQuantityString(R.plurals.common_time_day_ago, days.toInt(), days)
+	return if(days > 0) {
+		context.resources.getQuantityString(
+			if(isBefore) R.plurals.common_time_day_ago
+			else R.plurals.common_left_time_day,
+			days.toInt(), days
+		)
 	}else if(hours > 0) {
 		context.resources.getQuantityString(
 			if(isBefore) R.plurals.common_time_hours_ago

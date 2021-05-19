@@ -52,7 +52,7 @@ object BindAdapter {
 	fun bindDateShort(textView: TextView, date: Date?) {
 		if(date == null) return
 
-		textView.text = diffToShortString(textView.context, Date(), date)
+		textView.text = diffToShortString(textView.context, date, Date())
 	}
 
 	@JvmStatic

@@ -32,6 +32,11 @@
 	<string name="download_unavailable">다운로드를 할 수 없습니다</string>
 	<string name="permission_download_denied">저장 권한이 거부되었습니다</string>
 
+	<plurals name="common_left_time_day">
+		<item quantity="one">하루</item>
+		<item quantity="two">이틀</item>
+		<item quantity="other">%1$d일</item>
+	</plurals>
 	<string name="common_left_time_soon">곧</string>
 	<plurals name="common_left_time_minute">
 		<item quantity="one">1분</item>

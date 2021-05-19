@@ -25,7 +25,7 @@ buildscript {
         hilt_version = '2.35.1'
         paging_version = '2.1.2'
         coroutine_version = '1.4.3'
-        compose_version = '1.0.0-beta05'
+        compose_version = '1.0.0-beta06'
     }
 
     repositories {
@@ -34,13 +34,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
+        classpath 'com.android.tools.build:gradle:7.0.0-beta01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
+        classpath 'com.google.gms:google-services:4.3.8'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.6.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -52,10 +52,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-
-        // TODO remove this repository when compose.runtime updates
-        // kotlinx-collections-immutable-jvm version to 0.3.4
-        maven { url 'https://dl.bintray.com/kotlin/kotlinx/' }
     }
 }
 

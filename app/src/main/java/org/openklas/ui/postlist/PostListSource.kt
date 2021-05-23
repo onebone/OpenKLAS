@@ -18,10 +18,8 @@
 
 package org.openklas.ui.postlist
 
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
@@ -29,72 +27,39 @@ import org.openklas.utils.Result
 
 class PostListSource(
 	private val klasRepository: KlasRepository,
-	private val coroutineScope: CoroutineScope,
-	private val isInitialLoading: MutableLiveData<Boolean>,
 	private val query: PostListQuery?,
 	private val errorHandler: (Throwable) -> Unit,
 	private val pageInfoCallback: (Board.PageInfo) -> Unit,
-): PageKeyedDataSource<Int, Board.Entry>() {
-	override fun loadInitial(
-		params: LoadInitialParams<Int>,
-		callback: LoadInitialCallback<Int, Board.Entry>
-	) {
-		// there is nothing to show when query is not set
-		val query = query ?: return callback.onResult(listOf(), 0, 0, null, null)
+): PagingSource<Int, Board.Entry>() {
+	override fun getRefreshKey(state: PagingState<Int, Board.Entry>): Int? {
+		return state.anchorPosition
+	}
 
-		isInitialLoading.postValue(true)
+	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Board.Entry> {
+		val key = (params.key ?: 0).coerceAtLeast(0)
 
-		coroutineScope.launch {
-			val result = request(query, 0)
-			if(result is Result.Error) {
+		val query = query ?: return LoadResult.Page(
+			data = listOf(), prevKey = null, nextKey = null
+		)
+
+		val result = request(query, key)
+
+		return when(result) {
+			is Result.Error -> {
 				errorHandler(result.error)
-			}else if(result is Result.Success) {
-				isInitialLoading.postValue(false)
-
-				val board = result.value
-				val page = board.pageInfo
-
+				LoadResult.Error(result.error)
+			}
+			is Result.Success -> {
+				val page = result.value.pageInfo
 				pageInfoCallback(page)
-				callback.onResult(
-					board.posts.toList(), 0, page.totalPosts, null,
-					if(page.currentPage < page.totalPages - 1) page.currentPage + 1 else null
+
+				LoadResult.Page(
+					data = result.value.posts.toList(),
+					prevKey = if(key <= 0) null else key - 1,
+					nextKey = if(page.currentPage < page.totalPages - 1) key + 1 else null,
+					itemsBefore = ((page.currentPage - 1) * page.postsPerPage).coerceIn(0, page.totalPosts),
+					itemsAfter = (page.totalPosts - (page.currentPage + 1) * page.postsPerPage).coerceAtLeast(0)
 				)
-			}
-		}
-	}
-
-	override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = query ?: return callback.onResult(listOf(), null)
-
-		coroutineScope.launch {
-			val result = request(query, params.key)
-
-			if(result is Result.Error) {
-				errorHandler(result.error)
-			}else if(result is Result.Success) {
-				val board = result.value
-				val page = board.pageInfo
-
-				pageInfoCallback(page)
-				callback.onResult(board.posts.toList(), if(page.currentPage <= 0 || page.totalPages <= 0) null else page.currentPage - 1)
-			}
-		}
-	}
-
-	override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Board.Entry>) {
-		val query = query ?: return callback.onResult(listOf(), null)
-
-		coroutineScope.launch {
-			val result = request(query, params.key)
-
-			if(result is Result.Error) {
-				errorHandler(result.error)
-			}else if(result is Result.Success) {
-				val board = result.value
-				val page = board.pageInfo
-
-				pageInfoCallback(page)
-				callback.onResult(board.posts.toList(), if(page.currentPage < page.totalPages - 1) page.currentPage + 1 else null)
 			}
 		}
 	}

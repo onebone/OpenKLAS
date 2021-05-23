@@ -23,7 +23,7 @@ buildscript {
         nav_version = '2.3.5'
         dagger_version = '2.35.1'
         hilt_version = '2.35.1'
-        paging_version = '2.1.2'
+        paging_version = '3.0.0'
         coroutine_version = '1.4.3'
         compose_version = '1.0.0-beta07'
     }

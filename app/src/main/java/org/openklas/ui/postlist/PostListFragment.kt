@@ -24,9 +24,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
@@ -78,9 +84,20 @@ class PostListFragment: BaseFragment() {
 		binding.rvPosts.adapter = adapter
 
 		viewModel.posts.observe(viewLifecycleOwner) {
-			adapter.submitList(it)
+			adapter.submitData(lifecycle, it)
 		}
-		
+
+		lifecycleScope.launch {
+			// no way to process this in view model??
+			adapter.loadStateFlow.collectLatest {
+				withContext(Dispatchers.Main) {
+					binding.shimmerBackLayer.visibility =
+						if(it.refresh is LoadState.Loading) View.VISIBLE
+						else View.GONE
+				}
+			}
+		}
+
 		binding.etKeyword.setOnEditorActionListener { v, actionId, _ ->
 			return@setOnEditorActionListener when(actionId) {
 				EditorInfo.IME_ACTION_SEND -> {

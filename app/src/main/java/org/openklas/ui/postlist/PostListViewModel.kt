@@ -22,10 +22,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.base.SubjectViewModelDelegate
@@ -48,13 +47,23 @@ class PostListViewModel @Inject constructor(
 	private val _isInitialLoading = MutableLiveData(true)
 	val isInitialLoading: LiveData<Boolean> = _isInitialLoading
 
+	private var pagingSource: PostListSource? = null
+
 	val posts = Transformations.switchMap(currentSubject) {
-		LivePagedListBuilder(object : DataSource.Factory<Int, Board.Entry>() {
-			override fun create(): DataSource<Int, Board.Entry> =
-				PostListSource(klasRepository, viewModelScope, _isInitialLoading, buildQuery(), { _error.value = it }) {
-					pageInfo.postValue(it)
-				}
-		}, PagedList.Config.Builder().setPageSize(15).build()).build()
+		Pager(
+			config = PagingConfig(
+				pageSize = 15
+			)
+		) {
+			pagingSource = PostListSource(
+				klasRepository = klasRepository,
+				query = buildQuery(),
+				errorHandler = { _error.value = it },
+				pageInfoCallback = { pageInfo.postValue(it) }
+			)
+
+			pagingSource!!
+		}.liveData
 	}
 
 	private val _error = MutableLiveData<Throwable>()
@@ -73,17 +82,17 @@ class PostListViewModel @Inject constructor(
 		if(postType != type) {
 			postType = type
 
-			posts.value?.dataSource?.invalidate()
+			pagingSource?.invalidate()
 		}
 	}
 
 	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
 		filter = Filter(criteria, keyword)
 
-		posts.value?.dataSource?.invalidate()
+		pagingSource?.invalidate()
 	}
 
-	fun buildQuery(): PostListQuery? {
+	private fun buildQuery(): PostListQuery? {
 		return if(hasQuery())
 			PostListQuery(
 				currentSemester.value!!,

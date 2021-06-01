@@ -21,8 +21,8 @@ buildscript {
     ext {
         kotlin_version = '1.4.32'
         nav_version = '2.3.5'
-        dagger_version = '2.35.1'
-        hilt_version = '2.35.1'
+        dagger_version = '2.36'
+        hilt_version = '2.36'
         paging_version = '3.0.0'
         coroutine_version = '1.4.3'
         compose_version = '1.0.0-beta07'
@@ -34,7 +34,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-beta02'
+        classpath 'com.android.tools.build:gradle:7.0.0-beta03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"

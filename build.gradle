@@ -19,13 +19,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.4.32'
+        kotlin_version = '1.5.10'
         nav_version = '2.3.5'
-        dagger_version = '2.36'
-        hilt_version = '2.36'
+        dagger_version = '2.37'
+        hilt_version = '2.37'
         paging_version = '3.0.0'
         coroutine_version = '1.4.3'
-        compose_version = '1.0.0-beta07'
+        compose_version = '1.0.0-beta09'
     }
 
     repositories {
@@ -34,13 +34,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-beta03'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha02'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         classpath 'com.google.gms:google-services:4.3.8'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.6.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 import org.openklas.klas.error.KlasSessionInvalidError
 import org.openklas.repository.SessionRepository
 import org.openklas.utils.Event
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 class DefaultSessionViewModelDelegate @Inject constructor(
@@ -38,10 +38,10 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 	//private val _mustAuthenticate = MutableLiveData<Event<Unit>>()
 	override val mustAuthenticate = MutableLiveData<Event<Unit>>()
 
-	override suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T> = withContext(Dispatchers.IO) {
+	override suspend fun <T> requestWithSession(f: suspend () -> Resource<T>): Resource<T> = withContext(Dispatchers.IO) {
 		try {
 			val result = f()
-			if(result is Result.Error) {
+			if(result is Resource.Error) {
 				val error = result.error
 
 				Log.e(TAG, "requestWithSession", error)
@@ -52,7 +52,7 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 						f()
 					}else{
 						mustAuthenticate.postValue(Event(Unit))
-						Result.Error(KlasSessionInvalidError())
+						Resource.Error(KlasSessionInvalidError())
 					}
 				}
 
@@ -62,7 +62,7 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 			result
 		}catch(e: Throwable) {
 			Log.e(TAG, "requestWithSession", e)
-			Result.Error(e)
+			Resource.Error(e)
 		}
 	}
 }

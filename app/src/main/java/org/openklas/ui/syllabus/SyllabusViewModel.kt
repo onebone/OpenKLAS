@@ -34,7 +34,7 @@ import org.openklas.repository.KlasRepository
 import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import org.openklas.ui.syllabus.page.summary.TutorEntry
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -91,8 +91,8 @@ class SyllabusViewModel @Inject constructor(
 
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
-			is Result.Success -> _teachingAssistants.postValue(result.value)
-			is Result.Error -> _error.postValue(result.error)
+			is Resource.Success -> _teachingAssistants.postValue(result.value)
+			is Resource.Error -> _error.postValue(result.error)
 		}
 	}
 
@@ -116,8 +116,8 @@ class SyllabusViewModel @Inject constructor(
 
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
-				is Result.Success -> _syllabus.postValue(result.value)
-				is Result.Error -> _error.postValue(result.error)
+				is Resource.Success -> _syllabus.postValue(result.value)
+				is Resource.Error -> _error.postValue(result.error)
 			}
 		}
 	}
@@ -129,8 +129,8 @@ class SyllabusViewModel @Inject constructor(
 
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
-			is Result.Success -> _schedules.postValue(result.value)
-			is Result.Error -> _error.postValue(result.error)
+			is Resource.Success -> _schedules.postValue(result.value)
+			is Resource.Error -> _error.postValue(result.error)
 		}
 	}
 
@@ -141,8 +141,8 @@ class SyllabusViewModel @Inject constructor(
 
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
-			is Result.Success -> _studentsNumber.postValue(result.value)
-			is Result.Error -> _error.postValue(result.error)
+			is Resource.Success -> _studentsNumber.postValue(result.value)
+			is Resource.Error -> _error.postValue(result.error)
 		}
 	}
 }

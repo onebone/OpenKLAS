@@ -25,7 +25,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import org.openklas.klas.model.Semester
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 class DefaultSemesterViewModelDelegate @Inject constructor(
@@ -44,7 +44,7 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	override val semesters = liveData {
 		val result = requestWithSession { klasRepository.getSemesters() }
 
-		if(result is Result.Success) {
+		if(result is Resource.Success) {
 			emit(result.value)
 		}
 		// TODO forward error

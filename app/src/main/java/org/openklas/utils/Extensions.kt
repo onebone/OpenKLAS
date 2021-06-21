@@ -22,12 +22,12 @@ import org.openklas.klas.error.KlasNoDataError
 import org.openklas.klas.error.KlasSessionInvalidError
 import retrofit2.Response
 
-fun <T> Response<T>.validateSession(): Result<T> {
+fun <T> Response<T>.validateSession(): Resource<T> {
 	if(raw().isRedirect) {
-		return Result.Error(KlasSessionInvalidError())
+		return Resource.Error(KlasSessionInvalidError())
 	}
 
-	val body = body() ?: return Result.Error(KlasNoDataError())
+	val body = body() ?: return Resource.Error(KlasNoDataError())
 
-	return Result.Success(body)
+	return Resource.Success(body)
 }

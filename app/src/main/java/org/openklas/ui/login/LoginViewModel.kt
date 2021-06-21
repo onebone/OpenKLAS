@@ -27,7 +27,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.openklas.repository.KlasRepository
 import org.openklas.repository.SessionRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +62,7 @@ class LoginViewModel @Inject constructor(
 
 		viewModelScope.launch {
 			val result = klasRepository.performLogin(userId, password, rememberMe.get())
-			_result.value = (result as? Result.Error)?.error
+			_result.value = (result as? Resource.Error)?.error
 		}
 	}
 

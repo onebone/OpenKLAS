@@ -48,7 +48,7 @@ import org.openklas.klas.request.RequestSyllabus
 import org.openklas.klas.request.RequestSyllabusSummary
 import org.openklas.klas.request.RequestTeachingAssistant
 import org.openklas.klas.service.KlasService
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import org.openklas.utils.validateSession
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -63,12 +63,12 @@ class DefaultKlasClient @Inject constructor(
 	override suspend fun testSession(): Boolean {
 		val result = service.testSession()
 		return when(result.validateSession()) {
-			is Result.Success -> true
-			is Result.Error -> false
+			is Resource.Success -> true
+			is Resource.Error -> false
 		}
 	}
 
-	override suspend fun login(username: String, password: String): Result<String> {
+	override suspend fun login(username: String, password: String): Resource<String> {
 		val security = service.loginSecurity()
 
 		val keyFactory = KeyFactory.getInstance("RSA")
@@ -89,98 +89,98 @@ class DefaultKlasClient @Inject constructor(
 			"redirectUrl" to "",
 			"redirectTabUrl" to ""
 		)).validateSession()) {
-			is Result.Success -> {
+			is Resource.Success -> {
 				val value = result.value
 
 				if(value.errorCount > 0)
-					Result.Error(KlasSigninFailError("failed login attempt"))
+					Resource.Error(KlasSigninFailError("failed login attempt"))
 				else
-					Result.Success(value.response.userId)
+					Resource.Success(value.response.userId)
 			}
-			is Result.Error -> Result.Error(result.error)
+			is Resource.Error -> Resource.Error(result.error)
 		}
 	}
 
-	override suspend fun getHome(semester: String): Result<Home> {
+	override suspend fun getHome(semester: String): Resource<Home> {
 		return service.home(RequestHome(semester)).validateSession()
 	}
 
-	override suspend fun getSemesters(): Result<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<Array<Semester>> {
 		return service.semesters().validateSession()
 	}
 
-	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return service.notices(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		)).validateSession()
 	}
 
-	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return service.notice(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return service.materials(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		)).validateSession()
 	}
 
-	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return service.material(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
-	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return service.qnas(RequestPostList(
 			page = page, subject = subjectId, semester = semester, searchCriteria = criteria, keyword = keyword
 		)).validateSession()
 	}
 
-	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return service.qna(RequestPostContent(semester = semester, subject = subjectId, boardNo = boardNo, masterNo = masterNo)).validateSession()
 	}
 
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Result<Array<Attachment>> {
+	): Resource<Array<Attachment>> {
 		return service.attachments(RequestAttachments(storageId = storageId, attachmentId = attachmentId))
 			.validateSession()
 	}
 
-	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
 			year = year, term = term, keyword = keyword, professor = professor)).validateSession()
 	}
 
-	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Resource<Syllabus> {
 		return service.syllabus(RequestSyllabus(
 			subjectId = subjectId
 		)).validateSession()
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
 		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).validateSession()
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
 		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).validateSession()
 	}
 
-	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Resource<Int> {
 		val number = Random.nextInt(1000, 10000)
 
 		return when(val result = service.lectureStudentsNumber(RequestLectureStudents(
 			subjectId = subjectId, randomNum = number, numText = number
 		)).validateSession()) {
-			is Result.Success -> Result.Success(result.value.students)
-			is Result.Error -> Result.Error(result.error)
+			is Resource.Success -> Resource.Success(result.value.students)
+			is Resource.Error -> Resource.Error(result.error)
 		}
 	}
 
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Result<Array<AssignmentEntry>> {
+	): Resource<Array<AssignmentEntry>> {
 		return service.assignments(RequestAssignments(semester = semester, subjectId = subjectId)).validateSession()
 	}
 
@@ -188,17 +188,17 @@ class DefaultKlasClient @Inject constructor(
 		semester: String,
 		subjectId: String,
 		order: Int
-	): Result<Assignment> {
+	): Resource<Assignment> {
 		return service.assignment(RequestAssignment(semester = semester, subjectId = subjectId, order = order)).validateSession()
 	}
 
-	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>> {
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
 		)).validateSession()
 	}
 
-	override suspend fun getGrades(): Result<List<SemesterGrade>> {
+	override suspend fun getGrades(): Resource<List<SemesterGrade>> {
 		return service.grades().validateSession()
 	}
 }

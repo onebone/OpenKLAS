@@ -30,7 +30,7 @@ import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.PairCombinedLiveData
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,8 +70,8 @@ class AssignmentListViewModel @Inject constructor(
 			_isLoading.postValue(false)
 
 			when(result) {
-				is Result.Success -> _assignments.postValue(result.value)
-				is Result.Error -> _error.postValue(result.error)
+				is Resource.Success -> _assignments.postValue(result.value)
+				is Resource.Error -> _error.postValue(result.error)
 			}
 		}
 	}

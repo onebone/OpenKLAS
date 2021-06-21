@@ -36,7 +36,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -135,8 +135,8 @@ class HomeViewModel @Inject constructor(
 			}
 
 			when (result) {
-				is Result.Success -> home.postValue(result.value)
-				is Result.Error -> _error.postValue(result.error)
+				is Resource.Success -> home.postValue(result.value)
+				is Resource.Error -> _error.postValue(result.error)
 			}
 
 			_isHomeFetched.postValue(true)
@@ -155,11 +155,11 @@ class HomeViewModel @Inject constructor(
 								klasRepository.getOnlineContentList(currentSemester.id, subject.id)
 							}
 
-							if(result is Result.Error) {
+							if(result is Resource.Error) {
 								throw result.error
 							}
 
-							(result as Result.Success).value.map {
+							(result as Resource.Success).value.map {
 								Pair(subject, it)
 							}
 						}

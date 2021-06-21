@@ -32,7 +32,7 @@ import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,8 +67,8 @@ class PostViewModel @Inject constructor(
 				}
 
 				when(result) {
-					is Result.Success -> postValue(result.value)
-					is Result.Error -> _error.postValue(result.error)
+					is Resource.Success -> postValue(result.value)
+					is Resource.Error -> _error.postValue(result.error)
 				}
 			}
 		}
@@ -89,8 +89,8 @@ class PostViewModel @Inject constructor(
 
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
-				is Result.Success -> postComposite.postValue(result.value)
-				is Result.Error -> _error.postValue(result.error)
+				is Resource.Success -> postComposite.postValue(result.value)
+				is Resource.Error -> _error.postValue(result.error)
 			}
 		}
 	}

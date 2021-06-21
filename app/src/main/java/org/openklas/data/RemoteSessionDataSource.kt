@@ -19,7 +19,7 @@
 package org.openklas.data
 
 import org.openklas.klas.KlasClient
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 class RemoteSessionDataSource @Inject constructor(
@@ -29,10 +29,10 @@ class RemoteSessionDataSource @Inject constructor(
 		return klas.testSession()
 	}
 
-	override suspend fun tryLogin(username: String, password: String): Result<Unit> {
+	override suspend fun tryLogin(username: String, password: String): Resource<Unit> {
 		return when(val result = klas.login(username, password)) {
-			is Result.Success -> Result.Success(Unit)
-			is Result.Error -> Result.Error(result.error)
+			is Resource.Success -> Resource.Success(Unit)
+			is Resource.Error -> Resource.Error(result.error)
 		}
 	}
 }

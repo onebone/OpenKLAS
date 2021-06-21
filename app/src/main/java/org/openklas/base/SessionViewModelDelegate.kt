@@ -20,7 +20,7 @@ package org.openklas.base
 
 import androidx.lifecycle.LiveData
 import org.openklas.utils.Event
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 
 interface SessionViewModelDelegate {
 	val mustAuthenticate: LiveData<Event<Unit>>
@@ -35,5 +35,5 @@ interface SessionViewModelDelegate {
 	 * @return The result of the request.
 	 */
 
-	suspend fun <T> requestWithSession(f: suspend () -> Result<T>): Result<T>
+	suspend fun <T> requestWithSession(f: suspend () -> Resource<T>): Resource<T>
 }

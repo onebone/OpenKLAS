@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,8 +58,8 @@ class SylSearchViewModel @Inject constructor(
 
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
-				is Result.Success -> _syllabusList.postValue(result.value)
-				is Result.Error -> _error.postValue(result.error)
+				is Resource.Success -> _syllabusList.postValue(result.value)
+				is Resource.Error -> _error.postValue(result.error)
 			}
 		}
 	}

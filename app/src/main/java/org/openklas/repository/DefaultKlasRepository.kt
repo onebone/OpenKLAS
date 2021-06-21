@@ -34,18 +34,18 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 class DefaultKlasRepository @Inject constructor(
 	private val klasDataSource: KlasDataSource,
 	private val credentialDataSource: CredentialDataSource
 ): KlasRepository {
-	override suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Result<String> {
+	override suspend fun performLogin(username: String, password: String, rememberMe: Boolean): Resource<String> {
 		val result = klasDataSource.performLogin(username, password)
 
 		if(rememberMe) {
-			if(result is Result.Success) {
+			if(result is Resource.Success) {
 				credentialDataSource.userID = username
 				credentialDataSource.password = password
 			}
@@ -54,69 +54,69 @@ class DefaultKlasRepository @Inject constructor(
 		return result
 	}
 
-	override suspend fun getHome(semester: String): Result<Home> {
+	override suspend fun getHome(semester: String): Resource<Home> {
 		return klasDataSource.getHome(semester)
 	}
 
-	override suspend fun getSemesters(): Result<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<Array<Semester>> {
 		return klasDataSource.getSemesters()
 	}
 
-	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return klasDataSource.getNotices(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return klasDataSource.getNotice(semester, subjectId, boardNo, masterNo)
 	}
 
-	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return klasDataSource.getQnas(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return klasDataSource.getQna(semester, subjectId, boardNo, masterNo)
 	}
 
-	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		return klasDataSource.getLectureMaterials(semester, subjectId, page, criteria, keyword)
 	}
 
-	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
 		return klasDataSource.getLectureMaterial(semester, subjectId, boardNo, masterNo)
 	}
 
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Result<Array<Attachment>> {
+	): Resource<Array<Attachment>> {
 		return klasDataSource.getAttachments(storageId, attachmentId)
 	}
 
-	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>> {
 		return klasDataSource.getSyllabusList(year, term, keyword, professor)
 	}
 
-	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Resource<Syllabus> {
 		return klasDataSource.getSyllabus(subjectId)
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
 		return klasDataSource.getTeachingAssistants(subjectId)
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
 		return klasDataSource.getLectureSchedules(subjectId)
 	}
 
-	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Resource<Int> {
 		return klasDataSource.getLectureStudentsNumber(subjectId)
 	}
 
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Result<Array<AssignmentEntry>> {
+	): Resource<Array<AssignmentEntry>> {
 		return klasDataSource.getAssignments(semester, subjectId)
 	}
 
@@ -124,15 +124,15 @@ class DefaultKlasRepository @Inject constructor(
 		semester: String,
 		subjectId: String,
 		order: Int
-	): Result<Assignment> {
+	): Resource<Assignment> {
 		return klasDataSource.getAssignment(semester, subjectId, order)
 	}
 
-	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>> {
 		return klasDataSource.getOnlineContentList(semester, subjectId)
 	}
 
-	override suspend fun getGrades(): Result<List<SemesterGrade>> {
+	override suspend fun getGrades(): Resource<List<SemesterGrade>> {
 		return klasDataSource.getGrades()
 	}
 }

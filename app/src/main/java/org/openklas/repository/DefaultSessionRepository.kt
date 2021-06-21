@@ -20,7 +20,7 @@ package org.openklas.repository
 
 import org.openklas.data.AccountDataSource
 import org.openklas.data.SessionDataSource
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import javax.inject.Inject
 
 class DefaultSessionRepository @Inject constructor(
@@ -34,7 +34,7 @@ class DefaultSessionRepository @Inject constructor(
 	override suspend fun tryLogin(): Boolean {
 		val account = accountDataSource.getAccount() ?: return false
 
-		return sessionDataSource.tryLogin(account.username, account.password) is Result.Success
+		return sessionDataSource.tryLogin(account.username, account.password) is Resource.Success
 	}
 
 	override fun getSavedCredential(): Credential? {

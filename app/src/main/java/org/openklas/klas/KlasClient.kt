@@ -32,46 +32,46 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
 import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 
 interface KlasClient {
 	suspend fun testSession(): Boolean
 
-	suspend fun login(username: String, password: String): Result<String>
+	suspend fun login(username: String, password: String): Resource<String>
 
-	suspend fun getHome(semester: String): Result<Home>
+	suspend fun getHome(semester: String): Resource<Home>
 
-	suspend fun getSemesters(): Result<Array<Semester>>
+	suspend fun getSemesters(): Resource<Array<Semester>>
 
-	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 
-	suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
 
-	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 
-	suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
 
-	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board>
+	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 
-	suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite>
+	suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
 
-	suspend fun getAttachments(storageId: String, attachmentId: String): Result<Array<Attachment>>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Resource<Array<Attachment>>
 
-	suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Result<Array<SyllabusSummary>>
+	suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>>
 
-	suspend fun getSyllabus(subjectId: String): Result<Syllabus>
+	suspend fun getSyllabus(subjectId: String): Resource<Syllabus>
 
-	suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>>
+	suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>>
 
-	suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>>
+	suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>>
 
-	suspend fun getLectureStudentsNumber(subjectId: String): Result<Int>
+	suspend fun getLectureStudentsNumber(subjectId: String): Resource<Int>
 
-	suspend fun getAssignments(semester: String, subjectId: String): Result<Array<AssignmentEntry>>
+	suspend fun getAssignments(semester: String, subjectId: String): Resource<Array<AssignmentEntry>>
 
-	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Result<Assignment>
+	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Resource<Assignment>
 
-	suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>>
+	suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>>
 
-	suspend fun getGrades(): Result<List<SemesterGrade>>
+	suspend fun getGrades(): Resource<List<SemesterGrade>>
 }

@@ -49,7 +49,7 @@ import org.openklas.klas.model.Tutor
 import org.openklas.klas.model.VL
 import org.openklas.klas.model.Week
 import org.openklas.klas.request.BoardSearchCriteria
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -62,16 +62,16 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		return true
 	}
 
-	override suspend fun login(username: String, password: String): Result<String> {
-		return Result.Success(USER_ID)
+	override suspend fun login(username: String, password: String): Resource<String> {
+		return Resource.Success(USER_ID)
 	}
 
-	override suspend fun getHome(semester: String): Result<Home> {
+	override suspend fun getHome(semester: String): Resource<Home> {
 		delay(NETWORK_DELAY)
 
 		val printSeqs = (1..11).toMutableList()
 		//var index = 0
-		return Result.Success(
+		return Resource.Success(
 			Home(
 				subjects = SUBJECTS,
 				professor = Professor("010-1234-5678", "", "", "", null),
@@ -98,13 +98,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override suspend fun getSemesters(): Result<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<Array<Semester>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(SEMESTERS)
+		return Resource.Success(SEMESTERS)
 	}
 
-	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		delay(NETWORK_DELAY)
 
 		val entries = NOTICES.entries.find { it.key == subjectId }?.value?.map {
@@ -117,14 +117,14 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		val pages = entries.chunked(15)
 		val entriesInPage = if(page <= pages.lastIndex) pages[page] else listOf()
 
-		return Result.Success(Board(
+		return Resource.Success(Board(
 			entriesInPage.toTypedArray(),
 			Board.PageInfo(page,15, entries.size, ceil(entries.size / 15f).roundToInt())
 		))
 	}
 
-	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return Result.Error(NotImplementedError())
+	override suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
+		return Resource.Error(NotImplementedError())
 	}
 
 	override suspend fun getLectureMaterials(
@@ -133,35 +133,35 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		page: Int,
 		criteria: BoardSearchCriteria,
 		keyword: String?
-	): Result<Board> {
+	): Resource<Board> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(
+		return Resource.Success(
 			Board(arrayOf(), Board.PageInfo(1, 0, 0, 1))
 		)
 	}
 
-	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return Result.Error(NotImplementedError())
+	override suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
+		return Resource.Error(NotImplementedError())
 	}
 
-	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Result<Board> {
+	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
+		return Resource.Success(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
 	}
 
-	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Result<PostComposite> {
-		return Result.Error(NotImplementedError())
+	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
+		return Resource.Error(NotImplementedError())
 	}
 
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Result<Array<Attachment>> {
+	): Resource<Array<Attachment>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(arrayOf())
+		return Resource.Success(arrayOf())
 	}
 
 	override suspend fun getSyllabusList(
@@ -169,11 +169,11 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		term: Int,
 		keyword: String,
 		professor: String
-	): Result<Array<SyllabusSummary>> {
+	): Resource<Array<SyllabusSummary>> {
 		delay(NETWORK_DELAY)
 
 		val syllabuses = SYLLABUS.values.filter { it.subjectName.contains(keyword) }
-		return Result.Success(
+		return Resource.Success(
 			syllabuses.map {
 				SyllabusSummary(it.division, it.course, it.subjectName, term, year, it.tutor.name, it.targetGrade,
 				it.openGwamokNo, it.departmentCode, it.credits, it.lessonHours, it.summary, it.tutor.telephoneContact, it.introductionVideoUrl)
@@ -181,66 +181,66 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override suspend fun getSyllabus(subjectId: String): Result<Syllabus> {
+	override suspend fun getSyllabus(subjectId: String): Resource<Syllabus> {
 		delay(NETWORK_DELAY)
 
 		val syllabus = SYLLABUS[subjectId]
-		return if(syllabus == null) Result.Error(KlasNoDataError())
-			else Result.Success(syllabus)
+		return if(syllabus == null) Resource.Error(KlasNoDataError())
+			else Resource.Success(syllabus)
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Result<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(
+		return Resource.Success(
 			TEACHING_ASSISTANTS[subjectId] ?: emptyArray()
 		)
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Result<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(
+		return Resource.Success(
 			LECTURE_SCHEDULES[subjectId] ?: arrayOf()
 		)
 	}
 
-	override suspend fun getLectureStudentsNumber(subjectId: String): Result<Int> {
+	override suspend fun getLectureStudentsNumber(subjectId: String): Resource<Int> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(5)
+		return Resource.Success(5)
 	}
 
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Result<Array<AssignmentEntry>> {
+	): Resource<Array<AssignmentEntry>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(arrayOf())
+		return Resource.Success(arrayOf())
 	}
 
 	override suspend fun getAssignment(
 		semester: String,
 		subjectId: String,
 		order: Int
-	): Result<Assignment> {
+	): Resource<Assignment> {
 		delay(NETWORK_DELAY)
 
-		return Result.Error(NotImplementedError())
+		return Resource.Error(NotImplementedError())
 	}
 
 	override suspend fun getOnlineContentList(
 		semester: String,
 		subjectId: String
-	): Result<Array<OnlineContentEntry>> {
+	): Resource<Array<OnlineContentEntry>> {
 		delay(NETWORK_DELAY)
 
-		return Result.Success(ONLINE_CONTENTS[subjectId] ?: arrayOf())
+		return Resource.Success(ONLINE_CONTENTS[subjectId] ?: arrayOf())
 	}
 
-	override suspend fun getGrades(): Result<List<SemesterGrade>> {
-		return Result.Success(listOf())
+	override suspend fun getGrades(): Resource<List<SemesterGrade>> {
+		return Resource.Success(listOf())
 	}
 
 	private companion object {

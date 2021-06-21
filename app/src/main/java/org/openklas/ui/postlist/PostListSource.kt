@@ -23,7 +23,7 @@ import androidx.paging.PagingState
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
-import org.openklas.utils.Result
+import org.openklas.utils.Resource
 
 class PostListSource(
 	private val klasRepository: KlasRepository,
@@ -45,11 +45,11 @@ class PostListSource(
 		val result = request(query, key)
 
 		return when(result) {
-			is Result.Error -> {
+			is Resource.Error -> {
 				errorHandler(result.error)
 				LoadResult.Error(result.error)
 			}
-			is Result.Success -> {
+			is Resource.Success -> {
 				val page = result.value.pageInfo
 				pageInfoCallback(page)
 
@@ -64,7 +64,7 @@ class PostListSource(
 		}
 	}
 
-	private suspend fun request(query: PostListQuery, page: Int): Result<Board> {
+	private suspend fun request(query: PostListQuery, page: Int): Resource<Board> {
 		return when(query.type) {
 			PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
 			PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)

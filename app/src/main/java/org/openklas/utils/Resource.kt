@@ -18,12 +18,12 @@
 
 package org.openklas.utils
 
-sealed class Result<T> {
+sealed class Resource<T> {
 	data class Success<T>(
 		val value: T
-	): Result<T>()
+	): Resource<T>()
 
 	data class Error<T>(
 		val error: Throwable
-	): Result<T>()
+	): Resource<T>()
 }

@@ -28,6 +28,7 @@ import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
@@ -118,5 +119,9 @@ class RemoteKlasDataSource @Inject constructor(
 
 	override suspend fun getOnlineContentList(semester: String, subjectId: String): Result<Array<OnlineContentEntry>> {
 		return klas.getOnlineContentList(semester, subjectId)
+	}
+
+	override suspend fun getGrades(): Result<List<SemesterGrade>> {
+		return klas.getGrades()
 	}
 }

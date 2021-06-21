@@ -30,6 +30,7 @@ import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
@@ -195,5 +196,9 @@ class DefaultKlasClient @Inject constructor(
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
 		)).validateSession()
+	}
+
+	override suspend fun getGrades(): Result<List<SemesterGrade>> {
+		return service.grades().validateSession()
 	}
 }

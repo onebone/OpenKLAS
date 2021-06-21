@@ -47,6 +47,8 @@ object KlasUri {
 
 	const val STD_ONLINE_CONTENT_LIST = "$ROOT_URI/std/lis/evltn/SelectOnlineCntntsStdList.do"
 
+	const val STD_GRADES = "$ROOT_URI/std/cps/inqire/AtnlcScreSungjukInfo.do"
+
 	// actually this url seems to be used somewhere else but it gives the minimum data
 	// which makes it appropriate for testing session!
 	const val STD_TEST_SESSION = "$ROOT_URI/std/cps/atnlc/AcGrApplyStdList.do"

@@ -28,6 +28,7 @@ import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
@@ -110,4 +111,7 @@ interface KlasService {
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
 	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>
+
+	@POST(KlasUri.STD_GRADES)
+	suspend fun grades(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<List<SemesterGrade>>
 }

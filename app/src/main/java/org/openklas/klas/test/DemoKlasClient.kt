@@ -39,6 +39,7 @@ import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Professor
 import org.openklas.klas.model.ScoreWeights
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Subject
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
@@ -236,6 +237,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		delay(NETWORK_DELAY)
 
 		return Result.Success(ONLINE_CONTENTS[subjectId] ?: arrayOf())
+	}
+
+	override suspend fun getGrades(): Result<List<SemesterGrade>> {
+		return Result.Success(listOf())
 	}
 
 	private companion object {

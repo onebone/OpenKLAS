@@ -27,6 +27,7 @@ import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Semester
+import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.klas.model.TeachingAssistant
@@ -64,4 +65,6 @@ interface KlasRepository {
 		semester: String,
 		subjectId: String
 	): Result<Array<OnlineContentEntry>>
+
+	suspend fun getGrades(): Result<List<SemesterGrade>>
 }

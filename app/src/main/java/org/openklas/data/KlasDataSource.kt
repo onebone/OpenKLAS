@@ -22,10 +22,12 @@ import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.AssignmentEntry
 import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
+import org.openklas.klas.model.CreditStatus
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
+import org.openklas.klas.model.SchoolRegister
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
@@ -54,4 +56,6 @@ interface KlasDataSource {
 	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Resource<Assignment>
 	suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>>
 	suspend fun getGrades(): Resource<List<SemesterGrade>>
+	suspend fun getCreditStatus(): Resource<CreditStatus>
+	suspend fun getSchoolRegister(): Resource<SchoolRegister>
 }

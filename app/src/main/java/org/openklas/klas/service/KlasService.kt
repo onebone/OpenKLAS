@@ -24,9 +24,11 @@ import org.openklas.klas.model.Attachment
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.Home
 import org.openklas.klas.model.AssignmentEntry
+import org.openklas.klas.model.CreditStatus
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
+import org.openklas.klas.model.SchoolRegister
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SemesterGrade
 import org.openklas.klas.model.Syllabus
@@ -114,4 +116,10 @@ interface KlasService {
 
 	@POST(KlasUri.STD_GRADES)
 	suspend fun grades(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<List<SemesterGrade>>
+
+	@POST(KlasUri.STD_CREDIT_STATUS)
+	suspend fun creditStatus(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<CreditStatus>
+
+	@POST(KlasUri.STD_SCHOOL_REGISTER)
+	suspend fun schoolRegister(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<SchoolRegister>
 }

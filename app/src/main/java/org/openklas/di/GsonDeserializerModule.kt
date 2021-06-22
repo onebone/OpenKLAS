@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import org.openklas.klas.deserializer.CreditStatusDeserializer
 import org.openklas.klas.deserializer.DateDeserializer
 import org.openklas.klas.deserializer.LectureScheduleDeserializer
 import org.openklas.klas.deserializer.OnlineContentEntryDeserializer
@@ -67,5 +68,12 @@ class GsonDeserializerModule {
 	@Singleton
 	fun provideLectureScheduleDeserializer(): TypeResolvableJsonDeserializer<*> {
 		return LectureScheduleDeserializer()
+	}
+
+	@Provides
+	@IntoSet
+	@Singleton
+	fun provideCreditStatusDeserializer(): TypeResolvableJsonDeserializer<*> {
+		return CreditStatusDeserializer()
 	}
 }

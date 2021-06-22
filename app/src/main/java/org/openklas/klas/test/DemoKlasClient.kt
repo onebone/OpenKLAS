@@ -28,6 +28,7 @@ import org.openklas.klas.model.Board
 import org.openklas.klas.model.Book
 import org.openklas.klas.model.BriefNotice
 import org.openklas.klas.model.BriefSubject
+import org.openklas.klas.model.CreditStatus
 import org.openklas.klas.model.Credits
 import org.openklas.klas.model.Expectation
 import org.openklas.klas.model.Home
@@ -37,6 +38,7 @@ import org.openklas.klas.model.LectureType
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.PostComposite
 import org.openklas.klas.model.Professor
+import org.openklas.klas.model.SchoolRegister
 import org.openklas.klas.model.ScoreWeights
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.SemesterGrade
@@ -241,6 +243,14 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 	override suspend fun getGrades(): Resource<List<SemesterGrade>> {
 		return Resource.Success(listOf())
+	}
+
+	override suspend fun getCreditStatus(): Resource<CreditStatus> {
+		return Resource.Error(NotImplementedError())
+	}
+
+	override suspend fun getSchoolRegister(): Resource<SchoolRegister> {
+		return Resource.Error(NotImplementedError())
 	}
 
 	private companion object {

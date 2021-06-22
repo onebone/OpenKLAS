@@ -65,6 +65,9 @@
 	<string name="common_department">학과</string>
 	<string name="common_student_id">학번</string>
 	<string name="common_name">이름</string>
+	<string name="common_major">전공</string>
+	<string name="common_elective">교양</string>
+	<string name="common_others">기타</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
@@ -166,4 +169,8 @@
 	<string name="assignment_due_not_23_59">마감이 %d시 %d분이에요. 23시 59분에 제출하지 않도록 주의해주세요!</string>
 
 	<string name="grades">성적 조회</string>
+	<string name="grades_credit_status">학점 현황</string>
+	<string name="grades_applied">신청</string>
+	<string name="grades_deleted">삭제</string>
+	<string name="grades_acquired">취득</string>
 </resources>

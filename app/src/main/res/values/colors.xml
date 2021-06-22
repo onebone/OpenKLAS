@@ -94,4 +94,8 @@
 	<color name="assignment_due_in_period">@color/black</color>
 	<color name="assignment_due_not_in_period">@color/gray</color>
 	<color name="assignment_due_current">@color/copper</color>
+
+	<color name="grades_applied">@color/green</color>
+	<color name="grades_deleted">@color/red</color>
+	<color name="grades_acquired">@color/text</color>
 </resources>

@@ -53,9 +53,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import me.onebone.toolbar.AppBarContainer
-import me.onebone.toolbar.CollapsingToolbar
+import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import me.onebone.toolbar.rememberCollapsingToolbarState
 import org.openklas.R
 import org.openklas.klas.model.AssignmentEntry
@@ -118,25 +118,21 @@ fun AssignmentListMainLayout(
 
 			val collapsingToolbarState = rememberCollapsingToolbarState()
 
-			AppBarContainer(
-				modifier = Modifier
-					.fillMaxWidth(),
+			val state = rememberCollapsingToolbarScaffoldState()
+			CollapsingToolbarScaffold(
+				modifier = Modifier.fillMaxWidth(),
+				state = state,
 				scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
-				collapsingToolbarState = collapsingToolbarState
-			) {
-				CollapsingToolbar(
-					modifier = Modifier
-						.bottomShadow(
-							// show shadow only when scrolled
-							if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
-								0.dp
-							else
-								8.dp,
-							colorResource(R.color.shadow_start),
-							colorResource(R.color.shadow_end)
-						),
-					collapsingToolbarState = collapsingToolbarState
-				) {
+				toolbarModifier = Modifier.bottomShadow(
+					// show shadow only when scrolled
+					if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
+						0.dp
+					else
+						8.dp,
+					colorResource(R.color.shadow_start),
+					colorResource(R.color.shadow_end)
+				),
+				toolbar = {
 					Row(
 						modifier = Modifier
 							.road(Alignment.CenterStart, Alignment.Center)
@@ -167,21 +163,20 @@ fun AssignmentListMainLayout(
 
 					Box(
 						modifier = Modifier
+							.fillMaxWidth()
 							.height(150.dp)
 					)
 				}
-
+			) {
 				if(isLoading) {
 					Box(modifier = Modifier
 						.fillMaxSize()
 						.wrapContentSize(Alignment.Center)
-						.appBarBody()
 					) {
 						CircularProgressIndicator()
 					}
 				}else{
 					MainFrame(
-						modifier = Modifier.appBarBody(),
 						assignments = assignments,
 						lazyListState = lazyListState,
 						onClickEntry = onClickEntry
@@ -202,7 +197,11 @@ fun MainFrame(
 	if(assignments == null) {
 		// TODO display shimmer effects on data load
 	}else{
-		LazyColumn(modifier = modifier.fillMaxSize(), state = lazyListState) {
+		LazyColumn(
+			modifier = modifier
+				.fillMaxSize(),
+			state = lazyListState
+		) {
 			items(assignments, key = { it.order }) {
 				AssignmentItem(it, onClickEntry)
 			}
@@ -217,7 +216,7 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 
 	Row(modifier = Modifier
 		.clickable { onClickEntry(entry) }
-		.alpha(if (timeAfterDue > 0) 0.5f else 1f)
+		.alpha(if(timeAfterDue > 0) 0.5f else 1f)
 		.padding(16.dp, 20.dp)
 	) {
 		AssignmentDdayIndicator(

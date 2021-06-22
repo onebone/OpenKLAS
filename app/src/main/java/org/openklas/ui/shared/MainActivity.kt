@@ -132,6 +132,9 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 				R.id.nav_assignment_list ->
 					HomeFragmentDirections.actionHomeAssignmentList(viewModel.currentSemester.value?.id, null)
 
+				R.id.nav_grades ->
+					HomeFragmentDirections.actionHomeGrades()
+
 				else ->
 					throw IllegalStateException("invalid drawer menu selected: ${item.itemId}")
 			})

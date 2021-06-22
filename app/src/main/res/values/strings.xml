@@ -173,4 +173,6 @@
 	<string name="grades_applied">신청</string>
 	<string name="grades_deleted">삭제</string>
 	<string name="grades_acquired">취득</string>
+	<string name="grades_major_gpa">전공 평점</string>
+	<string name="grades_overall_gpa">전체 평점</string>
 </resources>

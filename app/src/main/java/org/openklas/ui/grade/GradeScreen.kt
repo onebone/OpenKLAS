@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
@@ -35,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -43,16 +46,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import org.openklas.R
 import org.openklas.klas.model.CreditStatus
+import org.openklas.klas.model.Grade
 import org.openklas.klas.model.SchoolRegister
+import org.openklas.klas.model.SemesterGrade
+import org.openklas.ui.shared.compose.PieChart
+import org.openklas.ui.shared.compose.PieChartEntry
 import org.openklas.utils.ViewResource
+import org.openklas.utils.getGpa
 
 @Composable
-fun GradeScreen() {
-	val viewModel = viewModel<GradeViewModel>()
-
+fun GradeScreen(
+	viewModel: GradeViewModel
+) {
 	val grades by viewModel.grades.collectAsState(initial = ViewResource.Loading())
 	val creditStatus by viewModel.creditStatus.collectAsState(initial = ViewResource.Loading())
 	val schoolRegister by viewModel.schoolRegister.collectAsState(initial = ViewResource.Loading())
@@ -62,6 +69,7 @@ fun GradeScreen() {
 		Surface {
 			if(semester == null) {
 				GradeOverviewLayout(
+					grades = grades,
 					schoolRegister = schoolRegister,
 					creditStatus = creditStatus,
 					onSemesterClick = {
@@ -75,6 +83,7 @@ fun GradeScreen() {
 
 @Composable
 fun GradeOverviewLayout(
+	grades: ViewResource<List<SemesterGrade>>,
 	schoolRegister: ViewResource<SchoolRegister>,
 	creditStatus: ViewResource<CreditStatus>,
 	onSemesterClick: (String) -> Unit
@@ -86,8 +95,99 @@ fun GradeOverviewLayout(
 	) {
 		SchoolRegisterFrame(schoolRegister = schoolRegister)
 		CreditStatusFrame(creditStatus = creditStatus)
+		GpaFrame(grades = grades)
 	}
 }
+
+@Composable
+fun GpaFrame(grades: ViewResource<List<SemesterGrade>>) {
+	when(grades) {
+		is ViewResource.Success -> {
+			val flattenGrades = grades.value.filter {
+				it.semester == 1 || it.semester == 2
+			}.flatMap {
+				it.grades
+			}.filter {
+				it.grade.length >= 2 && !it.grade.startsWith("P") && !it.grade.startsWith("NP")
+			}
+
+			val majorGrades = flattenGrades.filter { it.course.first() == '전' }
+
+			val majorGpa = getGpa(majorGrades)
+			val overallGpa = getGpa(flattenGrades)
+
+			val majorGradesGroup = majorGrades.groupBy { it.grade.first() }
+			val overallGradesGroup = flattenGrades.groupBy { it.grade.first() }
+
+			Row(
+				modifier = Modifier.padding(16.dp),
+				horizontalArrangement = Arrangement.spacedBy(16.dp)
+			) {
+				GpaEntry(
+					text = stringResource(id = R.string.grades_major_gpa),
+					modifier = Modifier
+						.weight(1f)
+						.aspectRatio(1f),
+					gpa = majorGpa,
+					gradesGroup = majorGradesGroup
+				)
+
+				GpaEntry(
+					text = stringResource(id = R.string.grades_overall_gpa),
+					modifier = Modifier
+						.weight(1f)
+						.aspectRatio(1f),
+					gpa = overallGpa,
+					gradesGroup = overallGradesGroup
+				)
+			}
+		}
+		else -> {
+
+		}
+	}
+}
+
+@Composable
+fun GpaEntry(
+	modifier: Modifier,
+	text: String,
+	gpa: Float,
+	gradesGroup: Map<Char, List<Grade>>
+) {
+	Column(
+		modifier = modifier,
+		verticalArrangement = Arrangement.spacedBy(8.dp),
+		horizontalAlignment = Alignment.CenterHorizontally
+	) {
+		Text(
+			text = text,
+			fontWeight = FontWeight.Bold
+		)
+
+		PieChart(
+			text = gpa.toString(),
+			modifier = Modifier
+				.fillMaxWidth()
+				.fillMaxHeight(),
+			entries = gradesGroup
+				.mapPieChartEntry()
+		)
+	}
+}
+
+@Composable
+private fun Map<Char, List<Grade>>.mapPieChartEntry(): List<PieChartEntry> =
+	map {
+		PieChartEntry(it.key.toString(), it.value.count().toDouble(), colorResource(when(it.key) {
+			'A' -> R.color.grades_a
+			'B' -> R.color.grades_b
+			'C' -> R.color.grades_c
+			'D' -> R.color.grades_d
+			'F' -> R.color.grades_f
+			else -> R.color.black
+		}))
+	}
 
 @Composable
 fun CreditStatusFrame(creditStatus: ViewResource<CreditStatus>) {

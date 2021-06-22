@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -41,11 +42,14 @@ class GradeFragment: BaseFragment() {
 			AppbarView.SearchType.NONE
 		)
 
+		val viewModel by viewModels<GradeViewModel>()
+		prepareViewModel(viewModel)
+
 		return ComposeView(requireContext()).apply {
 			layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
 			setContent {
-				GradeScreen()
+				GradeScreen(viewModel)
 			}
 		}
 	}

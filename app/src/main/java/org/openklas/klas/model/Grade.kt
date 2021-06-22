@@ -42,6 +42,8 @@ data class Grade(
 	val department: String,
 	@SerializedName("hakjungNo")
 	val academicNumber: String,
+	@SerializedName("codeName1")
+	val course: String,
 	@SerializedName("hakjumNum")
 	val credits: Int,
 	@SerializedName("retakeOpt")

@@ -68,6 +68,9 @@
 	<string name="common_major">전공</string>
 	<string name="common_elective">교양</string>
 	<string name="common_others">기타</string>
+	<string name="common_term">학기</string>
+	<string name="common_credits">학점</string>
+	<string name="common_semester">%1$d년도 %2$d학기</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
@@ -175,4 +178,6 @@
 	<string name="grades_acquired">취득</string>
 	<string name="grades_major_gpa">전공 평점</string>
 	<string name="grades_overall_gpa">전체 평점</string>
+	<string name="grades_major_gpa_short">전공</string>
+	<string name="grades_overall_gpa_short">전체</string>
 </resources>

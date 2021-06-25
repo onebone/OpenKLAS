@@ -24,7 +24,7 @@ import org.openklas.klas.deserializer.YNBoolDeserializer
 
 data class SemesterGrade(
 	@SerializedName("hakgi")
-	val semester: Int,
+	val term: Int,
 	@SerializedName("thisYear")
 	val year: Int,
 	@SerializedName("hakgiOrder")

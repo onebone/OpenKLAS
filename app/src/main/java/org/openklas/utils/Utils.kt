@@ -186,7 +186,7 @@ fun getGpa(grades: List<Grade>): Float {
 
 	return if(credits > 0) {
 		(floor(gpaSubjects.sumOf {
-			it.credits * (gradeMap[it.grade] ?: 0.0)
+			it.credits * (gradeMap[it.grade.substring(0..1)] ?: 0.0)
 		} * 100 / credits) / 100).toFloat()
 	}else{
 		0f

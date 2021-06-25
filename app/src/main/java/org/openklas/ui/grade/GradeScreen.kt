@@ -19,6 +19,7 @@
 package org.openklas.ui.grade
 
 import androidx.annotation.ColorInt
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -66,7 +69,10 @@ fun GradeScreen(
 	var semester by remember { mutableStateOf<String?>(null) }
 
 	MaterialTheme {
-		Surface {
+		Surface(
+			modifier = Modifier
+				.verticalScroll(rememberScrollState())
+		) {
 			if(semester == null) {
 				GradeOverviewLayout(
 					grades = grades,
@@ -96,6 +102,108 @@ fun GradeOverviewLayout(
 		SchoolRegisterFrame(schoolRegister = schoolRegister)
 		CreditStatusFrame(creditStatus = creditStatus)
 		GpaFrame(grades = grades)
+		GradeSemesterListFrame(
+			semesters = grades,
+			onSemesterClick = onSemesterClick
+		)
+	}
+}
+
+@Composable
+fun GradeSemesterListFrame(
+	semesters: ViewResource<List<SemesterGrade>>,
+	onSemesterClick: (String) -> Unit
+) {
+	Column(
+		modifier = Modifier
+			.fillMaxWidth(),
+		verticalArrangement = Arrangement.spacedBy(4.dp)
+	) {
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(16.dp),
+			horizontalArrangement = Arrangement.spacedBy(4.dp)
+		) {
+			Text(
+				text = stringResource(id = R.string.common_term),
+				modifier = Modifier.weight(1f)
+			)
+
+			Text(
+				text = stringResource(id = R.string.grades_major_gpa_short)
+			)
+
+			Text(
+				text = stringResource(id = R.string.grades_overall_gpa_short)
+			)
+		}
+
+		Divider(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(horizontal = 16.dp),
+			color = Color.Gray
+		)
+
+		when(semesters) {
+			is ViewResource.Loading -> {
+
+			}
+			is ViewResource.Success -> {
+				GradeSemesterList(
+					semesters = semesters.value,
+					onSemesterClick = onSemesterClick
+				)
+			}
+			is ViewResource.Error -> {
+
+			}
+		}
+	}
+}
+
+@Composable
+fun GradeSemesterList(semesters: List<SemesterGrade>, onSemesterClick: (String) -> Unit) {
+	Column(
+		modifier = Modifier
+			.fillMaxWidth()
+	) {
+		for(semester in semesters) {
+			SemesterEntry(
+				semester = semester,
+				onSemesterClick = onSemesterClick
+			)
+		}
+	}
+}
+
+@Composable
+fun SemesterEntry(semester: SemesterGrade, onSemesterClick: (String) -> Unit) {
+	val majorGpa = remember(semester) { getGpa(semester.grades.filter { it.course.first() == '전' }) }
+	val overallGpa = remember(semester) { getGpa(semester.grades) }
+
+	Row(
+		modifier = Modifier
+			.clickable {
+				onSemesterClick("${semester.year},${semester.term}")
+			}
+			.fillMaxWidth()
+			.padding(16.dp),
+		horizontalArrangement = Arrangement.spacedBy(4.dp)
+	) {
+		Text(
+			text = stringResource(id = R.string.common_semester, semester.year, semester.term),
+			modifier = Modifier.weight(1f)
+		)
+
+		Text(
+			text = majorGpa.toString()
+		)
+
+		Text(
+			text = overallGpa.toString()
+		)
 	}
 }
 
@@ -103,21 +211,25 @@ fun GradeOverviewLayout(
 fun GpaFrame(grades: ViewResource<List<SemesterGrade>>) {
 	when(grades) {
 		is ViewResource.Success -> {
-			val flattenGrades = grades.value.filter {
-				it.semester == 1 || it.semester == 2
-			}.flatMap {
-				it.grades
-			}.filter {
-				it.grade.length >= 2 && !it.grade.startsWith("P") && !it.grade.startsWith("NP")
+			val flattenGrades = remember(grades) {
+				grades.value.filter {
+					it.term == 1 || it.term == 2
+				}.flatMap {
+					it.grades
+				}.filter {
+					it.grade.length >= 2 && !it.grade.startsWith("P") && !it.grade.startsWith("NP")
+				}
 			}
 
-			val majorGrades = flattenGrades.filter { it.course.first() == '전' }
+			val majorGrades = remember(flattenGrades) {
+				flattenGrades.filter { it.course.first() == '전' }
+			}
 
-			val majorGpa = getGpa(majorGrades)
-			val overallGpa = getGpa(flattenGrades)
+			val majorGpa = remember(majorGrades) { getGpa(majorGrades) }
+			val overallGpa = remember(flattenGrades) { getGpa(flattenGrades) }
 
-			val majorGradesGroup = majorGrades.groupBy { it.grade.first() }
-			val overallGradesGroup = flattenGrades.groupBy { it.grade.first() }
+			val majorGradesGroup = remember(majorGrades) { majorGrades.groupBy { it.grade.first() } }
+			val overallGradesGroup = remember(flattenGrades) { flattenGrades.groupBy { it.grade.first() } }
 
 			Row(
 				modifier = Modifier.padding(16.dp),

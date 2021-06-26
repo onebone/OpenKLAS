@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -45,7 +47,8 @@ fun GradeSemesterFrame(
 ) {
 	Column(
 		modifier = Modifier
-			.fillMaxWidth(),
+			.fillMaxWidth()
+			.verticalScroll(rememberScrollState()),
 		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 		SemesterFrame(grades = grades)
@@ -77,14 +80,18 @@ fun SemesterGpaFrame(grades: SemesterGrade) {
 			.padding(16.dp)
 	) {
 		GpaEntry(
-			modifier = Modifier.weight(1f).aspectRatio(1f),
+			modifier = Modifier
+				.weight(1f)
+				.aspectRatio(1f),
 			text = stringResource(id = R.string.grades_major_gpa),
 			gpa = majorGpa,
 			gradesGroup = remember(majorSubjects) { majorSubjects.groupBy { it.grade.first() } }
 		)
 
 		GpaEntry(
-			modifier = Modifier.weight(1f).aspectRatio(1f),
+			modifier = Modifier
+				.weight(1f)
+				.aspectRatio(1f),
 			text = stringResource(id = R.string.grades_overall_gpa),
 			gpa = overallGpa,
 			gradesGroup = remember(overallSubjects) { overallSubjects.groupBy { it.grade.first() } }
@@ -102,7 +109,7 @@ fun SemesterFrame(grades: SemesterGrade) {
 				colorResource(R.color.shadow_start),
 				colorResource(R.color.shadow_end)
 			)
-			.padding(horizontal = 16.dp, vertical = 8.dp)
+			.padding(16.dp)
 	) {
 		Text(
 			text = stringResource(id = R.string.common_semester, grades.year, grades.term),

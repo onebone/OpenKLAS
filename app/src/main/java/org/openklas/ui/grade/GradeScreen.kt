@@ -18,7 +18,9 @@
 
 package org.openklas.ui.grade
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.ColorInt
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,11 +70,10 @@ fun GradeScreen(
 	val schoolRegister by viewModel.schoolRegister.collectAsState(initial = ViewResource.Loading())
 	var semester by remember { mutableStateOf<SemesterGrade?>(null) }
 
+	val mainVerticalScrollState = rememberScrollState()
+
 	MaterialTheme {
-		Surface(
-			modifier = Modifier
-				.verticalScroll(rememberScrollState())
-		) {
+		Surface {
 			if(semester == null) {
 				GradeOverviewLayout(
 					grades = grades,
@@ -80,12 +81,17 @@ fun GradeScreen(
 					creditStatus = creditStatus,
 					onSemesterClick = {
 						semester = it
-					}
+					},
+					scrollState = mainVerticalScrollState
 				)
 			}else{
 				GradeSemesterFrame(grades = semester!!)
 			}
 		}
+	}
+
+	BackHandler(enabled = semester != null) {
+		semester = null
 	}
 }
 
@@ -94,11 +100,13 @@ fun GradeOverviewLayout(
 	grades: ViewResource<List<SemesterGrade>>,
 	schoolRegister: ViewResource<SchoolRegister>,
 	creditStatus: ViewResource<CreditStatus>,
-	onSemesterClick: (SemesterGrade) -> Unit
+	onSemesterClick: (SemesterGrade) -> Unit,
+	scrollState: ScrollState
 ) {
 	Column(
 		modifier = Modifier
-			.fillMaxWidth(),
+			.fillMaxWidth()
+			.verticalScroll(scrollState),
 		verticalArrangement = Arrangement.spacedBy(16.dp)
 	) {
 		SchoolRegisterFrame(schoolRegister = schoolRegister)

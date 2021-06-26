@@ -105,4 +105,5 @@
 	<color name="grades_d">@color/purple_500</color>
 	<color name="grades_f">@color/red</color>
 	<color name="grades_department">@color/gray</color>
+	<color name="grades_no_input">@color/light_gray</color>
 </resources>

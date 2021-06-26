@@ -32,7 +32,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
 import org.openklas.klas.KlasUri
-import org.openklas.klas.model.Grade
+import org.openklas.klas.model.SubjectGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
@@ -165,28 +165,16 @@ fun diffToShortString(context: Context, a: Date, b: Date): String {
 	}
 }
 
-fun getGpa(grades: List<Grade>): Float {
-	val gradeMap = mapOf(
-		"A+" to 4.5,
-		"A0" to 4.0,
-		"B+" to 3.5,
-		"B0" to 3.0,
-		"C+" to 2.5,
-		"C0" to 2.0,
-		"D+" to 1.5,
-		"D0" to 1.0,
-		"F"  to 0.0
-	)
-
+fun getGpa(grades: List<SubjectGrade>): Float {
 	val gpaSubjects = grades.filter {
-		it.grade.length >= 2 && it.grade.substring(0..1) in gradeMap
+		it.grade.isGpaCounted
 	}
 
 	val credits = gpaSubjects.sumOf { it.credits }
 
 	return if(credits > 0) {
 		(floor(gpaSubjects.sumOf {
-			it.credits * (gradeMap[it.grade.substring(0..1)] ?: 0.0)
+			it.credits * it.grade.gpa!!
 		} * 100 / credits) / 100).toFloat()
 	}else{
 		0f

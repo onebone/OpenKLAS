@@ -30,10 +30,45 @@ data class SemesterGrade(
 	@SerializedName("hakgiOrder")
 	val semesterLabel: String,
 	@SerializedName("sungjukList")
-	val grades: List<Grade>
+	val grades: List<SubjectGrade>
 )
 
-data class Grade(
+@JvmInline
+value class Grade(
+	private val value: String
+) {
+	val hasSettled: Boolean
+		get() = value in AvailableGrades
+
+	val grade: String?
+		get() = AvailableGrades.find { value.startsWith(it) }
+
+	val gpa: Double?
+		get() = GpaMap[grade]
+
+	val isGpaCounted: Boolean
+		get() = grade in GpaMap
+
+	companion object {
+		private val GpaMap = mapOf(
+			"A+" to 4.5,
+			"A0" to 4.0,
+			"B+" to 3.5,
+			"B0" to 3.0,
+			"C+" to 2.5,
+			"C0" to 2.0,
+			"D+" to 1.5,
+			"D0" to 1.0,
+			"F" to 0.0
+		)
+
+		private val AvailableGrades = listOf(
+			"A+", "A0", "B+", "C+", "C0", "D+", "D0", "F", "NP", "P"
+		)
+	}
+}
+
+data class SubjectGrade(
 	@SerializedName("certname")
 	val certName: String?,
 	@SerializedName("gwamokKname")
@@ -52,5 +87,5 @@ data class Grade(
 	@SerializedName("retakeGetGrade")
 	val retakeGrade: String?,
 	@SerializedName("getGrade")
-	val grade: String
+	val grade: Grade
 )

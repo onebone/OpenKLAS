@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.openklas.R
 import org.openklas.klas.model.CreditStatus
-import org.openklas.klas.model.Grade
+import org.openklas.klas.model.SubjectGrade
 import org.openklas.klas.model.SchoolRegister
 import org.openklas.klas.model.SemesterGrade
 import org.openklas.ui.shared.compose.PieChart
@@ -232,7 +232,7 @@ fun GpaFrame(grades: ViewResource<List<SemesterGrade>>) {
 				}.flatMap {
 					it.grades
 				}.filter {
-					it.grade.length >= 2 && !it.grade.startsWith("P") && !it.grade.startsWith("NP")
+					it.grade.isGpaCounted
 				}
 			}
 
@@ -243,8 +243,8 @@ fun GpaFrame(grades: ViewResource<List<SemesterGrade>>) {
 			val majorGpa = remember(majorGrades) { getGpa(majorGrades) }
 			val overallGpa = remember(flattenGrades) { getGpa(flattenGrades) }
 
-			val majorGradesGroup = remember(majorGrades) { majorGrades.groupBy { it.grade.first() } }
-			val overallGradesGroup = remember(flattenGrades) { flattenGrades.groupBy { it.grade.first() } }
+			val majorGradesGroup = remember(majorGrades) { majorGrades.groupBy { it.grade.grade?.first() ?: ' ' } }
+			val overallGradesGroup = remember(flattenGrades) { flattenGrades.groupBy { it.grade.grade?.first() ?: ' ' } }
 
 			Row(
 				modifier = Modifier.padding(16.dp),
@@ -280,7 +280,7 @@ fun GpaEntry(
 	modifier: Modifier,
 	text: String,
 	gpa: Float,
-	gradesGroup: Map<Char, List<Grade>>
+	gradesGroup: Map<Char, List<SubjectGrade>>
 ) {
 	Column(
 		modifier = modifier,
@@ -304,7 +304,7 @@ fun GpaEntry(
 }
 
 @Composable
-private fun Map<Char, List<Grade>>.mapPieChartEntry(): List<PieChartEntry> =
+private fun Map<Char, List<SubjectGrade>>.mapPieChartEntry(): List<PieChartEntry> =
 	map {
 		PieChartEntry(it.key.toString(), it.value.count().toDouble(), colorResource(when(it.key) {
 			'A' -> R.color.grades_a

@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.openklas.R
-import org.openklas.klas.model.Grade
+import org.openklas.klas.model.SubjectGrade
 import org.openklas.klas.model.SemesterGrade
 import org.openklas.ui.shared.compose.bottomShadow
 import org.openklas.utils.getGpa
@@ -53,7 +54,7 @@ import org.openklas.utils.getGpa
 fun GradeSemesterFrame(
 	grades: SemesterGrade
 ) {
-	var selectedSubject by remember { mutableStateOf<Grade?>(null) }
+	var selectedSubject by remember { mutableStateOf<SubjectGrade?>(null) }
 
 	Column(
 		modifier = Modifier
@@ -79,7 +80,7 @@ fun GradeSemesterFrame(
 @Composable
 fun SubjectGradeListFrame(
 	grades: SemesterGrade,
-	onSubjectClick: (Grade) -> Unit
+	onSubjectClick: (SubjectGrade) -> Unit
 ) {
 	Column(
 		modifier = Modifier
@@ -95,19 +96,24 @@ fun SubjectGradeListFrame(
 				.padding(horizontal = 16.dp)
 		)
 
-		for(grade in grades.grades) {
-			SubjectGradeListEntry(
-				grade = grade,
-				onSubjectClick = onSubjectClick
-			)
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+		) {
+			for(grade in grades.grades) {
+				SubjectGradeListEntry(
+					grade = grade,
+					onSubjectClick = onSubjectClick
+				)
+			}
 		}
 	}
 }
 
 @Composable
 fun SubjectGradeListEntry(
-	grade: Grade,
-	onSubjectClick: (Grade) -> Unit
+	grade: SubjectGrade,
+	onSubjectClick: (SubjectGrade) -> Unit
 ) {
 	Row(
 		modifier = Modifier
@@ -143,12 +149,13 @@ fun SubjectGradeListEntry(
 		)
 
 		Text(
-			text =
-				if(grade.grade.length > 1) grade.grade.substring(0..1)
-				else grade.grade,
+			text = grade.grade.grade ?: stringResource(id = R.string.grades_grade_no_input),
 			modifier = Modifier
 				.weight(0.2f),
 			textAlign = TextAlign.Center,
+			color =
+				if(grade.grade.grade == null) colorResource(id = R.color.grades_no_input)
+				else Color.Unspecified,
 			fontWeight = FontWeight.Bold
 		)
 	}
@@ -190,7 +197,7 @@ fun SubjectGradeListHeader() {
 fun SemesterGpaFrame(grades: SemesterGrade) {
 	val overallSubjects = remember(grades) {
 		grades.grades.filter {
-			it.grade.length >= 2 && !it.grade.startsWith("P") && !it.grade.startsWith("NP")
+			it.grade.isGpaCounted
 		}
 	}
 
@@ -214,7 +221,7 @@ fun SemesterGpaFrame(grades: SemesterGrade) {
 				.aspectRatio(1f),
 			text = stringResource(id = R.string.grades_major_gpa),
 			gpa = majorGpa,
-			gradesGroup = remember(majorSubjects) { majorSubjects.groupBy { it.grade.first() } }
+			gradesGroup = remember(majorSubjects) { majorSubjects.groupBy { it.grade.grade?.first() ?: ' ' } }
 		)
 
 		GpaEntry(
@@ -223,7 +230,7 @@ fun SemesterGpaFrame(grades: SemesterGrade) {
 				.aspectRatio(1f),
 			text = stringResource(id = R.string.grades_overall_gpa),
 			gpa = overallGpa,
-			gradesGroup = remember(overallSubjects) { overallSubjects.groupBy { it.grade.first() } }
+			gradesGroup = remember(overallSubjects) { overallSubjects.groupBy { it.grade.grade?.first() ?: ' ' } }
 		)
 	}
 }

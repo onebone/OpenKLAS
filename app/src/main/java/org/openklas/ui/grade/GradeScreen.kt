@@ -66,7 +66,7 @@ fun GradeScreen(
 	val grades by viewModel.grades.collectAsState(initial = ViewResource.Loading())
 	val creditStatus by viewModel.creditStatus.collectAsState(initial = ViewResource.Loading())
 	val schoolRegister by viewModel.schoolRegister.collectAsState(initial = ViewResource.Loading())
-	var semester by remember { mutableStateOf<String?>(null) }
+	var semester by remember { mutableStateOf<SemesterGrade?>(null) }
 
 	MaterialTheme {
 		Surface(
@@ -82,6 +82,8 @@ fun GradeScreen(
 						semester = it
 					}
 				)
+			}else{
+				GradeSemesterFrame(grades = semester!!)
 			}
 		}
 	}
@@ -92,7 +94,7 @@ fun GradeOverviewLayout(
 	grades: ViewResource<List<SemesterGrade>>,
 	schoolRegister: ViewResource<SchoolRegister>,
 	creditStatus: ViewResource<CreditStatus>,
-	onSemesterClick: (String) -> Unit
+	onSemesterClick: (SemesterGrade) -> Unit
 ) {
 	Column(
 		modifier = Modifier
@@ -112,7 +114,7 @@ fun GradeOverviewLayout(
 @Composable
 fun GradeSemesterListFrame(
 	semesters: ViewResource<List<SemesterGrade>>,
-	onSemesterClick: (String) -> Unit
+	onSemesterClick: (SemesterGrade) -> Unit
 ) {
 	Column(
 		modifier = Modifier
@@ -164,7 +166,7 @@ fun GradeSemesterListFrame(
 }
 
 @Composable
-fun GradeSemesterList(semesters: List<SemesterGrade>, onSemesterClick: (String) -> Unit) {
+fun GradeSemesterList(semesters: List<SemesterGrade>, onSemesterClick: (SemesterGrade) -> Unit) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -179,14 +181,14 @@ fun GradeSemesterList(semesters: List<SemesterGrade>, onSemesterClick: (String) 
 }
 
 @Composable
-fun SemesterEntry(semester: SemesterGrade, onSemesterClick: (String) -> Unit) {
+fun SemesterEntry(semester: SemesterGrade, onSemesterClick: (SemesterGrade) -> Unit) {
 	val majorGpa = remember(semester) { getGpa(semester.grades.filter { it.course.first() == '전' }) }
 	val overallGpa = remember(semester) { getGpa(semester.grades) }
 
 	Row(
 		modifier = Modifier
 			.clickable {
-				onSemesterClick("${semester.year},${semester.term}")
+				onSemesterClick(semester)
 			}
 			.fillMaxWidth()
 			.padding(16.dp),

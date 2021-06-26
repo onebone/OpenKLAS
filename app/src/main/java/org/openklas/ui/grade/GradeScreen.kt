@@ -129,6 +129,8 @@ fun GradeSemesterListFrame(
 			.fillMaxWidth(),
 		verticalArrangement = Arrangement.spacedBy(4.dp)
 	) {
+		// TODO polish laying out the grade grid
+
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -137,15 +139,18 @@ fun GradeSemesterListFrame(
 		) {
 			Text(
 				text = stringResource(id = R.string.common_term),
-				modifier = Modifier.weight(1f)
+				modifier = Modifier.weight(1f),
+				fontWeight = FontWeight.Bold
 			)
 
 			Text(
-				text = stringResource(id = R.string.grades_major_gpa_short)
+				text = stringResource(id = R.string.grades_major_gpa_short),
+				fontWeight = FontWeight.Bold
 			)
 
 			Text(
-				text = stringResource(id = R.string.grades_overall_gpa_short)
+				text = stringResource(id = R.string.grades_overall_gpa_short),
+				fontWeight = FontWeight.Bold
 			)
 		}
 

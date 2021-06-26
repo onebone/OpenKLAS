@@ -71,6 +71,7 @@
 	<string name="common_term">학기</string>
 	<string name="common_credits">학점</string>
 	<string name="common_semester">%1$d년도 %2$d학기</string>
+	<string name="common_subject">과목</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>
@@ -180,4 +181,5 @@
 	<string name="grades_overall_gpa">전체 평점</string>
 	<string name="grades_major_gpa_short">전공</string>
 	<string name="grades_overall_gpa_short">전체</string>
+	<string name="grades_grade">성적</string>
 </resources>

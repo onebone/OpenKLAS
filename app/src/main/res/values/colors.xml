@@ -35,6 +35,7 @@
 	<color name="red">#F44336</color>
 	<color name="light_green">#ecf7ed</color>
 	<color name="green">#4CAF50</color>
+	<color name="dark_green">#2e7d32</color>
 
 	<color name="gray">#999999</color>
 	<color name="light_transparent_gray">#77AAAAAA</color>
@@ -94,4 +95,15 @@
 	<color name="assignment_due_in_period">@color/black</color>
 	<color name="assignment_due_not_in_period">@color/gray</color>
 	<color name="assignment_due_current">@color/copper</color>
+
+	<color name="grades_applied">@color/green</color>
+	<color name="grades_deleted">@color/red</color>
+	<color name="grades_acquired">@color/text</color>
+	<color name="grades_a">@color/blue</color>
+	<color name="grades_b">@color/dark_green</color>
+	<color name="grades_c">@color/orange</color>
+	<color name="grades_d">@color/purple_500</color>
+	<color name="grades_f">@color/red</color>
+	<color name="grades_department">@color/gray</color>
+	<color name="grades_no_input">@color/light_gray</color>
 </resources>

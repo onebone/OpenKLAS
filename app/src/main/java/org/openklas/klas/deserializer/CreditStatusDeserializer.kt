@@ -54,14 +54,14 @@ class CreditStatusDeserializer: TypeResolvableJsonDeserializer<CreditStatus> {
 				others = obj["etcDelHakjum"].asInt,
 				othersRetake = obj["retakeEtcDelHakjum"].asInt,
 				sum = obj["delHakjum"].asInt,
-				sumRetake = obj["retakeEtcDelHakjum"].asInt
+				sumRetake = obj["retakeDelHakjum"].asInt
 			),
 			acquired = CreditStatus.Credits(
 				major = obj["majorChidukHakjum"].asInt,
 				majorRetake = obj["retakeMajorDelHakjum"].asInt,
 				elective = obj["cultureChidukHakjum"].asInt,
 				electiveRetake = obj["retakeCultureDelHakjum"].asInt,
-				others = obj["chidukHakjum"].asInt,
+				others = obj["etcChidukHakjum"].asInt,
 				othersRetake = obj["retakeEtcDelHakjum"].asInt,
 				sum = obj["chidukHakjum"].asInt,
 				sumRetake = obj["retakeDelHakjum"].asInt

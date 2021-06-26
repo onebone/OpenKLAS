@@ -32,6 +32,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import org.openklas.R
 import org.openklas.klas.KlasUri
+import org.openklas.klas.model.SubjectGrade
 import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.SyllabusSummary
 import org.openklas.ui.syllabus.page.summary.TUTOR_PROFESSOR
@@ -42,6 +43,7 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
+import kotlin.math.floor
 
 fun AssetManager.fileAsString(filename: String): String {
 	return open(filename).use {
@@ -160,5 +162,21 @@ fun diffToShortString(context: Context, a: Date, b: Date): String {
 				minutes.toInt(), minutes
 			)
 		}
+	}
+}
+
+fun getGpa(grades: List<SubjectGrade>): Float {
+	val gpaSubjects = grades.filter {
+		it.grade.isGpaCounted
+	}
+
+	val credits = gpaSubjects.sumOf { it.credits }
+
+	return if(credits > 0) {
+		(floor(gpaSubjects.sumOf {
+			it.credits * it.grade.gpa!!
+		} * 100 / credits) / 100).toFloat()
+	}else{
+		0f
 	}
 }

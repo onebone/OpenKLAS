@@ -44,4 +44,9 @@
 			android:title="@string/syllabus_search" />
 	</group>
 
+	<group android:id="@+id/nav_group_result">
+		<item android:id="@+id/nav_grades"
+			android:title="@string/grades" />
+	</group>
+
 </menu>

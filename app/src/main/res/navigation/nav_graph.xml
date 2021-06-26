@@ -114,6 +114,14 @@
 
 		</action>
 
+		<action
+			android:id="@+id/action_home_grades"
+			app:destination="@id/fragment_grades"
+			app:enterAnim="@anim/slide_right"
+			app:exitAnim="@anim/slightly_scale_down_left"
+			app:popEnterAnim="@anim/slightly_scale_up_left"
+			app:popExitAnim="@anim/slide_right_pop" />
+
 	</fragment>
 
 	<fragment
@@ -294,5 +302,9 @@
 			app:argType="integer" />
 
 	</fragment>
+
+	<fragment
+		android:id="@+id/fragment_grades"
+		android:name="org.openklas.ui.grade.GradeFragment" />
 
 </navigation>

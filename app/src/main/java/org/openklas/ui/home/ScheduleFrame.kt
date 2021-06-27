@@ -43,7 +43,7 @@ import org.openklas.klas.model.Timetable
 import org.openklas.ui.shared.compose.blinkTransition
 import org.openklas.utils.periodToTime
 import java.time.Instant
-import java.time.ZoneOffset
+import java.time.ZoneId
 
 @Composable
 fun Schedule(schedule: List<Timetable.Entry>?, now: Instant) {
@@ -126,7 +126,7 @@ fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 			)
 
 			val n = remember(now) {
-				now.atOffset(ZoneOffset.of(ZoneOffset.systemDefault().id))
+				now.atZone(ZoneId.systemDefault())
 			}
 
 			val start = periodToTime(item.time)

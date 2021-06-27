@@ -34,7 +34,8 @@ class ZonedDateTimeDeserializer: TypeResolvableJsonDeserializer<ZonedDateTime> {
 		val Formats = listOf(
 			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[Z]"),
 			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
-			DateTimeFormatter.ofPattern("yyyy-MM-dd HH시mm분")
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH시mm분"),
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 		)
 	}
 

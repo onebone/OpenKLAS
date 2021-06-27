@@ -19,7 +19,6 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
-import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 
 // classified by "evltnSe" field
@@ -55,7 +54,7 @@ sealed class OnlineContentEntry {
 	data class Homework(
 		override val evltnSe: String, // proj
 		@SerializedName("registDt")
-		val submitDate: OffsetDateTime?,
+		val submitDate: ZonedDateTime?,
 		@SerializedName("startDate")
 		override val startDate: ZonedDateTime,
 		@SerializedName("endDate")
@@ -89,7 +88,7 @@ sealed class OnlineContentEntry {
 		@SerializedName("startDate")
 		override val startDate: ZonedDateTime,
 		@SerializedName("started")
-		val takenAt: OffsetDateTime?,
+		val takenAt: ZonedDateTime?,
 		@SerializedName("userId")
 		val userId: String,
 		@SerializedName("weekNo")

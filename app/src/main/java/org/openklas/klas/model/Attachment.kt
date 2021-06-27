@@ -19,13 +19,13 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
-import java.time.OffsetDateTime
+import java.time.ZonedDateTime
 
 data class Attachment(
 	@SerializedName("attachId")
 	val id: String,
 	@SerializedName("createdAt")
-	val creationDate: OffsetDateTime,
+	val creationDate: ZonedDateTime,
 	@SerializedName("download")
 	val url: String, // relative url may be provided
 	@SerializedName("ext")

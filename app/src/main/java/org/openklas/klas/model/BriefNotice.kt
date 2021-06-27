@@ -19,7 +19,7 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
-import java.time.OffsetDateTime
+import java.time.ZonedDateTime
 
 data class BriefNotice (
 	@SerializedName("subj")
@@ -33,7 +33,7 @@ data class BriefNotice (
 	@SerializedName("hakgi")
 	val term: Int,
 	@SerializedName("registDt")
-	val postDate: OffsetDateTime,
+	val postDate: ZonedDateTime,
 	@SerializedName("subjNm")
 	val subjectName: String,
 	@SerializedName("title")

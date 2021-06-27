@@ -235,8 +235,8 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 				fontWeight = FontWeight.Bold
 			)
 
-			val hour = durationAfterDue.toHours().toInt()
-			val minute = durationAfterDue.toMinutes().toInt()
+			val hour = entry.due.hour
+			val minute = entry.due.minute
 
 			if(!(hour == 23 && minute == 59)) {
 				DueNot2359Warning(hour, minute)

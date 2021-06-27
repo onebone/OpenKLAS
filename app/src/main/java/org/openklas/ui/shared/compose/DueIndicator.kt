@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.Duration
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import org.apache.commons.lang3.time.FastDateFormat
 import org.openklas.R
 import java.util.Locale
@@ -75,8 +76,8 @@ fun DueIndicator(
 		}
 	}
 
-	val yearFormatter = FastDateFormat.getInstance("yyyy", Locale.getDefault())
-	val dayFormatter = FastDateFormat.getInstance("MMM dd", Locale.getDefault())
+	val yearFormatter = DateTimeFormatter.ofPattern("yyyy")
+	val dayFormatter = DateTimeFormatter.ofPattern("MMM dd")
 
 	val now = ZonedDateTime.now()
 

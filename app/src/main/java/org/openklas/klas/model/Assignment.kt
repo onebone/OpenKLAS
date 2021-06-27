@@ -21,7 +21,7 @@ package org.openklas.klas.model
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import org.openklas.klas.deserializer.YNBoolDeserializer
-import java.util.Date
+import java.time.ZonedDateTime
 
 data class Assignment(
 	@SerializedName("rpt")
@@ -33,16 +33,16 @@ data class Assignment(
 		@SerializedName("contents") // why plural??
 		val content: String,
 		@SerializedName("expiredate")
-		val due: Date,
+		val due: ZonedDateTime,
 		@SerializedName("filelimit")
 		val submitFileSizeLimitMB: Int,
 		@SerializedName("indate")
 		@JsonAdapter(YNBoolDeserializer::class)
 		val isInPeriod: Boolean,
 		@SerializedName("reexpiredate")
-		val extendedDue: Date?,
+		val extendedDue: ZonedDateTime?,
 		@SerializedName("startdate")
-		val startDate: Date,
+		val startDate: ZonedDateTime,
 		@SerializedName("submitfiletype")
 		val submitFileExtensions: String,
 		@SerializedName("submityn")

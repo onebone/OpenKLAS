@@ -53,8 +53,10 @@ import org.openklas.klas.model.Week
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.Resource
 import java.time.Duration
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.Date
 import javax.inject.Inject
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -112,7 +114,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 		val entries = NOTICES.entries.find { it.key == subjectId }?.value?.map {
 			Board.Entry(null, -1, it.division, 0, 0, "01", it.term, 5,
-				isMine = false, isPublic = true, Random.nextInt(0, 100), 0, Date(), "---", 0, it.subjectId,
+				isMine = false, isPublic = true, Random.nextInt(0, 100), 0, OffsetDateTime.now(), "---", 0, it.subjectId,
 				it.title, isPinned = false, "작성자", it.year
 			)
 		} ?: listOf()
@@ -287,7 +289,8 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		val NOTICES = mapOf(
 			"U2021100000000015" to arrayOf(
 				BriefNotice("U2021100000000015", "01", "-", 2021, 1,
-					Date(1598918400L), "일반상대성이론실험", "사건의 지평선 실험1 유의사항",
+					OffsetDateTime.ofInstant(Instant.ofEpochMilli(1598918400L), ZoneId.of("Asia/Seoul")),
+					"일반상대성이론실험", "사건의 지평선 실험1 유의사항",
 					61, "강의 공지사항", "2021,1"
 				)
 			)

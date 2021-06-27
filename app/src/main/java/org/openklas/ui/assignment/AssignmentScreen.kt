@@ -32,7 +32,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -40,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.Duration
+import java.time.ZonedDateTime
 import org.openklas.R
 import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.Attachment
@@ -49,8 +50,6 @@ import org.openklas.ui.shared.compose.AttachmentList
 import org.openklas.ui.shared.compose.DueIndicator
 import org.openklas.ui.shared.compose.DueNot2359Warning
 import org.openklas.ui.shared.SimpleHtml
-import java.util.Calendar
-import java.util.Date
 
 @Composable
 fun AssignmentScreen(onDownloadAttachment: (Attachment) -> Unit) {
@@ -127,12 +126,12 @@ fun DueFrame(assignment: Assignment.Description?) {
 		.padding(12.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
-		val now = Date()
+		val now = ZonedDateTime.now()
 
 		AssignmentDdayIndicator(
 			modifier = Modifier.padding(8.dp, 0.dp),
 			isSubmitted = assignment.isSubmitted,
-			millisAfterDue = now.time - assignment.due.time
+			durationAfterDue = Duration.between(now, assignment.due)
 		)
 
 		Column(modifier = Modifier
@@ -147,13 +146,8 @@ fun DueFrame(assignment: Assignment.Description?) {
 				dateVerticalMargin = 5.dp
 			)
 
-			val (hour, minute) = remember {
-				val calendar = Calendar.getInstance().apply {
-					time = assignment.due
-				}
-
-				Pair(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
-			}
+			val hour = assignment.due.hour
+			val minute = assignment.due.minute
 
 			if(!(hour == 23 && minute == 59)) {
 				DueNot2359Warning(hour = hour, minute = minute)

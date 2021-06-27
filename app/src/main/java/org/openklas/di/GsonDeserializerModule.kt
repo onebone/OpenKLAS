@@ -24,13 +24,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import org.openklas.klas.deserializer.CreditStatusDeserializer
-import org.openklas.klas.deserializer.DateDeserializer
 import org.openklas.klas.deserializer.LectureScheduleDeserializer
 import org.openklas.klas.deserializer.OnlineContentEntryDeserializer
 import org.openklas.klas.deserializer.SyllabusDeserializer
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.deserializer.TimetableDeserializer
 import javax.inject.Singleton
+import org.openklas.klas.deserializer.LocalDateDeserializer
 import org.openklas.klas.deserializer.ZonedDateTimeDeserializer
 
 @Module
@@ -48,13 +48,6 @@ class GsonDeserializerModule {
 	@Singleton
 	fun provideOnlineLectureEntryDeserializer(): TypeResolvableJsonDeserializer<*> {
 		return OnlineContentEntryDeserializer()
-	}
-
-	@Provides
-	@IntoSet
-	@Singleton
-	fun provideDateDeserializer(): TypeResolvableJsonDeserializer<*> {
-		return DateDeserializer()
 	}
 
 	@Provides
@@ -83,5 +76,12 @@ class GsonDeserializerModule {
 	@Singleton
 	fun provideZonedDateTimeDeserializer(): TypeResolvableJsonDeserializer<*> {
 		return ZonedDateTimeDeserializer()
+	}
+
+	@Provides
+	@IntoSet
+	@Singleton
+	fun provideLocalDateDeserializer(): TypeResolvableJsonDeserializer<*> {
+		return LocalDateDeserializer()
 	}
 }

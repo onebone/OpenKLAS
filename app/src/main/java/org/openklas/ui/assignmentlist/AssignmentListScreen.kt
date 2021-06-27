@@ -53,6 +53,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.Duration
+import java.time.ZonedDateTime
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -64,8 +66,6 @@ import org.openklas.ui.shared.compose.DueIndicator
 import org.openklas.ui.shared.compose.DueNot2359Warning
 import org.openklas.ui.shared.SubjectSelectionDialog
 import org.openklas.ui.shared.compose.bottomShadow
-import java.util.Calendar
-import java.util.Date
 
 @Composable
 fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
@@ -211,17 +211,17 @@ fun MainFrame(
 
 @Composable
 fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Unit) {
-	val now = Date()
-	val timeAfterDue = now.time - entry.due.time
+	val now = ZonedDateTime.now()
+	val durationAfterDue = Duration.between(now, entry.due)
 
 	Row(modifier = Modifier
 		.clickable { onClickEntry(entry) }
-		.alpha(if(timeAfterDue > 0) 0.5f else 1f)
+		.alpha(if(!durationAfterDue.isNegative) 0.5f else 1f)
 		.padding(16.dp, 20.dp)
 	) {
 		AssignmentDdayIndicator(
 			isSubmitted = entry.isSubmitted,
-			millisAfterDue = now.time - entry.due.time
+			durationAfterDue = durationAfterDue
 		)
 
 		Column(
@@ -235,16 +235,8 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 				fontWeight = FontWeight.Bold
 			)
 
-			val (hour, minute) = remember {
-				val due = Calendar.getInstance().apply {
-					time = entry.due
-				}
-
-				val hour = due.get(Calendar.HOUR_OF_DAY)
-				val minute = due.get(Calendar.MINUTE)
-
-				Pair(hour, minute)
-			}
+			val hour = durationAfterDue.toHours().toInt()
+			val minute = durationAfterDue.toMinutes().toInt()
 
 			if(!(hour == 23 && minute == 59)) {
 				DueNot2359Warning(hour, minute)
@@ -268,17 +260,13 @@ fun AssignmentListScreenPreview() {
 		AssignmentListMainLayout("심리학과프로파일링", arrayOf(
 			AssignmentEntry(
 				isExtendedPeriod = false,
-				due = Calendar.getInstance().apply {
-					add(Calendar.DAY_OF_MONTH, 10)
-				}.time,
+				due = ZonedDateTime.now() + Duration.ofDays(10),
 				isSubmitPeriod = true,
 				order = 0,
 				extendedDue = null,
 				extendedStartDate = null,
 				score = null,
-				startDate = Calendar.getInstance().apply {
-					add(Calendar.DAY_OF_MONTH, -15)
-				}.time,
+				startDate = ZonedDateTime.now() - Duration.ofDays(10),
 				isSubmitted = false,
 				taskNumber = 0,
 				title = "사이코패스 측정 후 제출",
@@ -287,17 +275,13 @@ fun AssignmentListScreenPreview() {
 			),
 			AssignmentEntry(
 				isExtendedPeriod = false,
-				due = Calendar.getInstance().apply {
-					add(Calendar.DAY_OF_MONTH, 20)
-				}.time,
+				due = ZonedDateTime.now() + Duration.ofDays(20),
 				isSubmitPeriod = true,
 				order = 0,
 				extendedDue = null,
 				extendedStartDate = null,
 				score = null,
-				startDate = Calendar.getInstance().apply {
-					add(Calendar.DAY_OF_MONTH, -7)
-				}.time,
+				startDate = ZonedDateTime.now() - Duration.ofDays(7),
 				isSubmitted = false,
 				taskNumber = 0,
 				title = "보고서 제출",

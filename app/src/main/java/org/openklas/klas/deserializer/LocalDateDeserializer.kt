@@ -21,45 +21,29 @@ package org.openklas.klas.deserializer
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
-import org.apache.commons.lang3.time.FastDateFormat
-import java.lang.Exception
 import java.lang.reflect.Type
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
+class LocalDateDeserializer: TypeResolvableJsonDeserializer<LocalDate> {
 	private companion object {
-		// regardless of what timezone the device uses, server gives us
-		// timestamp with Korean timezone. Why don't give us a Unix time...??
-		val TIMEZONE: TimeZone = TimeZone.getTimeZone("Asia/Seoul")
+		val Formats = listOf(
+			DateTimeFormatter.ofPattern("yyyy-MM-dd")
+		)
 	}
-
-	private val formats = arrayOf(
-		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd HH:mm", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd HH시mm분", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd", TIMEZONE, Locale.KOREA)
-	)
 
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
 		context: JsonDeserializationContext?
-	): Date {
-		val string = json.asString!!
+	): LocalDate {
+		val str = json.asString
 
-		for(format in formats) {
-			try {
-				return format.parse(string) ?: continue
-			}catch(e: Exception) {
-			}
-		}
-
-		throw JsonParseException("Unable to parse Date: \"$string\"")
+		return Formats.firstNotNullOfOrNull {
+			LocalDate.parse(str, it)
+		} ?: throw JsonParseException("cannot parse LocalDate string \"$str\"")
 	}
 
-	override fun getType(): Type {
-		return Date::class.java
-	}
+	override fun getType(): Type =
+		LocalDate::class.java
 }

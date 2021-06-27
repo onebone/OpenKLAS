@@ -20,15 +20,15 @@ package org.openklas.klas.model
 
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import java.time.ZonedDateTime
 import org.openklas.klas.deserializer.YNBoolDeserializer
-import java.util.Date
 
 data class AssignmentEntry(
 	@SerializedName("adddate")
 	@JsonAdapter(YNBoolDeserializer::class)
 	val isExtendedPeriod: Boolean,
 	@SerializedName("expiredate")
-	val due: Date,
+	val due: ZonedDateTime,
 	// [isSubmitPeriod] is a flag indicating if a user can
 	// submit a homework now. Returns true if current time is
 	// after [startDate] and before [due].
@@ -38,13 +38,13 @@ data class AssignmentEntry(
 	@SerializedName("ordseq")
 	val order: Int,
 	@SerializedName("reexpiredate")
-	val extendedDue: Date?,
+	val extendedDue: ZonedDateTime?,
 	@SerializedName("restartdate")
-	val extendedStartDate: Date?,
+	val extendedStartDate: ZonedDateTime?,
 	@SerializedName("score")
 	val score: Int?,
 	@SerializedName("startdate")
-	val startDate: Date,
+	val startDate: ZonedDateTime,
 	@SerializedName("submityn")
 	@JsonAdapter(YNBoolDeserializer::class)
 	val isSubmitted: Boolean,

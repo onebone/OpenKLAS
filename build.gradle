@@ -50,8 +50,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
     }
 }

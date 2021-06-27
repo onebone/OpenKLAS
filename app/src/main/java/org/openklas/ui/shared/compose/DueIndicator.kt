@@ -47,18 +47,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.Duration
+import java.time.ZonedDateTime
 import org.apache.commons.lang3.time.FastDateFormat
 import org.openklas.R
-import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeUnit
-import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 @Composable
 fun DueIndicator(
 	modifier: Modifier = Modifier,
-	start: Date,
-	end: Date,
+	start: ZonedDateTime,
+	end: ZonedDateTime,
 	dayFontSize: TextUnit,
 	yearFontSize: TextUnit,
 	dateVerticalMargin: Dp
@@ -78,12 +78,12 @@ fun DueIndicator(
 	val yearFormatter = FastDateFormat.getInstance("yyyy", Locale.getDefault())
 	val dayFormatter = FastDateFormat.getInstance("MMM dd", Locale.getDefault())
 
-	val now = Date()
+	val now = ZonedDateTime.now()
 
 	val isBeforeStart = now < start
 	val isBeforeEnd = now < end
 
-	val periodRatio = (now.time.toFloat() - start.time) / (end.time - start.time)
+	val periodRatio = Duration.between(start, now).nano.toFloat() / Duration.between(start, end).nano
 
 	val startColor = colorResource(
 		if(isBeforeStart) R.color.assignment_due_in_period
@@ -199,13 +199,13 @@ fun DueIndicator(
 fun AssignmentDdayIndicator(
 	modifier: Modifier = Modifier,
 	isSubmitted: Boolean,
-	millisAfterDue: Long,
+	durationAfterDue: Duration,
 	blinkIfImpending: Boolean = true
 ) {
-	val daysAfterDue = millisAfterDue / TimeUnit.DAYS.toMillis(1)
+	val days = durationAfterDue.toDays()
 
 	val alpha by
-		if(blinkIfImpending && -1L <= daysAfterDue && millisAfterDue < 0) {
+		if(blinkIfImpending && -1L <= days && durationAfterDue.isNegative) {
 			blinkTransition(fromAlpha = 0.3f)
 		}else{
 			remember { mutableStateOf(1f) }
@@ -216,7 +216,7 @@ fun AssignmentDdayIndicator(
 		.alpha(alpha)
 	) {
 		val dday = "D" +
-				(if(millisAfterDue > 0) '+' else '-') + abs(daysAfterDue)
+				(if(durationAfterDue.isNegative) '-' else '+') + days.absoluteValue
 
 		val color = if(isSubmitted) R.color.assignment_done
 		else R.color.assignment_undone

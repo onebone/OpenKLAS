@@ -19,8 +19,8 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDate
 import java.time.ZonedDateTime
-import java.util.Date
 
 data class PostComposite(
 	@SerializedName("board")
@@ -99,7 +99,7 @@ data class PostComposite(
 		@SerializedName("myarticleAt")
 		val isMine: Boolean,
 		@SerializedName("registDt")
-		val registerDate: Date,
+		val registerDate: LocalDate, // comment does not give us specific time...
 		@SerializedName("registerId")
 		val authorId: String,
 		@SerializedName("userNm")

@@ -19,7 +19,7 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.Date
+import java.time.OffsetDateTime
 
 data class Board(
 	@SerializedName("list")
@@ -66,7 +66,7 @@ data class Board(
 		@SerializedName("refLvl")
 		val referenceLevel: Int,
 		// refSort
-		val registeredAt: Date,
+		val registeredAt: OffsetDateTime,
 		val registerId: String,
 		// rnum
 		@SerializedName("sortOrdr")

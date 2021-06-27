@@ -29,7 +29,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.openklas.R
 import org.openklas.klas.model.LectureSchedule
 import org.openklas.utils.diffToShortString
-import java.util.Date
+import java.time.Instant
+import java.time.ZonedDateTime
 
 object BindAdapter {
 	@JvmStatic
@@ -49,10 +50,10 @@ object BindAdapter {
 
 	@JvmStatic
 	@BindingAdapter("dateShort")
-	fun bindDateShort(textView: TextView, date: Date?) {
+	fun bindDateShort(textView: TextView, date: ZonedDateTime?) {
 		if(date == null) return
 
-		textView.text = diffToShortString(textView.context, date, Date())
+		textView.text = diffToShortString(textView.context, date.toInstant(), Instant.now())
 	}
 
 	@JvmStatic

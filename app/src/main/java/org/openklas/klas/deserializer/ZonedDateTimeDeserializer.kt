@@ -21,45 +21,41 @@ package org.openklas.klas.deserializer
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
-import org.apache.commons.lang3.time.FastDateFormat
-import java.lang.Exception
 import java.lang.reflect.Type
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
-class DateDeserializer: TypeResolvableJsonDeserializer<Date> {
+class ZonedDateTimeDeserializer: TypeResolvableJsonDeserializer<ZonedDateTime> {
 	private companion object {
-		// regardless of what timezone the device uses, server gives us
-		// timestamp with Korean timezone. Why don't give us a Unix time...??
-		val TIMEZONE: TimeZone = TimeZone.getTimeZone("Asia/Seoul")
-	}
+		val KoreaZoneId: ZoneId = ZoneId.of("Asia/Seoul")
 
-	private val formats = arrayOf(
-		FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd HH:mm", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd HH시mm분", TIMEZONE, Locale.KOREA),
-		FastDateFormat.getInstance("yyyy-MM-dd", TIMEZONE, Locale.KOREA)
-	)
+		val Formats = listOf(
+			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[Z]"),
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH시mm분")
+		)
+	}
 
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
 		context: JsonDeserializationContext?
-	): Date {
-		val string = json.asString!!
+	): ZonedDateTime {
+		val str = json.asString
 
-		for(format in formats) {
-			try {
-				return format.parse(string) ?: continue
-			}catch(e: Exception) {
-			}
+		return when(val temporal = Formats.firstNotNullOfOrNull {
+			kotlin.runCatching {
+				it.parseBest(str, ZonedDateTime::from, LocalDateTime::from)
+			}.getOrNull()
+		} ?: throw JsonParseException("unable to parse time string: \"$str\"")) {
+			is ZonedDateTime -> temporal
+			is LocalDateTime -> temporal.atZone(KoreaZoneId)
+			else -> throw IllegalStateException("this should not happen")
 		}
-
-		throw JsonParseException("Unable to parse Date: \"$string\"")
 	}
 
-	override fun getType(): Type {
-		return Date::class.java
-	}
+	override fun getType(): Type =
+		ZonedDateTime::class.java
 }

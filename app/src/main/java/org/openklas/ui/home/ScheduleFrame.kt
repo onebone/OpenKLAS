@@ -29,6 +29,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -41,10 +42,11 @@ import org.openklas.R
 import org.openklas.klas.model.Timetable
 import org.openklas.ui.shared.compose.blinkTransition
 import org.openklas.utils.periodToTime
-import java.util.*
+import java.time.Instant
+import java.time.ZoneOffset
 
 @Composable
-fun Schedule(schedule: List<Timetable.Entry>?, now: Date) {
+fun Schedule(schedule: List<Timetable.Entry>?, now: Instant) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -108,7 +110,7 @@ fun Schedule(schedule: List<Timetable.Entry>?, now: Date) {
 }
 
 @Composable
-fun ScheduleItem(item: Timetable.Entry, now: Date) {
+fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -123,16 +125,16 @@ fun ScheduleItem(item: Timetable.Entry, now: Date) {
 				fontSize = 14.sp
 			)
 
-			val calendar = Calendar.getInstance().apply { this.time = now }
-			val hour = calendar.get(Calendar.HOUR_OF_DAY)
-			val minute = calendar.get(Calendar.MINUTE)
+			val n = remember(now) {
+				now.atOffset(ZoneOffset.of(ZoneOffset.systemDefault().id))
+			}
 
 			val start = periodToTime(item.time)
 			val end = periodToTime(item.time + item.length)
 
 			if(start != null && end != null
-				&& (start.hour < hour || start.hour == hour && start.minute <= minute)
-				&& (hour < end.hour || end.hour == hour && minute <= end.minute)
+				&& (start.hour < n.hour || start.hour == n.hour && start.minute <= n.minute)
+				&& (n.hour < end.hour || end.hour == n.hour && n.minute <= end.minute)
 			) {
 				val alpha by blinkTransition()
 				Box(

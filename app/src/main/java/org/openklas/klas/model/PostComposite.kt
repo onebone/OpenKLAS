@@ -19,6 +19,7 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
+import java.time.ZonedDateTime
 import java.util.Date
 
 data class PostComposite(
@@ -47,7 +48,7 @@ data class PostComposite(
 		@SerializedName("refSort")
 		val orderInCurrentDepth: Int,
 		@SerializedName("registDt")
-		val registerDate: Date,
+		val registerDate: ZonedDateTime,
 		@SerializedName("registerId")
 		val authorId: String,
 		@SerializedName("registerInfo")
@@ -61,7 +62,7 @@ data class PostComposite(
 		@SerializedName("topAt")
 		val isPinned: Boolean,
 		@SerializedName("updtDt")
-		val updateDate: Date,
+		val updateDate: ZonedDateTime,
 		@SerializedName("updusrId")
 		val updateAuthorId: String?,
 		@SerializedName("updusrInfo")

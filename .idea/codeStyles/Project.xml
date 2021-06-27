@@ -4,6 +4,15 @@
       <option name="PACKAGES_TO_USE_STAR_IMPORTS">
         <value />
       </option>
+      <option name="PACKAGES_IMPORT_LAYOUT">
+        <value>
+          <package name="" alias="false" withSubpackages="true" />
+          <package name="java" alias="false" withSubpackages="false" />
+          <package name="javax" alias="false" withSubpackages="false" />
+          <package name="kotlin" alias="false" withSubpackages="false" />
+          <package name="" alias="true" withSubpackages="true" />
+        </value>
+      </option>
       <option name="SPACE_BEFORE_EXTEND_COLON" value="false" />
       <option name="SPACE_BEFORE_WHEN_PARENTHESES" value="false" />
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />

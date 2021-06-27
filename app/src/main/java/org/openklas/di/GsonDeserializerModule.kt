@@ -31,6 +31,7 @@ import org.openklas.klas.deserializer.SyllabusDeserializer
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.deserializer.TimetableDeserializer
 import javax.inject.Singleton
+import org.openklas.klas.deserializer.ZonedDateTimeDeserializer
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -75,5 +76,12 @@ class GsonDeserializerModule {
 	@Singleton
 	fun provideCreditStatusDeserializer(): TypeResolvableJsonDeserializer<*> {
 		return CreditStatusDeserializer()
+	}
+
+	@Provides
+	@IntoSet
+	@Singleton
+	fun provideZonedDateTimeDeserializer(): TypeResolvableJsonDeserializer<*> {
+		return ZonedDateTimeDeserializer()
 	}
 }

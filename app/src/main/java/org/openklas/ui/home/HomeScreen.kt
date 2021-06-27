@@ -20,7 +20,6 @@ package org.openklas.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -40,6 +39,7 @@ import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.utils.diffToShortString
+import java.time.Instant
 import java.util.*
 
 @Composable
@@ -50,7 +50,7 @@ fun HomeScreen(
 	impendingAssignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
 	videos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
 	impendingVideos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
-	now: Date
+	now: Instant
 ) {
 	Column(
 		modifier = Modifier.fillMaxWidth()
@@ -102,7 +102,7 @@ fun OnlineContentListFrame(
 	noOnlineContent: String,
 	items: List<Pair<BriefSubject, OnlineContentEntry>>?,
 	impending: List<Pair<BriefSubject, OnlineContentEntry>>?,
-	now: Date
+	now: Instant
 ) {
 	Column(
 		modifier = Modifier
@@ -202,7 +202,7 @@ fun OnlineContentListFrame(
 @Composable
 fun OnlineContentListItem(
 	item: Pair<BriefSubject, OnlineContentEntry>,
-	now: Date,
+	now: Instant,
 	isImpending: Boolean
 ) {
 	val subject = item.first
@@ -222,7 +222,7 @@ fun OnlineContentListItem(
 	) {
 		Row {
 			Text(
-				text = diffToShortString(LocalContext.current, entry.dueDate, now),
+				text = diffToShortString(LocalContext.current, entry.dueDate.toInstant(), now),
 				modifier = Modifier
 					.align(Alignment.CenterVertically)
 					.background(colorResource(if(isImpending) R.color.red else R.color.green))
@@ -263,7 +263,7 @@ fun HomeScreenPreview() {
 				),
 				now = Calendar.getInstance().apply {
 					set(2021, 5, 8, 16, 0)
-				}.time,
+				}.toInstant(),
 				assignments = listOf(),
 				impendingAssignments = listOf(),
 				videos = listOf(),

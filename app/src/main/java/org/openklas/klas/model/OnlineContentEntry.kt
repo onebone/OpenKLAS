@@ -19,6 +19,7 @@
 package org.openklas.klas.model
 
 import com.google.gson.annotations.SerializedName
+import java.time.ZonedDateTime
 import java.util.Date
 
 // classified by "evltnSe" field
@@ -26,8 +27,8 @@ sealed class OnlineContentEntry {
 	abstract val evltnSe: String
 
 	abstract val title: String
-	abstract val startDate: Date
-	abstract val dueDate: Date
+	abstract val startDate: ZonedDateTime
+	abstract val dueDate: ZonedDateTime
 
 	data class Video(
 		override val evltnSe: String, // lesson
@@ -36,11 +37,11 @@ sealed class OnlineContentEntry {
 		@SerializedName("sbjt")
 		override val title: String,
 		@SerializedName("registDt")
-		val registerDate: Date,
+		val registerDate: ZonedDateTime,
 		@SerializedName("startDate")
-		override val startDate: Date,
+		override val startDate: ZonedDateTime,
 		@SerializedName("endDate")
-		override val dueDate: Date,
+		override val dueDate: ZonedDateTime,
 		@SerializedName("prog")
 		val progress: Int,
 		@SerializedName("rcognTime")
@@ -56,9 +57,9 @@ sealed class OnlineContentEntry {
 		@SerializedName("registDt")
 		val submitDate: Date?,
 		@SerializedName("startDate")
-		override val startDate: Date,
+		override val startDate: ZonedDateTime,
 		@SerializedName("endDate")
-		override val dueDate: Date,
+		override val dueDate: ZonedDateTime,
 		@SerializedName("sbjt")
 		override val title: String,
 		@SerializedName("rcognTime")
@@ -70,7 +71,7 @@ sealed class OnlineContentEntry {
 	data class Quiz(
 		override val evltnSe: String, // quiz
 		@SerializedName("endDate")
-		override val dueDate: Date,
+		override val dueDate: ZonedDateTime,
 		@SerializedName("achivTime")
 		val acquiredTime: Int,
 		@SerializedName("lrnPd")
@@ -86,7 +87,7 @@ sealed class OnlineContentEntry {
 		// length of the lecture
 		val lectureTime: Int,
 		@SerializedName("startDate")
-		override val startDate: Date,
+		override val startDate: ZonedDateTime,
 		@SerializedName("started")
 		val takenAt: Date?,
 		@SerializedName("userId")
@@ -104,9 +105,9 @@ sealed class OnlineContentEntry {
 		@SerializedName("sbjt")
 		override val title: String,
 		@SerializedName("endDate")
-		override val dueDate: Date,
+		override val dueDate: ZonedDateTime,
 		@SerializedName("startDate")
-		override val startDate: Date
+		override val startDate: ZonedDateTime
 	): OnlineContentEntry()
 
 	// TODO add more entry types

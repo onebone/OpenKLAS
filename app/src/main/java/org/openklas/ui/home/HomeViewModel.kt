@@ -37,8 +37,8 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.Resource
+import java.time.ZonedDateTime
 import java.util.Calendar
-import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -63,38 +63,38 @@ class HomeViewModel @Inject constructor(
 	}
 
 	val videos: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
-		val now = Date()
+		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.dueDate
-		}.sortedBy { (_, entry) -> entry.dueDate.time } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
+		}.sortedBy { (_, entry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
 	val impendingVideo: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
-		val now = Date()
+		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate.time - now.time)
+			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate.nano - now.nano)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
 	}
 
 	val homeworks: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
-		val now = Date()
+		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.dueDate
-		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate.time } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
+		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
 	val impendingHomework: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
-		val now = Date()
+		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
 		(it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate.time - now.time)
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate.nano - now.nano)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
 	}
 
@@ -122,8 +122,8 @@ class HomeViewModel @Inject constructor(
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	private fun isImpending(time: Long): Boolean {
-		return 0 < time && time < TimeUnit.HOURS.toMillis(24)
+	private fun isImpending(time: Int): Boolean {
+		return 0 < time && time < TimeUnit.HOURS.toNanos(24)
 	}
 
 	private fun fetchHome(semester: String) {

@@ -52,8 +52,9 @@ import org.openklas.klas.model.VL
 import org.openklas.klas.model.Week
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.utils.Resource
+import java.time.Duration
+import java.time.ZonedDateTime
 import java.util.Date
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -260,7 +261,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 		const val USER_ID = "2019203999ZZ"
 
-		val now = Date()
+		val now: ZonedDateTime = ZonedDateTime.now()
 
 		val SUBJECTS = arrayOf(
 			Subject("U2021100000000015", "01", "0000-5-0000-01", "아인슈타인", "일반상대성이론실험",
@@ -301,15 +302,15 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		val ONLINE_CONTENTS = mapOf(
 			"U2021100000000015" to arrayOf(
 				OnlineContentEntry.Homework(
-					"proj", null, now, Date(now.time + TimeUnit.HOURS.toMillis(2)),
+					"proj", null, ZonedDateTime.now(), now + Duration.ofHours(2),
 					"사건의 지평선 실험1", 40, 0
 				),
 				OnlineContentEntry.Homework(
-					"proj", null, now, Date(now.time + TimeUnit.MINUTES.toMillis(30)),
+					"proj", null, ZonedDateTime.now(), now + Duration.ofMinutes(30),
 					"시공간 왜곡 관찰 보고서", 40, 0
 				),
 				OnlineContentEntry.Video(
-					"lesson", "01", "사건의 지평선 1", now, now, Date(now.time + TimeUnit.MINUTES.toMillis(30)),
+					"lesson", "01", "사건의 지평선 1", now, now, now + Duration.ofMinutes(30),
 					0, 40, 0, "https://example.com/video1.mp4"
 				)
 			)

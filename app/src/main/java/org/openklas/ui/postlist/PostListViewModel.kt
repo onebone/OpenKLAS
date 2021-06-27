@@ -22,8 +22,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import androidx.paging.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.SessionViewModelDelegate
@@ -64,7 +66,7 @@ class PostListViewModel @Inject constructor(
 
 			pagingSource!!
 		}.liveData
-	}
+	}.cachedIn(viewModelScope)
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error

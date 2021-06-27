@@ -40,9 +40,9 @@ import org.openklas.ui.syllabus.page.summary.TUTOR_SECONDARY_PROFESSOR
 import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import java.net.URL
 import java.nio.charset.Charset
-import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.math.abs
+import java.time.Duration
+import java.time.Instant
+import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 fun AssetManager.fileAsString(filename: String): String {
@@ -129,13 +129,14 @@ fun downloadFile(context: Context, url: String, fileName: String) {
 	}
 }
 
-fun diffToShortString(context: Context, a: Date, b: Date): String {
-	val time = a.time - b.time
-	val days = abs(time / TimeUnit.DAYS.toMillis(1))
-	val hours = abs(time / TimeUnit.HOURS.toMillis(1))
-	val minutes = abs(time / TimeUnit.MINUTES.toMillis(1))
+fun diffToShortString(context: Context, a: Instant, b: Instant): String {
+	val duration = Duration.between(b, a)
 
-	val isBefore = time < 0
+	val days = duration.toDays().absoluteValue
+	val hours = duration.toHours().absoluteValue
+	val minutes = duration.toMinutes().absoluteValue
+
+	val isBefore = duration.isNegative
 
 	return if(days > 0) {
 		context.resources.getQuantityString(

@@ -24,13 +24,13 @@ import androidx.compose.ui.res.stringResource
 import org.openklas.R
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.OnlineContentEntry
-import java.util.Date
+import java.time.Instant
 
 @Composable
 fun AssignmentFrame(
 	assignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
 	impending: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
-	now: Date
+	now: Instant
 ) {
 	OnlineContentListFrame(
 		icon = painterResource(R.drawable.ic_tear),
@@ -47,7 +47,7 @@ fun AssignmentFrame(
 fun OnlineVideoFrame(
 	videos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
 	impending: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
-	now: Date
+	now: Instant
 ) {
 	OnlineContentListFrame(
 		icon = painterResource(R.drawable.ic_tear),

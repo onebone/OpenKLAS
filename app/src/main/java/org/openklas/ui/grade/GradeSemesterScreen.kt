@@ -63,6 +63,9 @@ import org.openklas.klas.model.SemesterGrade
 import org.openklas.ui.shared.compose.bottomShadow
 import org.openklas.utils.getGpa
 
+private val CreditColumnWidth = 50.dp
+private val GradeColumnWidth = 50.dp
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GradeSemesterFrame(
@@ -161,7 +164,7 @@ fun SubjectGradeBottomSheetContent(
 			Text(
 				text = subject.subjectName,
 				modifier = Modifier.padding(horizontal = 16.dp),
-				fontSize = 21.sp,
+				fontSize = 18.sp,
 				fontWeight = FontWeight.Bold
 			)
 
@@ -188,19 +191,31 @@ fun SubjectGradeBottomSheetContent(
 				.fillMaxWidth(),
 			verticalAlignment = Alignment.CenterVertically
 		) {
-			Text(
-				text = subject.grade.grade ?: stringResource(id = R.string.grades_grade_no_input),
-				color =
-					if(subject.grade.grade == null)
-						colorResource(R.color.grades_no_input)
-					else
-						Color.Black,
+			Column(
 				modifier = Modifier
+					.padding(16.dp)
 					.weight(1f),
-				fontSize = 45.sp,
-				textAlign = TextAlign.Center,
-				fontWeight = FontWeight.Bold
-			)
+				horizontalAlignment = Alignment.CenterHorizontally
+			) {
+				Text(
+					text = subject.grade.grade ?: stringResource(id = R.string.grades_grade_no_input),
+					color =
+						if(subject.grade.grade == null)
+							colorResource(R.color.grades_no_input)
+						else
+							Color.Black,
+					fontSize = 45.sp,
+					textAlign = TextAlign.Center,
+					fontWeight = FontWeight.Bold
+				)
+
+				if(!subject.grade.hasSettled) {
+					Text(
+						text = stringResource(id = R.string.grades_grade_not_settled),
+						color = Color.Gray
+					)
+				}
+			}
 
 			Column(
 				modifier = Modifier
@@ -296,29 +311,25 @@ fun SubjectGradeListEntry(
 		) {
 			Text(
 				text = grade.subjectName,
-				fontWeight = FontWeight.Bold,
-				fontSize = 18.sp
+				fontWeight = FontWeight.Bold
 			)
 
 			Text(
 				text = grade.department,
-				color = colorResource(id = R.color.grades_department),
-				fontSize = 15.sp
+				color = colorResource(id = R.color.grades_department)
 			)
 		}
 
 		Text(
 			text = grade.credits.toString(),
-			modifier = Modifier
-				.weight(0.2f),
+			modifier = Modifier.width(CreditColumnWidth),
 			textAlign = TextAlign.Center,
 			fontWeight = FontWeight.Bold
 		)
 
 		Text(
 			text = grade.grade.grade ?: stringResource(id = R.string.grades_grade_no_input),
-			modifier = Modifier
-				.weight(0.2f),
+			modifier = Modifier.width(GradeColumnWidth),
 			textAlign = TextAlign.Center,
 			color =
 				if(grade.grade.grade == null) colorResource(id = R.color.grades_no_input)
@@ -344,16 +355,14 @@ fun SubjectGradeListHeader() {
 
 		Text(
 			text = stringResource(id = R.string.common_credits),
-			modifier = Modifier
-				.weight(0.2f),
+			modifier = Modifier.width(CreditColumnWidth),
 			textAlign = TextAlign.Center,
 			fontWeight = FontWeight.Bold
 		)
 
 		Text(
 			text = stringResource(id = R.string.grades_grade),
-			modifier = Modifier
-				.weight(0.2f),
+			modifier = Modifier.width(GradeColumnWidth),
 			textAlign = TextAlign.Center,
 			fontWeight = FontWeight.Bold
 		)

@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -60,6 +61,9 @@ import org.openklas.ui.shared.compose.PieChart
 import org.openklas.ui.shared.compose.PieChartEntry
 import org.openklas.utils.ViewResource
 import org.openklas.utils.getGpa
+
+private val MajorColumnWidth = 50.dp
+private val OverallColumnWidth = 50.dp
 
 @Composable
 fun GradeScreen(
@@ -145,11 +149,15 @@ fun GradeSemesterListFrame(
 
 			Text(
 				text = stringResource(id = R.string.grades_major_gpa_short),
+				modifier = Modifier.width(MajorColumnWidth),
+				textAlign = TextAlign.Center,
 				fontWeight = FontWeight.Bold
 			)
 
 			Text(
 				text = stringResource(id = R.string.grades_overall_gpa_short),
+				modifier = Modifier.width(OverallColumnWidth),
+				textAlign = TextAlign.Center,
 				fontWeight = FontWeight.Bold
 			)
 		}
@@ -213,11 +221,15 @@ fun SemesterEntry(semester: SemesterGrade, onSemesterClick: (SemesterGrade) -> U
 		)
 
 		Text(
-			text = majorGpa.toString()
+			text = majorGpa.toString(),
+			modifier = Modifier.width(MajorColumnWidth),
+			textAlign = TextAlign.Center
 		)
 
 		Text(
-			text = overallGpa.toString()
+			text = overallGpa.toString(),
+			modifier = Modifier.width(OverallColumnWidth),
+			textAlign = TextAlign.Center
 		)
 	}
 }
@@ -429,7 +441,6 @@ fun CreditStatusRow(
 			text = operator,
 			modifier = Modifier.weight(1f),
 			textAlign = TextAlign.End,
-			fontWeight = FontWeight.Bold,
 			color = color
 		)
 

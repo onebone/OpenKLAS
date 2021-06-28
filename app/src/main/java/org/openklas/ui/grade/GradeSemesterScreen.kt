@@ -297,12 +297,13 @@ fun SubjectGradeListEntry(
 			Text(
 				text = grade.subjectName,
 				fontWeight = FontWeight.Bold,
-				fontSize = 15.sp
+				fontSize = 18.sp
 			)
 
 			Text(
 				text = grade.department,
-				color = colorResource(id = R.color.grades_department)
+				color = colorResource(id = R.color.grades_department),
+				fontSize = 15.sp
 			)
 		}
 

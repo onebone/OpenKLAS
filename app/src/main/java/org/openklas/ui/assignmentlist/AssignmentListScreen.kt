@@ -212,7 +212,7 @@ fun MainFrame(
 @Composable
 fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Unit) {
 	val now = ZonedDateTime.now()
-	val durationAfterDue = Duration.between(now, entry.due)
+	val durationAfterDue = Duration.between(entry.due, now)
 
 	Row(modifier = Modifier
 		.clickable { onClickEntry(entry) }

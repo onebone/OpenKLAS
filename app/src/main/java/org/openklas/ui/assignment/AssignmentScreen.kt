@@ -131,7 +131,7 @@ fun DueFrame(assignment: Assignment.Description?) {
 		AssignmentDdayIndicator(
 			modifier = Modifier.padding(8.dp, 0.dp),
 			isSubmitted = assignment.isSubmitted,
-			durationAfterDue = Duration.between(now, assignment.due)
+			durationAfterDue = Duration.between(assignment.due, now)
 		)
 
 		Column(modifier = Modifier

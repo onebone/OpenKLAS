@@ -50,9 +50,7 @@ import androidx.compose.ui.unit.sp
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import org.apache.commons.lang3.time.FastDateFormat
 import org.openklas.R
-import java.util.Locale
 import kotlin.math.absoluteValue
 
 @Composable

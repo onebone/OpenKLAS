@@ -72,6 +72,8 @@
 	<string name="common_credits">학점</string>
 	<string name="common_semester">%1$d년도 %2$d학기</string>
 	<string name="common_subject">과목</string>
+	<string name="common_academic_number">학정 번호</string>
+	<string name="common_certificate_type">인증 구분</string>
 
 	<string name="home">Main</string>
 	<string name="timetable">Timetable</string>

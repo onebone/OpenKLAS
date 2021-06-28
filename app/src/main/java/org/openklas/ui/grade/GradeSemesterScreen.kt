@@ -18,22 +18,34 @@
 
 package org.openklas.ui.grade
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,37 +56,191 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.openklas.R
 import org.openklas.klas.model.SubjectGrade
 import org.openklas.klas.model.SemesterGrade
 import org.openklas.ui.shared.compose.bottomShadow
 import org.openklas.utils.getGpa
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GradeSemesterFrame(
 	grades: SemesterGrade
 ) {
 	var selectedSubject by remember { mutableStateOf<SubjectGrade?>(null) }
 
+	val scope = rememberCoroutineScope()
+
+	val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+	ModalBottomSheetLayout(
+		sheetContent = {
+			if(selectedSubject != null) {
+				val subject = selectedSubject!!
+
+				SubjectGradeBottomSheetContent(subject = subject)
+			}else{
+				// Looks like ModalBottomSheetLayout does not accept empty sheetContent
+				// https://issuetracker.google.com/issues/182882364
+				Box(
+					modifier = Modifier
+						.width(1.dp)
+						.height(1.dp)
+				)
+			}
+		},
+		sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+		sheetState = sheetState
+	) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize()
+		) {
+			Column(
+				modifier = Modifier
+					.fillMaxWidth()
+					.verticalScroll(rememberScrollState()),
+				verticalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				SemesterFrame(grades = grades)
+
+				SemesterGpaFrame(grades = grades)
+
+				SubjectGradeListFrame(
+					grades = grades,
+					onSubjectClick = {
+						selectedSubject = it
+
+						scope.launch {
+							sheetState.show()
+						}
+					}
+				)
+			}
+		}
+	}
+
+	if(sheetState.targetValue == ModalBottomSheetValue.Hidden && sheetState.progress.fraction == 1f) {
+		selectedSubject = null
+	}
+
+	BackHandler(enabled = sheetState.currentValue != ModalBottomSheetValue.Hidden) {
+		scope.launch {
+			sheetState.hide()
+		}
+	}
+}
+
+@Composable
+fun SubjectChip(name: String, color: Color) {
+	Box(
+		modifier = Modifier
+			.background(color, shape = RoundedCornerShape(16.dp))
+			.padding(horizontal = 8.dp, vertical = 2.dp)
+	) {
+		Text(
+			text = name,
+			color = Color.White
+		)
+	}
+}
+
+@Composable
+fun SubjectGradeBottomSheetContent(
+	subject: SubjectGrade
+) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.verticalScroll(rememberScrollState()),
-		verticalArrangement = Arrangement.spacedBy(8.dp)
+			.padding(vertical = 16.dp),
+		verticalArrangement = Arrangement.spacedBy(16.dp)
 	) {
-		SemesterFrame(grades = grades)
+		Column(
+			verticalArrangement = Arrangement.spacedBy(4.dp)
+		) {
+			Text(
+				text = subject.subjectName,
+				modifier = Modifier.padding(horizontal = 16.dp),
+				fontSize = 21.sp,
+				fontWeight = FontWeight.Bold
+			)
 
-		SemesterGpaFrame(grades = grades)
+			Text(
+				text = subject.department,
+				modifier = Modifier.padding(horizontal = 16.dp),
+				color = colorResource(id = R.color.grades_department)
+			)
+		}
 
-		SubjectGradeListFrame(
-			grades = grades,
-			onSubjectClick = {
-				selectedSubject = it
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(horizontal = 16.dp),
+			horizontalArrangement = Arrangement.spacedBy(4.dp)
+		) {
+			if(subject.course.first() == '전') {
+				SubjectChip(name = stringResource(id = R.string.common_major), color = Color.Blue)
 			}
+		}
+
+		Row(
+			modifier = Modifier
+				.fillMaxWidth(),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Text(
+				text = subject.grade.grade ?: stringResource(id = R.string.grades_grade_no_input),
+				color =
+					if(subject.grade.grade == null)
+						colorResource(R.color.grades_no_input)
+					else
+						Color.Black,
+				modifier = Modifier
+					.weight(1f),
+				fontSize = 45.sp,
+				textAlign = TextAlign.Center,
+				fontWeight = FontWeight.Bold
+			)
+
+			Column(
+				modifier = Modifier
+					.padding(16.dp)
+					.wrapContentWidth(
+						align = Alignment.End
+					),
+				verticalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				TextRow(
+					key = stringResource(id = R.string.common_academic_number),
+					value = subject.academicNumber
+				)
+
+				TextRow(
+					key = stringResource(id = R.string.common_certificate_type),
+					value = subject.certName ?: "-"
+				)
+			}
+		}
+	}
+}
+
+@Composable
+fun TextRow(
+	key: String,
+	value: String
+) {
+	Row(
+		horizontalArrangement = Arrangement.spacedBy(4.dp)
+	) {
+		Text(
+			text = key,
+			fontWeight = FontWeight.Bold
+		)
+
+		Text(
+			text = value
 		)
 	}
-
-	// TODO show bottom sheet for [selectSubject]
 }
 
 @Composable

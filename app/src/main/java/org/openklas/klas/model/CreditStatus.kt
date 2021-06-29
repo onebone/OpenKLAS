@@ -26,8 +26,8 @@ data class CreditStatus(
 	data class Credits(
 		val major: Int,
 		val majorRetake: Int,
-		val elective: Int,
-		val electiveRetake: Int,
+		val culture: Int,
+		val cultureRetake: Int,
 		val others: Int,
 		val othersRetake: Int,
 		val sum: Int,

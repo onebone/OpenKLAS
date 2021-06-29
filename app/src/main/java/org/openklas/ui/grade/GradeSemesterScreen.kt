@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -155,16 +156,25 @@ fun SubjectGradeBottomSheetContent(
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(vertical = 16.dp),
+			.padding(vertical = 8.dp),
 		verticalArrangement = Arrangement.spacedBy(16.dp)
 	) {
+		Box(modifier = Modifier.fillMaxWidth()) {
+			Box(
+				modifier = Modifier
+					.background(colorResource(id = R.color.common_drawer), RoundedCornerShape(4.dp))
+					.size(width = 50.dp, height = 8.dp)
+					.align(Alignment.Center)
+			)
+		}
+
 		Column(
 			verticalArrangement = Arrangement.spacedBy(4.dp)
 		) {
 			Text(
 				text = subject.subjectName,
 				modifier = Modifier.padding(horizontal = 16.dp),
-				fontSize = 18.sp,
+				fontSize = 21.sp,
 				fontWeight = FontWeight.Bold
 			)
 
@@ -181,7 +191,7 @@ fun SubjectGradeBottomSheetContent(
 				.padding(horizontal = 16.dp),
 			horizontalArrangement = Arrangement.spacedBy(4.dp)
 		) {
-			if(subject.course.first() == '전') {
+			if(subject.course.isMajor) {
 				SubjectChip(name = stringResource(id = R.string.common_major), color = Color.Blue)
 			}
 		}
@@ -379,7 +389,7 @@ fun SemesterGpaFrame(grades: SemesterGrade) {
 
 	val majorSubjects = remember(overallSubjects) {
 		overallSubjects.filter {
-			it.course.first() == '전'
+			it.course.isMajor
 		}
 	}
 

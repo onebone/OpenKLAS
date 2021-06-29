@@ -203,7 +203,7 @@ fun GradeSemesterList(semesters: List<SemesterGrade>, onSemesterClick: (Semester
 
 @Composable
 fun SemesterEntry(semester: SemesterGrade, onSemesterClick: (SemesterGrade) -> Unit) {
-	val majorGpa = remember(semester) { getGpa(semester.grades.filter { it.course.first() == '전' }) }
+	val majorGpa = remember(semester) { getGpa(semester.grades.filter { it.course.isMajor }) }
 	val overallGpa = remember(semester) { getGpa(semester.grades) }
 
 	Row(
@@ -249,7 +249,7 @@ fun GpaFrame(grades: ViewResource<List<SemesterGrade>>) {
 			}
 
 			val majorGrades = remember(flattenGrades) {
-				flattenGrades.filter { it.course.first() == '전' }
+				flattenGrades.filter { it.course.isMajor }
 			}
 
 			val majorGpa = remember(majorGrades) { getGpa(majorGrades) }
@@ -452,7 +452,7 @@ fun CreditStatusRow(
 		)
 
 		Text(
-			text = credits.elective.toString(),
+			text = credits.culture.toString(),
 			modifier = Modifier.weight(1f),
 			textAlign = TextAlign.End,
 			color = color

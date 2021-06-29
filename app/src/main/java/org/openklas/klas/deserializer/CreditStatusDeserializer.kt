@@ -39,8 +39,8 @@ class CreditStatusDeserializer: TypeResolvableJsonDeserializer<CreditStatus> {
 			applied = CreditStatus.Credits(
 				major = obj["majorApplyHakjum"].asInt,
 				majorRetake = obj["retakeMajorApplyHakjum"].asInt,
-				elective = obj["cultureApplyHakjum"].asInt,
-				electiveRetake = obj["retakeCultureApplyHakjum"].asInt,
+				culture = obj["cultureApplyHakjum"].asInt,
+				cultureRetake = obj["retakeCultureApplyHakjum"].asInt,
 				others = obj["etcApplyHakjum"].asInt,
 				othersRetake = obj["retakeEtcApplyHakjum"].asInt,
 				sum = obj["applyHakjum"].asInt,
@@ -49,8 +49,8 @@ class CreditStatusDeserializer: TypeResolvableJsonDeserializer<CreditStatus> {
 			deleted = CreditStatus.Credits(
 				major = obj["majorDelHakjum"].asInt,
 				majorRetake = obj["retakeMajorDelHakjum"].asInt,
-				elective = obj["cultureDelHakjum"].asInt,
-				electiveRetake = obj["retakeCultureDelHakjum"].asInt,
+				culture = obj["cultureDelHakjum"].asInt,
+				cultureRetake = obj["retakeCultureDelHakjum"].asInt,
 				others = obj["etcDelHakjum"].asInt,
 				othersRetake = obj["retakeEtcDelHakjum"].asInt,
 				sum = obj["delHakjum"].asInt,
@@ -59,8 +59,8 @@ class CreditStatusDeserializer: TypeResolvableJsonDeserializer<CreditStatus> {
 			acquired = CreditStatus.Credits(
 				major = obj["majorChidukHakjum"].asInt,
 				majorRetake = obj["retakeMajorDelHakjum"].asInt,
-				elective = obj["cultureChidukHakjum"].asInt,
-				electiveRetake = obj["retakeCultureDelHakjum"].asInt,
+				culture = obj["cultureChidukHakjum"].asInt,
+				cultureRetake = obj["retakeCultureDelHakjum"].asInt,
 				others = obj["etcChidukHakjum"].asInt,
 				othersRetake = obj["retakeEtcDelHakjum"].asInt,
 				sum = obj["chidukHakjum"].asInt,

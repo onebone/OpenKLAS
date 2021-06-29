@@ -68,6 +68,35 @@ value class Grade(
 	}
 }
 
+@JvmInline
+value class CourseType(
+	val value: String
+) {
+	val isMajor: Boolean
+		get() = value.first() == '전'
+
+	val isCulture: Boolean
+		get() = value.first() == '교'
+
+	val isGeneral: Boolean
+		get() = value.first() == '일'
+
+	val isSecondMajor: Boolean
+		get() = value.first() == '복'
+
+	val isMinor: Boolean
+		get() = value.first() == '부'
+
+	val isBasic: Boolean
+		get() = value.first() == '기'
+
+	val isRequired: Boolean
+		get() = value.last() == '필'
+
+	val isElective: Boolean
+		get() = value.last() == '선'
+}
+
 data class SubjectGrade(
 	@SerializedName("certname")
 	val certName: String?,
@@ -78,7 +107,7 @@ data class SubjectGrade(
 	@SerializedName("hakjungNo")
 	val academicNumber: String,
 	@SerializedName("codeName1")
-	val course: String,
+	val course: CourseType,
 	@SerializedName("hakjumNum")
 	val credits: Int,
 	@SerializedName("retakeOpt")

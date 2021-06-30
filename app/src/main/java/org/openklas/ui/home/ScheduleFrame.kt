@@ -109,6 +109,9 @@ fun Schedule(schedule: List<Timetable.Entry>?, now: Instant) {
 	}
 }
 
+private val TimeColumnWidth = 50.dp
+private val ClassroomColumnWidth = 60.dp
+
 @Composable
 fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 	Row(
@@ -116,7 +119,10 @@ fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 			.fillMaxWidth()
 			.padding(8.dp)
 	) {
-		Column {
+		Column(
+			modifier = Modifier.width(TimeColumnWidth),
+			horizontalAlignment = Alignment.CenterHorizontally
+		) {
 			// TODO respect timezone
 			val time = periodToTime(item.time)
 
@@ -139,7 +145,6 @@ fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 				val alpha by blinkTransition()
 				Box(
 					modifier = Modifier
-						.align(Alignment.CenterHorizontally)
 						.size(8.dp)
 						.background(
 							colorResource(R.color.red).copy(alpha = alpha),
@@ -168,7 +173,9 @@ fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 
 		Text(
 			text = item.classroom,
-			modifier = Modifier.align(Alignment.CenterVertically),
+			modifier = Modifier
+				.align(Alignment.CenterVertically)
+				.width(ClassroomColumnWidth),
 			fontSize = 14.sp
 		)
 	}

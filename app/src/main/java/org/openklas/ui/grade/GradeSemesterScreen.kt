@@ -124,7 +124,7 @@ fun GradeSemesterFrame(
 		}
 	}
 
-	if(sheetState.targetValue == ModalBottomSheetValue.Hidden && sheetState.progress.fraction == 1f) {
+	if(sheetState.targetValue == ModalBottomSheetValue.Hidden && sheetState.progress.fraction == 0f) {
 		selectedSubject = null
 	}
 

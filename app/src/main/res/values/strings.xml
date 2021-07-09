@@ -172,7 +172,7 @@
 	<string name="assignment_done">제출</string>
 	<string name="assignment_undone">미제출</string>
 
-	<string name="assignment_due_not_23_59">마감이 %d시 %d분이에요. 23시 59분에 제출하지 않도록 주의해주세요!</string>
+	<string name="assignment_due_not_23_59">마감이 %1$d시 %2$d분이에요. 23시 59분에 제출하지 않도록 주의해주세요!</string>
 
 	<string name="grades">성적 조회</string>
 	<string name="grades_credit_status">학점 현황</string>

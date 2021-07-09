@@ -41,7 +41,7 @@ class PieChartView @JvmOverloads constructor(
 	var entries = arrayOf<Entry>()
 		set(value) {
 			field = value
-			totalValue = entries.sumBy { it.value }
+			totalValue = entries.sumOf { it.value }
 
 			invalidate()
 		}

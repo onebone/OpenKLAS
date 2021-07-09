@@ -43,14 +43,14 @@ value class Grade(
 	val grade: String?
 		get() = AvailableGrades.find { value.startsWith(it) }
 
-	val gpa: Double?
-		get() = GpaMap[grade]
+	val point: Double?
+		get() = PointMap[grade]
 
 	val isGpaCounted: Boolean
-		get() = grade in GpaMap
+		get() = grade in PointMap
 
 	companion object {
-		private val GpaMap = mapOf(
+		private val PointMap = mapOf(
 			"A+" to 4.5,
 			"A0" to 4.0,
 			"B+" to 3.5,

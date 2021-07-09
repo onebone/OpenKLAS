@@ -41,7 +41,8 @@ import org.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import java.net.URL
 import java.nio.charset.Charset
 import java.time.Duration
-import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.absoluteValue
 import kotlin.math.floor
 
@@ -129,8 +130,8 @@ fun downloadFile(context: Context, url: String, fileName: String) {
 	}
 }
 
-fun diffToShortString(context: Context, a: Instant, b: Instant): String {
-	val duration = Duration.between(b, a)
+fun dateToShortString(context: Context, target: ZonedDateTime, now: ZonedDateTime): String {
+	val duration = Duration.between(now, target)
 
 	val days = duration.toDays().absoluteValue
 	val hours = duration.toHours().absoluteValue
@@ -138,7 +139,10 @@ fun diffToShortString(context: Context, a: Instant, b: Instant): String {
 
 	val isBefore = duration.isNegative
 
-	return if(days > 0) {
+	return if(days > 30) {
+		val formatter = DateTimeFormatter.ofPattern(context.resources.getString(R.string.common_date_format_short))
+		target.format(formatter)
+	}else if(days > 0) {
 		context.resources.getQuantityString(
 			if(isBefore) R.plurals.common_time_day_ago
 			else R.plurals.common_left_time_day,

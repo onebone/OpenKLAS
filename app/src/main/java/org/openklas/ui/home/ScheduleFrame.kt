@@ -29,7 +29,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -42,11 +41,10 @@ import org.openklas.R
 import org.openklas.klas.model.Timetable
 import org.openklas.ui.shared.compose.blinkTransition
 import org.openklas.utils.periodToTime
-import java.time.Instant
-import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Composable
-fun Schedule(schedule: List<Timetable.Entry>?, now: Instant) {
+fun Schedule(schedule: List<Timetable.Entry>?, now: ZonedDateTime) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -113,7 +111,7 @@ private val TimeColumnWidth = 50.dp
 private val ClassroomColumnWidth = 60.dp
 
 @Composable
-fun ScheduleItem(item: Timetable.Entry, now: Instant) {
+fun ScheduleItem(item: Timetable.Entry, now: ZonedDateTime) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -131,16 +129,12 @@ fun ScheduleItem(item: Timetable.Entry, now: Instant) {
 				fontSize = 14.sp
 			)
 
-			val n = remember(now) {
-				now.atZone(ZoneId.systemDefault())
-			}
-
 			val start = periodToTime(item.time)
 			val end = periodToTime(item.time + item.length)
 
 			if(start != null && end != null
-				&& (start.hour < n.hour || start.hour == n.hour && start.minute <= n.minute)
-				&& (n.hour < end.hour || end.hour == n.hour && n.minute <= end.minute)
+				&& (start.hour < now.hour || start.hour == now.hour && start.minute <= now.minute)
+				&& (now.hour < end.hour || end.hour == now.hour && now.minute <= end.minute)
 			) {
 				val alpha by blinkTransition()
 				Box(

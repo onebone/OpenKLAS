@@ -36,7 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.widget.AppbarView
-import java.time.Instant
+import java.time.ZonedDateTime
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -68,7 +68,7 @@ class HomeFragment: BaseFragment() {
 						HomeScreen(
 							currentSemester = currentSemester,
 							schedule = scheduleToday?.toList(),
-							now = Instant.now(),
+							now = ZonedDateTime.now(),
 							assignments = assignments,
 							impendingAssignments = impendingAssignments,
 							videos = videos,

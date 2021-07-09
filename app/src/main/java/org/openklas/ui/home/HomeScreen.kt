@@ -33,14 +33,14 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.ZoneId
 import org.openklas.R
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.OnlineContentEntry
 import org.openklas.klas.model.Semester
 import org.openklas.klas.model.Timetable
-import org.openklas.utils.diffToShortString
-import java.time.Instant
-import java.util.*
+import org.openklas.utils.dateToShortString
+import java.time.ZonedDateTime
 
 @Composable
 fun HomeScreen(
@@ -50,7 +50,7 @@ fun HomeScreen(
 	impendingAssignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
 	videos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
 	impendingVideos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
-	now: Instant
+	now: ZonedDateTime
 ) {
 	Column(
 		modifier = Modifier.fillMaxWidth()
@@ -102,7 +102,7 @@ fun OnlineContentListFrame(
 	noOnlineContent: String,
 	items: List<Pair<BriefSubject, OnlineContentEntry>>?,
 	impending: List<Pair<BriefSubject, OnlineContentEntry>>?,
-	now: Instant
+	now: ZonedDateTime
 ) {
 	Column(
 		modifier = Modifier
@@ -202,7 +202,7 @@ fun OnlineContentListFrame(
 @Composable
 fun OnlineContentListItem(
 	item: Pair<BriefSubject, OnlineContentEntry>,
-	now: Instant,
+	now: ZonedDateTime,
 	isImpending: Boolean
 ) {
 	val subject = item.first
@@ -222,7 +222,7 @@ fun OnlineContentListItem(
 	) {
 		Row {
 			Text(
-				text = diffToShortString(LocalContext.current, entry.dueDate.toInstant(), now),
+				text = dateToShortString(LocalContext.current, entry.dueDate, now),
 				modifier = Modifier
 					.align(Alignment.CenterVertically)
 					.background(colorResource(if(isImpending) R.color.red else R.color.green))
@@ -261,9 +261,7 @@ fun HomeScreenPreview() {
 					Timetable.Entry(1, 3, "M87", "아인슈타인", 2, "일반상대성이론실험", "", "", 1),
 					Timetable.Entry(1, 5, "미지정", "히키가야 하치만", 1, "5개기본호흡", "", "", 2)
 				),
-				now = Calendar.getInstance().apply {
-					set(2021, 5, 8, 16, 0)
-				}.toInstant(),
+				now = ZonedDateTime.of(2021, 5, 8, 16, 0, 0, 0, ZoneId.of("Asia/Seoul")),
 				assignments = listOf(),
 				impendingAssignments = listOf(),
 				videos = listOf(),

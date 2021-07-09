@@ -58,6 +58,7 @@
 		<item quantity="two">이틀 전</item>
 		<item quantity="other">%1$s일 전</item>
 	</plurals>
+	<string name="common_date_format_short">yyyy/MM/dd</string>
 
 	<string name="common_semester_dialog_title">학기 선택</string>
 	<string name="common_subject_dialog_title">과목 선택</string>

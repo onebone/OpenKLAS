@@ -66,7 +66,8 @@ data class Board(
 		@SerializedName("refLvl")
 		val referenceLevel: Int,
 		// refSort
-		val registeredAt: ZonedDateTime,
+		@SerializedName("registDt")
+		val registerDate: ZonedDateTime,
 		val registerId: String,
 		// rnum
 		@SerializedName("sortOrdr")

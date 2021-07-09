@@ -24,6 +24,7 @@
 
 	<data>
 		<import type="android.view.View" />
+		<import type="org.openklas.utils.Utils" />
 
 		<variable
 			name="post"
@@ -62,24 +63,48 @@
 				tools:text="Lorem ipsum" />
 
 			<TextView
-				android:id="@+id/tv_post_hits"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintLeft_toLeftOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/tv_post_title"
-				android:layout_marginTop="2dp"
-				android:text="@{@string/post_hits(post.hits)}"
-				tools:text="Hits: 12" />
-
-			<TextView
 				android:id="@+id/tv_post_author"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				app:layout_constraintLeft_toRightOf="@id/tv_post_hits"
-				app:layout_constraintTop_toTopOf="@id/tv_post_hits"
-				android:layout_marginStart="8dp"
-				android:text="@{@string/post_author(post.author)}"
+				app:layout_constraintStart_toStartOf="@id/tv_post_title"
+				app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+				android:layout_marginTop="2dp"
+				android:text="@{post.author}"
+				android:textColor="@color/primary"
 				tools:text="Author: dolor sit" />
+
+			<TextView
+				android:id="@+id/tv_post_date"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="@id/tv_post_author"
+				app:layout_constraintStart_toEndOf="@id/tv_post_author"
+				android:layout_marginStart="8dp"
+				app:dateShort="@{post.registerDate}"
+				android:textColor="@color/text_sub"
+				tools:text="1 day ago" />
+
+			<View
+				android:id="@+id/v_divider_1"
+				android:layout_width="2dp"
+				android:layout_height="2dp"
+				app:layout_constraintTop_toTopOf="@id/tv_post_date"
+				app:layout_constraintBottom_toBottomOf="@id/tv_post_date"
+				app:layout_constraintStart_toEndOf="@id/tv_post_date"
+				android:layout_marginStart="8dp"
+				android:background="@drawable/circle_divider" />
+
+			<TextView
+				android:id="@+id/tv_post_hits"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintStart_toEndOf="@id/v_divider_1"
+				app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+				android:layout_marginTop="2dp"
+				android:layout_marginStart="8dp"
+				android:text="@{@string/post_hits(post.hits)}"
+				android:textColor="@color/text_sub"
+				tools:text="Hits: 12" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -23,7 +23,7 @@ import org.openklas.klas.model.Semester
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.klas.model.PostType
 
-data class PostListQuery(
+internal data class PostListQuery(
 	val semester: Semester,
 	val subject: BriefSubject,
 	val type: PostType,

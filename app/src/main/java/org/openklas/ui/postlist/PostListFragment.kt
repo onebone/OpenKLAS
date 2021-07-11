@@ -24,7 +24,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
@@ -83,8 +85,12 @@ class PostListFragment: BaseFragment() {
 
 		binding.rvPosts.adapter = adapter
 
-		viewModel.posts.observe(viewLifecycleOwner) {
-			adapter.submitData(lifecycle, it)
+		lifecycleScope.launch {
+			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.posts.collectLatest {
+					adapter.submitData(it)
+				}
+			}
 		}
 
 		lifecycleScope.launch {

@@ -26,7 +26,7 @@ import org.openklas.base.list.SimpleDiffUtil
 import org.openklas.databinding.PostItemBinding
 import org.openklas.klas.model.Board
 
-class PostListAdapter(
+internal class PostListAdapter(
 	private val onClickEntryListener: (Board.Entry) -> Unit
 ): PagingDataAdapter<Board.Entry, PostListAdapter.ViewHolder>(SimpleDiffUtil({ it.boardNo })) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

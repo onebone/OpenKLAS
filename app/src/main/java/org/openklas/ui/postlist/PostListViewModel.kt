@@ -20,13 +20,12 @@ package org.openklas.ui.postlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import androidx.paging.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.base.SubjectViewModelDelegate
@@ -35,6 +34,15 @@ import org.openklas.klas.model.PostType
 import org.openklas.klas.request.BoardSearchCriteria
 import org.openklas.repository.KlasRepository
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
 class PostListViewModel @Inject constructor(
@@ -43,68 +51,71 @@ class PostListViewModel @Inject constructor(
 	subjectViewModelDelegate: SubjectViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SubjectViewModelDelegate by subjectViewModelDelegate {
-	private var postType: PostType? = null
+
 	private var filter: Filter? = null
 
-	private val _isInitialLoading = MutableLiveData(true)
-	val isInitialLoading: LiveData<Boolean> = _isInitialLoading
+	private val postType = MutableSharedFlow<PostType>(
+		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+	)
 
 	private var pagingSource: PostListSource? = null
 
-	val posts = Transformations.switchMap(currentSubject) {
+	private val query = combine(
+		currentSemester.asFlow(),
+		currentSubject.asFlow(),
+		postType.distinctUntilChanged()
+	) { semester, subject, postType ->
+		PostListQuery(
+			semester = semester,
+			subject = subject,
+			type = postType,
+			searchCriteria = filter?.criteria ?: BoardSearchCriteria.ALL,
+			keyword = filter?.keyword
+		)
+	}
+
+	@OptIn(ExperimentalCoroutinesApi::class)
+	val posts = query.flatMapLatest {
 		Pager(
 			config = PagingConfig(
 				pageSize = 15
 			)
 		) {
-			pagingSource = PostListSource(
+			pagingSource?.invalidate()
+
+			val source = PostListSource(
 				klasRepository = klasRepository,
 				sessionViewModelDelegate = sessionViewModelDelegate,
-				query = buildQuery(),
+				query = it,
 				errorHandler = { _error.value = it },
-				pageInfoCallback = { pageInfo.postValue(it) }
+				pageInfoCallback = { pageInfo.emit(it) }
 			)
+			pagingSource = source
 
-			pagingSource!!
-		}.liveData
+			source
+		}.flow
 	}.cachedIn(viewModelScope)
 
 	private val _error = MutableLiveData<Throwable>()
 	val error: LiveData<Throwable> = _error
 
-	private val pageInfo = MutableLiveData<Board.PageInfo>()
-	val postCount: LiveData<Int> = Transformations.map(pageInfo) {
-		it.totalPosts
-	}
-
-	private fun hasQuery(): Boolean {
-		return postType != null && currentSubject.value != null && currentSemester.value != null
-	}
+	private val pageInfo = MutableSharedFlow<Board.PageInfo?>(
+		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+	)
+	val postCount = pageInfo.map {
+		it?.totalPosts
+	}.stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(), null)
 
 	fun setPostType(type: PostType) {
-		if(postType != type) {
-			postType = type
-
-			pagingSource?.invalidate()
-		}
+		postType.tryEmit(type)
 	}
 
 	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
+		if(filter?.criteria == criteria && filter?.keyword == keyword) return
+
 		filter = Filter(criteria, keyword)
 
 		pagingSource?.invalidate()
-	}
-
-	private fun buildQuery(): PostListQuery? {
-		return if(hasQuery())
-			PostListQuery(
-				currentSemester.value!!,
-				currentSubject.value!!,
-				postType!!,
-				filter?.criteria ?: BoardSearchCriteria.ALL,
-				filter?.keyword
-			)
-		else null
 	}
 
 	internal data class Filter(

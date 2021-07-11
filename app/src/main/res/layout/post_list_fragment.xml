@@ -177,7 +177,7 @@
 					android:layout_height="wrap_content"
 					android:text="@string/post_list_none"
 					android:textColor="@color/gray"
-					android:visibility="@{viewModel.isInitialLoading || viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
+					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
 					app:layout_constraintBottom_toBottomOf="@id/rv_posts"
 					app:layout_constraintLeft_toLeftOf="@id/rv_posts"
 					app:layout_constraintRight_toRightOf="@id/rv_posts"

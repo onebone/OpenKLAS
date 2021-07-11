@@ -26,12 +26,12 @@ import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.Resource
 
-class PostListSource(
+internal class PostListSource(
 	private val klasRepository: KlasRepository,
 	private val sessionViewModelDelegate: SessionViewModelDelegate,
 	private val query: PostListQuery?,
-	private val errorHandler: (Throwable) -> Unit,
-	private val pageInfoCallback: (Board.PageInfo) -> Unit,
+	private val errorHandler: suspend (Throwable) -> Unit,
+	private val pageInfoCallback: suspend (Board.PageInfo) -> Unit,
 ): PagingSource<Int, Board.Entry>(), SessionViewModelDelegate by sessionViewModelDelegate {
 	override fun getRefreshKey(state: PagingState<Int, Board.Entry>): Int? {
 		return state.anchorPosition

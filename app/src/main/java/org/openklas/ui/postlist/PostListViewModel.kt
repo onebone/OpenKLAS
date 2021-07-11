@@ -102,6 +102,7 @@ class PostListViewModel @Inject constructor(
 	private val pageInfo = MutableSharedFlow<Board.PageInfo?>(
 		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
 	)
+	// https://github.com/Kotlin/kotlinx.coroutines/issues/2631
 	val postCount = pageInfo.map {
 		it?.totalPosts
 	}.stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(), null)

@@ -31,10 +31,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.PostListFragmentBinding
@@ -85,21 +84,25 @@ class PostListFragment: BaseFragment() {
 
 		binding.rvPosts.adapter = adapter
 
-		lifecycleScope.launch {
-			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-				viewModel.posts.collectLatest {
-					adapter.submitData(it)
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				launch {
+					viewModel.posts.collectLatest {
+						adapter.submitData(it)
+					}
 				}
-			}
-		}
 
-		lifecycleScope.launch {
-			// no way to process this in view model??
-			adapter.loadStateFlow.collectLatest {
-				withContext(Dispatchers.Main) {
-					binding.shimmerBackLayer.visibility =
-						if(it.refresh is LoadState.Loading) View.VISIBLE
-						else View.GONE
+				// no way to bind loadStateFlow in view model??
+				launch {
+					adapter.loadStateFlow.distinctUntilChangedBy { it.refresh }.collectLatest {
+						if(it.refresh is LoadState.Loading) {
+							binding.shimmerBackLayer.visibility = View.VISIBLE
+							binding.rvPosts.visibility = View.INVISIBLE
+						}else{
+							binding.shimmerBackLayer.visibility = View.GONE
+							binding.rvPosts.visibility = View.VISIBLE
+						}
+					}
 				}
 			}
 		}

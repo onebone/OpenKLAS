@@ -59,6 +59,7 @@ class PostListViewModel @Inject constructor(
 		) {
 			pagingSource = PostListSource(
 				klasRepository = klasRepository,
+				sessionViewModelDelegate = sessionViewModelDelegate,
 				query = buildQuery(),
 				errorHandler = { _error.value = it },
 				pageInfoCallback = { pageInfo.postValue(it) }

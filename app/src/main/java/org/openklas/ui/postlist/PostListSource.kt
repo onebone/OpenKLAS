@@ -20,6 +20,7 @@ package org.openklas.ui.postlist
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import org.openklas.base.SessionViewModelDelegate
 import org.openklas.klas.model.Board
 import org.openklas.klas.model.PostType
 import org.openklas.repository.KlasRepository
@@ -27,10 +28,11 @@ import org.openklas.utils.Resource
 
 class PostListSource(
 	private val klasRepository: KlasRepository,
+	private val sessionViewModelDelegate: SessionViewModelDelegate,
 	private val query: PostListQuery?,
 	private val errorHandler: (Throwable) -> Unit,
 	private val pageInfoCallback: (Board.PageInfo) -> Unit,
-): PagingSource<Int, Board.Entry>() {
+): PagingSource<Int, Board.Entry>(), SessionViewModelDelegate by sessionViewModelDelegate {
 	override fun getRefreshKey(state: PagingState<Int, Board.Entry>): Int? {
 		return state.anchorPosition
 	}
@@ -42,9 +44,7 @@ class PostListSource(
 			data = listOf(), prevKey = null, nextKey = null
 		)
 
-		val result = request(query, key)
-
-		return when(result) {
+		return when(val result = request(query, key)) {
 			is Resource.Error -> {
 				errorHandler(result.error)
 				LoadResult.Error(result.error)
@@ -65,10 +65,12 @@ class PostListSource(
 	}
 
 	private suspend fun request(query: PostListQuery, page: Int): Resource<Board> {
-		return when(query.type) {
-			PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
-			PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
-			PostType.QNA -> klasRepository.getQnas(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+		return requestWithSession {
+			when(query.type) {
+				PostType.NOTICE -> klasRepository.getNotices(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+				PostType.LECTURE_MATERIAL -> klasRepository.getLectureMaterials(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+				PostType.QNA -> klasRepository.getQnas(query.semester.id, query.subject.id, page, query.searchCriteria, query.keyword)
+			}
 		}
 	}
 }

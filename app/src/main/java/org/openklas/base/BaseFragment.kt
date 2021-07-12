@@ -29,7 +29,10 @@ import org.openklas.widget.AppbarView
 
 abstract class BaseFragment: Fragment() {
 	private var appbarHolder: AppbarHolder? = null
-	private var appbarConfiguration: AppbarConfiguration? = null
+
+	private val appbarConfiguration by lazy {
+		AppbarConfiguration("", AppbarView.HeaderType.NONE, AppbarView.SearchType.NONE, null)
+	}
 
 	protected var permissionHolder: PermissionHolder? = null
 		private set
@@ -52,12 +55,6 @@ abstract class BaseFragment: Fragment() {
 		appbarHolder = null
 	}
 
-	private fun ensureAppbarConfiguration() {
-		if(appbarConfiguration == null) {
-			appbarConfiguration = AppbarConfiguration("", AppbarView.HeaderType.NONE, AppbarView.SearchType.NONE, null)
-		}
-	}
-
 	fun configureTitle(title: String, headerType: AppbarView.HeaderType, searchType: AppbarView.SearchType) {
 		if(appbarHolder == null) {
 			throw RuntimeException("configureTitle() is called, but the fragment is not attached to AppbarHolder")
@@ -65,8 +62,7 @@ abstract class BaseFragment: Fragment() {
 
 		appbarHolder!!.configureAppbar(title, headerType, searchType)
 
-		ensureAppbarConfiguration()
-		appbarConfiguration!!.apply {
+		appbarConfiguration.apply {
 			this.title = title
 			this.headerType = headerType
 			this.searchType = searchType
@@ -80,8 +76,7 @@ abstract class BaseFragment: Fragment() {
 
 		appbarHolder!!.setAppbarOnClickSearchListener(listener)
 
-		ensureAppbarConfiguration()
-		appbarConfiguration!!.apply {
+		appbarConfiguration.apply {
 			onClickSearchListener = listener
 		}
 	}
@@ -93,8 +88,7 @@ abstract class BaseFragment: Fragment() {
 
 		appbarHolder!!.setAppbarSearchState(search)
 
-		ensureAppbarConfiguration()
-		appbarConfiguration!!.apply {
+		appbarConfiguration.apply {
 			searchType = if(search) AppbarView.SearchType.SEARCH else AppbarView.SearchType.CANCEL
 		}
 	}
@@ -102,7 +96,7 @@ abstract class BaseFragment: Fragment() {
 	override fun onResume() {
 		super.onResume()
 
-		appbarConfiguration?.let {
+		appbarConfiguration.let {
 			appbarHolder?.configureAppbar(it.title, it.headerType, it.searchType)
 
 			appbarHolder?.setAppbarOnClickSearchListener(it.onClickSearchListener)

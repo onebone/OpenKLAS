@@ -21,12 +21,12 @@ package org.openklas.ui.grade
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import org.openklas.base.SessionViewModelDelegate
 import org.openklas.repository.KlasRepository
 import org.openklas.utils.ViewResource
+import org.openklas.utils.sharedFlow
 import org.openklas.utils.transform
 import javax.inject.Inject
 
@@ -35,39 +35,33 @@ class GradeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
-	val grades = flow {
+	private val retryTrigger = Channel<Unit>(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+	val grades = sharedFlow(retryTrigger, viewModelScope) {
 		emit(ViewResource.Loading())
 
 		emit(requestWithSession {
 			klasRepository.getGrades()
 		}.transform())
-	}.shareIn(
-		scope = viewModelScope,
-		started = SharingStarted.WhileSubscribed(),
-		replay = 1
-	)
+	}
 
-	val schoolRegister = flow {
+	val schoolRegister = sharedFlow(retryTrigger, viewModelScope) {
 		emit(ViewResource.Loading())
 
 		emit(requestWithSession {
 			klasRepository.getSchoolRegister()
 		}.transform())
-	}.shareIn(
-		scope = viewModelScope,
-		started = SharingStarted.WhileSubscribed(),
-		replay = 1
-	)
+	}
 
-	val creditStatus = flow {
+	val creditStatus = sharedFlow(retryTrigger, viewModelScope) {
 		emit(ViewResource.Loading())
 
 		emit(requestWithSession {
 			klasRepository.getCreditStatus()
 		}.transform())
-	}.shareIn(
-		scope = viewModelScope,
-		started = SharingStarted.WhileSubscribed(),
-		replay = 1
-	)
+	}
+
+	fun retry() {
+		retryTrigger.trySend(Unit)
+	}
 }

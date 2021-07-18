@@ -18,17 +18,19 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Professor (
-	@SerializedName("telNum")
+	@SerialName("telNum")
 	val telephone: String,
-	@SerializedName("labLocation")
+	@SerialName("labLocation")
 	val lab: String,
-	@SerializedName("kname")
+	@SerialName("kname")
 	val koreanName: String,
-	@SerializedName("email")
+	@SerialName("email")
 	val email: String,
-	@SerializedName("counselTime")
+	@SerialName("counselTime")
 	val counselTime: String?
 )

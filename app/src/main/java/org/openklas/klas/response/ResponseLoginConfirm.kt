@@ -18,19 +18,22 @@
 
 package org.openklas.klas.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ResponseLoginConfirm (
 	val errorCount: Int,
 	// fieldErrors: Array<?>
 	val loginRequired: Boolean,
 	val redirect: Boolean,
 	val redirectUrl: String,
-	@SerializedName("response")
+	@SerialName("response")
 	val response: ResponseLoginConfirmData,
 	val responseText: String
 )
 
+@Serializable
 data class ResponseLoginConfirmData (
 	// frstPwdAt?
 	// pushToken?

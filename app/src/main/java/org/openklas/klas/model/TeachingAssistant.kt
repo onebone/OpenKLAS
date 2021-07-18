@@ -18,13 +18,15 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TeachingAssistant(
-	@SerializedName("name")
+	@SerialName("name")
 	val name: String,
-	@SerializedName("astntemail")
+	@SerialName("astntemail")
 	val email: String,
-	@SerializedName("subj")
+	@SerialName("subj")
 	val subject: String
 )

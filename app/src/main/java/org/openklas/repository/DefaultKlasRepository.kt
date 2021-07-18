@@ -60,7 +60,7 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getHome(semester)
 	}
 
-	override suspend fun getSemesters(): Resource<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<List<Semester>> {
 		return klasDataSource.getSemesters()
 	}
 

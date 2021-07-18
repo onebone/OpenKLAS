@@ -18,6 +18,7 @@
 
 package org.openklas.klas.service
 
+import kotlinx.serialization.Serializable
 import org.openklas.klas.KlasUri
 import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.Attachment
@@ -53,6 +54,11 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+@Serializable
+class Empty
+
+internal val EmptyObject = Empty()
+
 interface KlasService {
 	@POST(KlasUri.STD_TEST_SESSION)
 	suspend fun testSession(): Response<Unit>
@@ -67,7 +73,7 @@ interface KlasService {
 	suspend fun home(@Body payload: RequestHome): Response<Home>
 
 	@POST(KlasUri.STD_SEMESTERS)
-	suspend fun semesters(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<Array<Semester>>
+	suspend fun semesters(@Body payload: Empty = EmptyObject): Response<List<Semester>>
 
 	@POST(KlasUri.STD_NOTICE_LIST)
 	suspend fun notices(@Body payload: RequestPostList): Response<Board>
@@ -115,11 +121,11 @@ interface KlasService {
 	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>
 
 	@POST(KlasUri.STD_GRADES)
-	suspend fun grades(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<List<SemesterGrade>>
+	suspend fun grades(@Body payload: Empty = EmptyObject): Response<List<SemesterGrade>>
 
 	@POST(KlasUri.STD_CREDIT_STATUS)
-	suspend fun creditStatus(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<CreditStatus>
+	suspend fun creditStatus(@Body payload: Empty = EmptyObject): Response<CreditStatus>
 
 	@POST(KlasUri.STD_SCHOOL_REGISTER)
-	suspend fun schoolRegister(@Body payload: Any = mapOf<Nothing, Nothing>()): Response<SchoolRegister>
+	suspend fun schoolRegister(@Body payload: Empty = EmptyObject): Response<SchoolRegister>
 }

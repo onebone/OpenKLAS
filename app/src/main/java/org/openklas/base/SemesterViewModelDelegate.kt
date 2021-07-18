@@ -23,7 +23,7 @@ import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
 
 interface SemesterViewModelDelegate {
-	val semesters: LiveData<Array<Semester>>
+	val semesters: LiveData<List<Semester>>
 	// current semester instance selected by user
 	val currentSemester: LiveData<Semester>
 

@@ -32,7 +32,7 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate
 ): SemesterViewModelDelegate, SessionViewModelDelegate by sessionViewModelDelegate {
-	private var semesterSelector: (Array<Semester>) -> Semester? = {
+	private var semesterSelector: (List<Semester>) -> Semester? = {
 		// TODO set default semester according to current time
 		// if the user has enrolled in winter or summer session,
 		// default semester will be set to it even if a fall or
@@ -75,7 +75,7 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 		}
 	}
 
-	private fun invokeSelector(semesters: Array<Semester>) {
+	private fun invokeSelector(semesters: List<Semester>) {
 		val semester = semesterSelector(semesters)
 		if(semester == null && semesters.isNotEmpty()) return
 

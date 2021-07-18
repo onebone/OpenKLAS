@@ -18,6 +18,9 @@
 
 package org.openklas.klas.response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ResponseLoginSecurity (
 	val publicKey: String
 )

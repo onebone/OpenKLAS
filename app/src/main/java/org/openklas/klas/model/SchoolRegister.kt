@@ -18,23 +18,25 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SchoolRegister(
-	@SerializedName("cultureHakjum")
+	@SerialName("cultureHakjum")
 	val electiveCredits: Int,
-	@SerializedName("majorHakjum")
+	@SerialName("majorHakjum")
 	val majorCredits: Int,
-	@SerializedName("hakbun")
+	@SerialName("hakbun")
 	val studentId: String,
-	@SerializedName("hakgwa")
+	@SerialName("hakgwa")
 	val department: String,
-	@SerializedName("kname")
+	@SerialName("kname")
 	val studentName: String,
-	@SerializedName("hakgwaCode")
+	@SerialName("hakgwaCode")
 	val departmentCode: String,
-	@SerializedName("hakjukStatu")
+	@SerialName("hakjukStatu")
 	val registerStatus: String,
-	@SerializedName("grade")
+	@SerialName("grade")
 	val grade: Int
 )

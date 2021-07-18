@@ -18,9 +18,11 @@
 
 package org.openklas.klas.request
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestHome (
-	@SerializedName("searchYearhakgi")
+	@SerialName("searchYearhakgi")
 	val semester: String
 )

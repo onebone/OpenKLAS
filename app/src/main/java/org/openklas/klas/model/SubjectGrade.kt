@@ -18,22 +18,24 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.JsonAdapter
-import com.google.gson.annotations.SerializedName
-import org.openklas.klas.deserializer.YNBoolDeserializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.YNBoolSerializer
 
+@Serializable
 data class SemesterGrade(
-	@SerializedName("hakgi")
+	@SerialName("hakgi")
 	val term: Int,
-	@SerializedName("thisYear")
+	@SerialName("thisYear")
 	val year: Int,
-	@SerializedName("hakgiOrder")
+	@SerialName("hakgiOrder")
 	val semesterLabel: String,
-	@SerializedName("sungjukList")
+	@SerialName("sungjukList")
 	val grades: List<SubjectGrade>
 )
 
 @JvmInline
+@Serializable
 value class Grade(
 	private val value: String
 ) {
@@ -69,6 +71,7 @@ value class Grade(
 }
 
 @JvmInline
+@Serializable
 value class CourseType(
 	val value: String
 ) {
@@ -97,24 +100,25 @@ value class CourseType(
 		get() = value.last() == '선'
 }
 
+@Serializable
 data class SubjectGrade(
-	@SerializedName("certname")
+	@SerialName("certname")
 	val certName: String?,
-	@SerializedName("gwamokKname")
+	@SerialName("gwamokKname")
 	val subjectName: String,
-	@SerializedName("hakgwa")
+	@SerialName("hakgwa")
 	val department: String,
-	@SerializedName("hakjungNo")
+	@SerialName("hakjungNo")
 	val academicNumber: String,
-	@SerializedName("codeName1")
+	@SerialName("codeName1")
 	val course: CourseType,
-	@SerializedName("hakjumNum")
+	@SerialName("hakjumNum")
 	val credits: Int,
-	@SerializedName("retakeOpt")
-	@JsonAdapter(YNBoolDeserializer::class)
+	@SerialName("retakeOpt")
+	@Serializable(with = YNBoolSerializer::class)
 	val retake: Boolean,
-	@SerializedName("retakeGetGrade")
+	@SerialName("retakeGetGrade")
 	val retakeGrade: String?,
-	@SerializedName("getGrade")
+	@SerialName("getGrade")
 	val grade: Grade
 )

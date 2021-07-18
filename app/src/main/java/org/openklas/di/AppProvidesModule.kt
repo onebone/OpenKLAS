@@ -24,6 +24,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,6 +47,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -67,15 +71,23 @@ class AppProvidesModule {
 	@Provides
 	fun provideRetrofit(
 		okHttpClient: OkHttpClient,
-		gson: Gson
+		json: Json
 	): Retrofit {
 		val builder = Retrofit.Builder()
 			.baseUrl(KlasUri.ROOT_URI)
 			.client(okHttpClient)
 
-		builder.addConverterFactory(GsonConverterFactory.create(gson))
+		@OptIn(ExperimentalSerializationApi::class)
+		builder.addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
 
 		return builder.build()
+	}
+
+	@Provides
+	fun provideJson(): Json {
+		return Json {
+			ignoreUnknownKeys = true
+		}
 	}
 
 	@Provides

@@ -43,7 +43,7 @@ interface KlasClient {
 
 	suspend fun getHome(semester: String): Resource<Home>
 
-	suspend fun getSemesters(): Resource<Array<Semester>>
+	suspend fun getSemesters(): Resource<List<Semester>>
 
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 

@@ -49,7 +49,7 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getHome(semester)
 	}
 
-	override suspend fun getSemesters(): Resource<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<List<Semester>> {
 		return klas.getSemesters()
 	}
 

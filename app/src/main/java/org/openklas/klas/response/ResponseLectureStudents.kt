@@ -18,9 +18,11 @@
 
 package org.openklas.klas.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ResponseLectureStudents(
-	@SerializedName("currentNum")
+	@SerialName("currentNum")
 	val students: Int
 )

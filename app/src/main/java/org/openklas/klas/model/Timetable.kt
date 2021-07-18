@@ -18,9 +18,13 @@
 
 package org.openklas.klas.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Timetable (
 	val entries: Array<Entry>
 ) {
+	@Serializable
 	data class Entry (
 		val day: Int,
 		// wtTime

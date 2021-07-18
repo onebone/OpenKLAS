@@ -102,7 +102,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 	}
 
-	override suspend fun getSemesters(): Resource<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<List<Semester>> {
 		delay(NETWORK_DELAY)
 
 		return Resource.Success(SEMESTERS)
@@ -277,7 +277,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				2021, 1, "2021,1", "학부", false)
 		)
 
-		val SEMESTERS = arrayOf(
+		val SEMESTERS = listOf(
 			Semester("2021,1", "2021년도 1학기", SUBJECTS.map {
 				BriefSubject(it.id, "${it.name} - ${it.professor}", it.name)
 			}.toTypedArray())

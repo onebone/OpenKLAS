@@ -39,7 +39,7 @@ import org.openklas.utils.Resource
 interface KlasDataSource {
 	suspend fun performLogin(username: String, password: String): Resource<String>
 	suspend fun getHome(semester: String): Resource<Home>
-	suspend fun getSemesters(): Resource<Array<Semester>>
+	suspend fun getSemesters(): Resource<List<Semester>>
 	suspend fun getNotices(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 	suspend fun getNotice(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
 	suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>

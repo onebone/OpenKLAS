@@ -18,10 +18,12 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BriefSubject (
-	@SerializedName("value")
+	@SerialName("value")
 	val id: String,
 	val label: String,
 	val name: String

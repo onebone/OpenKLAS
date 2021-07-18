@@ -18,38 +18,40 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SyllabusSummary(
-	@SerializedName("bunbanNo")
+	@SerialName("bunbanNo")
 	val division: String,
 	// closeOpt: whether the lecture is cancelled
 	// Available field values are: 'Y', null?????????
-	@SerializedName("codeName1")
+	@SerialName("codeName1")
 	val course: String,
-	@SerializedName("gwamokKname")
+	@SerialName("gwamokKname")
 	val subjectName: String,
-	@SerializedName("hakgi")
+	@SerialName("hakgi")
 	val term: Int,
-	@SerializedName("thisYear")
+	@SerialName("thisYear")
 	val year: Int,
-	@SerializedName("memberName")
+	@SerialName("memberName")
 	val tutor: String,
-	@SerializedName("openGrade")
+	@SerialName("openGrade")
 	val targetGrade: Int,
-	@SerializedName("openGwamokNo")
+	@SerialName("openGwamokNo")
 	val openGwamokNo: String,
-	@SerializedName("openMajorCode")
+	@SerialName("openMajorCode")
 	val departmentCode: String,
-	@SerializedName("hakjumNum")
+	@SerialName("hakjumNum")
 	val credits: Int,
-	@SerializedName("sisuNum")
+	@SerialName("sisuNum")
 	val lessonHour: Int,
-	@SerializedName("summary")
+	@SerialName("summary")
 	val summary: String?, // if summary is null, syllabus is not ready
-	@SerializedName("telNo")
+	@SerialName("telNo")
 	val telephoneNumber: String?,
-	@SerializedName("videoUrl")
+	@SerialName("videoUrl")
 	val videoUrl: String?
 ) {
 	val isReady: Boolean

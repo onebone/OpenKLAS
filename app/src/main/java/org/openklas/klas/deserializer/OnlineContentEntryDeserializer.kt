@@ -22,6 +22,12 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import org.openklas.klas.model.OnlineContentEntry
 import java.lang.reflect.Type
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.json.JsonElement as SerializationJsonElement
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class OnlineContentEntryDeserializer: TypeResolvableJsonDeserializer<OnlineContentEntry> {
 	override fun deserialize(
@@ -41,5 +47,19 @@ class OnlineContentEntryDeserializer: TypeResolvableJsonDeserializer<OnlineConte
 
 	override fun getType(): Type {
 		return OnlineContentEntry::class.java
+	}
+}
+
+object OnlineContentEntrySerializer: JsonContentPolymorphicSerializer<OnlineContentEntry>(OnlineContentEntry::class) {
+	override fun selectDeserializer(
+		element: SerializationJsonElement
+	): DeserializationStrategy<out OnlineContentEntry> {
+		val obj = element.jsonObject
+		return when(obj["evltnSe"]?.jsonPrimitive?.contentOrNull) {
+			"lesson" -> OnlineContentEntry.Video.serializer()
+			"proj" -> OnlineContentEntry.Homework.serializer()
+			"quiz" -> OnlineContentEntry.Quiz.serializer()
+			else -> OnlineContentEntry.Dummy.serializer()
+		}
 	}
 }

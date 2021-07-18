@@ -18,10 +18,14 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.OnlineContentEntrySerializer
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
 // classified by "evltnSe" field
+@Serializable(with = OnlineContentEntrySerializer::class)
 sealed class OnlineContentEntry {
 	abstract val evltnSe: String
 
@@ -29,83 +33,98 @@ sealed class OnlineContentEntry {
 	abstract val startDate: ZonedDateTime
 	abstract val dueDate: ZonedDateTime
 
+	@Serializable
 	data class Video(
 		override val evltnSe: String, // lesson
-		@SerializedName("bunban")
+		@SerialName("bunban")
 		val division: String,
-		@SerializedName("sbjt")
+		@SerialName("sbjt")
 		override val title: String,
-		@SerializedName("registDt")
+		@SerialName("registDt")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val registerDate: ZonedDateTime,
-		@SerializedName("startDate")
+		@SerialName("startDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val startDate: ZonedDateTime,
-		@SerializedName("endDate")
+		@SerialName("endDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val dueDate: ZonedDateTime,
-		@SerializedName("prog")
+		@SerialName("prog")
 		val progress: Int,
-		@SerializedName("rcognTime")
+		@SerialName("rcognTime")
 		val lectureTime: Int,
-		@SerializedName("achivTime")
+		@SerialName("achivTime")
 		val acquiredTime: Int,
-		@SerializedName("starting")
+		@SerialName("starting")
 		val uri: String,
 	): OnlineContentEntry()
 
+	@Serializable
 	data class Homework(
 		override val evltnSe: String, // proj
-		@SerializedName("registDt")
+		@SerialName("registDt")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val submitDate: ZonedDateTime?,
-		@SerializedName("startDate")
+		@SerialName("startDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val startDate: ZonedDateTime,
-		@SerializedName("endDate")
+		@SerialName("endDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val dueDate: ZonedDateTime,
-		@SerializedName("sbjt")
+		@SerialName("sbjt")
 		override val title: String,
-		@SerializedName("rcognTime")
+		@SerialName("rcognTime")
 		val lectureTime: Int,
-		@SerializedName("achivTime")
+		@SerialName("achivTime")
 		val acquiredTime: Int
 	): OnlineContentEntry()
 
+	@Serializable
 	data class Quiz(
 		override val evltnSe: String, // quiz
-		@SerializedName("endDate")
+		@SerialName("endDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val dueDate: ZonedDateTime,
-		@SerializedName("achivTime")
+		@SerialName("achivTime")
 		val acquiredTime: Int,
-		@SerializedName("lrnPd")
+		@SerialName("lrnPd")
 		val takenFromTo: String,
-		@SerializedName("module")
+		@SerialName("module")
 		val chapter: String, // 01, 02, ...
-		@SerializedName("moduletitle")
+		@SerialName("moduletitle")
 		val chapterTitle: String,
-		@SerializedName("sbjt")
+		@SerialName("sbjt")
 		override val title: String,
-		@SerializedName("rcognTime")
+		@SerialName("rcognTime")
 		// Note that [lectureTime] is different from the actual
 		// length of the lecture
 		val lectureTime: Int,
-		@SerializedName("startDate")
+		@SerialName("startDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val startDate: ZonedDateTime,
-		@SerializedName("started")
+		@SerialName("started")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val takenAt: ZonedDateTime?,
-		@SerializedName("userId")
+		@SerialName("userId")
 		val userId: String,
-		@SerializedName("weekNo")
+		@SerialName("weekNo")
 		val week: Int,
-		@SerializedName("papernum")
+		@SerialName("papernum")
 		val id: Int,
-		@SerializedName("papernm")
+		@SerialName("papernm")
 		val name: String
 	): OnlineContentEntry()
 
+	@Serializable
 	data class Dummy(
 		override val evltnSe: String,
-		@SerializedName("sbjt")
+		@SerialName("sbjt")
 		override val title: String,
-		@SerializedName("endDate")
+		@SerialName("endDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val dueDate: ZonedDateTime,
-		@SerializedName("startDate")
+		@SerialName("startDate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val startDate: ZonedDateTime
 	): OnlineContentEntry()
 

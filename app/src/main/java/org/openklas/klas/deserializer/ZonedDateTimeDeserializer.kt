@@ -26,37 +26,53 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
-class ZonedDateTimeDeserializer: TypeResolvableJsonDeserializer<ZonedDateTime> {
-	private companion object {
-		val KoreaZoneId: ZoneId = ZoneId.of("Asia/Seoul")
+private val KoreaZoneId = ZoneId.of("Asia/Seoul")
+private val Formats = listOf(
+	DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[Z]"),
+	DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
+	DateTimeFormatter.ofPattern("yyyy-MM-dd HH시mm분"),
+	DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+)
 
-		val Formats = listOf(
-			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[Z]"),
-			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
-			DateTimeFormatter.ofPattern("yyyy-MM-dd HH시mm분"),
-			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-		)
+internal fun parseZonedDateTime(str: String): ZonedDateTime =
+	when(val temporal = Formats.firstNotNullOfOrNull {
+		runCatching {
+			it.parseBest(str, ZonedDateTime::from, LocalDateTime::from)
+		}.getOrNull()
+	} ?: throw JsonParseException("unable to parse time string: \"$str\"")) {
+		is ZonedDateTime -> temporal
+		is LocalDateTime -> temporal.atZone(KoreaZoneId)
+		else -> throw IllegalStateException("this should not happen")
 	}
 
+class ZonedDateTimeDeserializer: TypeResolvableJsonDeserializer<ZonedDateTime> {
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
 		context: JsonDeserializationContext?
 	): ZonedDateTime {
-		val str = json.asString
-
-		return when(val temporal = Formats.firstNotNullOfOrNull {
-			kotlin.runCatching {
-				it.parseBest(str, ZonedDateTime::from, LocalDateTime::from)
-			}.getOrNull()
-		} ?: throw JsonParseException("unable to parse time string: \"$str\"")) {
-			is ZonedDateTime -> temporal
-			is LocalDateTime -> temporal.atZone(KoreaZoneId)
-			else -> throw IllegalStateException("this should not happen")
-		}
+		return parseZonedDateTime(json.asString)
 	}
 
 	override fun getType(): Type =
 		ZonedDateTime::class.java
+}
+
+object ZonedDateTimeSerializer: KSerializer<ZonedDateTime> {
+	override val descriptor: SerialDescriptor =
+		PrimitiveSerialDescriptor("ZonedDateTimeSerializer", PrimitiveKind.STRING)
+
+	override fun deserialize(decoder: Decoder): ZonedDateTime =
+		parseZonedDateTime(decoder.decodeString())
+
+	override fun serialize(encoder: Encoder, value: ZonedDateTime) {
+		throw NotImplementedError("serializing not implemented")
+	}
 }

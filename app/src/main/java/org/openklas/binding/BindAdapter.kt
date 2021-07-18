@@ -42,6 +42,15 @@ object BindAdapter {
 	}
 
 	@JvmStatic
+	@BindingAdapter("items")
+	fun <T> bindItems(recyclerView: RecyclerView, list: List<T>?) {
+		if(recyclerView.adapter is ListAdapter<*, *>) {
+			@Suppress("UNCHECKED_CAST")
+			(recyclerView.adapter as ListAdapter<T, *>).submitList(list)
+		}
+	}
+
+	@JvmStatic
 	@BindingAdapter("tint")
 	fun bindImageTint(imageView: ImageView, @ColorInt color: Int) {
 		imageView.setColorFilter(color)

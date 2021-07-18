@@ -18,13 +18,15 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class Semester (
-	@SerializedName("value")
+@Serializable
+data class Semester(
+	@SerialName("value")
 	val id: String,
 	val label: String,
-	@SerializedName("subjList")
+	@SerialName("subjList")
 	val subjects: Array<BriefSubject>
 ) {
 	override fun equals(other: Any?): Boolean {

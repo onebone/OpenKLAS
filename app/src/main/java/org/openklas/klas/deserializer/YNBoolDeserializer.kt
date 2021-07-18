@@ -21,6 +21,12 @@ package org.openklas.klas.deserializer
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 class YNBoolDeserializer: TypeResolvableJsonDeserializer<Boolean> {
 	override fun getType(): Type {
@@ -34,4 +40,18 @@ class YNBoolDeserializer: TypeResolvableJsonDeserializer<Boolean> {
 	): Boolean {
 		return json.asString == "Y"
 	}
+}
+
+object YNBoolSerializer: KSerializer<Boolean> {
+	override val descriptor: SerialDescriptor =
+		PrimitiveSerialDescriptor("YNBool", PrimitiveKind.STRING)
+
+	override fun deserialize(decoder: Decoder): Boolean = when(decoder.decodeString()) {
+		"Y" -> true
+		else -> false
+	}
+
+	override fun serialize(encoder: Encoder, value: Boolean): Unit = encoder.encodeString(
+		if(value) "Y" else "N"
+	)
 }

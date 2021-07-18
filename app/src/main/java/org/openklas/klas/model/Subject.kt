@@ -18,29 +18,33 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.YNBoolSerializer
 
-data class Subject (
-	@SerializedName("subj")
+@Serializable
+data class Subject(
+	@SerialName("subj")
 	val id: String,
-	@SerializedName("bunban")
+	@SerialName("bunban")
 	val division: String,
 	// codenmord
 	// grcode
-	@SerializedName("hakjungno")
+	@SerialName("hakjungno")
 	val academicNumber: String,
-	@SerializedName("profNm")
+	@SerialName("profNm")
 	val professor: String,
-	@SerializedName("subjNm")
+	@SerialName("subjNm")
 	val name: String,
-	@SerializedName("year")
+	@SerialName("year")
 	val year: Int,
-	@SerializedName("hakgi")
+	@SerialName("hakgi")
 	val term: Int,
-	@SerializedName("yearhakgi")
+	@SerialName("yearhakgi")
 	val semester: String,
-	@SerializedName("openOrganCodeNm")
+	@SerialName("openOrganCodeNm")
 	val targetDegree: String,
-	@SerializedName("iselearn")
+	@SerialName("iselearn")
+	@Serializable(with = YNBoolSerializer::class)
 	val isELearning: Boolean
 )

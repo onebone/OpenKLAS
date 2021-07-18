@@ -18,29 +18,33 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class BriefNotice (
-	@SerializedName("subj")
+	@SerialName("subj")
 	val subjectId: String,
-	@SerializedName("bunban")
+	@SerialName("bunban")
 	val division: String,
 	// grcode?
 	val param: String,
-	@SerializedName("year")
+	@SerialName("year")
 	val year: Int,
-	@SerializedName("hakgi")
+	@SerialName("hakgi")
 	val term: Int,
-	@SerializedName("registDt")
+	@SerialName("registDt")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val postDate: ZonedDateTime,
-	@SerializedName("subjNm")
+	@SerialName("subjNm")
 	val subjectName: String,
-	@SerializedName("title")
+	@SerialName("title")
 	val title: String,
 	val type: Int,
-	@SerializedName("typeNm")
+	@SerialName("typeNm")
 	val typeName: String,
-	@SerializedName("yearhakgi")
+	@SerialName("yearhakgi")
 	val semester: String
 )

@@ -107,7 +107,7 @@ class DefaultKlasClient @Inject constructor(
 		return service.home(RequestHome(semester)).validateSession()
 	}
 
-	override suspend fun getSemesters(): Resource<Array<Semester>> {
+	override suspend fun getSemesters(): Resource<List<Semester>> {
 		return service.semesters().validateSession()
 	}
 

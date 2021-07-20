@@ -41,7 +41,7 @@ class LoginFragment: BaseFragment() {
 		configureTitle(resources.getString(R.string.app_name), AppbarView.HeaderType.NONE, AppbarView.SearchType.NONE)
 
 		val binding = LoginFragmentBinding.inflate(inflater, container, false).apply {
-			lifecycleOwner = this@LoginFragment
+			lifecycleOwner = this@LoginFragment.viewLifecycleOwner
 		}
 
 		val viewModel by viewModels<LoginViewModel>()

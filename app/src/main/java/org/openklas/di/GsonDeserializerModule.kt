@@ -28,7 +28,6 @@ import org.openklas.klas.deserializer.LectureScheduleDeserializer
 import org.openklas.klas.deserializer.OnlineContentEntryDeserializer
 import org.openklas.klas.deserializer.SyllabusDeserializer
 import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
-import org.openklas.klas.deserializer.TimetableDeserializer
 import javax.inject.Singleton
 import org.openklas.klas.deserializer.LocalDateDeserializer
 import org.openklas.klas.deserializer.ZonedDateTimeDeserializer
@@ -36,13 +35,6 @@ import org.openklas.klas.deserializer.ZonedDateTimeDeserializer
 @Module
 @InstallIn(SingletonComponent::class)
 class GsonDeserializerModule {
-	@Provides
-	@IntoSet
-	@Singleton
-	fun provideTimetableDeserializer(): TypeResolvableJsonDeserializer<*> {
-		return TimetableDeserializer()
-	}
-
 	@Provides
 	@IntoSet
 	@Singleton

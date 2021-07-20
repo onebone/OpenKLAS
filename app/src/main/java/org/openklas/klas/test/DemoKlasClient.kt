@@ -96,7 +96,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 								subjectId, subject.semester, printSeq
 							)
 						}
-					}.toTypedArray()
+					}
 				)
 			)
 		)

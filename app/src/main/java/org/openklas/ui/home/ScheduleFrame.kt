@@ -161,7 +161,7 @@ fun ScheduleItem(item: Timetable.Entry, now: ZonedDateTime) {
 			)
 
 			Text(
-				text = item.professor,
+				text = item.professor ?: "",
 				fontSize = 14.sp
 			)
 		}

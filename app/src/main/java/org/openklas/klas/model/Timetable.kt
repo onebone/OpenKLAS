@@ -19,10 +19,11 @@
 package org.openklas.klas.model
 
 import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.TimetableSerializer
 
-@Serializable
-data class Timetable (
-	val entries: Array<Entry>
+@Serializable(with = TimetableSerializer::class)
+data class Timetable(
+	val entries: List<Entry>
 ) {
 	@Serializable
 	data class Entry (
@@ -32,7 +33,7 @@ data class Timetable (
 		// wtLocHname_%d
 		val classroom: String,
 		// wtProfNm_%d
-		val professor: String,
+		val professor: String?,
 		// wtSpan_%d
 		val length: Int,
 		// wtSubjNm_%d
@@ -47,17 +48,4 @@ data class Timetable (
 		// item color in timetable
 		val printSeq: Int
 	)
-
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other !is Timetable) return false
-
-		if(!entries.contentEquals(other.entries)) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		return entries.contentHashCode()
-	}
 }

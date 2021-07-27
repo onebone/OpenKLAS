@@ -48,12 +48,7 @@
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 			app:items="@{entry.schedule}" />
 
-		<View
-			android:id="@+id/shadow"
-			android:layout_width="match_parent"
-			android:layout_height="6dp"
-			android:background="@drawable/shadowed_background"
-			android:visibility="gone" />
+		<include layout="@layout/merge_shadow" />
 
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -36,4 +36,6 @@
     <attr name="icon_state_back" format="boolean" />
     <attr name="icon_state_cancel" format="boolean" />
     <attr name="icon_state_hidden" format="boolean" />
+
+    <attr name="bottomSheetCornerRadius" format="dimension" />
 </resources>

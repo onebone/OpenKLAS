@@ -18,6 +18,7 @@
 
 package org.openklas.utils
 
+import com.google.android.material.textfield.TextInputLayout
 import org.openklas.klas.error.KlasNoDataError
 import org.openklas.klas.error.KlasSessionInvalidError
 import retrofit2.Response
@@ -30,4 +31,15 @@ fun <T> Response<T>.validateSession(): Resource<T> {
 	val body = body() ?: return Resource.Error(KlasNoDataError())
 
 	return Resource.Success(body)
+}
+
+fun TextInputLayout.getSelectionText(): String = editText!!.text.toString()
+
+fun TextInputLayout.getSelection(items: Array<String>, default: Int = 0): Int {
+	val selectedText = getSelectionText()
+
+	return when(val index = items.indexOf(selectedText)) {
+		-1 -> default
+		else -> index
+	}
 }

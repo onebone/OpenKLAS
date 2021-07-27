@@ -125,6 +125,7 @@
 	<string name="post_hits">조회수 %d</string>
 
 	<string name="syllabus_search">강의계획서</string>
+	<string name="syllabus_search_bottom_sheet_title">강의계획서 검색</string>
 	<string name="syllabus_search_keyword_hint">과목</string>
 	<string name="syllabus_search_professor_hint">교수</string>
 	<string name="syllabus_search_submit">검색</string>

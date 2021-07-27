@@ -131,6 +131,7 @@
 	<string name="syllabus_search_submit">검색</string>
 	<string name="syllabus_search_result">강의 계획서 검색 결과</string>
 	<string name="syllabus_search_no_data">아직 입력되지 않은 강의계획서입니다.</string>
+	<string name="syllabus_search_set_filter">상단의 검색 버튼을 이용해주세요</string>
 
 	<string name="syllabus_search_result_count">해당되는 강의계획서가 %d개 있어요</string>
 

@@ -22,6 +22,7 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
+		<import type="android.view.View" />
 
 		<variable
 			name="viewModel"
@@ -37,6 +38,35 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:orientation="vertical"
+			android:textAlignment="center"
+			android:visibility="@{viewModel.filter == null ? View.VISIBLE : View.GONE}"
+			tools:ignore="UseCompoundDrawables">
+
+			<ImageView
+				android:layout_width="100dp"
+				android:layout_height="100dp"
+				app:srcCompat="@drawable/ic_search"
+				app:tint="@color/light_gray"
+				android:layout_gravity="center"
+				tools:ignore="ContentDescription" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/syllabus_search_set_filter"
+				android:textColor="@color/light_gray"
+				android:textSize="15sp" />
+
+		</LinearLayout>
+
 		<TextView
 			android:id="@+id/tv_search_result_count"
 			android:layout_width="wrap_content"
@@ -46,7 +76,8 @@
 			android:paddingHorizontal="12dp"
 			android:paddingVertical="18dp"
 			android:text="@{@string/syllabus_search_result_count(viewModel.syllabusList.length)}"
-			android:textSize="18sp" />
+			android:textSize="18sp"
+			android:visibility="@{viewModel.filter == null ? View.INVISIBLE : View.VISIBLE}" />
 
 		<androidx.coordinatorlayout.widget.CoordinatorLayout
 			android:layout_width="0dp"

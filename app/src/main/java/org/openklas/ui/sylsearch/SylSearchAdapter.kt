@@ -27,7 +27,7 @@ import org.openklas.databinding.ItemSyllabusSearchBinding
 import org.openklas.klas.model.SyllabusSummary
 
 class SylSearchAdapter(
-	private val onClickSyllabus: (String) -> Unit
+	private val onClickSyllabus: (SyllabusSummary) -> Unit
 ): ListAdapter<SyllabusSummary, SylSearchAdapter.ViewHolder>(SimpleDiffUtil()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		return ViewHolder(ItemSyllabusSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -41,7 +41,7 @@ class SylSearchAdapter(
 		fun bind(item: SyllabusSummary) {
 			binding.entry = item
 			binding.root.setOnClickListener {
-				onClickSyllabus("U${item.year}${item.term}${item.openGwamokNo}${item.departmentCode}${item.division}${item.targetGrade}")
+				onClickSyllabus(item)
 			}
 		}
 	}

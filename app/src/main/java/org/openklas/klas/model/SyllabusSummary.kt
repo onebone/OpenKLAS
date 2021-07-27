@@ -52,5 +52,6 @@ data class SyllabusSummary(
 	@SerializedName("videoUrl")
 	val videoUrl: String?
 ) {
-	val isReady: Boolean = summary != null
+	val isReady: Boolean
+		get() = summary != null
 }

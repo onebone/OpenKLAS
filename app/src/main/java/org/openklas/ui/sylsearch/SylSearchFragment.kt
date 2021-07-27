@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -56,8 +57,18 @@ class SylSearchFragment: BaseFragment() {
 		binding.v = this
 
 		binding.rvSyllabus.apply {
-			adapter = SylSearchAdapter {
-				findNavController().navigate(SylSearchFragmentDirections.actionSylsearchSyllabus(it))
+			adapter = SylSearchAdapter { item ->
+				if(!item.isReady) {
+					AlertDialog.Builder(requireContext())
+						.setMessage(R.string.syllabus_search_no_data)
+						.setPositiveButton(android.R.string.ok, null)
+						.create()
+						.show()
+					return@SylSearchAdapter
+				}
+
+				val id = "U${item.year}${item.term}${item.openGwamokNo}${item.departmentCode}${item.division}${item.targetGrade}"
+				findNavController().navigate(SylSearchFragmentDirections.actionSylsearchSyllabus(id))
 			}
 
 			addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
@@ -78,7 +89,6 @@ class SylSearchFragment: BaseFragment() {
 						keyword: String,
 						professor: String
 					) {
-						println("year: $year, term: $term, keyword: $keyword, professor: $professor")
 						viewModel.setFilter(year, term, keyword, professor)
 						bottomSheet.dismiss()
 					}

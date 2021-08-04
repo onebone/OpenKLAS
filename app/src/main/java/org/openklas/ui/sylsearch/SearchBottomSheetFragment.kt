@@ -66,7 +66,6 @@ class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 			terms
 		)
 		(binding.spinnerTerm.editText as AutoCompleteTextView).apply {
-
 			setAdapter(termAdapter)
 
 			setText(terms.first(), false)

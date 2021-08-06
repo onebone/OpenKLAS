@@ -124,6 +124,8 @@
 	<string name="post_list_search_submit">검색</string>
 	<string name="post_list_filter_submit">게시글 검색 필터 설정</string>
 	<string name="post_list_change_subject">변경</string>
+	<string name="post_list_filter_keyword_label">검색어</string>
+	<string name="post_list_filter_description">검색어 삭제</string>
 	<string name="post_hits">조회수 %d</string>
 
 	<string name="syllabus_search">강의계획서</string>

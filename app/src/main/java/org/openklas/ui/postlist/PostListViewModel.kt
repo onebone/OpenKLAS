@@ -39,6 +39,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -54,7 +55,8 @@ class PostListViewModel @Inject constructor(
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SubjectViewModelDelegate by subjectViewModelDelegate {
 
-	private val filter = MutableStateFlow<Filter?>(value = null)
+	private val _filter = MutableStateFlow<Filter?>(value = null)
+	val filter: StateFlow<Filter?> = _filter
 
 	private val postType = MutableSharedFlow<PostType>(
 		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -66,7 +68,7 @@ class PostListViewModel @Inject constructor(
 		currentSemester.asFlow(),
 		currentSubject.asFlow(),
 		postType.distinctUntilChanged(),
-		filter.distinctUntilChangedBy { it?.criteria to it?.keyword }
+		_filter.distinctUntilChangedBy { it?.criteria to it?.keyword }
 	) { semester, subject, postType, filter ->
 		PostListQuery(
 			semester = semester,
@@ -118,10 +120,14 @@ class PostListViewModel @Inject constructor(
 	}
 
 	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
-		filter.value = Filter(criteria, keyword)
+		_filter.value = Filter(criteria, keyword)
 	}
 
-	internal data class Filter(
+	fun clearFilter() {
+		_filter.value = null
+	}
+
+	data class Filter(
 		val criteria: BoardSearchCriteria,
 		val keyword: String
 	)

@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +32,7 @@ import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.openklas.R
 import org.openklas.base.BaseFragment
@@ -46,8 +46,6 @@ class PostListFragment: BaseFragment() {
 	private val args by navArgs<PostListFragmentArgs>()
 	private val viewModel: PostListViewModel by viewModels()
 
-	private lateinit var binding: PostListFragmentBinding
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -58,8 +56,8 @@ class PostListFragment: BaseFragment() {
 			PostType.QNA -> R.string.course_qna
 		}), AppbarView.HeaderType.BACK, AppbarView.SearchType.SEARCH)
 
-		binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
-			lifecycleOwner = this@PostListFragment
+		val binding = PostListFragmentBinding.inflate(inflater, container, false).apply {
+			lifecycleOwner = viewLifecycleOwner
 		}
 
 		binding.viewModel = viewModel
@@ -107,42 +105,27 @@ class PostListFragment: BaseFragment() {
 			}
 		}
 
-		binding.etKeyword.setOnEditorActionListener { v, actionId, _ ->
-			return@setOnEditorActionListener when(actionId) {
-				EditorInfo.IME_ACTION_SEND -> {
-					onClickFilterSubmit(v.text.toString())
-					true
-				}
-				else -> false
-			}
-		}
-
-		val contentRoot = binding.contentRoot
 		setAppbarOnClickSearchListener { _, cancel ->
 			if(cancel) {
-				contentRoot.collapseBottomSheet()
-			}else{
-				contentRoot.expandBottomSheet()
+				val dialog = SearchBottomSheetFragment()
+				dialog.show(childFragmentManager, "PostListSearchBottomSheetFragment")
+
+				dialog.lifecycleScope.launch {
+					repeatOnLifecycle(Lifecycle.State.STARTED) {
+						// we only get a single event from flow
+						val event = dialog.flow.first()
+						if(event is SearchEvent) {
+							// TODO implement changing search criteria
+							viewModel.setFilter(BoardSearchCriteria.ALL, event.keyword)
+						}
+
+						setAppbarSearchState(true)
+						dialog.dismiss()
+					}
+				}
 			}
-		}
-
-		contentRoot.setOnCollapsedListener {
-			binding.etKeyword.isEnabled = true
-			setAppbarSearchState(false)
-		}
-
-		contentRoot.setOnExpandedListener {
-			binding.etKeyword.isEnabled = false
-			setAppbarSearchState(true)
 		}
 
 		return binding.root
-	}
-
-	fun onClickFilterSubmit(keyword: String) {
-		// TODO implement changing search criteria
-		viewModel.setFilter(BoardSearchCriteria.ALL, keyword)
-
-		binding.contentRoot.expandBottomSheet()
 	}
 }

@@ -36,156 +36,107 @@
 			type="org.openklas.ui.postlist.PostListFragment" />
 	</data>
 
-	<org.openklas.widget.BackdropContainerView
-		android:id="@+id/content_root"
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@color/copper"
-		app:expandInitially="true">
+		android:layout_height="match_parent">
 
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/layout_layer_back"
+		<androidx.constraintlayout.widget.Guideline
+			android:id="@+id/guide_start"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:orientation="vertical"
+			app:layout_constraintGuide_begin="12dp" />
+
+		<androidx.constraintlayout.widget.Guideline
+			android:id="@+id/guide_end"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:orientation="vertical"
+			app:layout_constraintGuide_end="12dp" />
+
+		<androidx.constraintlayout.widget.Group
+			android:id="@+id/grp_header"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:constraint_referenced_ids="" />
+
+		<TextView
+			android:id="@+id/tv_subject_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="@id/guide_start"
+			app:layout_constraintEnd_toStartOf="@id/tv_change_subject"
+			app:layout_constraintHorizontal_bias="0"
+			android:layout_marginTop="12dp"
+			android:text="@{viewModel.currentSubject.name}"
+			android:textSize="21sp"
+			android:textColor="@color/primary"
+			android:textStyle="bold"
+			tools:text="일반상대성이론실험" />
+
+		<TextView
+			android:id="@+id/tv_search_result_count"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/tv_subject_name"
+			app:layout_constraintStart_toStartOf="@id/guide_start"
+			app:layout_constraintEnd_toEndOf="@id/tv_change_subject"
+			app:layout_constraintHorizontal_bias="0"
+			android:text="@{viewModel.postCount != null ? @plurals/post_list_match_count(viewModel.postCount, viewModel.postCount) : ``}"
+			tools:text="총 12개의 게시글이 있어요" />
+
+		<TextView
+			android:id="@+id/tv_change_subject"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="@id/tv_subject_name"
+			app:layout_constraintBottom_toBottomOf="@id/tv_search_result_count"
+			app:layout_constraintEnd_toEndOf="@id/guide_end"
+			android:text="@string/post_list_change_subject"
+			android:textColor="@color/navigate" />
+
+		<androidx.constraintlayout.widget.Barrier
+			android:id="@+id/barrier_header"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:barrierMargin="12dp"
+			app:barrierDirection="bottom"
+			app:constraint_referenced_ids="tv_change_subject,tv_search_result_count,tv_subject_name" />
+
+		<com.facebook.shimmer.ShimmerFrameLayout
+			android:id="@+id/shimmer_back_layer"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/barrier_header"
+			app:layout_constraintBottom_toBottomOf="parent"
+			tools:visibility="gone">
+
+			<include layout="@layout/skeleton_post_list_fragment_front" />
+
+		</com.facebook.shimmer.ShimmerFrameLayout>
+
+		<androidx.coordinatorlayout.widget.CoordinatorLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:padding="8dp">
+			android:layout_height="0dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/barrier_header"
+			app:layout_constraintBottom_toBottomOf="parent">
 
-			<EditText
-				android:id="@+id/et_keyword"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginEnd="6dp"
-				android:layout_marginBottom="8dp"
-				android:background="@drawable/bg_white_alpha03"
-				android:drawableStart="@drawable/ic_search"
-				android:drawablePadding="4dp"
-				android:hint="@string/post_list_search_keyword"
-				android:imeOptions="actionSend"
-				android:inputType="text"
-				android:padding="8dp"
-				android:singleLine="true"
-				app:drawableTint="?android:textColorHint"
-				app:layout_constraintLeft_toLeftOf="parent"
-				app:layout_constraintRight_toLeftOf="@id/img_filter_submit"
-				app:layout_constraintTop_toTopOf="parent" />
-
-			<ImageView
-				android:id="@+id/img_filter_submit"
-				android:layout_width="wrap_content"
-				android:layout_height="0dp"
-				android:alpha="0.8"
-				android:contentDescription="@string/post_list_filter_submit"
-				android:onClick="@{() -> v.onClickFilterSubmit(etKeyword.getText().toString())}"
-				app:elevation="16dp"
-				app:layout_constraintBottom_toBottomOf="@id/et_keyword"
-				app:layout_constraintRight_toRightOf="parent"
-				app:layout_constraintTop_toTopOf="@id/et_keyword"
-				app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
-
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
-		<org.openklas.widget.BackdropFrontView
-			android:id="@+id/layout_layer_front"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:clickable="true"
-			android:focusable="true"
-			app:layout_behavior=".widget.BackdropContainerView$LockableBottomSheetBehavior"
-			tools:layout_editor_absoluteY="243dp">
-
-			<androidx.constraintlayout.widget.ConstraintLayout
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/rv_posts"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent">
+				android:layout_height="match_parent"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:layout_behavior=".ui.syllabus.page.ScrollShadowBehavior"
+				tools:listitem="@layout/post_item" />
 
-				<TextView
-					android:id="@+id/tv_subject_name"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp"
-					android:layout_marginTop="18dp"
-					android:layout_marginRight="8dp"
-					android:layout_marginBottom="8dp"
-					android:text="@{viewModel.currentSubject.name}"
-					android:textColor="@color/copper"
-					android:textSize="24sp"
-					android:textStyle="bold"
-					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintTop_toTopOf="parent" />
+			<include layout="@layout/merge_shadow" />
 
-				<TextView
-					android:id="@+id/tv_post_count"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="8dp"
-					android:text="@{viewModel.postCount != null ? @plurals/post_list_match_count(viewModel.postCount, viewModel.postCount) : `-`}"
-					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/tv_subject_name" />
+		</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-				<TextView
-					android:id="@+id/tv_change_subject"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintTop_toTopOf="parent"
-					android:layout_marginEnd="8dp"
-					android:padding="8dp"
-					app:layout_constraintBottom_toBottomOf="@id/backdrop_content_divider"
-					android:textColor="@color/navigate"
-					android:text="@string/post_list_change_subject" />
-
-				<Space
-					android:id="@+id/backdrop_content_divider"
-					android:layout_width="0dp"
-					android:layout_height="0dp"
-					android:layout_marginTop="8dp"
-					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintRight_toRightOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/tv_post_count" />
-
-				<View
-					android:id="@+id/v_divider"
-					android:layout_width="match_parent"
-					android:layout_height="8dp"
-					android:background="@color/super_light_gray"
-					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/backdrop_content_divider" />
-
-				<com.facebook.shimmer.ShimmerFrameLayout
-					android:id="@+id/shimmer_back_layer"
-					android:layout_width="0dp"
-					android:layout_height="0dp"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/v_divider"
-					app:layout_constraintBottom_toBottomOf="parent">
-
-					<include layout="@layout/skeleton_post_list_fragment_front" />
-
-				</com.facebook.shimmer.ShimmerFrameLayout>
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/rv_posts"
-					android:layout_width="0dp"
-					android:layout_height="0dp"
-					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-					app:layout_constraintBottom_toBottomOf="parent"
-					app:layout_constraintLeft_toLeftOf="parent"
-					app:layout_constraintRight_toRightOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/v_divider" />
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/post_list_none"
-					android:textColor="@color/gray"
-					android:visibility="@{viewModel.postCount == null || viewModel.postCount > 0 ? View.GONE : View.VISIBLE}"
-					app:layout_constraintBottom_toBottomOf="@id/rv_posts"
-					app:layout_constraintLeft_toLeftOf="@id/rv_posts"
-					app:layout_constraintRight_toRightOf="@id/rv_posts"
-					app:layout_constraintTop_toTopOf="@id/rv_posts" />
-
-			</androidx.constraintlayout.widget.ConstraintLayout>
-
-		</org.openklas.widget.BackdropFrontView>
-
-	</org.openklas.widget.BackdropContainerView>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

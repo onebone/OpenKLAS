@@ -32,7 +32,7 @@ import org.openklas.databinding.BottomSyllabusSearchBinding
 import org.openklas.utils.getSelection
 import org.openklas.utils.getSelectionText
 
-class SearchBottomSheetFragment: BottomSheetDialogFragment() {
+internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 	private val currentYear by lazy {
 		requireArguments().getInt(KEY_CURRENT_YEAR)
 	}

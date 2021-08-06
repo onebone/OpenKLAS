@@ -53,7 +53,7 @@
 			<ImageView
 				android:layout_width="100dp"
 				android:layout_height="100dp"
-				app:srcCompat="@drawable/ic_search"
+				app:srcCompat="@drawable/ic_search_1w"
 				app:tint="@color/light_gray"
 				android:layout_gravity="center"
 				tools:ignore="ContentDescription" />

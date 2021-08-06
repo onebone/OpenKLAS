@@ -38,7 +38,8 @@
 		<com.facebook.shimmer.ShimmerFrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:visibility="@{post == null ? View.VISIBLE : View.GONE}">
+			android:visibility="@{post == null ? View.VISIBLE : View.GONE}"
+			tools:visibility="gone">
 
 			<include layout="@layout/skeleton_post_item" />
 

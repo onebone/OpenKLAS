@@ -116,10 +116,12 @@
 	<string name="post_list_title">게시글</string>
 	<string name="post_list_all_posts">전체 게시글</string>
 	<string name="post_list_none">게시글이 없어요</string>
+	<string name="post_list_search_title">게시글 검색</string>
 	<string name="post_list_search_keyword">검색어</string>
 	<plurals name="post_list_match_count">
 		<item quantity="other">총 %d개의 게시글이 있어요</item>
 	</plurals>
+	<string name="post_list_search_submit">검색</string>
 	<string name="post_list_filter_submit">게시글 검색 필터 설정</string>
 	<string name="post_list_change_subject">변경</string>
 	<string name="post_hits">조회수 %d</string>

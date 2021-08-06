@@ -48,7 +48,7 @@ class SylSearchFragment: BaseFragment() {
 		configureTitle(resources.getString(R.string.syllabus_search), AppbarView.HeaderType.BACK, AppbarView.SearchType.SEARCH)
 
 		binding = SyllabusSearchFragmentBinding.inflate(inflater, container, false).apply {
-			lifecycleOwner = this@SylSearchFragment
+			lifecycleOwner = viewLifecycleOwner
 		}
 
 		prepareViewModel(viewModel)

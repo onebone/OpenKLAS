@@ -37,9 +37,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -52,7 +54,7 @@ class PostListViewModel @Inject constructor(
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SubjectViewModelDelegate by subjectViewModelDelegate {
 
-	private var filter: Filter? = null
+	private val filter = MutableStateFlow<Filter?>(value = null)
 
 	private val postType = MutableSharedFlow<PostType>(
 		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -63,8 +65,9 @@ class PostListViewModel @Inject constructor(
 	private val query = combine(
 		currentSemester.asFlow(),
 		currentSubject.asFlow(),
-		postType.distinctUntilChanged()
-	) { semester, subject, postType ->
+		postType.distinctUntilChanged(),
+		filter.distinctUntilChangedBy { it?.criteria to it?.keyword }
+	) { semester, subject, postType, filter ->
 		PostListQuery(
 			semester = semester,
 			subject = subject,
@@ -77,23 +80,26 @@ class PostListViewModel @Inject constructor(
 	@OptIn(ExperimentalCoroutinesApi::class)
 	val posts = query.flatMapLatest {
 		Pager(
-			config = PagingConfig(
-				pageSize = 15
-			)
-		) {
-			pagingSource?.invalidate()
+			config = PagingConfig(pageSize = 15),
+			pagingSourceFactory = {
+				pagingSource?.invalidate()
 
-			val source = PostListSource(
-				klasRepository = klasRepository,
-				sessionViewModelDelegate = sessionViewModelDelegate,
-				query = it,
-				errorHandler = { _error.value = it },
-				pageInfoCallback = { pageInfo.emit(it) }
-			)
-			pagingSource = source
+				val source = PostListSource(
+					klasRepository = klasRepository,
+					sessionViewModelDelegate = sessionViewModelDelegate,
+					query = it,
+					errorHandler = {
+						_error.postValue(it)
+					},
+					pageInfoCallback = {
+						pageInfo.tryEmit(it)
+					}
+				)
 
-			source
-		}.flow
+				pagingSource = source
+				source
+			}
+		).flow
 	}.cachedIn(viewModelScope)
 
 	private val _error = MutableLiveData<Throwable>()
@@ -112,11 +118,7 @@ class PostListViewModel @Inject constructor(
 	}
 
 	fun setFilter(criteria: BoardSearchCriteria, keyword: String) {
-		if(filter?.criteria == criteria && filter?.keyword == keyword) return
-
-		filter = Filter(criteria, keyword)
-
-		pagingSource?.invalidate()
+		filter.value = Filter(criteria, keyword)
 	}
 
 	internal data class Filter(

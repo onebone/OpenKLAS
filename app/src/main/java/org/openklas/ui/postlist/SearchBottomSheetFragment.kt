@@ -55,7 +55,7 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 			_flow.tryEmit(SearchEvent(binding.etKeyword.editText!!.text.toString()))
 		}
 
-		binding.etKeyword.editText!!.setOnEditorActionListener { v, actionId, _ ->
+		binding.etKeyword.editText!!.setOnEditorActionListener { _, actionId, _ ->
 			return@setOnEditorActionListener when(actionId) {
 				EditorInfo.IME_ACTION_SEND -> {
 					_flow.tryEmit(SearchEvent(binding.etKeyword.editText!!.text.toString()))

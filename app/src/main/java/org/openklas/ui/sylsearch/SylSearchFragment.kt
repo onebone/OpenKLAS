@@ -100,13 +100,4 @@ class SylSearchFragment: BaseFragment() {
 
 		return binding.root
 	}
-
-	/*fun onClickQuerySubmit() {
-		val year = currentYear - binding.spinnerYear.selectedItemPosition
-		val term = binding.spinnerTerm.selectedItemPosition + 1
-		val keyword = binding.etKeyword.text.toString()
-		val professor = binding.etProfessor.text.toString()
-
-		viewModel.setFilter(year, term, keyword, professor)
-	}*/
 }

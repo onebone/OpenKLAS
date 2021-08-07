@@ -74,6 +74,7 @@ fun SubjectSelectionDialog(
 	) {
 		Surface(
 			modifier = Modifier
+				.wrapContentHeight()
 				.background(MaterialTheme.colors.surface)
 		) {
 			// FIXME dialog's max height is a height of the first shown composable
@@ -84,10 +85,8 @@ fun SubjectSelectionDialog(
 			//
 			// [DialogLayout] constrains the maximum height of the dialog content regarding to
 			// the first maximum height.
-			// https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/window/AndroidDialog.android.kt;l=405-406;drc=36faab79e432504b1274aeb5c4375cc664f6d98d
 			@OptIn(ExperimentalAnimationApi::class)
 			AnimatedContent(
-				modifier = Modifier.wrapContentHeight(),
 				targetState = if(semesterSelection == null || state == DialogType.Semester) {
 					DialogType.Semester
 				}else{
@@ -110,7 +109,7 @@ fun SubjectSelectionDialog(
 					DialogType.Semester -> SelectionDialogContent(
 						type = DialogType.Semester,
 						contents = semesters,
-						selectedEntry = currentSemester,
+						selectedEntry = semesterSelection,
 						displayName = { it.label },
 						onClickChangeType = { state = DialogType.Subject },
 						onClickEntry = {
@@ -215,7 +214,8 @@ internal fun NavigationText(type: DialogType) {
 			DialogType.Semester -> R.string.common_semester_dialog_title
 			DialogType.Subject -> R.string.common_subject_dialog_title
 		}),
-		color = colorResource(R.color.primary)
+		color = colorResource(R.color.primary),
+		fontSize = 12.sp
 	)
 }
 

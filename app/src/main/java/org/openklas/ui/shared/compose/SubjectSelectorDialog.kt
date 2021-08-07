@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.openklas.ui.shared
+package org.openklas.ui.shared.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -49,103 +50,51 @@ import androidx.compose.ui.window.Dialog
 import org.openklas.R
 import org.openklas.klas.model.BriefSubject
 import org.openklas.klas.model.Semester
-import org.openklas.ui.shared.compose.constrainSizeFactor
-
-private const val STATE_SEMESTER = 0
-private const val STATE_SUBJECT = 1
 
 @Composable
 fun SubjectSelectionDialog(
-	semesters: Array<Semester>?,
+	semesters: List<Semester>?,
 	currentSemester: Semester?,
-	subjects: Array<BriefSubject>?,
 	currentSubject: BriefSubject?,
 	onChange: (Semester, BriefSubject) -> Unit,
 	onDismissRequest: () -> Unit
 ) {
-	var state by remember { mutableStateOf(STATE_SUBJECT) }
+	var state by remember { mutableStateOf(DialogType.Subject) }
 
 	var semesterSelection by remember { mutableStateOf(currentSemester) }
 	var subjectSelection by remember { mutableStateOf(currentSubject) }
 
-	var subjectList by remember { mutableStateOf(subjects) }
-
 	Dialog(
 		onDismissRequest = onDismissRequest
 	) {
-		if(semesterSelection == null || state == STATE_SEMESTER)
-			SemesterSelectionDialogContent(
-				semesters = semesters,
-				currentSemester = semesterSelection,
-				onSemesterSelection = {
-					semesterSelection = it
-
-					subjectList = it.subjects
-					subjectSelection = null
-
-					state = STATE_SUBJECT
-				},
-				onClickChangeSubject = {
-					state = STATE_SUBJECT
-				}
-			)
-		else
-			SubjectSelectionDialogContent(
-				subjects = subjectList,
-				currentSubject = subjectSelection,
-				onSubjectSelection = {
-					subjectSelection = it
-
-					if(semesterSelection != null && subjectSelection != null) {
-						onChange(semesterSelection!!, subjectSelection!!)
-						onDismissRequest()
-					}
-				},
-				onClickChangeSemester = {
-					state = STATE_SEMESTER
-				}
-			)
-	}
-}
-
-@Composable
-fun SemesterSelectionDialogContent(
-	semesters: Array<Semester>?,
-	currentSemester: Semester?,
-	onSemesterSelection: (Semester) -> Unit,
-	onClickChangeSubject: () -> Unit
-) {
-	Surface(
-		modifier = Modifier
-			.background(MaterialTheme.colors.surface)
-	) {
-		Column(modifier = Modifier
-			.constrainSizeFactor(0.8f, 0.9f, 0f, 0.6f)
+		Surface(
+			modifier = Modifier
+				.wrapContentHeight()
+				.background(MaterialTheme.colors.surface)
 		) {
-			DialogHeader(
-				title = stringResource(R.string.common_semester_dialog_title),
-				buttonAlignment = Alignment.CenterEnd,
-				onClickButton = onClickChangeSubject
-			) {
-				Text(
-					text = stringResource(R.string.common_subject_dialog_title),
-					color = colorResource(R.color.primary)
-				)
-
-				Icon(
-					painterResource(R.drawable.ic_arrow),
-					contentDescription = null,
-					modifier = Modifier.padding(4.dp, 0.dp, 0.dp, 0.dp),
-					tint = colorResource(R.color.primary)
-				)
-			}
-
-			if(semesters != null) {
-				SelectionItems(
-					items = semesters,
-					selectedItem = { it.id == currentSemester?.id },
+			if(semesterSelection == null || state == DialogType.Semester) {
+				SelectionDialogContent(
+					type = DialogType.Semester,
+					contents = semesters,
+					selectedEntry = currentSemester,
 					displayName = { it.label },
-					onClick = { onSemesterSelection(it) }
+					onClickChangeType = { state = DialogType.Subject },
+					onClickEntry = {
+						semesterSelection = it
+						state = DialogType.Subject
+					}
+				)
+			}else{
+				SelectionDialogContent(
+					type = DialogType.Subject,
+					contents = semesterSelection?.subjects?.toList(),
+					selectedEntry = subjectSelection,
+					displayName = { it.name },
+					onClickChangeType = { state = DialogType.Semester },
+					onClickEntry = {
+						subjectSelection = it
+						onChange(semesterSelection!!, it)
+					}
 				)
 			}
 		}
@@ -153,47 +102,87 @@ fun SemesterSelectionDialogContent(
 }
 
 @Composable
-fun SubjectSelectionDialogContent(
-	subjects: Array<BriefSubject>?,
-	currentSubject: BriefSubject?,
-	onSubjectSelection: (BriefSubject) -> Unit,
-	onClickChangeSemester: () -> Unit
+internal fun <T> SelectionDialogContent(
+	type: DialogType,
+	contents: List<T>?,
+	selectedEntry: T?,
+	displayName: (T) -> String,
+	onClickChangeType: (current: DialogType) -> Unit,
+	onClickEntry: (T) -> Unit
 ) {
-	Surface(
+	Column(
 		modifier = Modifier
-			.background(MaterialTheme.colors.surface)
+			.fillMaxWidth()
 	) {
-		Column(modifier = Modifier
-			.constrainSizeFactor(0.8f, 0.9f, 0f, 0.6f)
+		DialogHeader(
+			title = when(type) {
+				DialogType.Semester -> stringResource(id = R.string.common_semester_dialog_title)
+				DialogType.Subject -> stringResource(id = R.string.common_subject_dialog_title)
+			},
+			buttonAlignment = when(type) {
+				DialogType.Semester -> Alignment.CenterEnd
+				DialogType.Subject -> Alignment.CenterStart
+			},
+			onClickButton = {
+				onClickChangeType(type)
+			}
 		) {
-			DialogHeader(
-				title = stringResource(R.string.common_subject_dialog_title),
-				buttonAlignment = Alignment.CenterStart,
-				onClickButton = onClickChangeSemester
-			) {
-				Icon(
-					painterResource(R.drawable.ic_arrow_back),
-					contentDescription = null,
-					modifier = Modifier.padding(0.dp, 0.dp, 4.dp, 0.dp),
-					tint = colorResource(R.color.primary)
-				)
+			NavigationButton(type)
+		}
 
-				Text(
-					text = stringResource(R.string.common_semester_dialog_title),
-					color = colorResource(R.color.primary)
-				)
-			}
-
-			if(subjects != null) {
-				SelectionItems(
-					items = subjects,
-					selectedItem = { it.id == currentSubject?.id },
-					displayName = { it.name },
-					onClick = { onSubjectSelection(it) }
-				)
-			}
+		if(contents != null) {
+			SelectionItems(
+				items = contents,
+				selectedItem = { it === selectedEntry },
+				displayName = displayName,
+				onClick = {
+					onClickEntry(it)
+				}
+			)
 		}
 	}
+}
+
+internal enum class DialogType {
+	Semester, Subject
+}
+
+@Composable
+internal fun NavigationButton(type: DialogType) {
+	when(type) {
+		DialogType.Semester -> {
+			NavigationText(type)
+			NavigationIcon(type)
+		}
+		DialogType.Subject -> {
+			NavigationIcon(type)
+			NavigationText(type)
+		}
+	}
+}
+
+@Composable
+internal fun NavigationIcon(type: DialogType) {
+	Icon(
+		painterResource(when(type) {
+			DialogType.Subject -> R.drawable.ic_arrow_back
+			DialogType.Semester -> R.drawable.ic_arrow
+		}),
+		contentDescription = null,
+		modifier = Modifier.padding(4.dp, 0.dp, 4.dp, 0.dp),
+		tint = colorResource(R.color.primary)
+	)
+}
+
+@Composable
+internal fun NavigationText(type: DialogType) {
+	Text(
+		text = stringResource(when(type) {
+			DialogType.Semester -> R.string.common_semester_dialog_title
+			DialogType.Subject -> R.string.common_subject_dialog_title
+		}),
+		color = colorResource(R.color.primary)
+	)
 }
 
 @Composable
@@ -204,8 +193,8 @@ fun DialogHeader(
 	button: @Composable () -> Unit
 ) {
 	Box(modifier = Modifier
-		.padding(4.dp)
 		.fillMaxWidth()
+		.padding(4.dp)
 	) {
 		Text(
 			text = title,
@@ -227,13 +216,16 @@ fun DialogHeader(
 }
 
 @Composable
-fun<T> SelectionItems(
-	items: Array<T>,
+internal fun<T> SelectionItems(
+	items: List<T>,
 	selectedItem: (T) -> Boolean,
 	displayName: (T) -> String,
 	onClick: (T) -> Unit
 ) {
-	LazyColumn {
+	LazyColumn(
+		modifier = Modifier
+			.fillMaxWidth()
+	) {
 		items(items) {
 			Text(
 				text = displayName(it),

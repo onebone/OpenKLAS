@@ -64,7 +64,7 @@ import org.openklas.klas.model.AssignmentEntry
 import org.openklas.ui.shared.compose.AssignmentDdayIndicator
 import org.openklas.ui.shared.compose.DueIndicator
 import org.openklas.ui.shared.compose.DueNot2359Warning
-import org.openklas.ui.shared.SubjectSelectionDialog
+import org.openklas.ui.shared.compose.SubjectSelectionDialog
 import org.openklas.ui.shared.compose.bottomShadow
 
 @Composable
@@ -72,7 +72,6 @@ fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
 	val viewModel = viewModel<AssignmentListViewModel>()
 	val semesters by viewModel.semesters.observeAsState()
 	val currentSemester by viewModel.currentSemester.observeAsState()
-	val subjects by viewModel.subjects.observeAsState()
 	val currentSubject by viewModel.currentSubject.observeAsState()
 
 	val assignments by viewModel.assignments.observeAsState()
@@ -90,12 +89,19 @@ fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
 	)
 
 	if(showSubjectDialog) {
-		SubjectSelectionDialog(semesters, currentSemester, subjects, currentSubject, onChange = { semester, subject ->
-			viewModel.setSubject(subject.id)
-			viewModel.setCurrentSemester(semester.id)
-		}) {
-			showSubjectDialog = false
-		}
+		SubjectSelectionDialog(
+			semesters?.toList(),
+			currentSemester,
+			currentSubject,
+			onChange = { semester, subject ->
+				viewModel.setSubject(subject.id)
+				viewModel.setCurrentSemester(semester.id)
+				showSubjectDialog = false
+			},
+			onDismissRequest = {
+				showSubjectDialog = false
+			}
+		)
 	}
 }
 

@@ -28,7 +28,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -82,8 +81,10 @@ fun SubjectSelectionDialog(
 			// determines the constraint of the dialog surface.
 			// The fundamental solution will be measuring the content with constraint
 			// given at the initial composition, although I can't find a way to do this.
-			// Though I need some further confirmations, the height that Dialog measured
-			// at the first time seems to constrain further measurements.
+			//
+			// [DialogLayout] constrains the maximum height of the dialog content regarding to
+			// the first maximum height.
+			// https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/window/AndroidDialog.android.kt;l=405-406;drc=36faab79e432504b1274aeb5c4375cc664f6d98d
 			@OptIn(ExperimentalAnimationApi::class)
 			AnimatedContent(
 				modifier = Modifier.wrapContentHeight(),

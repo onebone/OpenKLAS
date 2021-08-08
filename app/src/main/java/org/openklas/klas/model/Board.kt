@@ -18,86 +18,81 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.YNBoolSerializer
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class Board(
-	@SerializedName("list")
-	val posts: Array<Entry>,
-	@SerializedName("page")
+	@SerialName("list")
+	val posts: List<Entry>,
+	@SerialName("page")
 	val pageInfo: PageInfo
 ) {
+	@Serializable
 	data class PageInfo(
+		@SerialName("currentPage")
 		val currentPage: Int,
-		@SerializedName("pageSize")
+		@SerialName("pageSize")
 		val postsPerPage: Int,
-		@SerializedName("totalElements")
+		@SerialName("totalElements")
 		val totalPosts: Int,
-		@SerializedName("totalPages")
+		@SerialName("totalPages")
 		// maximum page that can be requested is totalPages-1
 		val totalPages: Int
 	)
 
+	@Serializable
 	// unknown fields are written as comments
 	data class Entry(
-		@SerializedName("atchFileId")
+		@SerialName("atchFileId")
 		val attachment: String?,
 		val boardNo: Int,
-		@SerializedName("bunban")
+		@SerialName("bunban")
 		val division: String,
 		// categoryId
 		// categoryNm
 		// cmCnt
-		@SerializedName("dateDiff")
+		@SerialName("dateDiff")
 		val dayFromUploaded: Int,
-		@SerializedName("fileCnt")
+		@SerialName("fileCnt")
 		val fileCnt: Int,
 		val grcode: String,
-		@SerializedName("hakgi")
+		@SerialName("hakgi")
 		val term: Int,
-		@SerializedName("masterNo")
+		@SerialName("masterNo")
 		val masterNo: Int,
-		@SerializedName("myarticleAt")
+		@SerialName("myarticleAt")
+		@Serializable(with = YNBoolSerializer::class)
 		val isMine: Boolean,
-		@SerializedName("othbcAt")
+		@SerialName("othbcAt")
+		@Serializable(with = YNBoolSerializer::class)
 		val isPublic: Boolean,
-		@SerializedName("readCnt")
+		@SerialName("readCnt")
 		val hits: Int,
-		@SerializedName("refLvl")
+		@SerialName("refLvl")
 		val referenceLevel: Int,
 		// refSort
-		@SerializedName("registDt")
+		@SerialName("registDt")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val registerDate: ZonedDateTime,
 		val registerId: String,
 		// rnum
-		@SerializedName("sortOrdr")
+		@SerialName("sortOrdr")
 		val order: Int,
-		@SerializedName("subj")
+		@SerialName("subj")
 		val subjectId: String,
-		@SerializedName("title")
+		@SerialName("title")
 		val title: String,
-		@SerializedName("topAt")
+		@SerialName("topAt")
+		@Serializable(with = YNBoolSerializer::class)
 		val isPinned: Boolean,
-		@SerializedName("userNm")
+		@SerialName("userNm")
 		val author: String,
 		// upperNo: same with boardNo?
-		@SerializedName("year")
+		@SerialName("year")
 		val year: Int
 	)
-
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other !is Board) return false
-
-		if (!posts.contentEquals(other.posts)) return false
-		if (pageInfo != other.pageInfo) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = posts.contentHashCode()
-		result = 31 * result + pageInfo.hashCode()
-		return result
-	}
 }

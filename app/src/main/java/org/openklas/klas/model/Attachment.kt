@@ -18,26 +18,30 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class Attachment(
-	@SerializedName("attachId")
+	@SerialName("attachId")
 	val id: String,
-	@SerializedName("createdAt")
+	@SerialName("createdAt")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val creationDate: ZonedDateTime,
-	@SerializedName("download")
+	@SerialName("download")
 	val url: String, // relative url may be provided
-	@SerializedName("ext")
+	@SerialName("ext")
 	val extension: String,
-	@SerializedName("fileName")
+	@SerialName("fileName")
 	val fileName: String,
-	@SerializedName("fileSize")
+	@SerialName("fileSize")
 	val fileSize: Long,
 	// fileSn? probably related to the order
-	@SerializedName("id")
+	@SerialName("id")
 	val order: Int,
 	// preview, thumbnail, saveName is unknown
-	@SerializedName("storageId")
+	@SerialName("storageId")
 	val storageId: String
 )

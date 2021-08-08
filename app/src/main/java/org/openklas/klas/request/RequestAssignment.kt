@@ -18,14 +18,16 @@
 
 package org.openklas.klas.request
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestAssignment(
-	@SerializedName("selectYearhakgi")
+	@SerialName("selectYearhakgi")
 	val semester: String,
-	@SerializedName("selectSubj")
+	@SerialName("selectSubj")
 	val subjectId: String,
-	@SerializedName("ordseq")
+	@SerialName("ordseq")
 	val order: Int,
 	val selectChangeYn: String = "Y"
 )

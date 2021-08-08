@@ -24,26 +24,43 @@ import com.google.gson.JsonParseException
 import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 class LocalDateDeserializer: TypeResolvableJsonDeserializer<LocalDate> {
-	private companion object {
-		val Formats = listOf(
-			DateTimeFormatter.ofPattern("yyyy-MM-dd")
-		)
-	}
-
 	override fun deserialize(
 		json: JsonElement,
 		typeOfT: Type?,
 		context: JsonDeserializationContext?
-	): LocalDate {
-		val str = json.asString
-
-		return Formats.firstNotNullOfOrNull {
-			LocalDate.parse(str, it)
-		} ?: throw JsonParseException("cannot parse LocalDate string \"$str\"")
-	}
+	): LocalDate =
+		parseLocalDate(json.asString)
 
 	override fun getType(): Type =
 		LocalDate::class.java
+}
+
+private val Formats = listOf(
+	DateTimeFormatter.ofPattern("yyyy-MM-dd")
+)
+
+private fun parseLocalDate(str: String): LocalDate {
+	return Formats.firstNotNullOfOrNull {
+		LocalDate.parse(str, it)
+	} ?: throw JsonParseException("cannot parse LocalDate string \"$str\"")
+}
+
+object LocalDateSerializer: KSerializer<LocalDate> {
+	override val descriptor: SerialDescriptor =
+		PrimitiveSerialDescriptor("ZonedDateTimeSerializer", PrimitiveKind.STRING)
+
+	override fun deserialize(decoder: Decoder): LocalDate =
+		parseLocalDate(decoder.decodeString())
+
+	override fun serialize(encoder: Encoder, value: LocalDate) {
+		throw NotImplementedError("serializing not implemented")
+	}
 }

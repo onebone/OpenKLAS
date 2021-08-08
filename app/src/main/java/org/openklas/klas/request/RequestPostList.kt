@@ -18,29 +18,33 @@
 
 package org.openklas.klas.request
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-enum class BoardSearchCriteria(val id: String) {
-	@SerializedName("ALL")
-	ALL("ALL"),
-	@SerializedName("TLE")
-	TITLE("TLE"),
-	@SerializedName("CNT")
-	CONTENT("CNT"),
-	@SerializedName("AUT")
-	AUTHOR("AUT")
+@Serializable
+enum class BoardSearchCriteria {
+	@SerialName("ALL")
+	ALL,
+	@SerialName("TLE")
+	TITLE,
+	@SerialName("CNT")
+	CONTENT,
+	@SerialName("AUT")
+	AUTHOR;
 }
 
+@Serializable
 data class RequestPostList(
-	@SerializedName("currentPage")
+	@SerialName("currentPage")
 	val page: Int,
-	@SerializedName("selectSubj")
+	@SerialName("selectSubj")
 	val subject: String,
-	@SerializedName("selectYearhakgi")
+	@SerialName("selectYearhakgi")
 	val semester: String,
-	@SerializedName("searchCondition")
+	@SerialName("searchCondition")
 	val searchCriteria: BoardSearchCriteria = BoardSearchCriteria.ALL,
-	@SerializedName("searchKeyword")
+	@SerialName("searchKeyword")
 	val keyword: String? = null,
+	@SerialName("selectChangeYn")
 	val selectChangeYn: String = "Y"
 )

@@ -79,7 +79,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			Home(
 				subjects = SUBJECTS,
 				professor = Professor("010-1234-5678", "", "", "", null),
-				notices = NOTICES.values.flatMap { it.toList() }.toTypedArray(),
+				notices = NOTICES.values.flatMap { it.toList() },
 				semesterLabel = CURRENT_SEMESTER.label,
 				timetable = Timetable(
 					LECTURE_SCHEDULES.flatMap { (subjectId, schedules) ->
@@ -122,7 +122,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		val entriesInPage = if(page <= pages.lastIndex) pages[page] else listOf()
 
 		return Resource.Success(Board(
-			entriesInPage.toTypedArray(),
+			entriesInPage,
 			Board.PageInfo(page,15, entries.size, ceil(entries.size / 15f).roundToInt())
 		))
 	}
@@ -141,7 +141,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		delay(NETWORK_DELAY)
 
 		return Resource.Success(
-			Board(arrayOf(), Board.PageInfo(1, 0, 0, 1))
+			Board(emptyList(), Board.PageInfo(1, 0, 0, 1))
 		)
 	}
 
@@ -152,7 +152,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getQnas(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board> {
 		delay(NETWORK_DELAY)
 
-		return Resource.Success(Board(arrayOf(), Board.PageInfo(1, 0, 0, 1)))
+		return Resource.Success(Board(emptyList(), Board.PageInfo(1, 0, 0, 1)))
 	}
 
 	override suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite> {
@@ -264,7 +264,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 		val now: ZonedDateTime = ZonedDateTime.now()
 
-		val SUBJECTS = arrayOf(
+		val SUBJECTS = listOf(
 			Subject("U2021100000000015", "01", "0000-5-0000-01", "아인슈타인", "일반상대성이론실험",
 				2021, 1, "2021,1", "학부", false),
 			Subject("U202110000W000015", "01", "W000-5-0000-01", "히키가야 하치만", "5개기본호흡",
@@ -312,7 +312,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 					"시공간 왜곡 관찰 보고서", 40, 0
 				),
 				OnlineContentEntry.Video(
-					"lesson", "01", "사건의 지평선 1", now, now, now + Duration.ofMinutes(30),
+					"lesson", "01", "사건의 지평선 1", now, now + Duration.ofMinutes(30),
 					0, 40, 0, "https://example.com/video1.mp4"
 				)
 			)

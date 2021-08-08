@@ -18,43 +18,49 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.JsonAdapter
-import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
-import org.openklas.klas.deserializer.YNBoolDeserializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.YNBoolSerializer
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class AssignmentEntry(
-	@SerializedName("adddate")
-	@JsonAdapter(YNBoolDeserializer::class)
+	@SerialName("adddate")
+	@Serializable(with = YNBoolSerializer::class)
 	val isExtendedPeriod: Boolean,
-	@SerializedName("expiredate")
+	@SerialName("expiredate")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val due: ZonedDateTime,
 	// [isSubmitPeriod] is a flag indicating if a user can
 	// submit a homework now. Returns true if current time is
 	// after [startDate] and before [due].
-	@SerializedName("indate")
-	@JsonAdapter(YNBoolDeserializer::class)
+	@SerialName("indate")
+	@Serializable(with = YNBoolSerializer::class)
 	val isSubmitPeriod: Boolean,
-	@SerializedName("ordseq")
+	@SerialName("ordseq")
 	val order: Int,
-	@SerializedName("reexpiredate")
+	@SerialName("reexpiredate")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val extendedDue: ZonedDateTime?,
-	@SerializedName("restartdate")
+	@SerialName("restartdate")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val extendedStartDate: ZonedDateTime?,
-	@SerializedName("score")
+	@SerialName("score")
 	val score: Int?,
-	@SerializedName("startdate")
+	@SerialName("startdate")
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	val startDate: ZonedDateTime,
-	@SerializedName("submityn")
-	@JsonAdapter(YNBoolDeserializer::class)
+	@SerialName("submityn")
+	@Serializable(with = YNBoolSerializer::class)
 	val isSubmitted: Boolean,
-	@SerializedName("taskNo")
+	@SerialName("taskNo")
 	val taskNumber: Int,
-	@SerializedName("title")
+	@SerialName("title")
 	val title: String,
-	@SerializedName("weeklyseq")
+	@SerialName("weeklyseq")
 	val week: Int,
-	@SerializedName("weeklysubseq")
+	@SerialName("weeklysubseq")
 	val nthOfWeek: Int,
-	// @SerializedName("weight"): unknown
+	// @SerialName("weight"): unknown
 )

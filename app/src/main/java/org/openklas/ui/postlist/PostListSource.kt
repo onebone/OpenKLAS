@@ -54,7 +54,7 @@ internal class PostListSource(
 				pageInfoCallback(page)
 
 				LoadResult.Page(
-					data = result.value.posts.toList(),
+					data = result.value.posts,
 					prevKey = if(key <= 0) null else key - 1,
 					nextKey = if(page.currentPage < page.totalPages - 1) key + 1 else null,
 					itemsBefore = ((page.currentPage - 1) * page.postsPerPage).coerceIn(0, page.totalPosts),

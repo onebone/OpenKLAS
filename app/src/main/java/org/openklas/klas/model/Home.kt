@@ -22,37 +22,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Home (
+data class Home(
 	@SerialName("atnlcSbjectList")
-	val subjects: Array<Subject>,
+	val subjects: List<Subject>,
 	@SerialName("rspnsblProfsr")
 	val professor: Professor,
 	@SerialName("subjNotiList")
-	val notices: Array<BriefNotice>,
+	val notices: List<BriefNotice>,
 	@SerialName("yearhakgi")
 	val semesterLabel: String,
 	@SerialName("timeTableList")
 	val timetable: Timetable
-) {
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other !is Home) return false
-
-		if(!subjects.contentEquals(other.subjects)) return false
-		if(professor != other.professor) return false
-		if(!notices.contentEquals(other.notices)) return false
-		if(semesterLabel != other.semesterLabel) return false
-		if(timetable != other.timetable) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = subjects.contentHashCode()
-		result = 31 * result + professor.hashCode()
-		result = 31 * result + notices.contentHashCode()
-		result = 31 * result + semesterLabel.hashCode()
-		result = 31 * result + timetable.hashCode()
-		return result
-	}
-}
+)

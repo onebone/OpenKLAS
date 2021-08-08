@@ -151,6 +151,7 @@ data class Week(
 // missing fields:
 // recOptCheck(recVideo, recReport, recQuiz, recQna, recEtc)
 // evaluationOpt
+// TODO make it available to parse with kotlinx.serialization
 data class Syllabus(
 	// gwamokKname
 	val subjectName: String,

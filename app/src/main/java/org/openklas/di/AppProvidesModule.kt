@@ -49,6 +49,7 @@ import javax.inject.Singleton
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -67,6 +68,7 @@ class AppProvidesModule {
 		return builder.create()
 	}
 
+	@Singleton
 	@Provides
 	fun provideRetrofit(
 		okHttpClient: OkHttpClient,
@@ -82,18 +84,28 @@ class AppProvidesModule {
 		return builder.build()
 	}
 
+	@Singleton
 	@Provides
 	fun provideJson(): Json {
 		return Json {
 			ignoreUnknownKeys = true
+			encodeDefaults = true
 		}
 	}
 
+	@Singleton
 	@Provides
 	fun provideClient(
 		cookieJar: CookieJar
 	): OkHttpClient {
 		val builder = OkHttpClient().newBuilder()
+
+		if(BuildConfig.DEBUG) {
+			builder.addInterceptor(HttpLoggingInterceptor().apply {
+				level = HttpLoggingInterceptor.Level.BODY
+			})
+		}
+
 		builder.readTimeout(Config.config.timeout.toLong(), TimeUnit.MILLISECONDS)
 		builder.connectTimeout(Config.config.connectTimeout.toLong(), TimeUnit.MILLISECONDS)
 		builder.retryOnConnectionFailure(Config.config.retryOnConnectionFailure)

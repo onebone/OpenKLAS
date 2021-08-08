@@ -18,15 +18,17 @@
 
 package org.openklas.klas.request
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestSyllabusSummary(
-	@SerializedName("selectYear")
+	@SerialName("selectYear")
 	val year: Int,
-	@SerializedName("selecthakgi")
+	@SerialName("selecthakgi")
 	val term: Int,
-	@SerializedName("selectText")
+	@SerialName("selectText")
 	val keyword: String,
-	@SerializedName("selectProfsr")
+	@SerialName("selectProfsr")
 	val professor: String
 )

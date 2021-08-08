@@ -40,9 +40,6 @@ sealed class OnlineContentEntry {
 		val division: String,
 		@SerialName("sbjt")
 		override val title: String,
-		@SerialName("registDt")
-		@Serializable(with = ZonedDateTimeSerializer::class)
-		val registerDate: ZonedDateTime,
 		@SerialName("startDate")
 		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val startDate: ZonedDateTime,

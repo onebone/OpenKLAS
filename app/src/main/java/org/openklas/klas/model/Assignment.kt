@@ -18,41 +18,47 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.JsonAdapter
-import com.google.gson.annotations.SerializedName
-import org.openklas.klas.deserializer.YNBoolDeserializer
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.YNBoolSerializer
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class Assignment(
-	@SerializedName("rpt")
+	@SerialName("rpt")
 	val description: Description
 ) {
+	@Serializable
 	data class Description(
-		@SerializedName("atchFileId")
+		@SerialName("atchFileId")
 		val attachmentId: String?,
-		@SerializedName("contents") // why plural??
+		@SerialName("contents") // why plural??
 		val content: String,
-		@SerializedName("expiredate")
+		@SerialName("expiredate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val due: ZonedDateTime,
-		@SerializedName("filelimit")
+		@SerialName("filelimit")
 		val submitFileSizeLimitMB: Int,
-		@SerializedName("indate")
-		@JsonAdapter(YNBoolDeserializer::class)
+		@SerialName("indate")
+		@Serializable(with = YNBoolSerializer::class)
 		val isInPeriod: Boolean,
-		@SerializedName("reexpiredate")
+		@SerialName("reexpiredate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val extendedDue: ZonedDateTime?,
-		@SerializedName("startdate")
+		@SerialName("startdate")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val startDate: ZonedDateTime,
-		@SerializedName("submitfiletype")
+		@SerialName("submitfiletype")
 		val submitFileExtensions: String,
-		@SerializedName("submityn")
-		@JsonAdapter(YNBoolDeserializer::class)
+		@SerialName("submityn")
+		@Serializable(with = YNBoolSerializer::class)
 		val isSubmitted: Boolean,
-		@SerializedName("title")
+		@SerialName("title")
 		val title: String,
-		@SerializedName("weeklyseq")
+		@SerialName("weeklyseq")
 		val week: Int,
-		@SerializedName("weeklysubseq")
+		@SerialName("weeklysubseq")
 		val nthOfWeek: Int
 	)
 }

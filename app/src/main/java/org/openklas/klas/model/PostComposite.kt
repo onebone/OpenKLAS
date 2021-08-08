@@ -18,116 +18,107 @@
 
 package org.openklas.klas.model
 
-import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 import java.time.ZonedDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.LocalDateSerializer
+import org.openklas.klas.deserializer.YNBoolSerializer
+import org.openklas.klas.deserializer.ZonedDateTimeSerializer
 
+@Serializable
 data class PostComposite(
-	@SerializedName("board")
+	@SerialName("board")
 	val post: Post,
-	@SerializedName("boardPre")
-	val previous: Preview?,
-	@SerializedName("boardNex")
-	val next: Preview?,
-	@SerializedName("comment")
-	val comments: Array<Comment>?
+	// QnA board does not set previous and next board for us
+	@SerialName("boardPre")
+	val previous: Preview? = null,
+	@SerialName("boardNex")
+	val next: Preview? = null,
+	@SerialName("comment")
+	val comments: List<Comment>? = null
 ) {
+	@Serializable
 	data class Post(
-		@SerializedName("atchFileId")
+		@SerialName("atchFileId")
 		val attachmentId: String?,
-		@SerializedName("boardNo")
+		@SerialName("boardNo")
 		val boardNo: Int,
-		@SerializedName("content")
+		@SerialName("content")
 		val content: String,
-		@SerializedName("masterNo")
+		@SerialName("masterNo")
 		val masterNo: Int,
-		@SerializedName("readCnt")
+		@SerialName("readCnt")
 		val hits: Int,
-		@SerializedName("refLvl")
+		@SerialName("refLvl")
 		val depth: Int,
-		@SerializedName("refSort")
+		@SerialName("refSort")
 		val orderInCurrentDepth: Int,
-		@SerializedName("registDt")
+		@SerialName("registDt")
+		@Serializable(with = ZonedDateTimeSerializer::class)
 		val registerDate: ZonedDateTime,
-		@SerializedName("registerId")
+		@SerialName("registerId")
 		val authorId: String,
-		@SerializedName("registerInfo")
+		@SerialName("registerInfo")
 		val authorInfo: String,
-		@SerializedName("registerIp")
+		@SerialName("registerIp")
 		val authorIp: String,
-		@SerializedName("sortOrdr")
+		@SerialName("sortOrdr")
 		val order: Int,
-		@SerializedName("title")
+		@SerialName("title")
 		val title: String,
-		@SerializedName("topAt")
+		@SerialName("topAt")
+		@Serializable(with = YNBoolSerializer::class)
 		val isPinned: Boolean,
-		@SerializedName("updtDt")
-		val updateDate: ZonedDateTime,
-		@SerializedName("updusrId")
+		@SerialName("updtDt")
+		@Serializable(with = ZonedDateTimeSerializer::class)
+		val updateDate: ZonedDateTime?,
+		@SerialName("updusrId")
 		val updateAuthorId: String?,
-		@SerializedName("updusrInfo")
+		@SerialName("updusrInfo")
 		val updateAuthorInfo: String?,
-		@SerializedName("updusrIp")
+		@SerialName("updusrIp")
 		val updateAuthorIp: String?,
 		// upperNo??
-		@SerializedName("userNm")
+		@SerialName("userNm")
 		val author: String
 	)
 
+	@Serializable
 	data class Preview(
-		@SerializedName("boardNo")
+		@SerialName("boardNo")
 		val boardNo: Int,
-		@SerializedName("masterNo")
+		@SerialName("masterNo")
 		val masterNo: Int,
-		@SerializedName("sortOrdr")
+		@SerialName("sortOrdr")
 		val order: Int,
-		@SerializedName("title")
+		@SerialName("title")
 		val title: String
 	)
 
+	@Serializable
 	data class Comment(
-		@SerializedName("boardNo")
+		@SerialName("boardNo")
 		val boardNo: Int,
-		@SerializedName("cm")
+		@SerialName("cm")
 		val content: String,
-		@SerializedName("cmNo")
-		val id: String,
-		@SerializedName("loginId")
+		@SerialName("cmNo")
+		val id: Int,
+		@SerialName("loginId")
 		val authorLoginId: String,
-		@SerializedName("mtype")
+		@SerialName("mtype")
 		val mtype: String, // "P", "S": Professor, Student??
-		@SerializedName("myarticleAt")
+		@SerialName("myarticleAt")
+		@Serializable(with = YNBoolSerializer::class)
 		val isMine: Boolean,
-		@SerializedName("registDt")
+		@SerialName("registDt")
+		@Serializable(with = LocalDateSerializer::class)
 		val registerDate: LocalDate, // comment does not give us specific time...
-		@SerializedName("registerId")
+		@SerialName("registerId")
 		val authorId: String,
-		@SerializedName("userNm")
+		@SerialName("userNm")
 		val author: String
 	)
-
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other !is PostComposite) return false
-
-		if(post != other.post) return false
-		if(previous != other.previous) return false
-		if(next != other.next) return false
-		if(comments != null) {
-			if(other.comments == null) return false
-			if(!comments.contentEquals(other.comments)) return false
-		}else if(other.comments != null) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = post.hashCode()
-		result = 31 * result + (previous?.hashCode() ?: 0)
-		result = 31 * result + (next?.hashCode() ?: 0)
-		result = 31 * result + (comments?.contentHashCode() ?: 0)
-		return result
-	}
 }
 
 enum class PostType {

@@ -24,11 +24,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.ZonedDateTime
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.openklas.R
 import org.openklas.base.BaseFragment
 import org.openklas.databinding.SyllabusSearchFragmentBinding
@@ -77,19 +82,17 @@ class SylSearchFragment: BaseFragment() {
 		setAppbarOnClickSearchListener { _, cancel ->
 			if(cancel) {
 				val bottomSheet = SearchBottomSheetFragment.create(currentYear)
+				bottomSheet.lifecycleScope.launch {
+					// FIXME bottom sheet should be dismissed when a lifecycle state of this fragment
+					// turns into paused state, or event handler should be reattached on recreation
+					// of this fragment.
+					repeatOnLifecycle(Lifecycle.State.STARTED) {
+						val event = bottomSheet.flow.first()
+						if(event is SearchEvent) {
+							viewModel.setFilter(event.year, event.term, event.keyword, event.professor)
+						}
 
-				bottomSheet.searchBottomSheetListener = object: SearchBottomSheetListener {
-					override fun onDismiss() {
 						setAppbarSearchState(true)
-					}
-
-					override fun onSearch(
-						year: Int,
-						term: Int,
-						keyword: String,
-						professor: String
-					) {
-						viewModel.setFilter(year, term, keyword, professor)
 						bottomSheet.dismiss()
 					}
 				}

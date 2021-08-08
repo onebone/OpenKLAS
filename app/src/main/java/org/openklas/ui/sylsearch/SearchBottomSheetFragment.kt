@@ -27,6 +27,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import org.openklas.R
 import org.openklas.databinding.BottomSyllabusSearchBinding
 import org.openklas.utils.getSelection
@@ -37,7 +40,10 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 		requireArguments().getInt(KEY_CURRENT_YEAR)
 	}
 
-	var searchBottomSheetListener: SearchBottomSheetListener? = null
+	private val _flow = MutableSharedFlow<SearchDialogEvent>(
+		extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+	)
+	val flow: SharedFlow<SearchDialogEvent> = _flow
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -72,12 +78,12 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 		}
 
 		binding.btnSubmit.setOnClickListener {
-			searchBottomSheetListener?.onSearch(
+			_flow.tryEmit(SearchEvent(
 				year = binding.spinnerYear.getSelectionText().toInt(),
 				term = binding.spinnerTerm.getSelection(terms) + 1,
 				keyword = binding.etKeyword.getSelectionText(),
 				professor = binding.etProfessor.getSelectionText()
-			)
+			))
 		}
 
 		return binding.root
@@ -86,7 +92,7 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 	override fun onDismiss(dialog: DialogInterface) {
 		super.onDismiss(dialog)
 
-		searchBottomSheetListener?.onDismiss()
+		_flow.tryEmit(DismissEvent)
 	}
 
 	companion object {
@@ -103,8 +109,12 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 	}
 }
 
-interface SearchBottomSheetListener {
-	fun onDismiss()
+internal sealed class SearchDialogEvent
 
-	fun onSearch(year: Int, term: Int, keyword: String, professor: String)
-}
+internal object DismissEvent: SearchDialogEvent()
+internal data class SearchEvent(
+	val year: Int,
+	val term: Int,
+	val keyword: String,
+	val professor: String
+): SearchDialogEvent()

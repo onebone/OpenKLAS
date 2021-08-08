@@ -35,6 +35,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.openklas.R
@@ -156,7 +157,7 @@ fun ScheduleItem(item: Timetable.Entry, now: ZonedDateTime) {
 			Text(
 				text = item.subjectName,
 				fontWeight = FontWeight.Bold,
-				fontSize = 14.sp
+				fontSize = 16.sp
 			)
 
 			Text(
@@ -170,7 +171,8 @@ fun ScheduleItem(item: Timetable.Entry, now: ZonedDateTime) {
 			modifier = Modifier
 				.align(Alignment.CenterVertically)
 				.width(ClassroomColumnWidth),
-			fontSize = 14.sp
+			fontSize = 14.sp,
+			textAlign = TextAlign.Center
 		)
 	}
 }

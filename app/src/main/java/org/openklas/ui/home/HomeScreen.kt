@@ -53,17 +53,15 @@ fun HomeScreen(
 	now: ZonedDateTime
 ) {
 	Column(
-		modifier = Modifier.fillMaxWidth()
+		modifier = Modifier.fillMaxWidth(),
+		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 		Semester(semester = currentSemester)
 
-		Spacer(modifier = Modifier.height(8.dp))
 		Schedule(schedule = schedule, now = now)
 
-		Spacer(modifier = Modifier.height(8.dp))
 		AssignmentFrame(assignments = assignments, impending = impendingAssignments, now = now)
 
-		Spacer(modifier = Modifier.height(8.dp))
 		OnlineVideoFrame(videos = videos, impending = impendingVideos, now = now)
 	}
 }

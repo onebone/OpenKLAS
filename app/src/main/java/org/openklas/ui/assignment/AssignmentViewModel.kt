@@ -54,9 +54,9 @@ class AssignmentViewModel @Inject constructor(
 	val assignment: LiveData<Assignment> = _assignment
 
 	val attachments = Transformations.switchMap(assignment) {
-		MutableLiveData<Array<Attachment>>().apply {
+		MutableLiveData<List<Attachment>>().apply {
 			if(it.description.attachmentId == null) {
-				value = arrayOf()
+				value = emptyList()
 				return@apply
 			}
 

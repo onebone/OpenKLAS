@@ -94,31 +94,31 @@ interface KlasService {
 	suspend fun qna(@Body payload: RequestPostContent): Response<PostComposite>
 
 	@POST(KlasUri.STD_ATTACHMENTS)
-	suspend fun attachments(@Body payload: RequestAttachments): Response<Array<Attachment>>
+	suspend fun attachments(@Body payload: RequestAttachments): Response<List<Attachment>>
 
 	@POST(KlasUri.STD_SYLLABUS_LIST)
-	suspend fun syllabusList(@Body payload: RequestSyllabusSummary): Response<Array<SyllabusSummary>>
+	suspend fun syllabusList(@Body payload: RequestSyllabusSummary): Response<List<SyllabusSummary>>
 
 	@POST(KlasUri.STD_SYLLABUS)
 	suspend fun syllabus(@Body payload: RequestSyllabus): Response<Syllabus>
 
 	@POST(KlasUri.STD_TEACHING_ASSISTANT)
-	suspend fun teachingAssistants(@Body payload: RequestTeachingAssistant): Response<Array<TeachingAssistant>>
+	suspend fun teachingAssistants(@Body payload: RequestTeachingAssistant): Response<List<TeachingAssistant>>
 
 	@POST(KlasUri.STD_LECTURE_SCHEDULE)
-	suspend fun lectureSchedules(@Body payload: RequestLectureSchedules): Response<Array<LectureSchedule>>
+	suspend fun lectureSchedules(@Body payload: RequestLectureSchedules): Response<List<LectureSchedule>>
 
 	@POST(KlasUri.STD_LECTURE_STUDENTS)
 	suspend fun lectureStudentsNumber(@Body payload: RequestLectureStudents): Response<ResponseLectureStudents>
 
 	@POST(KlasUri.STD_ASSIGNMENTS)
-	suspend fun assignments(@Body payload: RequestAssignments): Response<Array<AssignmentEntry>>
+	suspend fun assignments(@Body payload: RequestAssignments): Response<List<AssignmentEntry>>
 
 	@POST(KlasUri.STD_ASSIGNMENT)
 	suspend fun assignment(@Body payload: RequestAssignment): Response<Assignment>
 
 	@POST(KlasUri.STD_ONLINE_CONTENT_LIST)
-	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<Array<OnlineContentEntry>>
+	suspend fun onlineContentList(@Body payload: RequestOnlineContents): Response<List<OnlineContentEntry>>
 
 	@POST(KlasUri.STD_GRADES)
 	suspend fun grades(@Body payload: Empty = EmptyObject): Response<List<SemesterGrade>>

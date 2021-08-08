@@ -42,7 +42,7 @@ import org.openklas.R
 import org.openklas.klas.model.Attachment
 
 @Composable
-fun AttachmentList(attachments: Array<Attachment>, onClickEntry: (Attachment) -> Unit) {
+fun AttachmentList(attachments: List<Attachment>, onClickEntry: (Attachment) -> Unit) {
 	LazyColumn(modifier = Modifier.fillMaxWidth()) {
 		items(attachments, key = { it.order }) {
 			AttachmentEntry(it, onClick = onClickEntry)

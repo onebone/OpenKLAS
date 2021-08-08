@@ -91,11 +91,11 @@ class DefaultKlasRepository @Inject constructor(
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Resource<Array<Attachment>> {
+	): Resource<List<Attachment>> {
 		return klasDataSource.getAttachments(storageId, attachmentId)
 	}
 
-	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<List<SyllabusSummary>> {
 		return klasDataSource.getSyllabusList(year, term, keyword, professor)
 	}
 
@@ -103,11 +103,11 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getSyllabus(subjectId)
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<List<TeachingAssistant>> {
 		return klasDataSource.getTeachingAssistants(subjectId)
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<List<LectureSchedule>> {
 		return klasDataSource.getLectureSchedules(subjectId)
 	}
 
@@ -118,7 +118,7 @@ class DefaultKlasRepository @Inject constructor(
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Resource<Array<AssignmentEntry>> {
+	): Resource<List<AssignmentEntry>> {
 		return klasDataSource.getAssignments(semester, subjectId)
 	}
 
@@ -130,7 +130,7 @@ class DefaultKlasRepository @Inject constructor(
 		return klasDataSource.getAssignment(semester, subjectId, order)
 	}
 
-	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<List<OnlineContentEntry>> {
 		return klasDataSource.getOnlineContentList(semester, subjectId)
 	}
 

@@ -80,11 +80,11 @@ class RemoteKlasDataSource @Inject constructor(
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Resource<Array<Attachment>> {
+	): Resource<List<Attachment>> {
 		return klas.getAttachments(storageId, attachmentId)
 	}
 
-	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<List<SyllabusSummary>> {
 		return klas.getSyllabusList(year, term, keyword, professor)
 	}
 
@@ -92,11 +92,11 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getSyllabus(subjectId)
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<List<TeachingAssistant>> {
 		return klas.getTeachingAssistants(subjectId)
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<List<LectureSchedule>> {
 		return klas.getLectureSchedules(subjectId)
 	}
 
@@ -107,7 +107,7 @@ class RemoteKlasDataSource @Inject constructor(
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Resource<Array<AssignmentEntry>> {
+	): Resource<List<AssignmentEntry>> {
 		return klas.getAssignments(semester, subjectId)
 	}
 
@@ -119,7 +119,7 @@ class RemoteKlasDataSource @Inject constructor(
 		return klas.getAssignment(semester, subjectId, order)
 	}
 
-	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<List<OnlineContentEntry>> {
 		return klas.getOnlineContentList(semester, subjectId)
 	}
 

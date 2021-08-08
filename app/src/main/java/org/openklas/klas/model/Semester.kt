@@ -27,23 +27,5 @@ data class Semester(
 	val id: String,
 	val label: String,
 	@SerialName("subjList")
-	val subjects: Array<BriefSubject>
-) {
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other !is Semester) return false
-
-		if(id != other.id) return false
-		if(label != other.label) return false
-		if(!subjects.contentEquals(other.subjects)) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = id.hashCode()
-		result = 31 * result + label.hashCode()
-		result = 31 * result + subjects.contentHashCode()
-		return result
-	}
-}
+	val subjects: List<BriefSubject>
+)

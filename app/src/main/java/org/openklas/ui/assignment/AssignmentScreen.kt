@@ -71,7 +71,7 @@ fun AssignmentScreen(onDownloadAttachment: (Attachment) -> Unit) {
 fun MainFrame(
 	subject: BriefSubject?,
 	assignment: Assignment?,
-	attachments: Array<Attachment>?,
+	attachments: List<Attachment>?,
 	onDownloadAttachment: (Attachment) -> Unit
 ) {
 	Surface(modifier = Modifier

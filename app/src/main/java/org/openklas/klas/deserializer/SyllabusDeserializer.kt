@@ -88,7 +88,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 		)
 	}
 
-	private fun deserializeExpectations(json: JsonObject): Array<Expectation> {
+	private fun deserializeExpectations(json: JsonObject): List<Expectation> {
 		val expectations = mutableListOf<Expectation>()
 
 		for(i in 1..20) {
@@ -100,7 +100,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 			}
 		}
 
-		return expectations.toTypedArray()
+		return expectations
 	}
 
 	private fun deserializeCreditDetails(json: JsonObject): Credits {
@@ -177,7 +177,7 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 		)
 	}
 
-	private fun deserializeBooks(json: JsonObject): Array<Book> {
+	private fun deserializeBooks(json: JsonObject): List<Book> {
 		val books = mutableListOf<Book>()
 
 		for(i in 0..3) {
@@ -193,10 +193,10 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 			}
 		}
 
-		return books.toTypedArray()
+		return books
 	}
 
-	private fun deserializeSchedule(json: JsonObject): Array<Week> {
+	private fun deserializeSchedule(json: JsonObject): List<Week> {
 		val weeks = mutableListOf<Week>()
 
 		for(i in 1..15) {
@@ -210,6 +210,6 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 			}
 		}
 
-		return weeks.toTypedArray()
+		return weeks
 	}
 }

@@ -55,9 +55,9 @@ class PostViewModel @Inject constructor(
 	}
 
 	val attachments = Transformations.switchMap(post) {
-		MutableLiveData<Array<Attachment>>().apply {
+		MutableLiveData<List<Attachment>>().apply {
 			if(it.attachmentId == null) {
-				value = arrayOf()
+				value = emptyList()
 				return@apply
 			}
 

@@ -34,15 +34,6 @@ import java.time.ZonedDateTime
 object BindAdapter {
 	@JvmStatic
 	@BindingAdapter("items")
-	fun <T> bindItems(recyclerView: RecyclerView, list: Array<T>?) {
-		if(recyclerView.adapter is ListAdapter<*, *>) {
-			@Suppress("UNCHECKED_CAST")
-			(recyclerView.adapter as ListAdapter<T, *>).submitList(list?.toList())
-		}
-	}
-
-	@JvmStatic
-	@BindingAdapter("items")
 	fun <T> bindItems(recyclerView: RecyclerView, list: List<T>?) {
 		if(recyclerView.adapter is ListAdapter<*, *>) {
 			@Suppress("UNCHECKED_CAST")
@@ -80,7 +71,7 @@ object BindAdapter {
 
 	@JvmStatic
 	@BindingAdapter("scheduleText")
-	fun setTextViewScheduleText(textView: TextView, schedules: Array<LectureSchedule>?) {
+	fun setTextViewScheduleText(textView: TextView, schedules: List<LectureSchedule>?) {
 		if(schedules == null) return
 
 		val resources = textView.context.resources

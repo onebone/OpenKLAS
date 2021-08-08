@@ -162,10 +162,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Resource<Array<Attachment>> {
+	): Resource<List<Attachment>> {
 		delay(NETWORK_DELAY)
 
-		return Resource.Success(arrayOf())
+		return Resource.Success(listOf())
 	}
 
 	override suspend fun getSyllabusList(
@@ -173,7 +173,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		term: Int,
 		keyword: String,
 		professor: String
-	): Resource<Array<SyllabusSummary>> {
+	): Resource<List<SyllabusSummary>> {
 		delay(NETWORK_DELAY)
 
 		val syllabuses = SYLLABUS.values.filter { it.subjectName.contains(keyword) }
@@ -181,7 +181,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			syllabuses.map {
 				SyllabusSummary(it.division, it.course, it.subjectName, term, year, it.tutor.name, it.targetGrade,
 				it.openGwamokNo, it.departmentCode, it.credits, it.lessonHours, it.summary, it.tutor.telephoneContact, it.introductionVideoUrl)
-			}.toTypedArray()
+			}
 		)
 	}
 
@@ -193,19 +193,19 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 			else Resource.Success(syllabus)
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<List<TeachingAssistant>> {
 		delay(NETWORK_DELAY)
 
 		return Resource.Success(
-			TEACHING_ASSISTANTS[subjectId] ?: emptyArray()
+			TEACHING_ASSISTANTS[subjectId] ?: emptyList()
 		)
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<List<LectureSchedule>> {
 		delay(NETWORK_DELAY)
 
 		return Resource.Success(
-			LECTURE_SCHEDULES[subjectId] ?: arrayOf()
+			LECTURE_SCHEDULES[subjectId] ?: emptyList()
 		)
 	}
 
@@ -218,10 +218,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Resource<Array<AssignmentEntry>> {
+	): Resource<List<AssignmentEntry>> {
 		delay(NETWORK_DELAY)
 
-		return Resource.Success(arrayOf())
+		return Resource.Success(listOf())
 	}
 
 	override suspend fun getAssignment(
@@ -237,10 +237,10 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 	override suspend fun getOnlineContentList(
 		semester: String,
 		subjectId: String
-	): Resource<Array<OnlineContentEntry>> {
+	): Resource<List<OnlineContentEntry>> {
 		delay(NETWORK_DELAY)
 
-		return Resource.Success(ONLINE_CONTENTS[subjectId] ?: arrayOf())
+		return Resource.Success(ONLINE_CONTENTS[subjectId] ?: emptyList())
 	}
 
 	override suspend fun getGrades(): Resource<List<SemesterGrade>> {
@@ -280,13 +280,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		val SEMESTERS = listOf(
 			Semester("2021,1", "2021년도 1학기", SUBJECTS.map {
 				BriefSubject(it.id, "${it.name} - ${it.professor}", it.name)
-			}.toTypedArray())
+			})
 		)
 
 		val CURRENT_SEMESTER = SEMESTERS[0]
 
 		val NOTICES = mapOf(
-			"U2021100000000015" to arrayOf(
+			"U2021100000000015" to listOf(
 				BriefNotice("U2021100000000015", "01", "-", 2021, 1,
 					ZonedDateTime.ofInstant(Instant.ofEpochMilli(1598918400L), ZoneId.of("Asia/Seoul")),
 					"일반상대성이론실험", "사건의 지평선 실험1 유의사항",
@@ -296,13 +296,13 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		)
 
 		val TEACHING_ASSISTANTS = mapOf(
-			"U202110000W000015" to arrayOf(
+			"U202110000W000015" to listOf(
 				TeachingAssistant("유키노시타 유키노", "ooook@shipduck.net", "U202110000W000015")
 			)
 		)
 
 		val ONLINE_CONTENTS = mapOf(
-			"U2021100000000015" to arrayOf(
+			"U2021100000000015" to listOf(
 				OnlineContentEntry.Homework(
 					"proj", null, ZonedDateTime.now(), now + Duration.ofHours(2),
 					"사건의 지평선 실험1", 40, 0
@@ -325,22 +325,22 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 		const val DAY_FRIDAY = 5
 
 		val LECTURE_SCHEDULES = mapOf(
-			"U2021100000000015" to arrayOf(
+			"U2021100000000015" to listOf(
 				LectureSchedule(DAY_FRIDAY, "금", "M87", intArrayOf(1, 2))
 			),
-			"U202110000W000015" to arrayOf(
+			"U202110000W000015" to listOf(
 				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(1, 2, 3, 4)),
 				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(1, 2, 3, 4))
 			),
-			"U202110000Z000016" to arrayOf(
+			"U202110000Z000016" to listOf(
 				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(4)),
 				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(3))
 			),
-			"U202110000Y000015" to arrayOf(
+			"U202110000Y000015" to listOf(
 				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(2)),
 				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(1))
 			),
-			"U202110000H000015" to arrayOf(
+			"U202110000H000015" to listOf(
 				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(5)),
 				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(6))
 			)
@@ -354,14 +354,14 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				false, 0, false, 0,
 				"호흡법 중 기본 계파인 물, 번개, 바람, 화염, 바위의 호흡에 대해서 학습한다. 또한 전집중 호흡의 경지에 올라섬으로써 오니의 급습에 항시 대비할 수 있도록 한다.",
 				"전집중 호흡법을 체득하여 기본적인 체력을 증진시킴과 동시에 오니의 공격에 불시에 대항할 수 있도록 하는 것이 본 강의의 목표이다.",
-				arrayOf(Expectation("전집중 호흡", "전집중 호흡을 습득한다."), Expectation("기본 호흡", "5가지의 기본 호흡에 대한 개요를 학습한다.")),
+				listOf(Expectation("전집중 호흡", "전집중 호흡을 습득한다."), Expectation("기본 호흡", "5가지의 기본 호흡에 대한 개요를 학습한다.")),
 				Credits(1, 2, 0), null, "엑스칼리버",
 				LectureType.TEAM_TEACHING or LectureType.APPRENTICESHIP or LectureType.SMALL,
 				LectureMethod.FACE_TO_FACE_100, VL(30, 0, 0, 0, 30, 30, 10),
 				ScoreWeights(10, 30, 30, 20, 10, 0, 0),
-				arrayOf(Book("자민당, 폭발해라", "히키가야 하치만", "쇼가쿠칸", 2016), Book("역시 내 나라인 일본의 정치는 잘못되어 있다.", "히키가야 하치만", "쇼가쿠칸", 2016)),
+				listOf(Book("자민당, 폭발해라", "히키가야 하치만", "쇼가쿠칸", 2016), Book("역시 내 나라인 일본의 정치는 잘못되어 있다.", "히키가야 하치만", "쇼가쿠칸", 2016)),
 				"교재를 구매하지 않으면 강의를 진행할 수 없음.",
-				arrayOf(
+				listOf(
 					Week(1, "과목 소개 (OT)", "", null),
 					Week(2, "물의 호흡 1", "", null),
 					Week(3, "물의 호흡 2", "", null),
@@ -378,12 +378,12 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				Tutor("아인슈타인", "교수", null, null, ""),
 				false, 0, false, 0,
 				"일반상대성이론 실험", "",
-				arrayOf(Expectation("이론", "일반상대성이론의 이론적 배경에 대한 이해")),
+				listOf(Expectation("이론", "일반상대성이론의 이론적 배경에 대한 이해")),
 				Credits(1, 2, 0), null, null,
 				LectureType.EXPERIMENT, LectureMethod.FACE_TO_FACE_100, VL(40, 40, 10, 0, 0, 10, 0),
 				ScoreWeights(10, 20, 20, 40, 5, 5, 0),
-				arrayOf(Book("프린트 제공", null, null, null)), null,
-				arrayOf(
+				listOf(Book("프린트 제공", null, null, null)), null,
+				listOf(
 					Week(1, "과목 소개 (OT)", "", null)
 				)
 			)

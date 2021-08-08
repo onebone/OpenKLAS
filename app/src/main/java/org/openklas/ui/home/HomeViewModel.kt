@@ -56,7 +56,7 @@ class HomeViewModel @Inject constructor(
 		}
 	}
 
-	private val onlineContents = MediatorLiveData<Array<Pair<BriefSubject, OnlineContentEntry>>>().apply {
+	private val onlineContents = MediatorLiveData<List<Pair<BriefSubject, OnlineContentEntry>>>().apply {
 		addSource(currentSemester) {
 			fetchOnlineContents(it)
 		}
@@ -165,7 +165,7 @@ class HomeViewModel @Inject constructor(
 						}
 					}.flatMap {
 						it.await()
-					}.toTypedArray()
+					}
 
 					onlineContents.postValue(contents)
 				}

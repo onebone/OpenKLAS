@@ -187,7 +187,7 @@ data class Syllabus(
 	// purpose
 	val purpose: String?,
 	// reflectPer, studyResultShort, result (1~20)
-	val expectations: Array<Expectation>,
+	val expectations: List<Expectation>,
 	// getScore[1-3]
 	val creditDetails: Credits,
 	// preGwamok
@@ -198,74 +198,8 @@ data class Syllabus(
 	val lectureMethod: Int, // LectureMethod
 	val vlCompetence: VL,
 	val scoreWeights: ScoreWeights,
-	val books: Array<Book>,
+	val books: List<Book>,
 	// bigo
 	val bookComment: String?,
-	val schedule: Array<Week>
-) {
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other !is Syllabus) return false
-
-		if (subjectName != other.subjectName) return false
-		if (subjectNameEnglish != other.subjectNameEnglish) return false
-		if (departmentCode != other.departmentCode) return false
-		if (targetGrade != other.targetGrade) return false
-		if (openGwamokNo != other.openGwamokNo) return false
-		if (division != other.division) return false
-		if (course != other.course) return false
-		if (introductionVideoUrl != other.introductionVideoUrl) return false
-		if (credits != other.credits) return false
-		if (lessonHours != other.lessonHours) return false
-		if (tutor != other.tutor) return false
-		if (containsEnglish != other.containsEnglish) return false
-		if (englishPercentage != other.englishPercentage) return false
-		if (containsSecondaryLanguage != other.containsSecondaryLanguage) return false
-		if (secondaryLanguagePercentage != other.secondaryLanguagePercentage) return false
-		if (summary != other.summary) return false
-		if (purpose != other.purpose) return false
-		if (!expectations.contentEquals(other.expectations)) return false
-		if (creditDetails != other.creditDetails) return false
-		if (recommendedPrerequisiteSubject != other.recommendedPrerequisiteSubject) return false
-		if (subsequentSubject != other.subsequentSubject) return false
-		if (lectureType != other.lectureType) return false
-		if (lectureMethod != other.lectureMethod) return false
-		if (vlCompetence != other.vlCompetence) return false
-		if (scoreWeights != other.scoreWeights) return false
-		if (!books.contentEquals(other.books)) return false
-		if (bookComment != other.bookComment) return false
-		if (!schedule.contentEquals(other.schedule)) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = subjectName.hashCode()
-		result = 31 * result + subjectNameEnglish.hashCode()
-		result = 31 * result + departmentCode.hashCode()
-		result = 31 * result + targetGrade
-		result = 31 * result + openGwamokNo.hashCode()
-		result = 31 * result + division.hashCode()
-		result = 31 * result + course.hashCode()
-		result = 31 * result + introductionVideoUrl.hashCode()
-		result = 31 * result + credits
-		result = 31 * result + lessonHours
-		result = 31 * result + tutor.hashCode()
-		result = 31 * result + containsEnglish.hashCode()
-		result = 31 * result + containsSecondaryLanguage.hashCode()
-		result = 31 * result + summary.hashCode()
-		result = 31 * result + purpose.hashCode()
-		result = 31 * result + expectations.contentHashCode()
-		result = 31 * result + creditDetails.hashCode()
-		result = 31 * result + recommendedPrerequisiteSubject.hashCode()
-		result = 31 * result + subsequentSubject.hashCode()
-		result = 31 * result + lectureType
-		result = 31 * result + lectureMethod
-		result = 31 * result + vlCompetence.hashCode()
-		result = 31 * result + scoreWeights.hashCode()
-		result = 31 * result + books.contentHashCode()
-		result = 31 * result + bookComment.hashCode()
-		result = 31 * result + schedule.contentHashCode()
-		return result
-	}
-}
+	val schedule: List<Week>
+)

@@ -46,12 +46,12 @@ class AssignmentListViewModel @Inject constructor(
 	// we will make it clear
 	private val semesterSubjectPair = PairCombinedLiveData(currentSemester, currentSubject)
 
-	private val _assignments = MediatorLiveData<Array<AssignmentEntry>>().apply {
+	private val _assignments = MediatorLiveData<List<AssignmentEntry>>().apply {
 		addSource(semesterSubjectPair) {
 			fetchAssignments(it.first.id, it.second.id)
 		}
 	}
-	val assignments: LiveData<Array<AssignmentEntry>> = _assignments
+	val assignments: LiveData<List<AssignmentEntry>> = _assignments
 
 	private val _isLoading = MutableLiveData(true)
 	val isLoading: LiveData<Boolean> = _isLoading

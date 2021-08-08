@@ -46,27 +46,27 @@ interface KlasRepository {
 	suspend fun getQna(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
 	suspend fun getLectureMaterials(semester: String, subjectId: String, page: Int, criteria: BoardSearchCriteria, keyword: String?): Resource<Board>
 	suspend fun getLectureMaterial(semester: String, subjectId: String, boardNo: Int, masterNo: Int): Resource<PostComposite>
-	suspend fun getAttachments(storageId: String, attachmentId: String): Resource<Array<Attachment>>
+	suspend fun getAttachments(storageId: String, attachmentId: String): Resource<List<Attachment>>
 	suspend fun getSyllabusList(
 		year: Int,
 		term: Int,
 		keyword: String,
 		professor: String
-	): Resource<Array<SyllabusSummary>>
+	): Resource<List<SyllabusSummary>>
 
 	suspend fun getSyllabus(subjectId: String): Resource<Syllabus>
-	suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>>
+	suspend fun getTeachingAssistants(subjectId: String): Resource<List<TeachingAssistant>>
 
-	suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>>
+	suspend fun getLectureSchedules(subjectId: String): Resource<List<LectureSchedule>>
 	suspend fun getLectureStudentsNumber(subjectId: String): Resource<Int>
 
-	suspend fun getAssignments(semester: String, subjectId: String): Resource<Array<AssignmentEntry>>
+	suspend fun getAssignments(semester: String, subjectId: String): Resource<List<AssignmentEntry>>
 	suspend fun getAssignment(semester: String, subjectId: String, order: Int): Resource<Assignment>
 
 	suspend fun getOnlineContentList(
 		semester: String,
 		subjectId: String
-	): Resource<Array<OnlineContentEntry>>
+	): Resource<List<OnlineContentEntry>>
 
 	suspend fun getGrades(): Resource<List<SemesterGrade>>
 	suspend fun getCreditStatus(): Resource<CreditStatus>

@@ -108,7 +108,7 @@ fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
 @Composable
 fun AssignmentListMainLayout(
 	name: String,
-	assignments: Array<AssignmentEntry>?,
+	assignments: List<AssignmentEntry>?,
 	isLoading: Boolean,
 	onClickEntry: (AssignmentEntry) -> Unit,
 	onClickSubjectChange: () -> Unit
@@ -196,7 +196,7 @@ fun AssignmentListMainLayout(
 @Composable
 fun MainFrame(
 	modifier: Modifier = Modifier,
-	assignments: Array<AssignmentEntry>?,
+	assignments: List<AssignmentEntry>?,
 	lazyListState: LazyListState,
     onClickEntry: (AssignmentEntry) -> Unit
 ) {
@@ -263,7 +263,7 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 @Composable
 fun AssignmentListScreenPreview() {
 	MaterialTheme {
-		AssignmentListMainLayout("심리학과프로파일링", arrayOf(
+		AssignmentListMainLayout("심리학과프로파일링", listOf(
 			AssignmentEntry(
 				isExtendedPeriod = false,
 				due = ZonedDateTime.now() + Duration.ofDays(10),

@@ -45,15 +45,15 @@ class SyllabusViewModel @Inject constructor(
 	private val _syllabus = MutableLiveData<Syllabus>()
 	val syllabus: LiveData<Syllabus> = _syllabus
 
-	private val _teachingAssistants = MutableLiveData<Array<TeachingAssistant>>()
+	private val _teachingAssistants = MutableLiveData<List<TeachingAssistant>>()
 
-	private val _schedules = MutableLiveData<Array<LectureSchedule>>()
-	val schedules: LiveData<Array<LectureSchedule>> = _schedules
+	private val _schedules = MutableLiveData<List<LectureSchedule>>()
+	val schedules: LiveData<List<LectureSchedule>> = _schedules
 
 	private val _studentsNumber = MutableLiveData<Int>()
 	val studentsNumber: LiveData<Int> = _studentsNumber
 
-	val tutors: LiveData<Array<TutorEntry>> = MediatorLiveData<Array<TutorEntry>>().apply {
+	val tutors: LiveData<List<TutorEntry>> = MediatorLiveData<List<TutorEntry>>().apply {
 		fun combine() {
 			val tutors = mutableListOf<TutorEntry>()
 
@@ -69,7 +69,7 @@ class SyllabusViewModel @Inject constructor(
 				}
 			}
 
-			value = tutors.toTypedArray()
+			value = tutors
 		}
 
 		addSource(_teachingAssistants) {

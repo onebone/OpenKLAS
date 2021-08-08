@@ -75,7 +75,7 @@
 			app:layout_constraintTop_toTopOf="parent"
 			android:paddingHorizontal="12dp"
 			android:paddingVertical="18dp"
-			android:text="@{@string/syllabus_search_result_count(viewModel.syllabusList.length)}"
+			android:text="@{@string/syllabus_search_result_count(viewModel.syllabusList.size)}"
 			android:textSize="18sp"
 			android:visibility="@{viewModel.filter == null ? View.INVISIBLE : View.VISIBLE}" />
 

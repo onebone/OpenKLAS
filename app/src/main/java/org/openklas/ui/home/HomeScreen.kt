@@ -254,7 +254,7 @@ fun HomeScreenPreview() {
 			modifier = Modifier.fillMaxSize()
 		) {
 			HomeScreen(
-				currentSemester = Semester("2021,1", "2021년도 1학기", arrayOf()),
+				currentSemester = Semester("2021,1", "2021년도 1학기", emptyList()),
 				schedule = listOf(
 					Timetable.Entry(1, 3, "M87", "아인슈타인", 2, "일반상대성이론실험", "", "", 1),
 					Timetable.Entry(1, 5, "미지정", "히키가야 하치만", 1, "5개기본호흡", "", "", 2)

@@ -38,8 +38,8 @@ class SylSearchViewModel @Inject constructor(
 ) : ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
 	private val _error = MutableLiveData<Throwable>()
 
-	private val _syllabusList = MutableLiveData<Array<SyllabusSummary>>()
-	val syllabusList: LiveData<Array<SyllabusSummary>> = _syllabusList
+	private val _syllabusList = MutableLiveData<List<SyllabusSummary>>()
+	val syllabusList: LiveData<List<SyllabusSummary>> = _syllabusList
 
 	private val _filter = MutableLiveData<Filter>()
 	val filter: LiveData<Filter> = _filter

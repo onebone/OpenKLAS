@@ -144,12 +144,12 @@ class DefaultKlasClient @Inject constructor(
 	override suspend fun getAttachments(
 		storageId: String,
 		attachmentId: String
-	): Resource<Array<Attachment>> {
+	): Resource<List<Attachment>> {
 		return service.attachments(RequestAttachments(storageId = storageId, attachmentId = attachmentId))
 			.validateSession()
 	}
 
-	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<Array<SyllabusSummary>> {
+	override suspend fun getSyllabusList(year: Int, term: Int, keyword: String, professor: String): Resource<List<SyllabusSummary>> {
 		return service.syllabusList(RequestSyllabusSummary(
 			year = year, term = term, keyword = keyword, professor = professor)).validateSession()
 	}
@@ -160,11 +160,11 @@ class DefaultKlasClient @Inject constructor(
 		)).validateSession()
 	}
 
-	override suspend fun getTeachingAssistants(subjectId: String): Resource<Array<TeachingAssistant>> {
+	override suspend fun getTeachingAssistants(subjectId: String): Resource<List<TeachingAssistant>> {
 		return service.teachingAssistants(RequestTeachingAssistant(subjectId = subjectId)).validateSession()
 	}
 
-	override suspend fun getLectureSchedules(subjectId: String): Resource<Array<LectureSchedule>> {
+	override suspend fun getLectureSchedules(subjectId: String): Resource<List<LectureSchedule>> {
 		return service.lectureSchedules(RequestLectureSchedules(subjectId = subjectId)).validateSession()
 	}
 
@@ -182,7 +182,7 @@ class DefaultKlasClient @Inject constructor(
 	override suspend fun getAssignments(
 		semester: String,
 		subjectId: String
-	): Resource<Array<AssignmentEntry>> {
+	): Resource<List<AssignmentEntry>> {
 		return service.assignments(RequestAssignments(semester = semester, subjectId = subjectId)).validateSession()
 	}
 
@@ -194,7 +194,7 @@ class DefaultKlasClient @Inject constructor(
 		return service.assignment(RequestAssignment(semester = semester, subjectId = subjectId, order = order)).validateSession()
 	}
 
-	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<Array<OnlineContentEntry>> {
+	override suspend fun getOnlineContentList(semester: String, subjectId: String): Resource<List<OnlineContentEntry>> {
 		return service.onlineContentList(RequestOnlineContents(
 			semester = semester, subjectId = subjectId
 		)).validateSession()

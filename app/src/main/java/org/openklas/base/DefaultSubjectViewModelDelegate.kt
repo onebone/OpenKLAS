@@ -33,7 +33,7 @@ class DefaultSubjectViewModelDelegate @Inject constructor(
 	}
 	override val currentSubject: LiveData<BriefSubject> = _currentSubject
 
-	private var subjectSelector: (Array<BriefSubject>) -> BriefSubject? = {
+	private var subjectSelector: (List<BriefSubject>) -> BriefSubject? = {
 		it.firstOrNull()
 	}
 
@@ -47,7 +47,7 @@ class DefaultSubjectViewModelDelegate @Inject constructor(
 		}
 	}
 
-	private fun invokeSelector(subjects: Array<BriefSubject>) {
+	private fun invokeSelector(subjects: List<BriefSubject>) {
 		val selection = subjectSelector(subjects) ?: return
 
 		if(selection != currentSubject.value) {

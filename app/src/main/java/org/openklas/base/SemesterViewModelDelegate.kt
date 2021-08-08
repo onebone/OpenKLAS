@@ -27,7 +27,7 @@ interface SemesterViewModelDelegate {
 	// current semester instance selected by user
 	val currentSemester: LiveData<Semester>
 
-	val subjects: LiveData<Array<BriefSubject>>
+	val subjects: LiveData<List<BriefSubject>>
 
 	fun setCurrentSemester(semester: String)
 }

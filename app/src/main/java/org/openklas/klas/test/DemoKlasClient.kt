@@ -326,23 +326,23 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 
 		val LECTURE_SCHEDULES = mapOf(
 			"U2021100000000015" to listOf(
-				LectureSchedule(DAY_FRIDAY, "금", "M87", intArrayOf(1, 2))
+				LectureSchedule(DAY_FRIDAY, "금", "M87", listOf(1, 2))
 			),
 			"U202110000W000015" to listOf(
-				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(1, 2, 3, 4)),
-				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(1, 2, 3, 4))
+				LectureSchedule(DAY_TUESDAY, "화", null, listOf(1, 2, 3, 4)),
+				LectureSchedule(DAY_THURSDAY, "목", null, listOf(1, 2, 3, 4))
 			),
 			"U202110000Z000016" to listOf(
-				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(4)),
-				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(3))
+				LectureSchedule(DAY_MONDAY, "월", null, listOf(4)),
+				LectureSchedule(DAY_WEDNESDAY, "수", null, listOf(3))
 			),
 			"U202110000Y000015" to listOf(
-				LectureSchedule(DAY_MONDAY, "월", null, intArrayOf(2)),
-				LectureSchedule(DAY_WEDNESDAY, "수", null, intArrayOf(1))
+				LectureSchedule(DAY_MONDAY, "월", null, listOf(2)),
+				LectureSchedule(DAY_WEDNESDAY, "수", null, listOf(1))
 			),
 			"U202110000H000015" to listOf(
-				LectureSchedule(DAY_TUESDAY, "화", null, intArrayOf(5)),
-				LectureSchedule(DAY_THURSDAY, "목", null, intArrayOf(6))
+				LectureSchedule(DAY_TUESDAY, "화", null, listOf(5)),
+				LectureSchedule(DAY_THURSDAY, "목", null, listOf(6))
 			)
 		)
 

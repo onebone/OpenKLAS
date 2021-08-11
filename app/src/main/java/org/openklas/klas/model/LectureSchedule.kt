@@ -18,29 +18,12 @@
 
 package org.openklas.klas.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class LectureSchedule(
 	val day: Int,
 	val dayLabel: String, // 일, 월, 화, ..., 토
 	val classroom: String?,
-	val periods: IntArray
-) {
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other !is LectureSchedule) return false
-
-		if (day != other.day) return false
-		if (dayLabel != other.dayLabel) return false
-		if (classroom != other.classroom) return false
-		if (!periods.contentEquals(other.periods)) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int {
-		var result = day
-		result = 31 * result + dayLabel.hashCode()
-		result = 31 * result + (classroom?.hashCode() ?: 0)
-		result = 31 * result + periods.contentHashCode()
-		return result
-	}
-}
+	val periods: List<Int>
+)

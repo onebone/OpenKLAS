@@ -18,9 +18,6 @@
 
 package org.openklas.klas.deserializer
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import org.openklas.klas.model.Book
 import org.openklas.klas.model.Credits
 import org.openklas.klas.model.Expectation
@@ -31,20 +28,55 @@ import org.openklas.klas.model.Syllabus
 import org.openklas.klas.model.Tutor
 import org.openklas.klas.model.VL
 import org.openklas.klas.model.Week
-import java.lang.reflect.Type
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
-class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
-	override fun getType(): Type {
-		return Syllabus::class.java
+/**
+ * TODO This serializer is working, but not fully defined.
+ * It only works with json, and does not support serializing nor defined
+ * descriptor.
+ */
+class SyllabusSerializer: KSerializer<Syllabus> {
+	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Syllabus") {
+		// define here for full serializer
 	}
 
-	override fun deserialize(
-		json: JsonElement,
-		typeOfT: Type?,
-		context: JsonDeserializationContext?
-	): Syllabus {
-		val array = json.asJsonArray
-		val obj = array[0].asJsonObject // why array??
+	/** Help functions that helps porting serializer code from Gson */
+	// Use this only in required fields
+	private val JsonElement?.asString: String
+		get() = this!!.jsonPrimitive.content
+
+	private val JsonElement?.asStringOrNull: String?
+		get() = this?.jsonPrimitive?.contentOrNull
+
+	private val JsonElement?.asIntOrNull: Int?
+		get() = this?.jsonPrimitive?.intOrNull
+
+	private val JsonElement?.asInt: Int
+		get() = this!!.jsonPrimitive.int
+
+	private val JsonElement?.isJsonNull: Boolean
+		get() = this == null || this is JsonNull
+
+	override fun deserialize(decoder: Decoder): Syllabus {
+		val jsonDecoder = (decoder as? JsonDecoder) ?:
+			throw IllegalStateException("Syllabus can only be deserialized from json")
+
+		val element = jsonDecoder.decodeJsonElement()
+		val obj = element.jsonArray[0].jsonObject
 
 		return Syllabus(
 			subjectName = obj["gwamokKname"].asString,
@@ -211,5 +243,9 @@ class SyllabusDeserializer: TypeResolvableJsonDeserializer<Syllabus> {
 		}
 
 		return weeks
+	}
+
+	override fun serialize(encoder: Encoder, value: Syllabus) {
+		throw UnsupportedOperationException("Serialization of Syllabus class is not supported")
 	}
 }

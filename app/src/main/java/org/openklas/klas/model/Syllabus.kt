@@ -18,6 +18,9 @@
 
 package org.openklas.klas.model
 
+import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.SyllabusSerializer
+
 data class Tutor(
 	// memberName
 	val name: String,
@@ -152,6 +155,7 @@ data class Week(
 // recOptCheck(recVideo, recReport, recQuiz, recQna, recEtc)
 // evaluationOpt
 // TODO make it available to parse with kotlinx.serialization
+@Serializable(with = SyllabusSerializer::class)
 data class Syllabus(
 	// gwamokKname
 	val subjectName: String,

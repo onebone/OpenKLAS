@@ -19,7 +19,6 @@
 package org.openklas.klas
 
 import android.util.Base64
-import com.google.gson.Gson
 import org.openklas.klas.error.KlasSigninFailError
 import org.openklas.klas.model.Assignment
 import org.openklas.klas.model.AssignmentEntry
@@ -57,10 +56,12 @@ import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.inject.Inject
 import kotlin.random.Random
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class DefaultKlasClient @Inject constructor(
 	private val service: KlasService,
-	private val gson: Gson
+	private val json: Json
 ): KlasClient {
 	override suspend fun testSession(): Boolean {
 		val result = service.testSession()
@@ -80,7 +81,7 @@ class DefaultKlasClient @Inject constructor(
 		val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey)
 
-		val cipherText = cipher.doFinal(gson.toJson(mapOf(
+		val cipherText = cipher.doFinal(json.encodeToString(mapOf(
 			"loginId" to username,
 			"loginPwd" to password,
 			"storeIdYn" to "N"

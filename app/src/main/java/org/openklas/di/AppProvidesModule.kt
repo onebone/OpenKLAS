@@ -22,8 +22,6 @@ import android.content.Context
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -40,7 +38,6 @@ import org.openklas.base.SubjectViewModelDelegate
 import org.openklas.klas.DefaultKlasClient
 import org.openklas.klas.KlasClient
 import org.openklas.klas.KlasUri
-import org.openklas.klas.deserializer.TypeResolvableJsonDeserializer
 import org.openklas.klas.service.KlasService
 import org.openklas.klas.test.DemoKlasClient
 import retrofit2.Retrofit
@@ -54,20 +51,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 @Module
 @InstallIn(SingletonComponent::class)
 class AppProvidesModule {
-	@Provides
-	fun provideGson(
-		deserializers: Set<@JvmSuppressWildcards TypeResolvableJsonDeserializer<*>>
-	): Gson {
-		val builder = GsonBuilder().serializeSpecialFloatingPointValues()
-			.serializeNulls()
-
-		deserializers.forEach {
-			builder.registerTypeAdapter(it.getType(), it)
-		}
-
-		return builder.create()
-	}
-
 	@Singleton
 	@Provides
 	fun provideRetrofit(
@@ -129,8 +112,8 @@ class AppProvidesModule {
 
 	@Provides
 	@Singleton
-	fun provideKlasClient(service: KlasService, gson: Gson): KlasClient {
-		return if(BuildConfig.FETCH_ONLINE) DefaultKlasClient(service, gson)
+	fun provideKlasClient(service: KlasService, json: Json): KlasClient {
+		return if(BuildConfig.FETCH_ONLINE) DefaultKlasClient(service, json)
 			else DemoKlasClient()
 	}
 

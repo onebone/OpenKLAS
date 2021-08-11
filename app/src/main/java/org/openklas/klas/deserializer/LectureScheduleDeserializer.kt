@@ -46,7 +46,7 @@ class LectureScheduleDeserializer: TypeResolvableJsonDeserializer<LectureSchedul
 			day = obj["code"].asString.trim().toInt(),
 			dayLabel = obj["dayname1"].asString,
 			classroom = obj["locHname"].asStringOrNull,
-			periods = periods.toIntArray()
+			periods = periods
 		)
 	}
 }

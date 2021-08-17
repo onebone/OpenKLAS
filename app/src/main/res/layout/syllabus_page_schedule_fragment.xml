@@ -25,11 +25,11 @@
 
 		<variable
 			name="viewModel"
-			type="org.openklas.ui.syllabus.SyllabusViewModel" />
+			type="me.onebone.openklas.ui.syllabus.SyllabusViewModel" />
 
 		<variable
 			name="entry"
-			type="org.openklas.klas.model.Syllabus" />
+			type="me.onebone.openklas.klas.model.Syllabus" />
 
 	</data>
 

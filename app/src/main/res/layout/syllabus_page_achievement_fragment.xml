@@ -46,7 +46,7 @@
 					android:textStyle="bold"
 					android:text="@string/syllabus_score_weights" />
 
-				<org.openklas.widget.PieChartView
+				<me.onebone.openklas.widget.PieChartView
 					android:id="@+id/pie_score_weights"
 					android:layout_width="0dp"
 					android:layout_height="250dp"
@@ -75,7 +75,7 @@
 					android:textStyle="bold"
 					android:text="@string/syllabus_vl_competence" />
 
-				<org.openklas.widget.PieChartView
+				<me.onebone.openklas.widget.PieChartView
 					android:id="@+id/pie_vl_competence"
 					android:layout_width="0dp"
 					android:layout_height="250dp"

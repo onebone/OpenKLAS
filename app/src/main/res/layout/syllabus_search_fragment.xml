@@ -26,11 +26,11 @@
 
 		<variable
 			name="viewModel"
-			type="org.openklas.ui.sylsearch.SylSearchViewModel" />
+			type="me.onebone.openklas.ui.sylsearch.SylSearchViewModel" />
 
 		<variable
 			name="v"
-			type="org.openklas.ui.sylsearch.SylSearchFragment" />
+			type="me.onebone.openklas.ui.sylsearch.SylSearchFragment" />
 
 	</data>
 

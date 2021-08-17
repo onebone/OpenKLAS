@@ -23,14 +23,14 @@
     <data>
         <variable
             name="viewModel"
-            type="org.openklas.ui.home.HomeViewModel" />
+            type="me.onebone.openklas.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.openklas.widget.TimetableView
+        <me.onebone.openklas.widget.TimetableView
             android:id="@+id/timetable"
             android:layout_width="0dp"
             android:layout_height="0dp"

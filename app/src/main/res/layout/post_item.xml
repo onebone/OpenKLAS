@@ -24,11 +24,11 @@
 
 	<data>
 		<import type="android.view.View" />
-		<import type="org.openklas.utils.Utils" />
+		<import type="me.onebone.openklas.utils.Utils" />
 
 		<variable
 			name="post"
-			type="org.openklas.klas.model.Board.Entry" />
+			type="me.onebone.openklas.klas.model.Board.Entry" />
 	</data>
 
 	<FrameLayout

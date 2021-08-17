@@ -26,7 +26,7 @@
 
 		<variable
 			name="entry"
-			type="org.openklas.klas.model.Week" />
+			type="me.onebone.openklas.klas.model.Week" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

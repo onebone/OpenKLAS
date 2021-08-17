@@ -22,12 +22,12 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<import type="org.openklas.utils.Utils" />
+		<import type="me.onebone.openklas.utils.Utils" />
 		<import type="android.view.View" />
 
 		<variable
 			name="entry"
-			type="org.openklas.ui.syllabus.page.summary.TutorEntry" />
+			type="me.onebone.openklas.ui.syllabus.page.summary.TutorEntry" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

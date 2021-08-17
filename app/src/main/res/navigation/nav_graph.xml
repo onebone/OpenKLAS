@@ -33,7 +33,7 @@
 
 	<fragment
 		android:id="@+id/fragment_login"
-		android:name="org.openklas.ui.login.LoginFragment"
+		android:name="me.onebone.openklas.ui.login.LoginFragment"
 		tools:layout="@layout/login_fragment">
 
 		<action
@@ -48,14 +48,14 @@
 
 	<fragment
 		android:id="@+id/fragment_timetable"
-		android:name="org.openklas.ui.home.TimetableFragment"
+		android:name="me.onebone.openklas.ui.home.TimetableFragment"
 		tools:layout="@layout/timetable_fragment">
 
 	</fragment>
 
 	<fragment
 		android:id="@+id/fragment_home"
-		android:name="org.openklas.ui.home.HomeFragment"
+		android:name="me.onebone.openklas.ui.home.HomeFragment"
 		tools:layout="@layout/home_fragment">
 
 		<action
@@ -126,7 +126,7 @@
 
 	<fragment
 		android:id="@+id/fragment_post_list"
-		android:name="org.openklas.ui.postlist.PostListFragment"
+		android:name="me.onebone.openklas.ui.postlist.PostListFragment"
 		tools:layout="@layout/post_list_fragment">
 
 		<argument
@@ -178,7 +178,7 @@
 
 	<fragment
 		android:id="@+id/fragment_syllabus_search"
-		android:name="org.openklas.ui.sylsearch.SylSearchFragment"
+		android:name="me.onebone.openklas.ui.sylsearch.SylSearchFragment"
 		tools:layout="@layout/syllabus_search_fragment">
 
 		<action
@@ -200,7 +200,7 @@
 
 	<fragment
 		android:id="@+id/fragment_syllabus"
-		android:name="org.openklas.ui.syllabus.SyllabusFragment"
+		android:name="me.onebone.openklas.ui.syllabus.SyllabusFragment"
 		tools:layout="@layout/syllabus_fragment">
 
 		<argument
@@ -211,7 +211,7 @@
 	</fragment>
 
 	<fragment android:id="@+id/fragment_post"
-		android:name="org.openklas.ui.post.PostFragment"
+		android:name="me.onebone.openklas.ui.post.PostFragment"
 		tools:layout="@layout/post_fragment">
 
 		<argument
@@ -243,7 +243,7 @@
 
 	<fragment
 		android:id="@+id/fragment_assignment_list"
-		android:name="org.openklas.ui.assignmentlist.AssignmentListFragment">
+		android:name="me.onebone.openklas.ui.assignmentlist.AssignmentListFragment">
 
 		<argument
 			android:name="semester"
@@ -284,7 +284,7 @@
 
 	<fragment
 		android:id="@+id/fragment_assignment"
-		android:name="org.openklas.ui.assignment.AssignmentFragment">
+		android:name="me.onebone.openklas.ui.assignment.AssignmentFragment">
 
 		<argument
 			android:name="semester"
@@ -305,6 +305,6 @@
 
 	<fragment
 		android:id="@+id/fragment_grades"
-		android:name="org.openklas.ui.grade.GradeFragment" />
+		android:name="me.onebone.openklas.ui.grade.GradeFragment" />
 
 </navigation>

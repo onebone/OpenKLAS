@@ -25,15 +25,15 @@
 
 	<data>
 		<import type="android.view.View" />
-		<import type="org.openklas.klas.request.BoardSearchCriteria" />
+		<import type="me.onebone.openklas.klas.request.BoardSearchCriteria" />
 
 		<variable
 			name="viewModel"
-			type="org.openklas.ui.postlist.PostListViewModel" />
+			type="me.onebone.openklas.ui.postlist.PostListViewModel" />
 
 		<variable
 			name="v"
-			type="org.openklas.ui.postlist.PostListFragment" />
+			type="me.onebone.openklas.ui.postlist.PostListFragment" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

@@ -25,7 +25,7 @@
 
 		<variable
 			name="entry"
-			type="org.openklas.klas.model.Book" />
+			type="me.onebone.openklas.klas.model.Book" />
 
 	</data>
 

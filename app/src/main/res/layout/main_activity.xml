@@ -26,7 +26,7 @@
 
 		<variable
 			name="view"
-			type="org.openklas.ui.shared.MainActivity" />
+			type="me.onebone.openklas.ui.shared.MainActivity" />
 
 	</data>
 
@@ -39,7 +39,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
-			<org.openklas.widget.AppbarView
+			<me.onebone.openklas.widget.AppbarView
 				android:id="@+id/appbar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

@@ -18,12 +18,18 @@
 
 package org.openklas.klas.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.openklas.klas.deserializer.LectureScheduleSerializer
 
-@Serializable
+@Serializable(with = LectureScheduleSerializer::class)
 data class LectureSchedule(
+	@SerialName("code")
 	val day: Int,
+	@SerialName("dayname1")
 	val dayLabel: String, // 일, 월, 화, ..., 토
+	@SerialName("locHname")
 	val classroom: String?,
+	@SerialName("periods")
 	val periods: List<Int>
 )

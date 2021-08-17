@@ -18,35 +18,54 @@
 
 package org.openklas.klas.deserializer
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonElement
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.openklas.klas.model.LectureSchedule
-import java.lang.reflect.Type
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
-class LectureScheduleDeserializer: TypeResolvableJsonDeserializer<LectureSchedule> {
-	override fun getType(): Type {
-		return LectureSchedule::class.java
+class LectureScheduleSerializer: JsonTransformingSerializer<LectureSchedule>(LectureSchedule.serializer()) {
+	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("LectureSchedule") {
+		for(i in 1..4) {
+			element<Int>("timeNo$i")
+		}
+
+		element<String>("code")
+		element<String>("dayname1")
+		element<String>("locHname")
 	}
 
-	override fun deserialize(
-		json: JsonElement,
-		typeOfT: Type?,
-		context: JsonDeserializationContext?
-	): LectureSchedule {
-		val obj = json.asJsonObject
+	override fun transformDeserialize(element: JsonElement): JsonElement {
+		val obj = element.jsonObject
 
 		val periods = mutableListOf<Int>()
 		for(i in 1..4) {
-			if(!obj["timeNo$i"].isJsonNull) {
-				periods += obj["timeNo$i"].asInt
+			val time = obj["timeNo$i"]
+			if(time != null && time !is JsonNull) {
+				periods += time.jsonPrimitive.int
 			}
 		}
 
-		return LectureSchedule(
-			day = obj["code"].asString.trim().toInt(),
-			dayLabel = obj["dayname1"].asString,
-			classroom = obj["locHname"].asStringOrNull,
-			periods = periods
+		val transformed = mutableMapOf<String, JsonElement>(
+			"periods" to JsonArray(periods.map {
+				JsonPrimitive(it)
+			})
 		)
+
+		return JsonObject(obj.filterTo(transformed) {
+			!it.key.startsWith("timeNo")
+		})
+	}
+
+	override fun transformSerialize(element: JsonElement): JsonElement {
+		throw UnsupportedOperationException("Serialization of LectureSchedule is not supported")
 	}
 }

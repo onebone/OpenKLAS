@@ -24,9 +24,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
@@ -36,6 +40,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import me.onebone.openklas.R
 import me.onebone.openklas.base.PermissionExecutor
 import me.onebone.openklas.base.PermissionHolder
@@ -91,6 +97,23 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 				if(destination.id == R.id.fragment_home) DrawerLayout.LOCK_MODE_UNLOCKED
 				else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 			)
+		}
+
+		lifecycleScope.launch {
+			repeatOnLifecycle(Lifecycle.State.STARTED) {
+				println("collect start")
+				viewModel.error.collect {
+					println("error collect: $it")
+					AlertDialog.Builder(this@MainActivity)
+						.setTitle(R.string.common_error_dialog_title)
+						.setMessage(it.message)
+						.setPositiveButton(R.string.common_ok, null)
+						.create()
+						.show()
+				}
+
+				println("collect end")
+			}
 		}
 	}
 

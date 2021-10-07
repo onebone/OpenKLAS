@@ -39,6 +39,8 @@ import me.onebone.openklas.repository.DefaultSessionRepository
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.repository.SessionRepository
 import javax.inject.Singleton
+import me.onebone.openklas.base.ErrorViewModelDelegate
+import me.onebone.openklas.base.ErrorViewModelDelegateImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -74,4 +76,8 @@ abstract class AppBindsModule {
 	@Binds
 	@Singleton
 	abstract fun bindSemesterViewModelDelegate(semesterViewModelDelegate: DefaultSemesterViewModelDelegate): SemesterViewModelDelegate
+
+	@Binds
+	@Singleton
+	abstract fun bindErrorViewModelDelegate(impl: ErrorViewModelDelegateImpl): ErrorViewModelDelegate
 }

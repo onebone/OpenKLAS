@@ -36,12 +36,17 @@ import me.onebone.openklas.ui.syllabus.page.summary.TUTOR_TEACHING_ASSISTANT
 import me.onebone.openklas.ui.syllabus.page.summary.TutorEntry
 import me.onebone.openklas.utils.Resource
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class SyllabusViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
-	sessionViewModelDelegate: SessionViewModelDelegate
-): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
+	sessionViewModelDelegate: SessionViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
+): ViewModel(),
+	SessionViewModelDelegate by sessionViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
+
 	private val _syllabus = MutableLiveData<Syllabus>()
 	val syllabus: LiveData<Syllabus> = _syllabus
 
@@ -81,9 +86,6 @@ class SyllabusViewModel @Inject constructor(
 		}
 	}
 
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
-
 	private suspend fun fetchTeachingAssistants(subjectId: String) {
 		val result = requestWithSession {
 			klasRepository.getTeachingAssistants(subjectId)
@@ -92,7 +94,7 @@ class SyllabusViewModel @Inject constructor(
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
 			is Resource.Success -> _teachingAssistants.postValue(result.value)
-			is Resource.Error -> _error.postValue(result.error)
+			is Resource.Error -> emitError(result.error)
 		}
 	}
 
@@ -117,7 +119,7 @@ class SyllabusViewModel @Inject constructor(
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
 				is Resource.Success -> _syllabus.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 		}
 	}
@@ -130,7 +132,7 @@ class SyllabusViewModel @Inject constructor(
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
 			is Resource.Success -> _schedules.postValue(result.value)
-			is Resource.Error -> _error.postValue(result.error)
+			is Resource.Error -> emitError(result.error)
 		}
 	}
 
@@ -142,7 +144,7 @@ class SyllabusViewModel @Inject constructor(
 		@SuppressLint("NullSafeMutableLiveData")
 		when(result) {
 			is Resource.Success -> _studentsNumber.postValue(result.value)
-			is Resource.Error -> _error.postValue(result.error)
+			is Resource.Error -> emitError(result.error)
 		}
 	}
 }

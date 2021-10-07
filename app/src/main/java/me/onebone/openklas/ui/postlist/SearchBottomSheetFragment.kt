@@ -26,16 +26,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.view.ContextThemeWrapper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import me.onebone.openklas.R
 import me.onebone.openklas.databinding.BottomPostListSearchBinding
+import me.onebone.openklas.utils.SharedEventFlow
 
 internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
-	private val _flow = MutableSharedFlow<SearchFragmentEvent>(
-		extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
-	)
+	private val _flow = SharedEventFlow<SearchFragmentEvent>()
 	val flow: SharedFlow<SearchFragmentEvent> = _flow
 
 	override fun onCreateView(

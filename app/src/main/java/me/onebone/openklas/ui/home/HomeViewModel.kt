@@ -26,7 +26,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import me.onebone.openklas.base.SemesterViewModelDelegate
 import me.onebone.openklas.base.SessionViewModelDelegate
@@ -41,14 +40,17 @@ import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	semesterViewModelDelegate: SemesterViewModelDelegate
+	semesterViewModelDelegate: SemesterViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
-	SemesterViewModelDelegate by semesterViewModelDelegate {
+	SemesterViewModelDelegate by semesterViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	private val home = MediatorLiveData<Home>().apply {
 		addSource(currentSemester) {
@@ -119,9 +121,6 @@ class HomeViewModel @Inject constructor(
 	private val _isOnlineContentsFetched = MutableLiveData(false)
 	val isOnlineContentsFetched: LiveData<Boolean> = _isOnlineContentsFetched
 
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
-
 	private fun isImpending(time: Int): Boolean {
 		return 0 < time && time < TimeUnit.HOURS.toNanos(24)
 	}
@@ -136,7 +135,7 @@ class HomeViewModel @Inject constructor(
 
 			when (result) {
 				is Resource.Success -> home.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 
 			_isHomeFetched.postValue(true)
@@ -148,29 +147,27 @@ class HomeViewModel @Inject constructor(
 
 		viewModelScope.launch {
 			try {
-				coroutineScope {
-					val contents = currentSemester.subjects.map { subject ->
-						async {
-							val result = requestWithSession {
-								klasRepository.getOnlineContentList(currentSemester.id, subject.id)
-							}
-
-							if(result is Resource.Error) {
-								throw result.error
-							}
-
-							(result as Resource.Success).value.map {
-								Pair(subject, it)
-							}
+				val contents = currentSemester.subjects.map { subject ->
+					async {
+						val result = requestWithSession {
+							klasRepository.getOnlineContentList(currentSemester.id, subject.id)
 						}
-					}.flatMap {
-						it.await()
-					}
 
-					onlineContents.postValue(contents)
+						if(result is Resource.Error) {
+							throw result.error
+						}
+
+						(result as Resource.Success).value.map {
+							Pair(subject, it)
+						}
+					}
+				}.flatMap {
+					it.await()
 				}
+
+				onlineContents.postValue(contents)
 			}catch(e: Throwable) {
-				_error.postValue(e)
+				emitError(e)
 			}finally{
 				_isOnlineContentsFetched.postValue(true)
 			}

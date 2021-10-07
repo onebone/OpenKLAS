@@ -24,13 +24,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Professor(
 	@SerialName("telNum")
-	val telephone: String,
+	val telephone: String?,
 	@SerialName("labLocation")
-	val lab: String,
+	val lab: String?,
 	@SerialName("kname")
-	val koreanName: String,
+	val koreanName: String?,
 	@SerialName("email")
-	val email: String,
+	val email: String?,
 	@SerialName("counselTime")
 	val counselTime: String?
 )

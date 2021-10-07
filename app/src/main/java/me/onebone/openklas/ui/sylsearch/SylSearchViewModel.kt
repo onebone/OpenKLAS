@@ -30,13 +30,16 @@ import me.onebone.openklas.klas.model.SyllabusSummary
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class SylSearchViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
-	sessionViewModelDelegate: SessionViewModelDelegate
-) : ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate {
-	private val _error = MutableLiveData<Throwable>()
+	sessionViewModelDelegate: SessionViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
+) : ViewModel(),
+	SessionViewModelDelegate by sessionViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	private val _syllabusList = MutableLiveData<List<SyllabusSummary>>()
 	val syllabusList: LiveData<List<SyllabusSummary>> = _syllabusList
@@ -59,7 +62,7 @@ class SylSearchViewModel @Inject constructor(
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
 				is Resource.Success -> _syllabusList.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 		}
 	}

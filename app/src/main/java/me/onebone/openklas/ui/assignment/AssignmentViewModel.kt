@@ -33,22 +33,22 @@ import me.onebone.openklas.klas.model.Attachment
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class AssignmentViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	subjectViewModelDelegate: SubjectViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
 ): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
-	SubjectViewModelDelegate by subjectViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	companion object {
 		const val STORAGE_ID = "CLS_PROF_TASK"
 	}
-
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
 
 	private val _assignment = MutableLiveData<Assignment>()
 	val assignment: LiveData<Assignment> = _assignment
@@ -67,7 +67,7 @@ class AssignmentViewModel @Inject constructor(
 
 				when(result) {
 					is Resource.Success -> postValue(result.value)
-					is Resource.Error -> _error.postValue(result.error)
+					is Resource.Error -> emitError(result.error)
 				}
 			}
 		}
@@ -85,7 +85,7 @@ class AssignmentViewModel @Inject constructor(
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
 				is Resource.Success -> _assignment.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 		}
 	}

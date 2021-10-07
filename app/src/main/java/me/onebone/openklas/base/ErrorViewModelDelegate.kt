@@ -16,18 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.onebone.openklas.ui.shared
+package me.onebone.openklas.base
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import me.onebone.openklas.base.SemesterViewModelDelegate
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
-import me.onebone.openklas.base.ErrorViewModelDelegate
+import kotlinx.coroutines.flow.Flow
+import me.onebone.openklas.utils.SharedEventFlow
 
-@HiltViewModel
-class ActivityViewModel @Inject constructor(
-	semesterViewModelDelegate: SemesterViewModelDelegate,
-	errorViewModelDelegate: ErrorViewModelDelegate
-): ViewModel(),
-	SemesterViewModelDelegate by semesterViewModelDelegate,
-	ErrorViewModelDelegate by errorViewModelDelegate
+/**
+ * Used to delegate error handling to root activity.
+ */
+interface ErrorViewModelDelegate {
+	val error: Flow<Throwable>
+
+	fun emitError(throwable: Throwable)
+}
+
+class ErrorViewModelDelegateImpl @Inject constructor(): ErrorViewModelDelegate {
+	private val _error = SharedEventFlow<Throwable>()
+	override val error: Flow<Throwable> = _error
+
+	override fun emitError(throwable: Throwable) {
+		// TODO use injection instead
+		Firebase.crashlytics.recordException(throwable)
+		_error.tryEmit(throwable)
+	}
+}

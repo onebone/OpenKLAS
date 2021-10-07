@@ -27,11 +27,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import me.onebone.openklas.R
 import me.onebone.openklas.databinding.BottomSyllabusSearchBinding
+import me.onebone.openklas.utils.SharedEventFlow
 import me.onebone.openklas.utils.getSelection
 import me.onebone.openklas.utils.getSelectionText
 
@@ -40,9 +39,7 @@ internal class SearchBottomSheetFragment: BottomSheetDialogFragment() {
 		requireArguments().getInt(KEY_CURRENT_YEAR)
 	}
 
-	private val _flow = MutableSharedFlow<SearchDialogEvent>(
-		extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
-	)
+	private val _flow = SharedEventFlow<SearchDialogEvent>()
 	val flow: SharedFlow<SearchDialogEvent> = _flow
 
 	override fun onCreateView(

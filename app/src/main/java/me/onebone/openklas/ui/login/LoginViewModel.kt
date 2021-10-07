@@ -61,7 +61,12 @@ class LoginViewModel @Inject constructor(
 		}
 
 		viewModelScope.launch {
-			val result = klasRepository.performLogin(userId, password, rememberMe.get())
+			val result = runCatching {
+				klasRepository.performLogin(userId, password, rememberMe.get())
+			}.getOrElse {
+				Resource.Error(it)
+			}
+
 			_result.value = (result as? Resource.Error)?.error
 		}
 	}

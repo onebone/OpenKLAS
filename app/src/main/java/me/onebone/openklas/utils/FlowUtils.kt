@@ -20,9 +20,11 @@ package me.onebone.openklas.utils
 
 import kotlin.experimental.ExperimentalTypeInference
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
@@ -40,3 +42,8 @@ inline fun <T> sharedFlow(
 		if(result.isClosed) break
 	}
 }.shareIn(scope, SharingStarted.WhileSubscribed(), replay = 1)
+
+@Suppress("FunctionName")
+fun <T> SharedEventFlow(): MutableSharedFlow<T> = MutableSharedFlow(
+	replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+)

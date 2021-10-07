@@ -19,7 +19,6 @@
 package me.onebone.openklas.ui.post
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -34,15 +33,18 @@ import me.onebone.openklas.klas.model.PostType
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	subjectViewModelDelegate: SubjectViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
 ): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
-	SubjectViewModelDelegate by subjectViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	private companion object {
 		const val STORAGE_ID = "CLS_BOARD"
@@ -68,14 +70,11 @@ class PostViewModel @Inject constructor(
 
 				when(result) {
 					is Resource.Success -> postValue(result.value)
-					is Resource.Error -> _error.postValue(result.error)
+					is Resource.Error -> emitError(result.error)
 				}
 			}
 		}
 	}
-
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
 
 	fun fetchPost(semester: String, subject: String, type: PostType, boardNo: Int, masterNo: Int) {
 		viewModelScope.launch {
@@ -90,7 +89,7 @@ class PostViewModel @Inject constructor(
 			@SuppressLint("NullSafeMutableLiveData")
 			when(result) {
 				is Resource.Success -> postComposite.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 		}
 	}

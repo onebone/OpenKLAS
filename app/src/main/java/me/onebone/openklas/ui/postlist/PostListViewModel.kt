@@ -18,8 +18,6 @@
 
 package me.onebone.openklas.ui.postlist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -46,14 +44,17 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class PostListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	subjectViewModelDelegate: SubjectViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
-	SubjectViewModelDelegate by subjectViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	private val _filter = MutableStateFlow<Filter?>(value = null)
 	val filter: StateFlow<Filter?> = _filter
@@ -91,7 +92,7 @@ class PostListViewModel @Inject constructor(
 					sessionViewModelDelegate = sessionViewModelDelegate,
 					query = it,
 					errorHandler = {
-						_error.postValue(it)
+						emitError(it)
 					},
 					pageInfoCallback = {
 						pageInfo.tryEmit(it)
@@ -103,9 +104,6 @@ class PostListViewModel @Inject constructor(
 			}
 		).flow
 	}.cachedIn(viewModelScope)
-
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
 
 	private val pageInfo = MutableSharedFlow<Board.PageInfo?>(
 		replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST

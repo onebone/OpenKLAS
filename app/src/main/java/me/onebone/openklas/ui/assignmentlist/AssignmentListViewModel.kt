@@ -32,15 +32,18 @@ import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.PairCombinedLiveData
 import me.onebone.openklas.utils.Resource
 import javax.inject.Inject
+import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class AssignmentListViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
-	subjectViewModelDelegate: SubjectViewModelDelegate
+	subjectViewModelDelegate: SubjectViewModelDelegate,
+	errorViewModelDelegate: ErrorViewModelDelegate
 ): ViewModel(),
 	SessionViewModelDelegate by sessionViewModelDelegate,
-	SubjectViewModelDelegate by subjectViewModelDelegate {
+	SubjectViewModelDelegate by subjectViewModelDelegate,
+	ErrorViewModelDelegate by errorViewModelDelegate {
 
 	// though currentSemester should not be null when subject is non-null,
 	// we will make it clear
@@ -56,9 +59,6 @@ class AssignmentListViewModel @Inject constructor(
 	private val _isLoading = MutableLiveData(true)
 	val isLoading: LiveData<Boolean> = _isLoading
 
-	private val _error = MutableLiveData<Throwable>()
-	val error: LiveData<Throwable> = _error
-
 	private fun fetchAssignments(semester: String, subjectId: String) {
 		viewModelScope.launch {
 			_isLoading.postValue(true)
@@ -71,7 +71,7 @@ class AssignmentListViewModel @Inject constructor(
 
 			when(result) {
 				is Resource.Success -> _assignments.postValue(result.value)
-				is Resource.Error -> _error.postValue(result.error)
+				is Resource.Error -> emitError(result.error)
 			}
 		}
 	}

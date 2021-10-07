@@ -18,7 +18,9 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.OpenKLAS"
         tools:targetApi="m">
-        <activity android:name=".ui.shared.MainActivity">
+        <activity
+            android:name=".ui.shared.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

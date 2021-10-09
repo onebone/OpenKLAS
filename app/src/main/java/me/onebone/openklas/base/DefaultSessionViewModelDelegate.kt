@@ -20,6 +20,8 @@ package me.onebone.openklas.base
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.onebone.openklas.klas.error.KlasSessionInvalidError
@@ -61,6 +63,9 @@ class DefaultSessionViewModelDelegate @Inject constructor(
 
 			result
 		}catch(e: Throwable) {
+			// FIXME correct?
+			Firebase.crashlytics.recordException(e)
+
 			Log.e(TAG, "requestWithSession", e)
 			Resource.Error(e)
 		}

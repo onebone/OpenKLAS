@@ -79,8 +79,10 @@ class FlowRegistrarImpl<T> @Inject constructor(): FlowRegistrar<T> {
 				while(true) {
 					previousJob?.cancel()
 					previousJob = launch(start = CoroutineStart.UNDISPATCHED) {
-						factory().collect {
-							send(it)
+						runCatching {
+							factory().collect {
+								send(it)
+							}
 						}
 					}
 

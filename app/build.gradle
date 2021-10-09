@@ -34,7 +34,7 @@ android {
         applicationId "me.onebone.openklas"
         minSdk 21
         targetSdk 31
-        versionCode 1
+        versionCode 4
         versionName "0.0.1-dev"
         multiDexEnabled true
 

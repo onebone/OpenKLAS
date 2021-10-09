@@ -42,6 +42,7 @@ import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.utils.dateToShortString
 import java.time.ZonedDateTime
 import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.widget.EmptyIndicator
 import me.onebone.openklas.widget.FullWidthRefreshableError
 
 @Composable
@@ -162,18 +163,12 @@ fun OnlineContentListFrame(
 
 		if(items is ViewResource.Success && impending is ViewResource.Success) {
 			if(items.value.isEmpty()) {
-				Box(
+				EmptyIndicator(
 					modifier = Modifier
 						.fillMaxWidth()
-						.height(80.dp)
-				) {
-					Text(
-						text = noOnlineContent,
-						modifier = Modifier.align(Alignment.Center),
-						color = colorResource(R.color.gray),
-						fontSize = 14.sp
-					)
-				}
+						.height(80.dp),
+					message = noOnlineContent
+				)
 			}else{
 				LazyRow(
 					modifier = Modifier

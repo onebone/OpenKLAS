@@ -44,6 +44,7 @@ import me.onebone.openklas.ui.shared.compose.blinkTransition
 import me.onebone.openklas.utils.periodToTime
 import java.time.ZonedDateTime
 import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.widget.EmptyIndicator
 import me.onebone.openklas.widget.FullWidthRefreshableError
 
 @Composable
@@ -89,17 +90,12 @@ fun Schedule(
 			}
 
 			is ViewResource.Success -> if(schedule.value.isEmpty()) {
-				Box(
+				EmptyIndicator(
 					modifier = Modifier
 						.fillMaxWidth()
-						.height(120.dp)
-				) {
-					Text(
-						text = stringResource(R.string.home_no_class_today),
-						modifier = Modifier.align(Alignment.Center),
-						color = colorResource(R.color.gray)
-					)
-				}
+						.height(120.dp),
+					message = stringResource(id = R.string.home_no_class_today)
+				)
 			}else{
 				Spacer(modifier = Modifier.height(8.dp))
 

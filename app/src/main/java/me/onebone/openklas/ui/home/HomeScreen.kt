@@ -42,7 +42,7 @@ import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.utils.dateToShortString
 import java.time.ZonedDateTime
 import me.onebone.openklas.utils.ViewResource
-import me.onebone.openklas.widget.RefreshButton
+import me.onebone.openklas.widget.FullWidthRefreshableError
 
 @Composable
 fun HomeScreen(
@@ -52,6 +52,8 @@ fun HomeScreen(
 	impendingAssignments: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
 	videos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
 	impendingVideos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
+	onOnlineContentsRefresh: () -> Unit,
+	onScheduleRefresh: () -> Unit,
 	now: ZonedDateTime
 ) {
 	Column(
@@ -60,11 +62,25 @@ fun HomeScreen(
 	) {
 		Semester(semester = currentSemester)
 
-		Schedule(schedule = schedule, now = now)
+		Schedule(
+			schedule = schedule,
+			onScheduleRefresh = onScheduleRefresh,
+			now = now
+		)
 
-		AssignmentFrame(assignments = assignments, impending = impendingAssignments, now = now)
+		AssignmentFrame(
+			assignments = assignments,
+			impending = impendingAssignments,
+			onAssignmentRefresh = onOnlineContentsRefresh,
+			now = now
+		)
 
-		OnlineVideoFrame(videos = videos, impending = impendingVideos, now = now)
+		OnlineVideoFrame(
+			videos = videos,
+			impending = impendingVideos,
+			onOnlineVideoRefresh = onOnlineContentsRefresh,
+			now = now
+		)
 	}
 }
 
@@ -102,6 +118,7 @@ fun OnlineContentListFrame(
 	noOnlineContent: String,
 	items: ViewResource<List<Pair<BriefSubject, OnlineContentEntry>>>,
 	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry>>>,
+	onOnlineContentsRefresh: () -> Unit,
 	now: ZonedDateTime
 ) {
 	Column(
@@ -192,10 +209,15 @@ fun OnlineContentListFrame(
 					.padding(vertical = 30.dp),
 				contentAlignment = Alignment.Center
 			) {
-				RefreshButton(
-					onClick = {
-						// TODO
-					}
+				FullWidthRefreshableError(
+					onRefresh = onOnlineContentsRefresh,
+					message = if(items is ViewResource.Error) {
+						items.error
+					}else{
+						// at this time, [impending] should be error
+						check(impending is ViewResource.Error)
+						impending.error
+					}.message
 				)
 			}
 		}else{
@@ -278,7 +300,9 @@ fun HomeScreenPreview() {
 				assignments = ViewResource.Success(listOf()),
 				impendingAssignments = ViewResource.Success(listOf()),
 				videos = ViewResource.Success(listOf()),
-				impendingVideos = ViewResource.Success(listOf())
+				impendingVideos = ViewResource.Success(listOf()),
+				onOnlineContentsRefresh = {},
+				onScheduleRefresh = {}
 			)
 		}
 	}

@@ -74,7 +74,13 @@ class HomeFragment: BaseFragment() {
 							assignments = assignments,
 							impendingAssignments = impendingAssignments,
 							videos = videos,
-							impendingVideos = impendingVideos
+							impendingVideos = impendingVideos,
+							onScheduleRefresh = {
+								viewModel.restart(HomeViewModel.Key.Home)
+							},
+							onOnlineContentsRefresh = {
+								viewModel.restart(HomeViewModel.Key.OnlineContents)
+							}
 						)
 					}
 				}

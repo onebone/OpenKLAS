@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.transform
 
 @OptIn(ExperimentalTypeInference::class)
 inline fun <T> sharedFlow(
@@ -63,4 +64,30 @@ inline fun <T, R> Flow<ViewResource<T>>.mapResource(
 		is ViewResource.Error -> ViewResource.Error(it.error)
 		is ViewResource.Loading -> ViewResource.Loading()
 	}
+}
+
+inline fun <T, R> Flow<ViewResource<T>>.flatMapResource(
+	crossinline block: suspend (T) -> ViewResource<R>
+): Flow<ViewResource<R>> = transform {
+	emit(when(it) {
+		is ViewResource.Success -> block(it.value)
+		is ViewResource.Error -> ViewResource.Error(it.error)
+		is ViewResource.Loading -> ViewResource.Loading()
+	})
+}
+
+/**
+ * Emits loading state prior to processing the stream. Following operators
+ * will use `mapResource` or `flatMapResource` to transform succeed value.
+ *
+ * ```
+ * intFlow.loadOnEach()
+ *     .mapResource {
+ *         it + 10
+ *     }
+ * ```
+ */
+fun <T> Flow<T>.loadOnEach(): Flow<ViewResource<T>> = transform { value ->
+	emit(ViewResource.Loading())
+	emit(ViewResource.Success(value))
 }

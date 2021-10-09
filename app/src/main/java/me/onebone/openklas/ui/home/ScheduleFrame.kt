@@ -44,10 +44,14 @@ import me.onebone.openklas.ui.shared.compose.blinkTransition
 import me.onebone.openklas.utils.periodToTime
 import java.time.ZonedDateTime
 import me.onebone.openklas.utils.ViewResource
-import me.onebone.openklas.widget.RefreshButton
+import me.onebone.openklas.widget.FullWidthRefreshableError
 
 @Composable
-fun Schedule(schedule: ViewResource<List<Timetable.Entry>>, now: ZonedDateTime) {
+fun Schedule(
+	schedule: ViewResource<List<Timetable.Entry>>,
+	onScheduleRefresh: () -> Unit,
+	now: ZonedDateTime
+) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -106,17 +110,10 @@ fun Schedule(schedule: ViewResource<List<Timetable.Entry>>, now: ZonedDateTime) 
 				}
 			}
 
-			is ViewResource.Error -> Box(
-				modifier = Modifier
-					.fillMaxWidth()
-					.height(80.dp)
-			) {
-				RefreshButton(
-					onClick = {
-						// TODO
-					}
-				)
-			}
+			is ViewResource.Error -> FullWidthRefreshableError(
+				onRefresh = onScheduleRefresh,
+				message = schedule.error.message
+			)
 		}
 	}
 }

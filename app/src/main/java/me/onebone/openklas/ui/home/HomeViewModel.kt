@@ -36,11 +36,14 @@ import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import me.onebone.openklas.base.ErrorViewModelDelegate
 import me.onebone.openklas.base.FlowRegistrar
 import me.onebone.openklas.base.KeyedScope
 import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.utils.flatMapResource
+import me.onebone.openklas.utils.loadOnEach
 import me.onebone.openklas.utils.mapResource
 import me.onebone.openklas.utils.transform
 
@@ -63,44 +66,42 @@ class HomeViewModel @Inject constructor(
 	private val home = registrar.register(Key.Home) {
 		currentSemester
 			.asFlow()
-			.map {
+			.loadOnEach()
+			.flatMapResource {
 				val result = requestWithSession {
 					klasRepository.getHome(it.id)
 				}
 
 				result.transform()
 			}
-	}
+	}.shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
 	private val onlineContents = registrar.register(Key.OnlineContents) {
 		currentSemester
 			.asFlow()
-			.map {
-				try {
-					ViewResource.Success(coroutineScope {
-						it.subjects.map { subject ->
-							async {
-								val result = requestWithSession {
-									klasRepository.getOnlineContentList(it.id, subject.id)
-								}
-
-								if(result is Resource.Error) {
-									throw result.error
-								}
-
-								(result as Resource.Success).value.map {
-									Pair(subject, it)
-								}
+			.loadOnEach()
+			.mapResource {
+				coroutineScope {
+					it.subjects.map { subject ->
+						async {
+							val result = requestWithSession {
+								klasRepository.getOnlineContentList(it.id, subject.id)
 							}
-						}.flatMap {
-							it.await()
+
+							if(result is Resource.Error) {
+								throw result.error
+							}
+
+							(result as Resource.Success).value.map {
+								Pair(subject, it)
+							}
 						}
-					})
-				}catch(e: Throwable) {
-					ViewResource.Error(e)
+					}.flatMap {
+						it.await()
+					}
 				}
 			}
-	}
+	}.shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
 	val videos = onlineContents.mapResource {
 		val now = ZonedDateTime.now()
@@ -115,13 +116,12 @@ class HomeViewModel @Inject constructor(
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
-		(it.filter { (_, entry) ->
+		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate.nano - now.nano)
-		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
+		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
 	val homeworks = onlineContents.mapResource {
-		throw RuntimeException("hello world")
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
@@ -134,9 +134,9 @@ class HomeViewModel @Inject constructor(
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
-		(it.filter { (_, entry) ->
+		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate.nano - now.nano)
-		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
+		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
 	val quiz = onlineContents.mapResource {

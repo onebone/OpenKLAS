@@ -19,7 +19,10 @@
 package me.onebone.openklas.widget
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -33,27 +36,59 @@ import androidx.compose.ui.unit.dp
 import me.onebone.openklas.R
 
 @Composable
-fun RefreshButton(
+fun FullWidthRefreshableError(
 	modifier: Modifier = Modifier,
-	onClick: () -> Unit
+	onRefresh: () -> Unit,
+	message: String? = null
 ) {
-	Row(
+	Box(
 		modifier = modifier
-			.clickable { onClick() }
-			.padding(8.dp),
-		verticalAlignment = Alignment.CenterVertically
+			.fillMaxWidth()
+			.padding(16.dp),
+		contentAlignment = Alignment.Center
 	) {
-		Icon(
-			modifier = Modifier
-				.padding(4.dp),
-			painter = painterResource(id = R.drawable.ic_baseline_refresh_24),
-			contentDescription = null,
-			tint = MaterialTheme.colors.primary
+		RefreshableError(
+			onRefresh = onRefresh,
+			message = message
 		)
+	}
+}
 
-		Text(
-			text = stringResource(R.string.common_refresh),
-			color = MaterialTheme.colors.primary
-		)
+@Composable
+fun RefreshableError(
+	modifier: Modifier = Modifier,
+	onRefresh: () -> Unit,
+	message: String? = null
+) {
+	Column(
+		modifier = modifier,
+		horizontalAlignment = Alignment.CenterHorizontally
+	) {
+		Row(
+			modifier = Modifier
+				.clickable(onClick = onRefresh)
+				.padding(8.dp),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Icon(
+				modifier = Modifier
+					.padding(4.dp),
+				painter = painterResource(id = R.drawable.ic_baseline_refresh_24),
+				contentDescription = null,
+				tint = MaterialTheme.colors.primary
+			)
+
+			Text(
+				text = stringResource(R.string.common_refresh),
+				color = MaterialTheme.colors.primary
+			)
+		}
+
+		if(message != null) {
+			Text(
+				text = message,
+				color = MaterialTheme.colors.primary
+			)
+		}
 	}
 }

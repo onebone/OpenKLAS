@@ -99,13 +99,10 @@ class FlowRegistrarImpl<T> @Inject constructor(): FlowRegistrar<T> {
 
 	override fun cancel(key: T) {
 		val channel = synchronized(map) {
-			val channel = map[key] ?: return
 			map.remove(key)
-
-			channel
 		}
 
-		channel.close()
+		channel?.close()
 	}
 
 	override fun restart(key: T) {

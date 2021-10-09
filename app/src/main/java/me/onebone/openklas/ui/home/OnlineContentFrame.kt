@@ -31,6 +31,7 @@ import me.onebone.openklas.utils.ViewResource
 fun AssignmentFrame(
 	assignments: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
 	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
+	onAssignmentRefresh: () -> Unit,
 	now: ZonedDateTime
 ) {
 	OnlineContentListFrame(
@@ -39,6 +40,7 @@ fun AssignmentFrame(
 		title = stringResource(R.string.home_homework_title),
 		items = assignments,
 		impending = impending,
+		onOnlineContentsRefresh = onAssignmentRefresh,
 		now = now,
 		noOnlineContent = stringResource(R.string.home_no_homework)
 	)
@@ -48,6 +50,7 @@ fun AssignmentFrame(
 fun OnlineVideoFrame(
 	videos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
 	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
+	onOnlineVideoRefresh: () -> Unit,
 	now: ZonedDateTime
 ) {
 	OnlineContentListFrame(
@@ -57,6 +60,7 @@ fun OnlineVideoFrame(
 		noOnlineContent = stringResource(R.string.home_no_video),
 		items = videos,
 		impending = impending,
+		onOnlineContentsRefresh = onOnlineVideoRefresh,
 		now = now
 	)
 }

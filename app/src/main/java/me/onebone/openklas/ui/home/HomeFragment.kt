@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import me.onebone.openklas.R
 import me.onebone.openklas.base.BaseFragment
 import me.onebone.openklas.widget.AppbarView
 import java.time.ZonedDateTime
+import me.onebone.openklas.utils.ViewResource
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -57,17 +59,17 @@ class HomeFragment: BaseFragment() {
 						modifier = Modifier.fillMaxSize()
 					) {
 						val currentSemester by viewModel.currentSemester.observeAsState()
-						val scheduleToday by viewModel.todaySchedule.observeAsState()
+						val scheduleToday by viewModel.todaySchedule.collectAsState(ViewResource.Loading())
 
-						val assignments by viewModel.homeworks.observeAsState()
-						val impendingAssignments by viewModel.impendingHomework.observeAsState()
+						val assignments by viewModel.homeworks.collectAsState(ViewResource.Loading())
+						val impendingAssignments by viewModel.impendingHomework.collectAsState(ViewResource.Loading())
 
-						val videos by viewModel.videos.observeAsState()
-						val impendingVideos by viewModel.impendingVideo.observeAsState()
+						val videos by viewModel.videos.collectAsState(ViewResource.Loading())
+						val impendingVideos by viewModel.impendingVideo.collectAsState(ViewResource.Loading())
 
 						HomeScreen(
 							currentSemester = currentSemester,
-							schedule = scheduleToday?.toList(),
+							schedule = scheduleToday,
 							now = ZonedDateTime.now(),
 							assignments = assignments,
 							impendingAssignments = impendingAssignments,

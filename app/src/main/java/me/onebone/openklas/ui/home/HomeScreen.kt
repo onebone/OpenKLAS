@@ -41,15 +41,17 @@ import me.onebone.openklas.klas.model.Semester
 import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.utils.dateToShortString
 import java.time.ZonedDateTime
+import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.widget.RefreshButton
 
 @Composable
 fun HomeScreen(
 	currentSemester: Semester?,
-	schedule: List<Timetable.Entry>?,
-	assignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
-	impendingAssignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
-	videos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
-	impendingVideos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
+	schedule: ViewResource<List<Timetable.Entry>>,
+	assignments: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
+	impendingAssignments: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
+	videos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
+	impendingVideos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
 	now: ZonedDateTime
 ) {
 	Column(
@@ -98,8 +100,8 @@ fun OnlineContentListFrame(
 	iconDescription: String?,
 	title: String,
 	noOnlineContent: String,
-	items: List<Pair<BriefSubject, OnlineContentEntry>>?,
-	impending: List<Pair<BriefSubject, OnlineContentEntry>>?,
+	items: ViewResource<List<Pair<BriefSubject, OnlineContentEntry>>>,
+	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry>>>,
 	now: ZonedDateTime
 ) {
 	Column(
@@ -118,7 +120,7 @@ fun OnlineContentListFrame(
 					.align(Alignment.CenterStart)
 			) {
 				val color = colorResource(
-					if(impending?.isEmpty() != false) R.color.green
+					if(impending !is ViewResource.Success || impending.value.isEmpty()) R.color.green
 					else R.color.red
 				)
 
@@ -141,18 +143,8 @@ fun OnlineContentListFrame(
 			}
 		}
 
-		if(items == null || impending == null) {
-			Box(
-				modifier = Modifier
-					.fillMaxWidth()
-					.height(80.dp)
-			) {
-				CircularProgressIndicator(
-					modifier = Modifier.align(Alignment.Center)
-				)
-			}
-		}else{
-			if(items.isEmpty()) {
+		if(items is ViewResource.Success && impending is ViewResource.Success) {
+			if(items.value.isEmpty()) {
 				Box(
 					modifier = Modifier
 						.fillMaxWidth()
@@ -175,11 +167,11 @@ fun OnlineContentListFrame(
 						Spacer(modifier = Modifier.width(4.dp))
 					}
 
-					val isImpendingEmpty = impending.isEmpty()
+					val isImpendingEmpty = impending.value.isEmpty()
 
 					items(
-						if(isImpendingEmpty) items
-						else impending
+						if(isImpendingEmpty) items.value
+						else impending.value
 					) {
 						OnlineContentListItem(
 							item = it,
@@ -192,6 +184,29 @@ fun OnlineContentListFrame(
 						Spacer(modifier = Modifier.width(4.dp))
 					}
 				}
+			}
+		}else if(items is ViewResource.Error || impending is ViewResource.Error) {
+			Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(vertical = 30.dp),
+				contentAlignment = Alignment.Center
+			) {
+				RefreshButton(
+					onClick = {
+						// TODO
+					}
+				)
+			}
+		}else{
+			Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.height(80.dp)
+			) {
+				CircularProgressIndicator(
+					modifier = Modifier.align(Alignment.Center)
+				)
 			}
 		}
 	}
@@ -255,15 +270,15 @@ fun HomeScreenPreview() {
 		) {
 			HomeScreen(
 				currentSemester = Semester("2021,1", "2021년도 1학기", emptyList()),
-				schedule = listOf(
+				schedule = ViewResource.Success(listOf(
 					Timetable.Entry(1, 3, "M87", "아인슈타인", 2, "일반상대성이론실험", "", "", 1),
 					Timetable.Entry(1, 5, "미지정", "히키가야 하치만", 1, "5개기본호흡", "", "", 2)
-				),
+				)),
 				now = ZonedDateTime.of(2021, 5, 8, 16, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-				assignments = listOf(),
-				impendingAssignments = listOf(),
-				videos = listOf(),
-				impendingVideos = listOf()
+				assignments = ViewResource.Success(listOf()),
+				impendingAssignments = ViewResource.Success(listOf()),
+				videos = ViewResource.Success(listOf()),
+				impendingVideos = ViewResource.Success(listOf())
 			)
 		}
 	}

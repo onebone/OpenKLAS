@@ -25,11 +25,12 @@ import me.onebone.openklas.R
 import me.onebone.openklas.klas.model.BriefSubject
 import me.onebone.openklas.klas.model.OnlineContentEntry
 import java.time.ZonedDateTime
+import me.onebone.openklas.utils.ViewResource
 
 @Composable
 fun AssignmentFrame(
-	assignments: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
-	impending: List<Pair<BriefSubject, OnlineContentEntry.Homework>>?,
+	assignments: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
+	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Homework>>>,
 	now: ZonedDateTime
 ) {
 	OnlineContentListFrame(
@@ -45,8 +46,8 @@ fun AssignmentFrame(
 
 @Composable
 fun OnlineVideoFrame(
-	videos: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
-	impending: List<Pair<BriefSubject, OnlineContentEntry.Video>>?,
+	videos: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
+	impending: ViewResource<List<Pair<BriefSubject, OnlineContentEntry.Video>>>,
 	now: ZonedDateTime
 ) {
 	OnlineContentListFrame(

@@ -101,9 +101,7 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 
 		lifecycleScope.launch {
 			repeatOnLifecycle(Lifecycle.State.STARTED) {
-				println("collect start")
 				viewModel.error.collect {
-					println("error collect: $it")
 					AlertDialog.Builder(this@MainActivity)
 						.setTitle(R.string.common_error_dialog_title)
 						.setMessage(it.message)
@@ -111,8 +109,6 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 						.create()
 						.show()
 				}
-
-				println("collect end")
 			}
 		}
 	}

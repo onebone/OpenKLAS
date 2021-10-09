@@ -41,6 +41,8 @@ import me.onebone.openklas.repository.SessionRepository
 import javax.inject.Singleton
 import me.onebone.openklas.base.ErrorViewModelDelegate
 import me.onebone.openklas.base.ErrorViewModelDelegateImpl
+import me.onebone.openklas.base.FlowRegistrar
+import me.onebone.openklas.base.FlowRegistrarImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -80,4 +82,7 @@ abstract class AppBindsModule {
 	@Binds
 	@Singleton
 	abstract fun bindErrorViewModelDelegate(impl: ErrorViewModelDelegateImpl): ErrorViewModelDelegate
+
+	@Binds
+	abstract fun bindFlowRegistrar(impl: FlowRegistrarImpl<Any>): FlowRegistrar<Any>
 }

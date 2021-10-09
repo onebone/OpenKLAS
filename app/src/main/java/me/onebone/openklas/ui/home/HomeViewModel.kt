@@ -18,53 +18,91 @@
 
 package me.onebone.openklas.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import me.onebone.openklas.base.SemesterViewModelDelegate
 import me.onebone.openklas.base.SessionViewModelDelegate
 import me.onebone.openklas.klas.model.BriefSubject
-import me.onebone.openklas.klas.model.Home
 import me.onebone.openklas.klas.model.OnlineContentEntry
-import me.onebone.openklas.klas.model.Semester
-import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
 import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import me.onebone.openklas.base.ErrorViewModelDelegate
+import me.onebone.openklas.base.FlowRegistrar
+import me.onebone.openklas.base.KeyedScope
+import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.utils.mapResource
+import me.onebone.openklas.utils.transform
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 	private val klasRepository: KlasRepository,
 	sessionViewModelDelegate: SessionViewModelDelegate,
 	semesterViewModelDelegate: SemesterViewModelDelegate,
-	errorViewModelDelegate: ErrorViewModelDelegate
+	errorViewModelDelegate: ErrorViewModelDelegate,
+	registrar: FlowRegistrar<Any>
 ): ViewModel(), SessionViewModelDelegate by sessionViewModelDelegate,
 	SemesterViewModelDelegate by semesterViewModelDelegate,
-	ErrorViewModelDelegate by errorViewModelDelegate {
+	ErrorViewModelDelegate by errorViewModelDelegate,
+	KeyedScope<HomeViewModel.Key> by registrar {
 
-	private val home = MediatorLiveData<Home>().apply {
-		addSource(currentSemester) {
-			fetchHome(it.id)
-		}
+	enum class Key {
+		Home, OnlineContents;
 	}
 
-	private val onlineContents = MediatorLiveData<List<Pair<BriefSubject, OnlineContentEntry>>>().apply {
-		addSource(currentSemester) {
-			fetchOnlineContents(it)
-		}
+	private val home = registrar.register(Key.Home) {
+		currentSemester
+			.asFlow()
+			.map {
+				val result = requestWithSession {
+					klasRepository.getHome(it.id)
+				}
+
+				result.transform()
+			}
 	}
 
-	val videos: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
+	private val onlineContents = registrar.register(Key.OnlineContents) {
+		currentSemester
+			.asFlow()
+			.map {
+				try {
+					ViewResource.Success(coroutineScope {
+						it.subjects.map { subject ->
+							async {
+								val result = requestWithSession {
+									klasRepository.getOnlineContentList(it.id, subject.id)
+								}
+
+								if(result is Resource.Error) {
+									throw result.error
+								}
+
+								(result as Resource.Success).value.map {
+									Pair(subject, it)
+								}
+							}
+						}.flatMap {
+							it.await()
+						}
+					})
+				}catch(e: Throwable) {
+					ViewResource.Error(e)
+				}
+			}
+	}
+
+	val videos = onlineContents.mapResource {
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
@@ -73,7 +111,7 @@ class HomeViewModel @Inject constructor(
 		}.sortedBy { (_, entry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
-	val impendingVideo: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Video>>> = Transformations.map(onlineContents) {
+	val impendingVideo = onlineContents.mapResource {
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
@@ -82,7 +120,8 @@ class HomeViewModel @Inject constructor(
 		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>)
 	}
 
-	val homeworks: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
+	val homeworks = onlineContents.mapResource {
+		throw RuntimeException("hello world")
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
@@ -91,7 +130,7 @@ class HomeViewModel @Inject constructor(
 		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
-	val impendingHomework: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Homework>>> = Transformations.map(onlineContents) {
+	val impendingHomework = onlineContents.mapResource {
 		val now = ZonedDateTime.now()
 
 		@Suppress("UNCHECKED_CAST")
@@ -100,77 +139,28 @@ class HomeViewModel @Inject constructor(
 		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>)
 	}
 
-	val quiz: LiveData<List<Pair<BriefSubject, OnlineContentEntry.Quiz>>> = Transformations.map(onlineContents) {
+	val quiz = onlineContents.mapResource {
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Quiz
 		} as List<Pair<BriefSubject, OnlineContentEntry.Quiz>>
 	}
 
-	val timetable: LiveData<Timetable>  = Transformations.map(home) {
+	val timetable = home.mapResource {
 		it.timetable
 	}
-	val todaySchedule: LiveData<List<Timetable.Entry>> = Transformations.map(timetable) { timetable ->
+
+	val timetableVal = timetable.map {
+		if(it is ViewResource.Success) it.value
+		else null
+	}.stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(), null)
+
+	val todaySchedule = timetable.mapResource { timetable ->
 		val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-		timetable.entries.filter{ it.day == day - 1 }.sortedBy { it.time }
+		timetable.entries.filter { it.day == day - 1 }.sortedBy { it.time }
 	}
-
-	private val _isHomeFetched = MutableLiveData(false)
-	val isHomeFetched: LiveData<Boolean> = _isHomeFetched
-
-	private val _isOnlineContentsFetched = MutableLiveData(false)
-	val isOnlineContentsFetched: LiveData<Boolean> = _isOnlineContentsFetched
 
 	private fun isImpending(time: Int): Boolean {
 		return 0 < time && time < TimeUnit.HOURS.toNanos(24)
-	}
-
-	private fun fetchHome(semester: String) {
-		_isHomeFetched.value = false
-
-		viewModelScope.launch {
-			val result = requestWithSession {
-				klasRepository.getHome(semester)
-			}
-
-			when (result) {
-				is Resource.Success -> home.postValue(result.value)
-				is Resource.Error -> emitError(result.error)
-			}
-
-			_isHomeFetched.postValue(true)
-		}
-	}
-
-	private fun fetchOnlineContents(currentSemester: Semester) {
-		_isOnlineContentsFetched.value = false
-
-		viewModelScope.launch {
-			try {
-				val contents = currentSemester.subjects.map { subject ->
-					async {
-						val result = requestWithSession {
-							klasRepository.getOnlineContentList(currentSemester.id, subject.id)
-						}
-
-						if(result is Resource.Error) {
-							throw result.error
-						}
-
-						(result as Resource.Success).value.map {
-							Pair(subject, it)
-						}
-					}
-				}.flatMap {
-					it.await()
-				}
-
-				onlineContents.postValue(contents)
-			}catch(e: Throwable) {
-				emitError(e)
-			}finally{
-				_isOnlineContentsFetched.postValue(true)
-			}
-		}
 	}
 }

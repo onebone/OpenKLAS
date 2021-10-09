@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 
 @OptIn(ExperimentalTypeInference::class)
@@ -47,3 +48,19 @@ inline fun <T> sharedFlow(
 fun <T> SharedEventFlow(): MutableSharedFlow<T> = MutableSharedFlow(
 	replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
 )
+
+inline fun <T, R> Flow<ViewResource<T>>.mapResource(
+	crossinline block: suspend (T) -> R
+): Flow<ViewResource<R>> = map {
+	when(it) {
+		is ViewResource.Success -> {
+			try {
+				ViewResource.Success(block(it.value))
+			}catch(e: Throwable) {
+				ViewResource.Error(e)
+			}
+		}
+		is ViewResource.Error -> ViewResource.Error(it.error)
+		is ViewResource.Loading -> ViewResource.Loading()
+	}
+}

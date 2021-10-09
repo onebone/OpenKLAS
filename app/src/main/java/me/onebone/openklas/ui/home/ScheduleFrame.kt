@@ -43,9 +43,11 @@ import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.ui.shared.compose.blinkTransition
 import me.onebone.openklas.utils.periodToTime
 import java.time.ZonedDateTime
+import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.widget.RefreshButton
 
 @Composable
-fun Schedule(schedule: List<Timetable.Entry>?, now: ZonedDateTime) {
+fun Schedule(schedule: ViewResource<List<Timetable.Entry>>, now: ZonedDateTime) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -71,9 +73,8 @@ fun Schedule(schedule: List<Timetable.Entry>?, now: ZonedDateTime) {
 			)
 		}
 
-		// returning from here causes "Start/end imbalance" exception on Jetpack Compose
-		if(schedule == null) {
-			Box(
+		when(schedule) {
+			is ViewResource.Loading -> Box(
 				modifier = Modifier
 					.fillMaxWidth()
 					.height(80.dp)
@@ -82,8 +83,8 @@ fun Schedule(schedule: List<Timetable.Entry>?, now: ZonedDateTime) {
 					modifier = Modifier.align(Alignment.Center)
 				)
 			}
-		}else{
-			if(schedule.isEmpty()) {
+
+			is ViewResource.Success -> if(schedule.value.isEmpty()) {
 				Box(
 					modifier = Modifier
 						.fillMaxWidth()
@@ -99,10 +100,22 @@ fun Schedule(schedule: List<Timetable.Entry>?, now: ZonedDateTime) {
 				Spacer(modifier = Modifier.height(8.dp))
 
 				LazyColumn {
-					items(schedule) {
+					items(schedule.value) {
 						ScheduleItem(item = it, now = now)
 					}
 				}
+			}
+
+			is ViewResource.Error -> Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.height(80.dp)
+			) {
+				RefreshButton(
+					onClick = {
+						// TODO
+					}
+				)
 			}
 		}
 	}

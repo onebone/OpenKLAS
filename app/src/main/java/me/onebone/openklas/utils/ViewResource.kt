@@ -18,7 +18,7 @@
 
 package me.onebone.openklas.utils
 
-sealed class ViewResource<T> {
+sealed class ViewResource<out T> {
 	data class Success<T>(val value: T): ViewResource<T>()
 
 	data class Error<T>(val error: Throwable): ViewResource<T>()

@@ -25,12 +25,13 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -45,6 +46,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.consumeDownChange
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -72,62 +75,73 @@ fun SubjectSelectionDialog(
 	Dialog(
 		onDismissRequest = onDismissRequest
 	) {
-		Surface(
+		// hack: Dialog composable constrains its maximum height by that of the first
+		// composed content, so we have to fill height at the first time
+		Box(
 			modifier = Modifier
-				.wrapContentHeight()
-				.background(MaterialTheme.colors.surface)
+				.fillMaxHeight()
+				.clickable(
+					interactionSource = remember { MutableInteractionSource() },
+					indication = null,
+					onClick = onDismissRequest
+				),
+			contentAlignment = Alignment.Center
 		) {
-			// FIXME dialog's max height is a height of the first shown composable
-			// It seems that this is because the height of the first composable
-			// determines the constraint of the dialog surface.
-			// The fundamental solution will be measuring the content with constraint
-			// given at the initial composition, although I can't find a way to do this.
-			//
-			// [DialogLayout] constrains the maximum height of the dialog content regarding to
-			// the first maximum height.
-			@OptIn(ExperimentalAnimationApi::class)
-			AnimatedContent(
-				targetState = if(semesterSelection == null || state == DialogType.Semester) {
-					DialogType.Semester
-				}else{
-					DialogType.Subject
-				},
-				transitionSpec = {
-					when(targetState) {
-						DialogType.Semester -> {
-							slideInHorizontally({ -it }) with
-									slideOutHorizontally({ it })
-						}
-						DialogType.Subject -> {
-							slideInHorizontally({ it }) with
-									slideOutHorizontally({ -it })
+			Surface(
+				modifier = Modifier
+					.background(MaterialTheme.colors.surface)
+					.pointerInput(Unit) {
+						awaitPointerEventScope {
+							while(true) {
+								awaitPointerEvent().changes.forEach { it.consumeDownChange() }
+							}
 						}
 					}
-				}
-			) { target ->
-				when(target) {
-					DialogType.Semester -> SelectionDialogContent(
-						type = DialogType.Semester,
-						contents = semesters,
-						selectedEntry = semesterSelection,
-						displayName = { it.label },
-						onClickChangeType = { state = DialogType.Subject },
-						onClickEntry = {
-							semesterSelection = it
-							state = DialogType.Subject
+			) {
+				@OptIn(ExperimentalAnimationApi::class)
+				AnimatedContent(
+					targetState = if(semesterSelection == null || state == DialogType.Semester) {
+						DialogType.Semester
+					}else{
+						DialogType.Subject
+					},
+					transitionSpec = {
+						when(targetState) {
+							DialogType.Semester -> {
+								slideInHorizontally({ -it }) with
+										slideOutHorizontally({ it })
+							}
+							DialogType.Subject -> {
+								slideInHorizontally({ it }) with
+										slideOutHorizontally({ -it })
+							}
 						}
-					)
-					DialogType.Subject -> SelectionDialogContent(
-						type = DialogType.Subject,
-						contents = semesterSelection?.subjects?.toList(),
-						selectedEntry = subjectSelection,
-						displayName = { it.name },
-						onClickChangeType = { state = DialogType.Semester },
-						onClickEntry = {
-							subjectSelection = it
-							onChange(semesterSelection!!, it)
-						}
-					)
+					}
+				) { target ->
+					when(target) {
+						DialogType.Semester -> SelectionDialogContent(
+							type = DialogType.Semester,
+							contents = semesters,
+							selectedEntry = semesterSelection,
+							displayName = { it.label },
+							onClickChangeType = { state = DialogType.Subject },
+							onClickEntry = {
+								semesterSelection = it
+								state = DialogType.Subject
+							}
+						)
+						DialogType.Subject -> SelectionDialogContent(
+							type = DialogType.Subject,
+							contents = semesterSelection?.subjects?.toList(),
+							selectedEntry = subjectSelection,
+							displayName = { it.name },
+							onClickChangeType = { state = DialogType.Semester },
+							onClickEntry = {
+								subjectSelection = it
+								onChange(semesterSelection!!, it)
+							}
+						)
+					}
 				}
 			}
 		}

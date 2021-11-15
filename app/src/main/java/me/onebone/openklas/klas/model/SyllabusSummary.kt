@@ -36,7 +36,7 @@ data class SyllabusSummary(
 	@SerialName("thisYear")
 	val year: Int,
 	@SerialName("memberName")
-	val tutor: String,
+	val tutor: String?,
 	@SerialName("openGrade")
 	val targetGrade: Int,
 	@SerialName("openGwamokNo")

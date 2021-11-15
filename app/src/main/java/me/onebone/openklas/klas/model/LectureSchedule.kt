@@ -19,8 +19,9 @@
 package me.onebone.openklas.klas.model
 
 import kotlinx.serialization.Serializable
+import me.onebone.openklas.klas.deserializer.LectureScheduleSerializer
 
-@Serializable
+@Serializable(with = LectureScheduleSerializer::class)
 data class LectureSchedule(
 	val day: Int,
 	val dayLabel: String, // 일, 월, 화, ..., 토

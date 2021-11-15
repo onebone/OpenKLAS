@@ -21,6 +21,9 @@ package me.onebone.openklas
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import me.onebone.openklas.base.Config
 
@@ -28,6 +31,11 @@ import me.onebone.openklas.base.Config
 class MainApplication: Application() {
 	override fun onCreate() {
 		super.onCreate()
+
+		if(BuildConfig.DEBUG) {
+			Firebase.analytics.setAnalyticsCollectionEnabled(false)
+			Firebase.crashlytics.setCrashlyticsCollectionEnabled(false)
+		}
 
 		Config.loadConfig(this, "config.json")
 	}

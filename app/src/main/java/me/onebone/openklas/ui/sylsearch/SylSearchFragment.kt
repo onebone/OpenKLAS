@@ -46,6 +46,15 @@ class SylSearchFragment: BaseFragment() {
 
 	private val currentYear = ZonedDateTime.now().year
 
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		val fragment = childFragmentManager.findFragmentByTag(SearchBottomSheetFragmentTag)
+		if(fragment is SearchBottomSheetFragment) {
+			fragment.registerSearchEventHandler()
+		}
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -82,25 +91,32 @@ class SylSearchFragment: BaseFragment() {
 		setAppbarOnClickSearchListener { _, cancel ->
 			if(cancel) {
 				val bottomSheet = SearchBottomSheetFragment.create(currentYear)
-				bottomSheet.lifecycleScope.launch {
-					// FIXME bottom sheet should be dismissed when a lifecycle state of this fragment
-					// turns into paused state, or event handler should be reattached on recreation
-					// of this fragment.
-					repeatOnLifecycle(Lifecycle.State.STARTED) {
-						val event = bottomSheet.flow.first()
-						if(event is SearchEvent) {
-							viewModel.setFilter(event.year, event.term, event.keyword, event.professor)
-						}
-
-						setAppbarSearchState(true)
-						bottomSheet.dismiss()
-					}
-				}
-
-				bottomSheet.show(childFragmentManager, "SEARCH_BOTTOM_SHEET")
+				bottomSheet.registerSearchEventHandler()
+				bottomSheet.show(childFragmentManager, SearchBottomSheetFragmentTag)
 			}
 		}
 
 		return binding.root
+	}
+
+	private fun SearchBottomSheetFragment.registerSearchEventHandler() {
+		lifecycleScope.launch {
+			// FIXME bottom sheet should be dismissed when a lifecycle state of this fragment
+			// turns into paused state, or event handler should be reattached on recreation
+			// of this fragment.
+			repeatOnLifecycle(Lifecycle.State.STARTED) {
+				val event = flow.first()
+				if(event is SearchEvent) {
+					viewModel.setFilter(event.year, event.term, event.keyword, event.professor)
+				}
+
+				setAppbarSearchState(true)
+				dismiss()
+			}
+		}
+	}
+
+	companion object {
+		private const val SearchBottomSheetFragmentTag = "SylSearchSearchBottomSheetFragmentTag"
 	}
 }

@@ -46,6 +46,15 @@ class PostListFragment: BaseFragment() {
 	private val args by navArgs<PostListFragmentArgs>()
 	private val viewModel: PostListViewModel by viewModels()
 
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		val fragment = childFragmentManager.findFragmentByTag(SearchBottomSheetFragmentTag)
+		if(fragment is SearchBottomSheetFragment) {
+			fragment.registerSearchEventHandler()
+		}
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -108,24 +117,31 @@ class PostListFragment: BaseFragment() {
 		setAppbarOnClickSearchListener { _, cancel ->
 			if(cancel) {
 				val dialog = SearchBottomSheetFragment()
-				dialog.show(childFragmentManager, "PostListSearchBottomSheetFragment")
-
-				dialog.lifecycleScope.launch {
-					repeatOnLifecycle(Lifecycle.State.STARTED) {
-						// we only get a single event from flow
-						val event = dialog.flow.first()
-						if(event is SearchEvent) {
-							// TODO implement changing search criteria
-							viewModel.setFilter(BoardSearchCriteria.ALL, event.keyword)
-						}
-
-						setAppbarSearchState(true)
-						dialog.dismiss()
-					}
-				}
+				dialog.registerSearchEventHandler()
+				dialog.show(childFragmentManager, SearchBottomSheetFragmentTag)
 			}
 		}
 
 		return binding.root
+	}
+
+	private fun SearchBottomSheetFragment.registerSearchEventHandler() {
+		lifecycleScope.launch {
+			repeatOnLifecycle(Lifecycle.State.STARTED) {
+				// we only get a single event from flow
+				val event = flow.first()
+				if(event is SearchEvent) {
+					// TODO implement changing search criteria
+					viewModel.setFilter(BoardSearchCriteria.ALL, event.keyword)
+				}
+
+				setAppbarSearchState(true)
+				dismiss()
+			}
+		}
+	}
+
+	companion object {
+		private const val SearchBottomSheetFragmentTag = "PostListSearchBottomSheetFragment"
 	}
 }

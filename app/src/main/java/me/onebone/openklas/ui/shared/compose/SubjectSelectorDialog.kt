@@ -46,7 +46,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consumeDownChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -93,7 +92,11 @@ fun SubjectSelectionDialog(
 					.pointerInput(Unit) {
 						awaitPointerEventScope {
 							while(true) {
-								awaitPointerEvent().changes.forEach { it.consumeDownChange() }
+								awaitPointerEvent().changes.forEach {
+									if (it.pressed != it.previousPressed) {
+										it.consume()
+									}
+								}
 							}
 						}
 					}
@@ -108,12 +111,12 @@ fun SubjectSelectionDialog(
 					transitionSpec = {
 						when(targetState) {
 							DialogType.Semester -> {
-								slideInHorizontally({ -it }) with
-										slideOutHorizontally({ it })
+								slideInHorizontally { -it } with
+										slideOutHorizontally { it }
 							}
 							DialogType.Subject -> {
-								slideInHorizontally({ it }) with
-										slideOutHorizontally({ -it })
+								slideInHorizontally { it } with
+										slideOutHorizontally { -it }
 							}
 						}
 					}

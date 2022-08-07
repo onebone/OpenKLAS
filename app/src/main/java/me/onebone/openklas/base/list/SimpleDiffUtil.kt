@@ -21,7 +21,7 @@ package me.onebone.openklas.base.list
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 
-class SimpleDiffUtil<T>(
+class SimpleDiffUtil<T : Any>(
 	private val idCriteria: (T) -> Any? = { it },
 	private val contentCriteria: (T) -> Any? = { it }
 ): DiffUtil.ItemCallback<T>() {

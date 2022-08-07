@@ -37,6 +37,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -125,16 +126,22 @@ fun AssignmentListMainLayout(
 			val collapsingToolbarState = rememberCollapsingToolbarState()
 
 			val state = rememberCollapsingToolbarScaffoldState()
+			val bottomShadow by remember {
+				derivedStateOf {
+					if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
+						0.dp
+					else
+						8.dp
+				}
+			}
+
 			CollapsingToolbarScaffold(
 				modifier = Modifier.fillMaxWidth(),
 				state = state,
 				scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
 				toolbarModifier = Modifier.bottomShadow(
 					// show shadow only when scrolled
-					if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0)
-						0.dp
-					else
-						8.dp,
+					bottomShadow,
 					colorResource(R.color.shadow_start),
 					colorResource(R.color.shadow_end)
 				),

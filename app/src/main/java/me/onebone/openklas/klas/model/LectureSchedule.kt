@@ -18,13 +18,20 @@
 
 package me.onebone.openklas.klas.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.onebone.openklas.klas.deserializer.LectureScheduleSerializer
+import me.onebone.openklas.klas.deserializer.ForceIntSerializer
 
 @Serializable(with = LectureScheduleSerializer::class)
 data class LectureSchedule(
+	@SerialName("code")
+	@Serializable(with = ForceIntSerializer::class)
 	val day: Int,
+	@SerialName("dayname1")
 	val dayLabel: String, // 일, 월, 화, ..., 토
+	@SerialName("locHname")
 	val classroom: String?,
+	@SerialName("periods")
 	val periods: List<Int>
 )

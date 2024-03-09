@@ -20,8 +20,9 @@ package me.onebone.openklas.ui.post
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,11 +53,11 @@ class PostViewModel @Inject constructor(
 
 	private val postComposite = MutableLiveData<PostComposite>()
 
-	val post = Transformations.map(postComposite) {
+	val post = postComposite.map {
 		it.post
 	}
 
-	val attachments = Transformations.switchMap(post) {
+	val attachments = post.switchMap {
 		MutableLiveData<List<Attachment>>().apply {
 			if(it.attachmentId == null) {
 				value = emptyList()

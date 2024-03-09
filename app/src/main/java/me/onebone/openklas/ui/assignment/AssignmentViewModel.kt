@@ -21,19 +21,19 @@ package me.onebone.openklas.ui.assignment
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
+import me.onebone.openklas.base.ErrorViewModelDelegate
 import me.onebone.openklas.base.SessionViewModelDelegate
 import me.onebone.openklas.base.SubjectViewModelDelegate
 import me.onebone.openklas.klas.model.Assignment
 import me.onebone.openklas.klas.model.Attachment
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
-import javax.inject.Inject
-import me.onebone.openklas.base.ErrorViewModelDelegate
 
 @HiltViewModel
 class AssignmentViewModel @Inject constructor(
@@ -53,7 +53,7 @@ class AssignmentViewModel @Inject constructor(
 	private val _assignment = MutableLiveData<Assignment>()
 	val assignment: LiveData<Assignment> = _assignment
 
-	val attachments = Transformations.switchMap(assignment) {
+	val attachments = assignment.switchMap {
 		MutableLiveData<List<Attachment>>().apply {
 			if(it.description.attachmentId == null) {
 				value = emptyList()

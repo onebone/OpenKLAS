@@ -18,21 +18,17 @@
 
 package me.onebone.openklas.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import me.onebone.openklas.base.SemesterViewModelDelegate
-import me.onebone.openklas.base.SessionViewModelDelegate
-import me.onebone.openklas.klas.model.BriefSubject
-import me.onebone.openklas.klas.model.OnlineContentEntry
-import me.onebone.openklas.repository.KlasRepository
-import me.onebone.openklas.utils.Resource
 import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -41,6 +37,12 @@ import kotlinx.coroutines.flow.stateIn
 import me.onebone.openklas.base.ErrorViewModelDelegate
 import me.onebone.openklas.base.FlowRegistrar
 import me.onebone.openklas.base.KeyedScope
+import me.onebone.openklas.base.SemesterViewModelDelegate
+import me.onebone.openklas.base.SessionViewModelDelegate
+import me.onebone.openklas.klas.model.BriefSubject
+import me.onebone.openklas.klas.model.OnlineContentEntry
+import me.onebone.openklas.repository.KlasRepository
+import me.onebone.openklas.utils.Resource
 import me.onebone.openklas.utils.ViewResource
 import me.onebone.openklas.utils.flatMapResource
 import me.onebone.openklas.utils.loadOnEach
@@ -149,6 +151,9 @@ class HomeViewModel @Inject constructor(
 	val timetable = home.mapResource {
 		it.timetable
 	}
+
+	private val _isHomeFetched = MutableLiveData(false)
+	val isHomeFetched: LiveData<Boolean> = _isHomeFetched
 
 	val timetableVal = timetable.map {
 		if(it is ViewResource.Success) it.value

@@ -17,36 +17,16 @@
  */
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    ext {
-        kotlin_version = '1.7.0'
-        nav_version = '2.5.1'
-        dagger_version = '2.43.2'
-        hilt_version = '2.43.2'
-        paging_version = '3.1.1'
-        coroutine_version = '1.6.4'
-        compose_compiler_version = '1.2.0'
-        compose_version = '1.2.0'
-        lifecycle_version = '2.5.1'
-    }
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-
-        classpath 'com.google.gms:google-services:4.3.13'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+plugins {
+    alias libs.plugins.android apply false
+    alias libs.plugins.kapt apply false
+    alias libs.plugins.kotlin apply false
+    alias libs.plugins.ksp apply false
+    alias libs.plugins.navigation.safeargs apply false
+    alias libs.plugins.hilt apply false
+    alias libs.plugins.google.services apply false
+    alias libs.plugins.firebase.crashlytics apply false
+    alias libs.plugins.kotlinx.serialization apply false
 }
 
 allprojects {
@@ -58,6 +38,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }

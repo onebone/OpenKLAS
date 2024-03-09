@@ -38,10 +38,9 @@ class Event<T: Any>(
 class EventObserver<T: Any>(
 	private val onChangedListener: (T) -> Unit
 ): Observer<Event<T>> {
-	override fun onChanged(t: Event<T>?) {
-		t?.getIfNotHandled()?.let {
+	override fun onChanged(t: Event<T>) {
+		t.getIfNotHandled()?.let {
 			onChangedListener(it)
 		}
 	}
 }
-

@@ -21,12 +21,12 @@ package me.onebone.openklas.base
 import android.annotation.SuppressLint
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
+import javax.inject.Inject
 import me.onebone.openklas.klas.model.Semester
 import me.onebone.openklas.repository.KlasRepository
 import me.onebone.openklas.utils.Resource
-import javax.inject.Inject
 
 class DefaultSemesterViewModelDelegate @Inject constructor(
 	private val klasRepository: KlasRepository,
@@ -61,7 +61,7 @@ class DefaultSemesterViewModelDelegate @Inject constructor(
 		}
 	}
 
-	override val subjects = Transformations.map(currentSemester) {
+	override val subjects = currentSemester.map {
 		it.subjects
 	}
 

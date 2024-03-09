@@ -18,20 +18,15 @@
 
 package me.onebone.openklas.ui.syllabus.page.summary
 
-import androidx.annotation.IntDef
 import me.onebone.openklas.R
 
-const val TUTOR_PROFESSOR = R.string.professor
-const val TUTOR_SECONDARY_PROFESSOR = R.string.secondary_professor
-const val TUTOR_TEACHING_ASSISTANT = R.string.teaching_assistant
-
-@Retention(AnnotationRetention.SOURCE)
-@IntDef(TUTOR_PROFESSOR, TUTOR_SECONDARY_PROFESSOR, TUTOR_TEACHING_ASSISTANT)
-annotation class TutorType
+val TUTOR_PROFESSOR = R.string.professor
+val TUTOR_SECONDARY_PROFESSOR = R.string.secondary_professor
+val TUTOR_TEACHING_ASSISTANT = R.string.teaching_assistant
 
 data class TutorEntry(
 	val name: String,
-	@TutorType val type: Int,
+	val type: Int, // one of: R.string.professor, R.string.secondary_professor, R.string.teaching_assistant
 	val email: String?,
 	val contact: String?,
 	val telephoneContact: String?

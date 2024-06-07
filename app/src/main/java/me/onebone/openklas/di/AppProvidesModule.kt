@@ -46,6 +46,7 @@ import javax.inject.Singleton
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
@@ -62,7 +63,7 @@ class AppProvidesModule {
 			.client(okHttpClient)
 
 		@OptIn(ExperimentalSerializationApi::class)
-		builder.addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+		builder.addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
 
 		return builder.build()
 	}

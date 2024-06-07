@@ -26,6 +26,7 @@ plugins {
     alias libs.plugins.firebase.crashlytics
     alias libs.plugins.kotlinx.serialization
     alias libs.plugins.ksp
+    alias libs.plugins.kotlin.compose
 }
 
 android {
@@ -111,7 +112,7 @@ dependencies {
     implementation libs.lifecycle.runtime.ktx
 
     // desugaring
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
+    coreLibraryDesugaring libs.android.desugar
 
     // jetpack compose
     implementation platform(libs.compose.bom)

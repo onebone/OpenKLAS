@@ -24,7 +24,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
 import java.time.ZonedDateTime
+import java.time.temporal.Temporal
+import java.time.temporal.TemporalUnit
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -111,7 +114,7 @@ class HomeViewModel @Inject constructor(
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Video && entry.progress < 100 && entry.startDate < now && now < entry.dueDate
-		}.sortedBy { (_, entry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
+		}.sortedBy { (_, entry) -> entry.dueDate } as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
 	val impendingVideo = onlineContents.mapResource {
@@ -119,7 +122,7 @@ class HomeViewModel @Inject constructor(
 
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate.nano - now.nano)
+			entry is OnlineContentEntry.Video && entry.progress < 100 && isImpending(entry.dueDate, now)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Video>>
 	}
 
@@ -129,7 +132,7 @@ class HomeViewModel @Inject constructor(
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
 			entry is OnlineContentEntry.Homework && entry.submitDate == null && entry.startDate < now && now < entry.dueDate
-		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate.nano } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
+		}.sortedBy { (_, entry: OnlineContentEntry) -> entry.dueDate } as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
 	val impendingHomework = onlineContents.mapResource {
@@ -137,7 +140,7 @@ class HomeViewModel @Inject constructor(
 
 		@Suppress("UNCHECKED_CAST")
 		it.filter { (_, entry) ->
-			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate.nano - now.nano)
+			entry is OnlineContentEntry.Homework && entry.submitDate == null && isImpending(entry.dueDate, now)
 		} as List<Pair<BriefSubject, OnlineContentEntry.Homework>>
 	}
 
@@ -165,7 +168,9 @@ class HomeViewModel @Inject constructor(
 		timetable.entries.filter { it.day == day - 1 }.sortedBy { it.time }
 	}
 
-	private fun isImpending(time: Int): Boolean {
-		return 0 < time && time < TimeUnit.HOURS.toNanos(24)
+	private fun isImpending(due: Temporal, now: Temporal): Boolean {
+		val duration = Duration.between(now, due).toMillis()
+
+		return 0 < duration && duration < TimeUnit.HOURS.toMillis(24)
 	}
 }

@@ -48,7 +48,7 @@ sealed class OnlineContentEntry {
 		@Serializable(with = ZonedDateTimeSerializer::class)
 		override val dueDate: ZonedDateTime,
 		@SerialName("prog")
-		val progress: Int,
+		val progress: Float,
 		@Serializable(with = ForceIntSerializer::class)
 		@SerialName("rcognTime")
 		val lectureTime: Int,

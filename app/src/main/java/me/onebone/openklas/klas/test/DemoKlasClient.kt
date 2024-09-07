@@ -313,7 +313,7 @@ class DemoKlasClient @Inject constructor(): KlasClient {
 				),
 				OnlineContentEntry.Video(
 					"lesson", "01", "사건의 지평선 1", now, now + Duration.ofMinutes(30),
-					0, 40, 0, "https://example.com/video1.mp4"
+					0f, 40, 0, "https://example.com/video1.mp4"
 				)
 			)
 		)

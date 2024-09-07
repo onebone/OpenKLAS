@@ -21,6 +21,7 @@ package me.onebone.openklas.klas.model
 import java.time.ZonedDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.onebone.openklas.klas.deserializer.ForceIntSerializer
 import me.onebone.openklas.klas.deserializer.OnlineContentEntrySerializer
 import me.onebone.openklas.klas.deserializer.ZonedDateTimeSerializer
 
@@ -48,12 +49,14 @@ sealed class OnlineContentEntry {
 		override val dueDate: ZonedDateTime,
 		@SerialName("prog")
 		val progress: Int,
+		@Serializable(with = ForceIntSerializer::class)
 		@SerialName("rcognTime")
 		val lectureTime: Int,
+		@Serializable(with = ForceIntSerializer::class)
 		@SerialName("achivTime")
 		val acquiredTime: Int,
 		@SerialName("starting")
-		val uri: String,
+		val uri: String?, // No "play" button when `null`
 	): OnlineContentEntry()
 
 	@Serializable
@@ -71,8 +74,10 @@ sealed class OnlineContentEntry {
 		@SerialName("sbjt")
 		override val title: String,
 		@SerialName("rcognTime")
+		@Serializable(with = ForceIntSerializer::class)
 		val lectureTime: Int,
 		@SerialName("achivTime")
+		@Serializable(with = ForceIntSerializer::class)
 		val acquiredTime: Int
 	): OnlineContentEntry()
 
@@ -92,6 +97,7 @@ sealed class OnlineContentEntry {
 		val chapterTitle: String,
 		@SerialName("sbjt")
 		override val title: String,
+		@Serializable(with = ForceIntSerializer::class)
 		@SerialName("rcognTime")
 		// Note that [lectureTime] is different from the actual
 		// length of the lecture

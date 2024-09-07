@@ -53,7 +53,7 @@ class OnlineContentEntryDeserializer: TypeResolvableJsonDeserializer<OnlineConte
 object OnlineContentEntrySerializer: JsonContentPolymorphicSerializer<OnlineContentEntry>(OnlineContentEntry::class) {
 	override fun selectDeserializer(
 		element: SerializationJsonElement
-	): DeserializationStrategy<out OnlineContentEntry> {
+	): DeserializationStrategy<OnlineContentEntry> {
 		val obj = element.jsonObject
 		return when(obj["evltnSe"]?.jsonPrimitive?.contentOrNull) {
 			"lesson" -> OnlineContentEntry.Video.serializer()

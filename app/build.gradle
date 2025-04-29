@@ -31,12 +31,12 @@ plugins {
 
 android {
     namespace "me.onebone.openklas"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "me.onebone.openklas"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "0.0.1-dev"
         multiDexEnabled true

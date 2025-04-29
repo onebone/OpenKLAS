@@ -30,13 +30,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -49,6 +48,7 @@ import me.onebone.openklas.R
 import me.onebone.openklas.klas.model.CreditStatus
 import me.onebone.openklas.klas.model.SchoolRegister
 import me.onebone.openklas.klas.model.SemesterGrade
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.utils.ViewResource
 import me.onebone.openklas.utils.getGpa
 
@@ -66,7 +66,7 @@ fun GradeScreen(
 
 	val mainVerticalScrollState = rememberScrollState()
 
-	MaterialTheme {
+	KlasTheme {
 		Surface {
 			if(semester == null) {
 				GradeOverviewLayout(

@@ -23,13 +23,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import me.onebone.openklas.base.BaseFragment
 import me.onebone.openklas.klas.model.Attachment
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.utils.downloadFile
 
 @AndroidEntryPoint
@@ -56,7 +56,7 @@ class AssignmentFragment: BaseFragment() {
 
 		return ComposeView(requireContext()).apply {
 			setContent {
-				MaterialTheme {
+				KlasTheme {
 					AssignmentScreen(
 						onDownloadAttachment = onDownloadAttachment
 					)

@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -34,6 +33,7 @@ import me.onebone.openklas.databinding.PostFragmentBinding
 import me.onebone.openklas.klas.model.PostType
 import me.onebone.openklas.ui.shared.AttachmentAdapter
 import me.onebone.openklas.ui.shared.SimpleHtml
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -59,7 +59,7 @@ class PostFragment: BaseFragment() {
 			lifecycleOwner = viewLifecycleOwner
 		}.apply {
 			cvPostContent.setContent {
-				MaterialTheme {
+				KlasTheme {
 					val content = viewModel.post.observeAsState()
 					content.value?.content?.let {
 						SelectionContainer {

@@ -56,17 +56,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java.time.Duration
 import java.time.ZonedDateTime
-import me.onebone.toolbar.CollapsingToolbarScaffold
-import me.onebone.toolbar.ScrollStrategy
-import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
-import me.onebone.toolbar.rememberCollapsingToolbarState
 import me.onebone.openklas.R
 import me.onebone.openklas.klas.model.AssignmentEntry
 import me.onebone.openklas.ui.shared.compose.AssignmentDdayIndicator
 import me.onebone.openklas.ui.shared.compose.DueIndicator
 import me.onebone.openklas.ui.shared.compose.DueNot2359Warning
 import me.onebone.openklas.ui.shared.compose.SubjectSelectionDialog
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.ui.shared.compose.bottomShadow
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import me.onebone.toolbar.rememberCollapsingToolbarState
 
 @Composable
 fun AssignmentListScreen(onClickEntry: (AssignmentEntry) -> Unit) {
@@ -269,7 +270,7 @@ fun AssignmentItem(entry: AssignmentEntry, onClickEntry: (AssignmentEntry) -> Un
 @Preview(showBackground = true)
 @Composable
 fun AssignmentListScreenPreview() {
-	MaterialTheme {
+	KlasTheme {
 		AssignmentListMainLayout("심리학과프로파일링", listOf(
 			AssignmentEntry(
 				isExtendedPeriod = false,

@@ -23,10 +23,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -40,14 +43,13 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.onebone.openklas.R
 import me.onebone.openklas.base.PermissionExecutor
 import me.onebone.openklas.base.PermissionHolder
 import me.onebone.openklas.databinding.MainActivityBinding
-import me.onebone.openklas.ui.home.HomeFragmentDirections
 import me.onebone.openklas.klas.model.PostType
+import me.onebone.openklas.ui.home.HomeFragmentDirections
 import me.onebone.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -61,6 +63,7 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		enableEdgeToEdge()
 
 		binding = MainActivityBinding.inflate(LayoutInflater.from(this)).apply {
 			lifecycleOwner = this@MainActivity
@@ -68,6 +71,18 @@ class MainActivity: AppCompatActivity(), AppbarHolder, PermissionHolder {
 		setContentView(binding.root)
 
 		binding.view = this
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.appbar) { view, windowInsets ->
+			val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+			view.setPadding(view.paddingLeft, insets.top, view.paddingRight, view.paddingBottom)
+			windowInsets
+		}
+
+		ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+			val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+			view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, insets.bottom)
+			windowInsets
+		}
 
 		binding.appbar.onClickDrawerListener = AppbarView.OnClickDrawerListener {
 			if(binding.drawerRoot.isOpen) {

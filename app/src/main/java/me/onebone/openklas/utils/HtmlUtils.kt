@@ -18,8 +18,8 @@
 
 package me.onebone.openklas.utils
 
-import android.graphics.Color
 import androidx.annotation.ColorInt
+import androidx.core.graphics.toColorInt
 
 object HtmlUtils {
 	/**
@@ -37,7 +37,7 @@ object HtmlUtils {
 		if(str == null) return null
 
 		return runCatching {
-			Color.parseColor(str)
+			str.toColorInt()
 		}.getOrElse {
 			val pattern =
 				Regex("^\\s*rgb\\s*\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)\\s*\$")

@@ -26,8 +26,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.sp
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import me.onebone.openklas.R
 import kotlin.math.absoluteValue
+import me.onebone.openklas.R
 
 @Composable
 fun DueIndicator(
@@ -62,15 +62,21 @@ fun DueIndicator(
 	yearFontSize: TextUnit,
 	dateVerticalMargin: Dp
 ) {
-	val yearPaint = Paint().also { paint ->
-		with(LocalDensity.current) {
-			paint.asFrameworkPaint().textSize = yearFontSize.toPx()
+	val density = LocalDensity.current
+
+	val yearPaint = remember {
+		Paint().also { paint ->
+			with(density) {
+				paint.asFrameworkPaint().textSize = yearFontSize.toPx()
+			}
 		}
 	}
 
-	val dayPaint = Paint().also { paint ->
-		with(LocalDensity.current) {
-			paint.asFrameworkPaint().textSize = dayFontSize.toPx()
+	val dayPaint = remember {
+		Paint().also { paint ->
+			with(density) {
+				paint.asFrameworkPaint().textSize = dayFontSize.toPx()
+			}
 		}
 	}
 

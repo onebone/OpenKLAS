@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -31,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.onebone.openklas.R
 import me.onebone.openklas.base.BaseFragment
 import me.onebone.openklas.klas.model.AssignmentEntry
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.widget.AppbarView
 
 @AndroidEntryPoint
@@ -79,7 +79,7 @@ class AssignmentListFragment: BaseFragment() {
 
 		return ComposeView(requireContext()).apply {
 			setContent {
-				MaterialTheme {
+				KlasTheme {
 					AssignmentListScreen(
 						onClickEntry = onClickEntry
 					)

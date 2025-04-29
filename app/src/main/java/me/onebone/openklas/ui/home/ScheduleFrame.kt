@@ -19,7 +19,15 @@
 package me.onebone.openklas.ui.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,12 +46,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.ZonedDateTime
 import me.onebone.openklas.R
 import me.onebone.openklas.klas.model.Timetable
 import me.onebone.openklas.ui.shared.compose.blinkTransition
-import me.onebone.openklas.utils.periodToTime
-import java.time.ZonedDateTime
 import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.utils.periodToTime
 import me.onebone.openklas.widget.EmptyIndicator
 import me.onebone.openklas.widget.FullWidthRefreshableError
 
@@ -56,7 +64,7 @@ fun Schedule(
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.background(MaterialTheme.colors.surface)
+			.background(MaterialTheme.colors.background)
 			.padding(8.dp)
 	) {
 		Row {

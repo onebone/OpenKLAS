@@ -22,24 +22,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import me.onebone.openklas.klas.KlasUri
+import me.onebone.openklas.utils.HtmlUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
-import me.onebone.openklas.klas.KlasUri
-import me.onebone.openklas.utils.HtmlUtils
 
 @Composable
 fun SimpleHtml(html: String) {
@@ -85,14 +84,8 @@ private fun InlineElement(content: Element) {
 		appendHtmlInlineElement(content)
 	}
 
-	val uriHandler = LocalUriHandler.current
-	ClickableText(
-		text = text,
-		onClick = {
-			text.getStringAnnotations(TAG_URL, it, it).firstOrNull()?.let { annotation ->
-				uriHandler.openUri(annotation.item)
-			}
-		}
+	Text(
+		text = text
 	)
 }
 
@@ -102,15 +95,7 @@ private fun InlineChildrenElement(element: Element) {
 		appendHtmlInlineElementChildren(element)
 	}
 
-	val uriHandler = LocalUriHandler.current
-	ClickableText(
-		text = text,
-		onClick = {
-			text.getStringAnnotations(TAG_URL, it, it).firstOrNull()?.let { annotation ->
-				uriHandler.openUri(annotation.item)
-			}
-		}
-	)
+	Text(text = text)
 }
 
 @Composable
@@ -125,8 +110,6 @@ private fun LineBreak(content: Element) {
 	}
 }
 
-private const val TAG_URL = "URL"
-
 private fun AnnotatedString.Builder.appendHtmlInlineElement(node: Node) {
 	when(node) {
 		is TextNode -> append(node.text())
@@ -135,12 +118,10 @@ private fun AnnotatedString.Builder.appendHtmlInlineElement(node: Node) {
 
 			when(node.tagName()) {
 				"a" -> {
-					pushStyle(SpanStyle(
-						textDecoration = TextDecoration.Underline)
+					pushLink(
+						link = LinkAnnotation.Url(node.attr("href"))
 					)
-					pushStringAnnotation(TAG_URL, node.attr("href"))
 					appendHtmlInlineElementChildren(node)
-					pop()
 					pop()
 				}
 				"u" -> {

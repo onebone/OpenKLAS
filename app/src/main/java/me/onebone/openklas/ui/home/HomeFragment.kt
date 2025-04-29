@@ -23,22 +23,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZonedDateTime
 import me.onebone.openklas.R
 import me.onebone.openklas.base.BaseFragment
-import me.onebone.openklas.widget.AppbarView
-import java.time.ZonedDateTime
+import me.onebone.openklas.ui.shared.compose.base.KlasTheme
 import me.onebone.openklas.utils.ViewResource
+import me.onebone.openklas.widget.AppbarView
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -53,9 +52,8 @@ class HomeFragment: BaseFragment() {
 
 		return ComposeView(requireContext()).apply {
 			setContent {
-				MaterialTheme {
+				KlasTheme {
 					Surface(
-						color = colorResource(R.color.super_light_gray),
 						modifier = Modifier.fillMaxSize()
 					) {
 						val currentSemester by viewModel.currentSemester.observeAsState()

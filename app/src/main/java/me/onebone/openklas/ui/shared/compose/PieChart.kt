@@ -18,8 +18,8 @@
 
 package me.onebone.openklas.ui.shared.compose
 
-import android.graphics.Paint as NativePaint
 import androidx.compose.foundation.Canvas
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,9 +27,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
 import kotlin.math.min
 
@@ -47,9 +47,12 @@ fun PieChart(
 	}
 
 	val textSize = 24.sp
-	val textSizePx = with(LocalDensity.current) { textSize.toPx() }
-	val paint = remember { NativePaint().apply { this.textSize = textSizePx } }
-	val textWidth = remember(text, paint) { paint.measureText(text) }
+	val textMeasurer = rememberTextMeasurer()
+	val textLayoutResult = remember(textMeasurer, text) {
+		textMeasurer.measure(text, style = TextStyle(fontSize = textSize))
+	}
+
+	val textColor = MaterialTheme.colors.onBackground
 
 	Canvas(modifier = modifier) {
 		val size = size
@@ -79,9 +82,11 @@ fun PieChart(
 			}
 		}
 
-		drawIntoCanvas {
-			it.nativeCanvas.drawText(text, size.width / 2 - textWidth / 2, size.height / 2 + textSize.toPx() / 2, paint)
-		}
+		drawText(
+			textLayoutResult = textLayoutResult,
+			color = textColor,
+			topLeft = Offset(size.width / 2 - textLayoutResult.size.width / 2, size.height / 2 - textLayoutResult.size.height / 2)
+		)
 	}
 }
 
